@@ -1,0 +1,7 @@
+{
+  "name": "afrozikbox",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
