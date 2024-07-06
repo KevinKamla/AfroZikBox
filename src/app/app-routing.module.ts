@@ -5,7 +5,35 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
-  }
+  },
+  {
+    path: 'suggestions',
+    loadChildren: () => import('./views/suggestions/suggestions.module').then( m => m.SuggestionsPageModule)
+  },
+  {
+    path: 'best-songs',
+    loadChildren: () => import('./views/best-songs/best-songs.module').then( m => m.BestSongsPageModule)
+  },
+  {
+    path: 'news',
+    loadChildren: () => import('./views/news/news.module').then( m => m.NewsPageModule)
+  },
+  {
+    path: 'recently',
+    loadChildren: () => import('./views/recently/recently.module').then( m => m.RecentlyPageModule)
+  },
+  {
+    path: 'album',
+    loadChildren: () => import('./views/album/album.module').then( m => m.AlbumPageModule)
+  },
+  {
+    path: 'popular',
+    loadChildren: () => import('./views/popular/popular.module').then( m => m.PopularPageModule)
+  },
+  {
+    path: 'artist',
+    loadChildren: () => import('./views/artist/artist.module').then( m => m.ArtistPageModule)
+  },
 ];
 @NgModule({
   imports: [

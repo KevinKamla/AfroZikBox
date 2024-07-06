@@ -1,0 +1,69 @@
+.box-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--ion-color-netfly-dark-contrast);
+    margin: 10px 5px 5px 5px;
+    h3 {
+        font-weight: 600;
+        font-size: 16px;
+    }
+    p {
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--ion-color-primary);
+    }
+}
+
+.scroll-box {
+    display: flex;
+    overflow: scroll;
+    gap: 7px
+}
+
+.movie .img-introCharge {
+    height: 100%;
+    width: 100%;
+    max-width: none;
+}
+
+.movie {
+    margin-right: 5px;
+    p {
+        font-weight: 600;
+        font-size: 16px;
+    }
+    ion-label {
+        color: rgb(146, 145, 145);
+        margin-block: 5px;
+    }
+    .number_price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .number_sons {
+            padding: 5px;
+            background-color: grey;
+            border-radius: 15px;
+            color: white;
+        }
+    }
+}
+
+.movie img {
+    height: 150px;
+    max-width: none;
+    border-radius: 30px
+}
+
+.scroll-box ion-skeleton-text {
+    height: 150px;
+    max-width: none;
+    border-radius: 20px;
+}
+
+.movieCharge {
+    height: 100%;
+    min-width: 100px;
+    margin-left: 5px;
+}

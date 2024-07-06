@@ -1,0 +1,11 @@
+ion-segment {
+    display: flex;
+    overflow-x: hidden;
+    ion-segment-button {
+        text-transform: capitalize;
+    }
+}
+
+.container {
+    padding: 10px;
+}

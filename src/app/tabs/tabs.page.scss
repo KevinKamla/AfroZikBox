@@ -1,1 +1,15 @@
-
+ion-tab-bar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    align-self: center;
+    --border: none;
+    border-radius: 20px 20px 0 0;
+    --color-selected: var(--ion-tab-bar-color-selected, var(--ion-color-primary, #e78a2e));
+    ion-tab-button {
+        background: none;
+        ion-ripple-effect {
+            color: #e78a2e !important;
+        }
+    }
+}

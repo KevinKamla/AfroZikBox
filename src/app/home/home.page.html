@@ -1,0 +1,58 @@
+<ion-header [translucent]="false" class="ion-no-border">
+    <ion-toolbar color="">
+        <ion-buttons slot="start">
+            <img src="../../assets/icon/logo.png" />
+        </ion-buttons>
+        <ion-buttons shape="round" slot="end">
+            <ion-button>
+                <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+            </ion-button>
+            <ion-button>
+                <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+            <ion-button>
+                <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <ion-segment scrollable scrollHide [(ngModel)]="selectedSegment">
+        <ion-segment-button value="suggestions">Suggestions</ion-segment-button>
+        <ion-segment-button value="bestSongs">Meilleures chansons</ion-segment-button>
+        <ion-segment-button value="news">Nouveatés</ion-segment-button>
+        <ion-segment-button value="recently">Joué récemment</ion-segment-button>
+        <ion-segment-button value="album">Meilleurs Albums</ion-segment-button>
+        <ion-segment-button value="popular">Populaires</ion-segment-button>
+        <ion-segment-button value="artist">Artistes</ion-segment-button>
+    </ion-segment>
+    <div class="container">
+
+        <ng-container [ngSwitch]="selectedSegment">
+            <ng-template ngSwitchCase="suggestions">
+                <app-suggestions></app-suggestions>
+            </ng-template>
+
+            <ng-template ngSwitchCase="bestSongs">
+                <app-best-songs></app-best-songs>
+            </ng-template>
+            <ng-template ngSwitchCase="news">
+                <app-news></app-news>
+            </ng-template>
+            <ng-template ngSwitchCase="recently">
+                <app-recently></app-recently>
+            </ng-template>
+            <ng-template ngSwitchCase="album">
+                <app-album></app-album>
+            </ng-template>
+            <ng-template ngSwitchCase="popular">
+                <app-popular></app-popular>
+            </ng-template>
+            <ng-template ngSwitchCase="artist">
+                <app-artist></app-artist>
+            </ng-template>
+        </ng-container>
+    </div>
+</ion-content>
