@@ -14,19 +14,27 @@ const routes: Routes = [
       },
       {
         path: 'tendance',
-        loadChildren: () => import('../views/tendance/tendance.module').then( m => m.TendancePageModule)
+        loadChildren: () => import('../views/tendance/tendance.module').then(m => m.TendancePageModule)
       },
       {
         path: 'favoris',
-        loadChildren: () => import('../views/favoris/favoris.module').then( m => m.FavorisPageModule)
+        loadChildren: () => import('../views/favoris/favoris.module').then(m => m.FavorisPageModule)
       },
       {
         path: 'myliste',
-        loadChildren: () => import('../views/myliste/myliste.module').then( m => m.MylistePageModule)
+        loadChildren: () => import('../views/myliste/myliste.module').then(m => m.MylistePageModule)
       },
       {
         path: 'profil',
-        loadChildren: () => import('../views/profil/profil.module').then( m => m.ProfilPageModule)
+        loadChildren: () => import('../views/profil/profil.module').then(m => m.ProfilPageModule)
+      },
+      {
+        path: 'search',
+        loadChildren: () => import('../views/search/search.module').then(m => m.SearchPageModule)
+      },
+      {
+        path: 'notification',
+        loadChildren: () => import('../views/notification/notification.module').then( m => m.NotificationPageModule)
       },
       {
         path: '',

@@ -1,5 +1,6 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePage implements OnInit {  
   
-  selectedSegment: string = 'suggestions'; // Set a default value
+  selectedSegment: string = 'suggestions'; 
 
-  constructor() { }
+  constructor(
+    public route: Router,
 
+  ) {}
+
+  goToRoute(route: string){
+    this.route.navigate([route]);
+    
+  }
 
   ngOnInit() {
   }

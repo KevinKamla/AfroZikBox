@@ -1,6 +1,4 @@
 ion-segment {
-    display: flex;
-    overflow-x: hidden;
     ion-segment-button {
         text-transform: capitalize;
     }
@@ -8,4 +6,23 @@ ion-segment {
 
 .container {
     padding: 10px;
+    padding-bottom: 5rem;
+    .box-alert {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        h4 {
+            font-weight: 900;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        p {
+            font-size: 14px;
+        }
+        ion-img {
+            height: 80px;
+        }
+    }
 }

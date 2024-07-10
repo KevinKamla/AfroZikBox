@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="goToRoute()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Notifications</ion-title>
+        <ion-buttons slot="end">
+            <ion-button [routerLink]="['../../paranotif']">
+                <ion-icon slot="icon-only" name="settings"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <div class="ion-padding contain">
+        <h2>Aucune notification pour l'instant </h2>
+        <p>Nous afficherons ici une fois que vous avez fait votre première activité</p>
+    </div>
+
+</ion-content>

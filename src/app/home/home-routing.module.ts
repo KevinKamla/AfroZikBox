@@ -1,12 +1,18 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, Router } from '@angular/router';
 
 import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomePage
+    component: HomePage,
+    children: [      
+      {
+        path: 'search',
+        loadChildren: () => import('../views/search/search.module').then( m => m.SearchPageModule)
+      },
+    ]
   }
 ];
 

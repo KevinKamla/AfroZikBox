@@ -1,0 +1,46 @@
+<ion-header [translucent]="true" class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Créer une story</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="d-f-c">
+        <ion-card button (click)="camera()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg" src="{{imgPath}}">
+                <div class="content" *ngIf="!isGetImg">
+                    <ion-icon color="primary" slot="start" name="image"></ion-icon>
+                    <h5>Selectinner l'image a importer</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        <ion-card button (click)="camera()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg" src="{{imgPath}}">
+                <div class="content" *ngIf="!isGetImg">
+                    <ion-icon color="primary" slot="start" name="musical-notes"></ion-icon>
+                    <h5>Selectinner la chanson a importer</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+    <div class="input">
+        <div class="canView d-f-s" (click)="openCanViewModal()">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" class="content" value={{canview}}></ion-input>
+        </div>
+        <div class=" canView d-f-c">
+            <ion-icon name="link-outline"></ion-icon>
+            <ion-input type="text" class="content" placeholder="Url"></ion-input>
+        </div>
+
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Publier
+        </ion-button>
+    </div>
+
+</ion-content>

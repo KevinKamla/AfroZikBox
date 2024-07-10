@@ -67,3 +67,15 @@
     min-width: 100px;
     margin-left: 5px;
 }
+
+.best {
+    .movie {
+        ion-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 140px;
+            display: block;
+        }
+    }
+}

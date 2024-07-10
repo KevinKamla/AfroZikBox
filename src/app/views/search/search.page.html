@@ -1,0 +1,31 @@
+<ion-header [translucent]="true" class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="goToRoute()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="start">
+            <div class="bloc_search">
+                <ion-searchbar class="ion-no-border" color="" placeholder="Recherche"></ion-searchbar>
+                <ion-button>
+                    <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+                </ion-button>
+            </div>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+
+    <ion-segment scrollable scrollHide [(ngModel)]="selectedSegment">
+        <ion-segment-button value="suggestions">Chansons</ion-segment-button>
+        <ion-segment-button value="bestSongs">Albums</ion-segment-button>
+        <ion-segment-button value="news">Playlists</ion-segment-button>
+        <ion-segment-button value="recently">Artistes</ion-segment-button>
+        <ion-segment-button value="album">Evénements </ion-segment-button>
+        <ion-segment-button value="popular">Produits</ion-segment-button>
+    </ion-segment>
+
+
+    <ion-loading message="Loading..." [duration]="3000" spinner="circles"></ion-loading>
+</ion-content>

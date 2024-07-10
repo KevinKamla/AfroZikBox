@@ -34,6 +34,14 @@ const routes: Routes = [
     path: 'artist',
     loadChildren: () => import('./views/artist/artist.module').then( m => m.ArtistPageModule)
   },
+  {
+    path: 'addstory',
+    loadChildren: () => import('./views/addstory/addstory.module').then( m => m.AddstoryPageModule)
+  },
+  // {
+  //   path: 'search',
+  //   loadChildren: () => import('./views/search/search.module').then( m => m.SearchPageModule)
+  // },
 ];
 @NgModule({
   imports: [

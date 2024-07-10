@@ -1,16 +1,16 @@
 <ion-header [translucent]="false" class="ion-no-border">
     <ion-toolbar color="">
         <ion-buttons slot="start">
-            <img src="../../assets/icon/logo.png" />
+            <img style="height: 40px;" src="../../assets/icon/logo.png" />
         </ion-buttons>
         <ion-buttons shape="round" slot="end">
-            <ion-button>
+            <ion-button [routerLink]="['../search']">
                 <ion-icon slot="icon-only" name="search-outline"></ion-icon>
             </ion-button>
-            <ion-button>
+            <ion-button [routerLink]="['../../addstory']">
                 <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
-            <ion-button>
+            <ion-button [routerLink]="['../notification']">
                 <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -19,7 +19,7 @@
 
 <ion-content [fullscreen]="true">
 
-    <ion-segment scrollable scrollHide [(ngModel)]="selectedSegment">
+    <ion-segment scrollable scrollHide [mode]="['ios']" [(ngModel)]="selectedSegment">
         <ion-segment-button value="suggestions">Suggestions</ion-segment-button>
         <ion-segment-button value="bestSongs">Meilleures chansons</ion-segment-button>
         <ion-segment-button value="news">Nouveatés</ion-segment-button>
@@ -29,7 +29,15 @@
         <ion-segment-button value="artist">Artistes</ion-segment-button>
     </ion-segment>
     <div class="container">
-
+        <div class="box-alert">
+            <div style="width: 78%;">
+                <h4>Profitez de vos chansons préférées de musique</h4>
+                <p>
+                    Créez votre compe ou connectez vous pour profiter de toute la musique africaine que vous aimez où et quand
+                </p>
+            </div>
+            <ion-img [src]="['assets/icon/profilLock.png']"></ion-img>
+        </div>
         <ng-container [ngSwitch]="selectedSegment">
             <ng-template ngSwitchCase="suggestions">
                 <app-suggestions></app-suggestions>

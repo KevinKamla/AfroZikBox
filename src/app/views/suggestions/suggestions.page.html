@@ -1,3 +1,55 @@
+<div class="best">
+    <div class="box-title">
+
+        <h3>Meilleurs Chansons</h3>
+        <p [routerLink]="['all']">Voir plus</p>
+    </div>
+
+    <div class="container-scroll">
+        <div class="scroll-box" *ngIf="tabSong.length > 0;">
+            <div class="movie" *ngFor="let item of tabSong">
+                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+                <ion-label>On my way - king saha (Lyrical video)</ion-label>
+            </div>
+        </div>
+    </div>
+    <ng-template>
+        <div class="container-scroll">
+            <div class="scroll-box">
+                <div class="movieCharge" *ngFor="let item of [1,2,3,4,5,6,7]">
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
+<div class="Genre">
+    <div class="box-title">
+
+        <h3>Genres</h3>
+        <p [routerLink]="['all']">Voir plus</p>
+    </div>
+
+    <div class="container-scroll">
+        <div class="scroll-box" *ngIf="tabSong.length > 0;">
+            <div class="movie" *ngFor="let item of tabSong">
+                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+                <p>Afrobeat</p>
+            </div>
+        </div>
+    </div>
+    <ng-template>
+        <div class="container-scroll">
+            <div class="scroll-box">
+                <div class="movieCharge" *ngFor="let item of [1,2,3,4,5,6,7]">
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
+
 <div class="recente">
     <div class="box-title">
 
@@ -35,11 +87,11 @@
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie" *ngFor="let item of tabSong">
                 <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
-                <p>Mon coeur avait raison</p>
+                <div class="p">Mon coeur avait raison</div>
                 <ion-label>admin</ion-label>
                 <div class="number_price">
                     <div class="number_sons">13 chansons</div>
-                    <ion-badge color="secondary" mode="ios">$4.99</ion-badge>
+                    <ion-badge color="danger">$4.99</ion-badge>
                 </div>
             </div>
         </div>
@@ -53,3 +105,30 @@
             </div>
         </ng-template>
     </div>
+</div>
+
+<div class="artiste">
+    <div class="box-title">
+
+        <h3>Artistes</h3>
+        <p [routerLink]="['all']">Voir plus</p>
+    </div>
+
+    <div class="container-scroll">
+        <div class="scroll-box" *ngIf="tabSong.length > 0;">
+            <div class="movie" *ngFor="let item of tabSong">
+                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+                <p>Maître Gims</p>
+            </div>
+        </div>
+    </div>
+    <ng-template>
+        <div class="container-scroll">
+            <div class="scroll-box">
+                <div class="movieCharge" *ngFor="let item of [1,2,3,4,5,6,7]">
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>
