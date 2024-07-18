@@ -21,12 +21,6 @@
     gap: 7px
 }
 
-.movie .img-introCharge {
-    height: 100%;
-    width: 100%;
-    max-width: none;
-}
-
 .movie {
     margin-right: 5px;
     p {
@@ -46,12 +40,51 @@
             background-color: grey;
             border-radius: 15px;
             color: white;
+            font-size: 13px;
+            text-wrap: nowrap;
+            overflow: hidden;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+        }
+    }
+    .bg-img {
+        position: relative;
+        height: 100%;
+        width: 120px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 15px;
+        height: 154px;
+        text-align: center;
+        ion-avatar {
+            position: absolute;
+            bottom: 0;
+            transform: translate(125%, 10%);
+            width: 35px;
+        }
+        p {
+            font-size: 12px;
+            color: white;
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
         }
     }
 }
 
+.bg-img {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 15px;
+    height: 154px;
+    width: 110px;
+    text-align: center;
+}
+
 .movie img {
-    height: 150px;
+    height: 130px;
     max-width: none;
     border-radius: 30px
 }

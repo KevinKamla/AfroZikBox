@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,6 +10,9 @@ export class TendancePage implements OnInit {
 
   constructor() { }
 
+  goToAlbum(){
+    
+  }
   ngOnInit() {
   }
 

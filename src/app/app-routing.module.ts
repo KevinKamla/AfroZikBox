@@ -38,6 +38,18 @@ const routes: Routes = [
     path: 'addstory',
     loadChildren: () => import('./views/addstory/addstory.module').then( m => m.AddstoryPageModule)
   },
+  {
+    path: 'settingnotif',
+    loadChildren: () => import('./views/settingnotif/settingnotif.module').then( m => m.SettingnotifPageModule)
+  },
+  {
+    path: 'menuactionhome',
+    loadChildren: () => import('./components/menuactionhome/menuactionhome.module').then( m => m.MenuactionhomePageModule)
+  },
+  {
+    path: 'filteractionsearch',
+    loadChildren: () => import('./components/filteractionsearch/filteractionsearch.module').then( m => m.FilteractionsearchPageModule)
+  },
   // {
   //   path: 'search',
   //   loadChildren: () => import('./views/search/search.module').then( m => m.SearchPageModule)

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/core';
+import { IonPopover, PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-best-songs',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BestSongsPage implements OnInit {
 
-  constructor() { }
+  
+  constructor(
+    // private popoverController: PopoverController
+  ) { }
+
+  
 
   ngOnInit() {
+    this
   }
 
 }

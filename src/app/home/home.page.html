@@ -7,7 +7,7 @@
             <ion-button [routerLink]="['../search']">
                 <ion-icon slot="icon-only" name="search-outline"></ion-icon>
             </ion-button>
-            <ion-button [routerLink]="['../../addstory']">
+            <ion-button (click)="openMenuAdd()">
                 <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
             <ion-button [routerLink]="['../notification']">
@@ -63,4 +63,5 @@
             </ng-template>
         </ng-container>
     </div>
+
 </ion-content>

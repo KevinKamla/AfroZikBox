@@ -1,0 +1,90 @@
+<ion-content class="ion-padding">
+    <h3>Filtre</h3>
+    <ion-item class="ion-margin" button (click)="openModalPrice()">
+        <ion-icon name="logo-usd"></ion-icon>
+        <ion-label class="ion-padding">Prix</ion-label>
+    </ion-item>
+    <ion-item class="ion-margin" button (click)="openModalGenre()">
+        <ion-icon name="layers"></ion-icon>
+        <ion-label class="ion-padding">Genres</ion-label>
+    </ion-item>
+    <div class="bloc-btn">
+        <ion-button (click)="selectAll()" fill="clear">
+            Selectionner tout
+        </ion-button>
+        <ion-button (click)="applyFilter()" expand="bloc" shape="round">
+            Appliquer
+        </ion-button>
+    </div>
+</ion-content>
+
+
+<ion-modal id="modal-title" #modale handleBehavior="cycle" [initialBreakpoint]="0.75" isOpen="{{modalPriceIsOpen}}" backdropDismiss="false" [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le prix</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <ion-item>
+                        <ion-label>$1.99</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>$2.99</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>$4.99</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>$9.99</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                    <ion-item>
+                        <ion-label>$19.99</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="closeModalPrice()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>
+
+<ion-modal id="modal-title" #modale handleBehavior="cycle" [initialBreakpoint]="0.75" isOpen="{{modalGenreIsOpen}}" backdropDismiss="false" [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le genre</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <ion-item *ngFor="let item of genreList">
+                        <ion-label>{{item}}</ion-label>
+                        <ion-checkbox slot="start"></ion-checkbox>
+                    </ion-item>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="closeModalGenre()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

@@ -1,7 +1,8 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { FilteractionsearchPage } from 'src/app/components/filteractionsearch/filteractionsearch.page';
 
 @Component({
   selector: 'app-search',
@@ -15,6 +16,7 @@ export class SearchPage implements OnInit {
   constructor(
     public route: Router,
     public navCtrl: NavController,
+    private modalCtrl: ModalController,
   ) { }
 
   
@@ -26,8 +28,21 @@ export class SearchPage implements OnInit {
     }
   }
   
+  async openActionFilter(){
+    const modal = await this.modalCtrl.create({
+      component: FilteractionsearchPage,
+      initialBreakpoint: 0.5,
+      breakpoints: [0.5],
+      cssClass: "menu-filter",
+      mode:'ios'
 
+    })
+    await modal.present();
+  }
+  
   ngOnInit() {
   }
 
 }
+
+

@@ -1,0 +1,19 @@
+ion-content {
+    --padding-top: 2rem;
+    h3 {
+        width: 100%;
+        text-align: center;
+    }
+    .bloc-btn {
+        margin-top: 2rem;
+        text-align: center;
+        display: grid;
+    }
+}
+
+ion-modal#modal-title {
+    --min-width: 250px;
+    --height: 80%;
+    --border-radius: 25px;
+    padding: 25px;
+}
