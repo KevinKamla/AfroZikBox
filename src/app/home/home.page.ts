@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import { MenuactionhomePage } from '../components/menuactionhome/menuactionhome.page';
 
 @Component({
@@ -11,12 +11,14 @@ import { MenuactionhomePage } from '../components/menuactionhome/menuactionhome.
 })
 export class HomePage implements OnInit {
 
-  selectedSegment: string = 'suggestions';
+  selectedSegment = 'suggestions';
 
   constructor(
     public route: Router,
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
+    private activeroute: ActivatedRoute,
+    private navCtlr: NavController,
 
   ) { }
 
@@ -60,13 +62,13 @@ export class HomePage implements OnInit {
       initialBreakpoint: 0.5,
       breakpoints: [0.5],
       cssClass: "menu-action",
-      mode:'ios'
+      mode: 'ios'
 
     })
     await modal.present();
   }
 
-  closeModal(){
+  closeModal() {
     this.modalCtrl.dismiss();
   }
 
@@ -76,6 +78,12 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-  }
+    // this.route.paramMap.subscribe((params:any) => {
+    //   this.selectedSegment = params.get('segment') || 'defaultSegment';
+    // });
+    this.activeroute.paramMap.subscribe((params: any) => {
+      this.selectedSegment = params.get('segment');
+    });
 
+  }
 }

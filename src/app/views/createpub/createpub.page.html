@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Créer une annonce</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="input">
+        <div class="canView d-f-s" translate="yes" triger="modal-type">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" disabled placeholder="Type d'annonce" class="content"></ion-input>
+        </div>
+    </div>
+    <ion-card button (click)="camera()" class="ion-no-box-shadow">
+        <ion-card-content class="image">
+            <img *ngIf="isGetImg" src="{{imgPath}}">
+            <div class="content" *ngIf="!isGetImg">
+                <ion-icon color="primary" slot="start" name="add"></ion-icon>
+                <h5>Choisir un fichier</h5>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Nom" class="content"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Titre" class="content"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="URL" class="content"></ion-input>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="link-outline"></ion-icon>
+            <ion-textarea placeholder="Description" class="content"></ion-textarea>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Public Cible" class="content"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Placement" class="content"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="number" placeholder="Tarif" class="content"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Limite de dépense par jour" class="content"></ion-input>
+        </div>
+
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Créer
+        </ion-button>
+    </div>
+</ion-content>
+
+<ion-modal id="modal-type" #modale handleBehavior="cycle" [initialBreakpoint]="0.75" backdropDismiss="false">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Type d'annonce</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <ion-item>
+                    <ion-label>$1.99</ion-label>
+                    <ion-checkbox slot="start"></ion-checkbox>
+                </ion-item>
+                <ion-item>
+                    <ion-label>$2.99</ion-label>
+                    <ion-checkbox slot="start"></ion-checkbox>
+                </ion-item>
+            </div>
+        </ion-content>
+
+    </ng-template>
+</ion-modal>

@@ -50,6 +50,30 @@ const routes: Routes = [
     path: 'filteractionsearch',
     loadChildren: () => import('./components/filteractionsearch/filteractionsearch.module').then( m => m.FilteractionsearchPageModule)
   },
+  {
+    path: 'play',
+    loadChildren: () => import('./views/play/play.module').then( m => m.PlayPageModule)
+  },
+  {
+    path: 'uploadmusic',
+    loadChildren: () => import('./views/uploadmusic/uploadmusic.module').then( m => m.UploadmusicPageModule)
+  },
+  {
+    path: 'createalbum',
+    loadChildren: () => import('./views/createalbum/createalbum.module').then( m => m.CreatealbumPageModule)
+  },
+  {
+    path: 'createpub',
+    loadChildren: () => import('./views/createpub/createpub.module').then( m => m.CreatepubPageModule)
+  },
+  {
+    path: 'createplaylist',
+    loadChildren: () => import('./components/createplaylist/createplaylist.module').then( m => m.CreateplaylistPageModule)
+  },
+  {
+    path: 'createradiostation',
+    loadChildren: () => import('./views/createradiostation/createradiostation.module').then( m => m.CreateradiostationPageModule)
+  },
   // {
   //   path: 'search',
   //   loadChildren: () => import('./views/search/search.module').then( m => m.SearchPageModule)

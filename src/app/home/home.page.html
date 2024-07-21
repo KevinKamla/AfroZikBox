@@ -4,13 +4,13 @@
             <img style="height: 40px;" src="../../assets/icon/logo.png" />
         </ion-buttons>
         <ion-buttons shape="round" slot="end">
-            <ion-button [routerLink]="['../search']">
+            <ion-button [routerLink]="['../../search']">
                 <ion-icon slot="icon-only" name="search-outline"></ion-icon>
             </ion-button>
             <ion-button (click)="openMenuAdd()">
                 <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
-            <ion-button [routerLink]="['../notification']">
+            <ion-button [routerLink]="['../../notification']">
                 <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -19,7 +19,7 @@
 
 <ion-content [fullscreen]="true">
 
-    <ion-segment scrollable scrollHide [mode]="['ios']" [(ngModel)]="selectedSegment">
+    <ion-segment scrollable scrollHide [(ngModel)]="selectedSegment">
         <ion-segment-button value="suggestions">Suggestions</ion-segment-button>
         <ion-segment-button value="bestSongs">Meilleures chansons</ion-segment-button>
         <ion-segment-button value="news">Nouveatés</ion-segment-button>

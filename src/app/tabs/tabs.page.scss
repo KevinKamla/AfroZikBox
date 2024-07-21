@@ -13,3 +13,65 @@ ion-tab-bar {
         }
     }
 }
+
+.player {
+    // height: 50px;
+    background-color: var(--ion-color-light);
+    color: white;
+    position: relative;
+    bottom: 3rem;
+    .progress-bar {
+        width: 100%;
+        height: 5px;
+        ion-range {
+            height: 0;
+            width: 108%;
+            // position: relative;
+            left: -13px;
+            // top: -7px;
+            color: white;
+        }
+    }
+    .img {
+        border-radius: 15px;
+    }
+    .d-b {
+        display: block;
+        color: var(--ion-color-dark);
+        b {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: 600;
+            display: block;
+        }
+        span {
+            font-size: small;
+            font-weight: 100;
+        }
+    }
+    .bloc-icon {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        .first-button {
+            position: relative;
+            right: -15%;
+        }
+    }
+    ion-button {
+        width: min-content;
+        ion-icon {
+            // color: white;
+            size: 10px;
+        }
+    }
+}
+
+.bloc {
+    display: block;
+}
+
+.none {
+    display: none;
+}

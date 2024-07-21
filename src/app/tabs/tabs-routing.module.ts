@@ -9,7 +9,7 @@ const routes: Routes = [
     children: [
 
       {
-        path: 'home',
+        path: "home/:segment",
         loadChildren: () => import('../home/home.module').then(m => m.HomePageModule)
       },
       {
@@ -38,14 +38,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/home',
+        redirectTo: '/tabs/home/suggestions',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: '/tabs/home/suggestions',
     pathMatch: 'full'
   }
 ];

@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Télécharger un album</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <p>
+        Créer et partager un album. Chaque album est créé et organiser sur mesure pour vous aider a découvrir le meilleur de la musique africaina selon vos préférences.
+    </p>
+    <ion-card button (click)="camera()" class="ion-no-box-shadow">
+        <ion-card-content class="image">
+            <img *ngIf="isGetImg" src="{{imgPath}}">
+            <div class="content" *ngIf="!isGetImg">
+                <ion-icon color="primary" slot="start" name="image"></ion-icon>
+                <h5>Sélectinner l'image à importer</h5>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Titre de l'album" class="content" value=""></ion-input>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="link-outline"></ion-icon>
+            <ion-textarea placeholder="Description" class="content"></ion-textarea>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="text" placeholder="Genre" class="content" value=""></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="eye-outline"></ion-icon>
+            <ion-input type="number" placeholder="Prix" class="content" value=""></ion-input>
+        </div>
+
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Continuer
+        </ion-button>
+    </div>
+</ion-content>

@@ -1,29 +1,25 @@
 <div class="header d-f-s">
-    <h4> 26 Chansons</h4>
+    <h5> 26 Chansons</h5>
     <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
     </span>
 </div>
 
 <div class="list_chansons">
-    <ion-item *ngFor="let song of [1,1,1,1,1,1,1,1,1,1,1,1,1,1]">
-        <div class="img-detail d-f-s">
-            <ion-thumbnail>
-                <img src="assets/icon/gims.png" />
-            </ion-thumbnail>
-            <div class="title">
-                <h3>Mon coeur avait raison</h3>
-                <p>admin | 3.59</p>
-            </div>
+    <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1,1,1,1,1]">
+        <img src="assets/icon/gims.png" />
+        <div class="title">
+            <h3>Mon coeur avait raison</h3>
+            <p>admin | 3.59</p>
         </div>
-        <ion-buttons slot="end">
+        <div class="block-btn">
             <ion-button class="btn-play">
                 <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
             </ion-button>
             <ion-button>
-                <ion-icon slot="icon-only" name="ellipsis-vertical-outline"></ion-icon>
+                <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
             </ion-button>
-        </ion-buttons>
-    </ion-item>
+        </div>
+    </div>
 </div>
 
 <ion-popover trigger="popover-button" [dismissOnSelect]="true">

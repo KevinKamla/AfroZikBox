@@ -1,6 +1,6 @@
 <div class="container-scroll story">
     <div class="scroll-box">
-        <div class="movie" [routerLink]="['../../addstory']">
+        <div class="movie" [routerLink]="['/addstory']">
             <div class="bg-img" [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc), url(assets/icon/people.png)'}">
                 <ion-avatar><img [src]="['assets/icon/people.png']" style="height: auto;" /></ion-avatar>
                 <p>Créer une story</p>
@@ -19,12 +19,11 @@
 <div class="best">
     <div class="box-title">
         <h3>Meilleurs Chansons</h3>
-        <p [routerLink]="['all']">Voir plus</p>
+        <p (click)="goToSegment('bestSongs')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-
             <div class="movie" *ngFor="let item of tabSong">
                 <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
                 <ion-label>On my way - king saha (Lyrical video)</ion-label>
@@ -46,7 +45,7 @@
     <div class="box-title">
 
         <h3>Genres</h3>
-        <p [routerLink]="['all']">Voir plus</p>
+        <p>Voir plus</p>
     </div>
 
     <div class="container-scroll">
@@ -72,7 +71,7 @@
     <div class="box-title">
 
         <h3>Chansons récentes</h3>
-        <p [routerLink]="['all']">Voir plus</p>
+        <p (click)="goToSegment('recently')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
@@ -98,7 +97,7 @@
     <div class="box-title">
 
         <h3>Meilleurs albums</h3>
-        <p [routerLink]="['all']">Voir plus</p>
+        <p (click)="goToSegment('album')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
@@ -129,13 +128,13 @@
     <div class="box-title">
 
         <h3>Artistes</h3>
-        <p [routerLink]="['all']">Voir plus</p>
+        <p (click)="goToSegment('artist')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+                <img class="img-intro" src="assets/icon/profil.png" (click)="playMusic(item)">
                 <p>Maître Gims</p>
             </div>
         </div>

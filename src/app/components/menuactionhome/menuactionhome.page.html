@@ -3,24 +3,24 @@
         <ion-icon slot="start" color="primary" name="cloud-download"></ion-icon>
         <ion-label>Télécharger une seule chanson</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()">
+    <ion-item button (click)="closeModal()" [routerLink]="['/uploadmusic']">
         <ion-icon slot="start" color="secondary" name="cloud-upload"></ion-icon>
         <ion-label>Importer une chanson</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()">
+    <ion-item button (click)="closeModal()" [routerLink]="['/createalbum']">
         <ion-icon slot="start" color="success" name="albums"></ion-icon>
         <ion-label>Créer un album</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()">
+    <ion-item button (click)="openCreatePlaylist()">
         <ion-icon slot="start" color="danger" name="list"></ion-icon>
         <ion-label>Créer une playlist</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()">
+    <ion-item button (click)="closeModal()" [routerLink]="['/createradiostation']">
         <ion-icon slot="start" color="tertiary" name="radio"></ion-icon>
         <ion-label>Ajouter une nouvelle station radio</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()">
+    <ion-item button (click)="closeModal()" [routerLink]="['/createpub']">
         <ion-icon slot="start" color="warning" name="megaphone"></ion-icon>
-        <ion-label>Télécharger une seule chanson</ion-label>
+        <ion-label>Créer une publicité</ion-label>
     </ion-item>
 </ion-content>

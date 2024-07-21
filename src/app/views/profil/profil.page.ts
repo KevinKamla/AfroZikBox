@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profil.page.scss'],
 })
 export class ProfilPage implements OnInit {
+
+  
+  selectedSegment: string = 'Chansons';
 
   constructor() { }
 

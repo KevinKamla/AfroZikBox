@@ -1,0 +1,19 @@
+ion-header {
+    .bloc_search {
+        padding: 5px;
+        margin: 12px;
+        background-color: #f5f5f5;
+        border-radius: 20px;
+        ion-searchbar {
+            --background: transparent;
+            --box-shadow: none;
+            input {
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+
+ion-title {
+    margin-top: 7rem;
+}

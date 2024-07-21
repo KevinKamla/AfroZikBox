@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Importer</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <img src="assets/icon/upload.png" alt="">
+        <p>Importer à partir de itune</p>
+        <ion-input required type="text" placeholder="URL SoundCloud, iTunes, Deezer, Youtube"></ion-input>
+        <ion-label>Coller votre URL ci-dessus</ion-label>
+        <ion-button class="ion-text-capitalize" expand="block" shape="round">
+            Importer
+        </ion-button>
+    </div>
+</ion-content>

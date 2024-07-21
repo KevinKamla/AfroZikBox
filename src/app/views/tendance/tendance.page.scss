@@ -18,21 +18,6 @@
     align-items: center;
 }
 
-.bloc_search {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    margin: 10px;
-    background-color: #efefef;
-    border-radius: 20px;
-    height: 40px;
-    ion-searchbar {
-        color: var(--ion-color-primary);
-        --background: transparent;
-        --box-shadow: none;
-    }
-}
-
 .bloc_popular_playlist {
     padding: 1rem;
     .scroll-box {

@@ -1,0 +1,40 @@
+.d-f {
+    display: flex;
+}
+
+.d-b {
+    display: block;
+}
+
+.d-f-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.container {
+    padding: 10px;
+    p {
+        text-align: center;
+        margin-block: 1rem;
+        font-weight: 700;
+    }
+    ion-input {
+        border: 1px solid var(--ion-color-primary);
+        border-radius: 25px 25px 0 0;
+        --padding-start: 10px;
+    }
+    ion-label {
+        display: block;
+        font-size: 12px;
+        width: 100%;
+        text-align: center;
+        margin-block: 1rem;
+    }
+}

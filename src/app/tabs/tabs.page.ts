@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tabs',
@@ -6,7 +7,22 @@ import { Component } from '@angular/core';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage {
+  musicIsPlay = true;
+  isClose = false;
 
-  constructor() {}
+  constructor(
+    private navCtrl: NavController
+  ) { }
+
+  play() {
+    this.musicIsPlay = !this.musicIsPlay;
+  }
+
+  close() {
+    this.isClose = !this.isClose;
+  }
+  goToPlay() {
+    this.navCtrl.navigateForward('play');
+  }
 
 }
