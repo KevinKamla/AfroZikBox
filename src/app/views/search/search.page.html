@@ -1,18 +1,20 @@
 <ion-header [translucent]="true" class="ion-no-border">
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-button (click)="goToRoute()">
-                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="start">
-            <div class="bloc_search">
-                <ion-searchbar class="ion-no-border" color="" placeholder="Recherche"></ion-searchbar>
-                <ion-button (click)="openActionFilter()">
-                    <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+        <div class="d-f-s">
+            <ion-buttons slot="start">
+                <ion-button (click)="goToRoute()">
+                    <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
                 </ion-button>
-            </div>
-        </ion-buttons>
+            </ion-buttons>
+            <ion-buttons slot="start">
+                <div class="bloc_search">
+                    <ion-searchbar class="ion-no-border" color="" placeholder="Recherche"></ion-searchbar>
+                    <ion-button (click)="openActionFilter()">
+                        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+                    </ion-button>
+                </div>
+            </ion-buttons>
+        </div>
     </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">

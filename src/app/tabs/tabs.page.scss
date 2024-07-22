@@ -15,11 +15,11 @@ ion-tab-bar {
 }
 
 .player {
-    // height: 50px;
     background-color: var(--ion-color-light);
     color: white;
     position: relative;
-    bottom: 3rem;
+    bottom: 2rem;
+    padding-bottom: 1rem;
     .progress-bar {
         width: 100%;
         height: 5px;

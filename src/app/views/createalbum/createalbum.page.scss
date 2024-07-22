@@ -56,7 +56,7 @@ ion-card {
         gap: 2px;
     }
     ion-icon {
-        font-size: 36px;
+        font-size: 30px;
     }
     .content {
         --background: #e3eeff3d;
@@ -67,4 +67,11 @@ ion-card {
     ion-textarea {
         min-height: 100px;
     }
+}
+
+ion-modal#modal-title {
+    --min-width: 250px;
+    --height: 80%;
+    --border-radius: 25px;
+    padding: 25px;
 }

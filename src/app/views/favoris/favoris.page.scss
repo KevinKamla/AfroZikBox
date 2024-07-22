@@ -97,12 +97,15 @@
     ion-buttons {
         justify-content: space-between;
         gap: 1rem;
+        margin-top: 5px;
         ion-button {
             --background: var(--ion-color-primary);
             color: white;
             text-transform: capitalize;
             font-weight: 800;
             font-size: 17px;
+            --padding-start: 7px;
+            --padding-end: 1rem;
             ion-icon {
                 margin-block: 0.5rem;
             }

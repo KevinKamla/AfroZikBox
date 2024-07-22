@@ -19,7 +19,12 @@
 }
 
 ion-content {
-    --padding-top: 1rem;
+    .input {
+        p {
+            margin: 0 2.5rem;
+            text-align: justify;
+        }
+    }
 }
 
 ion-card {
@@ -51,7 +56,6 @@ ion-card {
         padding: 10px;
         margin-bottom: 5px;
         gap: 2px;
-        width: 100%;
     }
     ion-icon {
         font-size: 30px;
@@ -62,29 +66,14 @@ ion-card {
         font-size: 20px;
         --border-radius: 10px;
     }
-    .contentBlock {
-        background: #e3eeff3d;
-        border-radius: 10px;
-        padding: .6rem;
-        width: 100%;
-    }
     ion-textarea {
         min-height: 100px;
     }
 }
 
-ion-modal#modal-type-id,
-ion-modal#modal-public-cible,
-ion-modal#modal-placement,
-ion-modal#modal-tarifs {
-    --width: fit-content;
+ion-modal#modal-title {
     --min-width: 250px;
-    --height: fit-content;
-    --max-height: 80%;
-    --border-radius: 10px;
-    --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-}
-
-ion-modal#modal-type-id .wrapper {
-    margin-bottom: 10px;
+    --height: 80%;
+    --border-radius: 25px;
+    padding: 25px;
 }

@@ -49,7 +49,7 @@ ion-card {
         gap: 2px;
     }
     ion-icon {
-        font-size: 36px;
+        font-size: 30px;
     }
     .content {
         --background: #e3eeff3d;
@@ -62,4 +62,12 @@ ion-card {
 .bloc-btn {
     text-align: center;
     display: grid;
+}
+
+ion-modal#modal-title {
+    --min-width: 250px;
+    --max-height: 80%;
+    height: 30%;
+    --border-radius: 25px;
+    padding: 25px;
 }

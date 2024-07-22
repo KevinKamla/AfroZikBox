@@ -1,7 +1,8 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 
 @Component({
   selector: 'app-play',
@@ -11,26 +12,47 @@ import { NavController } from '@ionic/angular';
 export class PlayPage implements OnInit {
 
 
-  musicIsPlay = true;
+  musicIsPlay = false;
   muteIcon: string = "mute";
-  pauseIcon: string = "pause";
+  pauseIcon: string = "play";
   gesVol: string = "medium";
 
   constructor(
     public navCtrl: NavController,
     public route: Router,
+    private modalCtrl: ModalController,
   ) { }
 
-  goToRoute(route: string = ''){
+  goToRoute(route: string = '') {
     if (route) {
       this.route.navigate([route]);
     } else {
-      this.navCtrl.back();
+      this.navCtrl.pop();
     }
   }
 
   play() {
-    this.pauseIcon == "pause" ? this.pauseIcon = "play" : this.pauseIcon = "pause";
+    if (this.pauseIcon == "pause") {
+      this.pauseIcon = "play";
+      this.musicIsPlay = false;
+      
+    } else {
+      this.pauseIcon = "pause";
+      this.musicIsPlay = true;
+    }
+  }
+  
+    
+
+  async openOptionSound() {
+    const modal = await this.modalCtrl.create({
+      component: MusicoptionPage,
+      initialBreakpoint: 0.75,
+      breakpoints: [0.5, 0.75],
+      mode: 'ios'
+
+    })
+    await modal.present();
   }
 
 

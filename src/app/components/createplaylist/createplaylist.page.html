@@ -16,13 +16,16 @@
     </ion-card>
     <div class="input">
         <div class="canView d-f-s">
-            <ion-icon name="eye-outline"></ion-icon>
+            <ion-icon name="pencil-outline"></ion-icon>
             <ion-input type="text" placeholder="Titre de la Playlist" class="content"></ion-input>
         </div>
-        <div class="canView d-f-s">
-            <ion-icon name="eye-outline"></ion-icon>
-            <ion-input type="text" placeholder="Confidentialité" class="content"></ion-input>
-        </div>
+
+        <ion-item id="open-modal-confid" button="true" class="ion-no-border">
+            <div class="canView d-f-s">
+                <ion-icon name="layers-outline"></ion-icon>
+                <div class="contentBlock">{{valueConfid}}</div>
+            </div>
+        </ion-item>
     </div>
     <div class="bloc-btn">
         <ion-button (click)="closeModal()" fill="clear">
@@ -33,3 +36,32 @@
         </ion-button>
     </div>
 </ion-content>
+
+<ion-modal id="modal-title" trigger="open-modal-confid" #modale_confid handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le genre</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <ion-item button (click)="selectedConfid('Publique')" class="ion-no-border">
+                        <ion-label>Publique</ion-label>
+                    </ion-item>
+                    <ion-item button (click)="selectedConfid('Privée')" class="ion-no-border">
+                        <ion-label>Privée</ion-label>
+                    </ion-item>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_confid.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

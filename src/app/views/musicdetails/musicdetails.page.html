@@ -1,0 +1,86 @@
+<ion-content [fullscreen]="false">
+    <div class="bg-header" [ngStyle]="{'background-image': 'linear-gradient(#00000060, black), url(assets/icon/gims.png)'}">
+        <div class="header d-f">
+            <ion-buttons slot="start">
+                <ion-button fill="clear" (click)="goToRoute()">
+                    <ion-icon slot="icon-only" name="close"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+            <h5>Information sue la chanson</h5>
+        </div>
+        <div class="d-f details-contain">
+            <img src="assets/icon/gims.png" alt="" style="height: 55px; margin-top: 2rem;" />
+            <div class="detail-header">
+                <p>Mon coeur avait raison (Official Audio) by Universal</p>
+                <p class="ion-text">Par <span>Universal</span></p>
+                <div class="d-f ion-align-items-center">
+                    <ion-icon class="icon-layers" name="layers-outline" slot="start"></ion-icon>
+                    <ion-label style="font-weight: 700; color: white;">Other</ion-label>
+                </div>
+                <div class="flex_box">
+                    <ion-button shape="round" fill="clear">
+                        <ion-icon slot="icon-only" color="danger" name="heart"></ion-icon>
+                        <ion-label> 1</ion-label>
+                    </ion-button>
+                    <ion-button shape="round" fill="clear">
+                        <ion-icon slot="icon-only" color="warning" name="star"></ion-icon>
+                        <ion-label> 2</ion-label>
+                    </ion-button>
+                    <ion-button shape="round" fill="clear">
+                        <ion-icon slot="icon-only" color="success" name="play"></ion-icon>
+                        <ion-label> 51</ion-label>
+                    </ion-button>
+                    <ion-button shape="round" fill="clear">
+                        <ion-icon slot="icon-only" color="primary" name="send"></ion-icon>
+                        <ion-label> 9</ion-label>
+                    </ion-button>
+                    <ion-button shape="round" fill="clear">
+                        <ion-icon slot="icon-only" class="icon-sms" name="chatbubble-ellipses-outline"></ion-icon>
+                        <ion-label> 12</ion-label>
+                    </ion-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-detail">
+        <ion-list>
+            <ion-row>
+                <ion-label>A propos</ion-label>
+                <p>Subscribe to and follow svsdds dsfdsfsd s sdfdfsdfsdf sdf fdfdf fd
+                </p>
+            </ion-row>
+            <ion-row>
+                <ion-label>Mots clés</ion-label>
+                <p>#Congo #Kishasa #Rap #best2020</p>
+            </ion-row>
+            <ion-row>
+                <ion-label>Paroles</ion-label>
+                <p class="parole">Pas disponible</p>
+            </ion-row>
+            <ion-row>
+                <ion-label>Autres détails</ion-label>
+                <div class="other-details">
+                    <table>
+                        <tr>
+                            <td>Ajouté</td>
+                            <th>1 year ago</th>
+                        </tr>
+                        <tr>
+                            <td>Restriction d'âge</td>
+                            <th>Tout les âges peuvent écouter cette chanson</th>
+                        </tr>
+                        <tr>
+                            <td>Achat requis</td>
+                            <th>Non</th>
+                        </tr>
+                        <tr>
+                            <td>Durée</td>
+                            <th>3:37</th>
+                        </tr>
+                    </table>
+                </div>
+            </ion-row>
+        </ion-list>
+    </div>
+</ion-content>

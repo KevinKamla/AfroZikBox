@@ -1,82 +1,83 @@
 <ion-content [fullscreen]="true">
-    <div class="bloc_header">
-        <ion-buttons slot="start">
-            <ion-button (click)="goToRoute('/')">
-                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-            <ion-button>
-                <ion-icon slot="icon-only" name="alert-circle-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </div>
+    <div class="container">
+        <div class="bloc_header">
+            <ion-buttons slot="start">
+                <ion-button (click)="goToRoute('')">
+                    <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+                <ion-button [routerLink]="['/musicdetails']">
+                    <ion-icon slot="icon-only" class="icon-alert" name="alert-circle-outline"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </div>
 
-    <div class="bg-img">
-        <div class="img-details">
-            <img src="assets/icon/gims.png" alt="" srcset="">
-            <div class="tags">
-                <b>Mon coeur avait raison(official audio)</b>
-                <p>Maitre Gims</p>
+        <div class="bg-img">
+            <div class="img-details">
+                <img src="assets/icon/gims.png" alt="" srcset="">
+                <div class="tags">
+                    <b [ngClass]="{'ative':musicIsPlay}">Mon coeur avait raison(official audio)</b>
+                    <p>Maitre Gims</p>
+                </div>
+            </div>
+
+            <div color="" class="bloc_range">
+                <ion-range min="0" max="100" value="33">
+                    <ion-label slot="end">x{{1}}</ion-label>
+                </ion-range>
+                <div class="time d-f-s">
+                    <ion-label slot="end">{{01}}:{{22}}</ion-label>
+                    <ion-label slot="start">{{03}}:{{50}}</ion-label>
+                </div>
+            </div>
+
+            <div class="flex_box">
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="repeat"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="play-back"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear" class="buttonPause" (click)="play()">
+                    <ion-icon slot="icon-only" name="{{pauseIcon}}"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="play-forward"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="shuffle"></ion-icon>
+                </ion-button>
+            </div>
+            <div class="flex_box2">
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="heart-dislike-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear">
+                    <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" fill="clear" (click)="openOptionSound()">
+                    <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+                </ion-button>
             </div>
         </div>
-
-        <div color="" class="bloc_range">
-            <ion-range min="0" max="100" value="33">
-                <ion-label slot="end">x{{1}}</ion-label>
-            </ion-range>
-            <div class="time d-f-s">
-                <ion-label slot="end">{{01}}:{{22}}</ion-label>
-                <ion-label slot="start">{{03}}:{{50}}</ion-label>
-            </div>
-        </div>
-
-        <div class="flex_box">
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="repeat"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="play-back"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear" class="buttonPause" (click)="play()">
-                <ion-icon slot="icon-only" name="{{pauseIcon}}"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="play-forward"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="shuffle"></ion-icon>
-            </ion-button>
-        </div>
-        <div class="flex_box">
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="send-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="star-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="heart-dislike-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="download-outline"></ion-icon>
-            </ion-button>
-            <ion-button shape="round" fill="clear">
-                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-            </ion-button>
-        </div>
-
     </div>
 </ion-content>

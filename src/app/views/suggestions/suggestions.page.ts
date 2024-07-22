@@ -23,6 +23,7 @@ export class SuggestionsPage implements OnInit {
   goToSegment(segment: string) {
     this.route.navigate(['tabs/home', segment]);
   }
+  
   goToPlay() {
     this.navCtrl.navigateForward('play');
   }

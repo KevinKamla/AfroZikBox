@@ -74,10 +74,18 @@ const routes: Routes = [
     path: 'createradiostation',
     loadChildren: () => import('./views/createradiostation/createradiostation.module').then( m => m.CreateradiostationPageModule)
   },
-  // {
-  //   path: 'search',
-  //   loadChildren: () => import('./views/search/search.module').then( m => m.SearchPageModule)
-  // },
+  {
+    path: 'musicoption',
+    loadChildren: () => import('./components/musicoption/musicoption.module').then( m => m.MusicoptionPageModule)
+  },
+  {
+    path: 'musicdetails',
+    loadChildren: () => import('./views/musicdetails/musicdetails.module').then( m => m.MusicdetailsPageModule)
+  },
+  {
+    path: 'createsound',
+    loadChildren: () => import('./views/createsound/createsound.module').then( m => m.CreatesoundPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -10,7 +10,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class CreateplaylistPage implements OnInit {
 
-
+valueConfid = 'Confidentialité';
   isGetImg = false;
   imgPath: string = '';
 
@@ -30,7 +30,11 @@ export class CreateplaylistPage implements OnInit {
     this.isGetImg = true
   }
 
-  
+  selectedConfid(item:string) {
+    this.valueConfid = item;
+    this.closeModal();
+  }
+
   closeModal() {
     this.modalCtrl.dismiss();
   }

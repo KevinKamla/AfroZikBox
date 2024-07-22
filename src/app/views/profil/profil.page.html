@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="false" class="ion-padding">
+<ion-content [fullscreen]="false" class="">
     <div class="bg-header" [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/casque.png)'}">
         <div class="header">
             <ion-buttons slot="end">
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <ion-segment scrollHide scrollHide [(ngModel)]="selectedSegment">
+    <ion-segment mode="md" scrollHide scrollHide [(ngModel)]="selectedSegment">
         <ion-segment-button value="chansons">Chansons</ion-segment-button>
         <ion-segment-button value="album"> Albums</ion-segment-button>
         <ion-segment-button value="playlists">Playlists</ion-segment-button>
