@@ -1,0 +1,41 @@
+.d-f {
+    display: flex;
+}
+
+.d-b {
+    display: block;
+}
+
+.d-f-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ion-content {
+    .input {
+        .canView {
+            padding: 10px;
+            margin-bottom: 5px;
+            gap: 2px;
+        }
+        ion-icon {
+            font-size: 22px;
+        }
+        .content {
+            --background: #8080800d;
+            --padding-start: 10px;
+            font-size: 18px;
+            --border-radius: 10px;
+        }
+        ion-textarea {
+            min-height: 100px;
+        }
+    }
+}

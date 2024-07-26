@@ -20,7 +20,7 @@ export class PopularPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
       initialBreakpoint: 0.75,
-      breakpoints: [0.5, 0.75],
+      breakpoints: [0.5, 0.75, 1],
       mode: 'ios'
 
     })

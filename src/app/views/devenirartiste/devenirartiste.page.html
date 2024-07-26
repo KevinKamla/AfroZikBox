@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Télécharger une chanson</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="d-f-c">
+        <ion-card button (click)="camera()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg" src="{{imgPath}}">
+                <div class="content" *ngIf="!isGetImg">
+                    <ion-icon color="primary" slot="start" name="image"></ion-icon>
+                    <h5>Sélectinner l'image à importer</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        <ion-card button (click)="pickAudioFile()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg" src="{{imgMucic}}">
+                <div class="content" *ngIf="!imgMucic">
+                    <ion-icon color="primary" slot="start" name="musical-notes"></ion-icon>
+                    <h5>Sélectinner la chanson à importer</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="pencil-outline"></ion-icon>
+            <ion-input type="text" placeholder="Titre de l'album" class="content" value=""></ion-input>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="text-outline"></ion-icon>
+            <ion-textarea placeholder="Description" class="content"></ion-textarea>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="document-text-outline"></ion-icon>
+            <ion-textarea placeholder="Paroles" class="content"></ion-textarea>
+        </div>
+        <p>
+            Ajouter des balises pour décrire d'avantage votre piste en ajoutant ',' signé à la fin de chaque TAG sans espace entre eux
+        </p>
+        <div class="canView d-f">
+            <ion-icon name="pricetags-outline"></ion-icon>
+            <ion-textarea placeholder="Mots clés" class="content"></ion-textarea>
+        </div>
+        <ion-item id="open-modal-genre" button="true" class="ion-no-border">
+            <div class="canView d-f-s">
+                <ion-icon name="layers-outline"></ion-icon>
+                <div class="contentBlock">{{valueGenre}}</div>
+            </div>
+        </ion-item>
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Continuer
+        </ion-button>
+    </div>
+</ion-content>
+
+
+<ion-modal id="modal-title" trigger="open-modal-genre" #modale_genre handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le genre</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <div *ngFor="let item of genreList">
+                        <ion-item button (click)="selectedGenre(item)" class="ion-no-border">
+                            <ion-label>{{item}}</ion-label>
+                        </ion-item>
+                    </div>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_genre.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

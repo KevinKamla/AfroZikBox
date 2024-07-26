@@ -86,6 +86,22 @@ const routes: Routes = [
     path: 'createsound',
     loadChildren: () => import('./views/createsound/createsound.module').then( m => m.CreatesoundPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./views/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'edituserinfo',
+    loadChildren: () => import('./views/edituserinfo/edituserinfo.module').then( m => m.EdituserinfoPageModule)
+  },
+  {
+    path: 'myaccount',
+    loadChildren: () => import('./views/myaccount/myaccount.module').then( m => m.MyaccountPageModule)
+  },
+  {
+    path: 'devenirartiste',
+    loadChildren: () => import('./views/devenirartiste/devenirartiste.module').then( m => m.DevenirartistePageModule)
+  },
 ];
 @NgModule({
   imports: [

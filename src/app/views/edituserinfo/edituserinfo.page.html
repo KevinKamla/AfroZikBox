@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Modifier les informations</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="person-outline"></ion-icon>
+            <ion-input type="text" placeholder="Non d'utilisateur" class="content" value=""></ion-input>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <ion-textarea placeholder="A propos" class="content"></ion-textarea>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="logo-facebook"></ion-icon>
+            <ion-input type="text" placeholder="Facebook" class="content" value=""></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="globe-outline"></ion-icon>
+            <ion-input type="text" placeholder="Site internet" class="content" value=""></ion-input>
+        </div>
+
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Sauvegarder
+        </ion-button>
+    </div>
+</ion-content>

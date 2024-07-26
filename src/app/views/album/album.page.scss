@@ -43,7 +43,8 @@
 .list_albums {
     .img-detail {
         gap: 15px;
-        margin-block: 8px;
+        --border-color: transparent;
+        margin-bottom: 6px;
         .bg-album {
             position: relative;
             display: inline-block;
@@ -67,8 +68,8 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                font-size: 41px;
-                transform: translate(30%, 30%);
+                font-size: 35px;
+                transform: translate(15%, 20%);
                 z-index: 2;
             }
         }
@@ -96,13 +97,16 @@
             margin-bottom: 5px;
             h3 {
                 font-weight: 800;
-                font-size: 16px;
-                // word-wrap: break-word;
-                // white-space: nowrap;
-                // text-overflow: ellipsis;
+                font-size: 14px;
+                margin: 0;
+                word-wrap: break-word;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
             p {
                 color: gray;
+                margin: 0;
             }
         }
     }

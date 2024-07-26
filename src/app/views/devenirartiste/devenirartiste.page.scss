@@ -18,6 +18,15 @@
     align-items: center;
 }
 
+ion-content {
+    .input {
+        p {
+            margin: 0 2.5rem;
+            text-align: justify;
+        }
+    }
+}
+
 ion-card {
     max-height: 190px;
     background: #f0f5fd3d;
@@ -57,16 +66,14 @@ ion-card {
         font-size: 20px;
         --border-radius: 10px;
     }
-}
-
-.bloc-btn {
-    text-align: center;
-    display: grid;
+    ion-textarea {
+        min-height: 100px;
+    }
 }
 
 ion-modal#modal-title {
     --min-width: 250px;
-    --max-height: 40%;
+    --height: 80%;
     --border-radius: 25px;
     padding: 25px;
 }

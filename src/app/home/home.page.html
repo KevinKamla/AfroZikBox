@@ -1,7 +1,7 @@
 <ion-header [translucent]="false" class="ion-no-border">
     <ion-toolbar color="">
         <ion-buttons slot="start">
-            <img style="height: 40px;" src="../../assets/icon/logo.png" />
+            <img style="height: 40px; margin-left: 5px;" src="../../assets/icon/logo.png" />
         </ion-buttons>
         <ion-buttons shape="round" slot="end">
             <ion-button [routerLink]="['../../search']">
@@ -17,8 +17,8 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
 
+<ion-content [fullscreen]="true">
     <ion-segment scrollable scrollHide mode="md" [(ngModel)]="selectedSegment">
         <ion-segment-button value="suggestions">Suggestions</ion-segment-button>
         <ion-segment-button value="bestSongs">Meilleures chansons</ion-segment-button>

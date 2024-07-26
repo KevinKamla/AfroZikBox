@@ -1,0 +1,82 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mon compte</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="people-outline"></ion-icon>
+            <ion-input type="text" placeholder="Non d'utilisateur" class="content" value=""></ion-input>
+        </div>
+        <div class=" canView d-f">
+            <ion-icon name="at-outline"></ion-icon>
+            <ion-input type="mail" placeholder="Adresse mail" class="content" value=""></ion-input>
+        </div>
+        <ion-list style="margin-inline: 12px;">
+            <ion-radio-group class="d-f-s">
+                <ion-icon name="male-female-outline"></ion-icon>
+                Sexe
+                <ion-item>
+                    <ion-label>Homme</ion-label>
+                    <ion-radio value="Homme"></ion-radio>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Femme</ion-label>
+                    <ion-radio value="Femme"></ion-radio>
+                </ion-item>
+            </ion-radio-group>
+        </ion-list>
+        <div class="canView d-f-s">
+            <ion-icon name="happy-outline"></ion-icon>
+            <ion-input type="text" placeholder="Votre âge" class="content" value=""></ion-input>
+        </div>
+        <ion-item id="open-modal-country" button="true" class="ion-no-border">
+            <div class="canView d-f-s">
+                <ion-icon name="flag-outline"></ion-icon>
+                <div class="contentBlock">{{valueCountry}}</div>
+            </div>
+        </ion-item>
+        <div class="canView d-f">
+            <ion-icon name="logo-paypal"></ion-icon>
+            <ion-input type="mail" placeholder=" Email PayPal" class="content" value=""></ion-input>
+        </div>
+
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Sauvegarder
+        </ion-button>
+    </div>
+</ion-content>
+
+
+<ion-modal id="modal-country" trigger="open-modal-country" #modale_country handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le pays</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <div *ngFor="let item of countryList">
+                        <ion-item (click)="selectedContry(item)" class="ion-no-border">
+                            <ion-label>{{item}}</ion-label>
+                        </ion-item>
+                    </div>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_country.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>
