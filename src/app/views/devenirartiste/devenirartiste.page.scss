@@ -19,17 +19,15 @@
 }
 
 ion-content {
-    .input {
-        p {
-            margin: 0 2.5rem;
-            text-align: justify;
-        }
+    p {
+        margin: 0 2.5rem;
+        text-align: center;
     }
 }
 
 ion-card {
     max-height: 190px;
-    background: #f0f5fd3d;
+    background: #dfe9f512;
     box-shadow: none;
     width: 90%;
 }
@@ -68,6 +66,10 @@ ion-card {
     }
     ion-textarea {
         min-height: 100px;
+    }
+    ion-item {
+        --border-color: transparent;
+        margin-bottom: 1rem;
     }
 }
 

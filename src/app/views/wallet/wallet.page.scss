@@ -1,0 +1,60 @@
+.bg-header {
+    height: 10rem;
+    padding: 18% 1rem;
+    margin-bottom: 1rem;
+    .profil {
+        gap: 5px;
+        h5 {
+            margin: 0;
+            font-size: 15px;
+        }
+    }
+    .solde {
+        margin-top: 12px;
+        h4 {
+            margin: 0;
+            text-align: end;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    }
+    p {
+        margin: 0;
+        font-size: 12px;
+    }
+}
+
+.container {
+    padding-inline: 1rem;
+    h3 {
+        font-size: 18px;
+        font-weight: 600;
+    }
+    p {
+        margin: 0;
+        font-size: 12px;
+    }
+    .input {
+        .canView {
+            padding: 10px;
+            margin-bottom: 5px;
+            gap: 2px;
+        }
+        ion-icon {
+            font-size: 25px;
+        }
+        .content {
+            --background: #8080800d;
+            --padding-start: 10px;
+            font-size: 18px;
+            --border-radius: 10px;
+        }
+    }
+}
+
+ion-modal#modal-paiment {
+    --min-width: 250px;
+    --height: 80%;
+    --border-radius: 25px;
+    padding: 25px;
+}

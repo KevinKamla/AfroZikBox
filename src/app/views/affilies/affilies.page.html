@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mes affiliés</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <div class="profil d-f">
+            <ion-avatar>
+                <img [src]="['assets/icon/people.png']" />
+            </ion-avatar>
+            <div>
+                <h5>Username</h5>
+                <p>{{'unsername@gmail.com'}}</p>
+            </div>
+        </div>
+        <h4>Gagner jusqu'à $0.10 pour chaque utilisateur que vous nous référez</h4>
+        <ion-item (click)="writeToClipboard('https://afrozikbox.com?ref=kvnkamla4@gmail.com')">
+            <ion-label color="success">{{'https://afrozikbox.com?ref=kvnkamla4@gmail.com'}}</ion-label>
+        </ion-item>
+        <div class="indic">clique ici pour copier le lien</div>
+
+        <ion-button expand="block" shape="round" class="ion-text-capitalize">
+            Partager
+        </ion-button>
+    </div>
+</ion-content>
+
+<ion-toast [isOpen]="isToastOpen" message="Lien opcopié" [duration]="3000" icon="checkmark-sharp" color="primary"></ion-toast>

@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Porte feuille</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="bg-header" [ngStyle]="{'background-image': 'linear-gradient(#000, #7436a385)'}">
+        <div class="header d-f-s">
+            <div class="profil d-f-c">
+                <ion-avatar>
+                    <img [src]="['assets/icon/people.png']" />
+                </ion-avatar>
+                <div>
+                    <h5>Username</h5>
+                    <p>{{'@unsername'}}</p>
+                </div>
+            </div>
+            <div class="solde">
+                <h4>$0</h4>
+                <p>Solde actuel</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h3>Reconstituer mon solde</h3>
+        <p>Vous pouvez reconstituer votre solde en utilisant l'un des moyens de paiement préféré</p>
+        <div class="input">
+            <div class="canView d-f-s">
+                <ion-icon name="cash-outline"></ion-icon>
+                <ion-input type="number" label="Montant" labelPlacement="floating" class="content" value=""></ion-input>
+            </div>
+            <ion-button expand="block" shape="round" class="ion-margin" id="open-modal-paiment">
+                Continuer
+            </ion-button>
+        </div>
+    </div>
+</ion-content>
+
+
+<ion-modal id="modal-paiment" trigger="open-modal-paiment" #modale_paiment handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le moyen de paiement</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <div *ngFor="let item of paiementList">
+                        <ion-item button (click)="selectedPaiement(item)" class="ion-no-border">
+                            <ion-label>{{item}}</ion-label>
+                        </ion-item>
+                    </div>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_paiment.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>
+
+<ion-alert [isOpen]="alertPayStackIsOpen" header="Paystack" [buttons]="alertPayStackButtons" [inputs]="alertPayStackInputs"></ion-alert>
+<ion-alert [isOpen]="alertCashfreeIsOpen" header="Cashfree" [buttons]="alertCashfreeButtons" [inputs]="alertCashfreeInputs"></ion-alert>

@@ -102,6 +102,42 @@ const routes: Routes = [
     path: 'devenirartiste',
     loadChildren: () => import('./views/devenirartiste/devenirartiste.module').then( m => m.DevenirartistePageModule)
   },
+  {
+    path: 'userlock',
+    loadChildren: () => import('./views/userlock/userlock.module').then( m => m.UserlockPageModule)
+  },
+  {
+    path: 'myadresse',
+    loadChildren: () => import('./views/myadresse/myadresse.module').then( m => m.MyadressePageModule)
+  },
+  {
+    path: 'createadresse/:action',
+    loadChildren: () => import('./views/createadresse/createadresse.module').then( m => m.CreateadressePageModule)
+  },
+  {
+    path: 'retraits',
+    loadChildren: () => import('./views/retraits/retraits.module').then( m => m.RetraitsPageModule)
+  },
+  {
+    path: 'wallet',
+    loadChildren: () => import('./views/wallet/wallet.module').then( m => m.WalletPageModule)
+  },
+  {
+    path: 'virement/:option',
+    loadChildren: () => import('./views/virement/virement.module').then( m => m.VirementPageModule)
+  },
+  {
+    path: 'affilies',
+    loadChildren: () => import('./views/affilies/affilies.module').then( m => m.AffiliesPageModule)
+  },
+  {
+    path: 'changepassword',
+    loadChildren: () => import('./views/changepassword/changepassword.module').then( m => m.ChangepasswordPageModule)
+  },
+  {
+    path: 'auth2fa',
+    loadChildren: () => import('./views/auth2fa/auth2fa.module').then( m => m.Auth2faPageModule)
+  },
 ];
 @NgModule({
   imports: [

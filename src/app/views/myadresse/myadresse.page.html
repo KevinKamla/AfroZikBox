@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Mes adresses</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card>
+        <div class="d-f-s">
+            <div class="addrese d-f-c">
+                <ion-icon slot="start" color="primary" name="location-outline"></ion-icon>
+                Nom adresse
+            </div>
+            <ion-buttons slot="end">
+                <ion-button [routerLink]="['/createadresse','edit']">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-button>
+                <ion-button id="present-alert">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </div>
+        <ion-card-content>
+            <p>Téléphone</p>
+            <p>Adresse </p>
+            <p>Pays / Ville</p>
+        </ion-card-content>
+    </ion-card>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button [routerLink]="['/createadresse','create']" bottom>
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>
+
+<ion-alert trigger="present-alert" header="Supprimer l'adresse" subHeader="Etes vous sûr de vouloir supprimer cette adresse?" [buttons]="deleteConfirme"></ion-alert>

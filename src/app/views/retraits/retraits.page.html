@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Retraits</ion-title>
+        <ion-buttons slot="end">
+            <ion-button>
+                Envoyer
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <ion-label>Mon solde : <span>$0</span></ion-label>
+        <div class="input">
+            <div class="canView d-f-s">
+                <ion-icon name="cash"></ion-icon>
+                <ion-input type="text" label="Montant" labelPlacement="floating" class="content" value=""></ion-input>
+            </div>
+            <div class="canView d-f-s">
+                <ion-icon name="logo-paypal"></ion-icon>
+                <ion-input type="number" label="Email Paypal" labelPlacement="floating" class="content" value=""></ion-input>
+            </div>
+        </div>
+        <h4 class="d-f">
+            <ion-icon slot="start" color="primary" name="list"></ion-icon>
+            Historique des paiements
+        </h4>
+        <ion-row>
+            <ion-col size="4">Montant</ion-col>
+            <ion-col size="4">Requis</ion-col>
+            <ion-col size="4">Status</ion-col>
+        </ion-row>
+    </div>
+</ion-content>

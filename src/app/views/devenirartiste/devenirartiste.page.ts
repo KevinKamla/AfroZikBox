@@ -1,7 +1,6 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -12,7 +11,9 @@ import { ModalController } from '@ionic/angular';
 export class DevenirartistePage implements OnInit {
 
   isGetImg = false;
+  isGetImgCNI = false;
   imgPath: string = '';
+  imgCNIPath: string = '';
   valueGenre = 'Genres'
   genreList = ['Afrozouk', 'Afrobeat', 'Afropop', 'Afrotrap', 'Amapiano', 'Ancestral Soul', 'Assiko',
     'Azonto', ' Batuque', 'Bend-skin', 'Bikutsi', 'Bongo Flava', 'Coupé-décalé', 'Dancehall',
@@ -20,39 +21,26 @@ export class DevenirartistePage implements OnInit {
     'Ndombolo', 'Rumba congolaise', 'Sega', 'Soukous', 'Swede Swede', 'Tribal House', 'Wassoulou',
     'Zaïko', 'Ziglibithy', 'Zoblazo', 'Zouglou', 'Zouk'];
 
-  imgMucic: string = '';
 
   constructor(
     private modal: ModalController,
-    private fileChooser: FileChooser
   ) { }
 
 
-  async camera() {
+  async camera(nb: number) {
     const image = await Camera.getPhoto({
       quality: 100,
       allowEditing: false,
       resultType: CameraResultType.Base64
     });
-
-    this.imgPath = 'data:image/png;base64,' + image.base64String
-    this.isGetImg = true
-  }
-
-
-  async pickAudioFile() {
-    const result = await this.fileChooser.open({
-      mime: 'audio/mp3',      
-    });
-  
-    if (result && result.length > 0) {
-      const fileObject = result[0];
-      // const filePath = fileObject.nativeURL;
-      
+    if (nb === 0) {
+      this.imgPath = 'data:image/png;base64,' + image.base64String
+      this.isGetImg = true
+    } else {
+      this.imgCNIPath = 'data:image/png;base64,' + image.base64String
+      this.isGetImgCNI = true
     }
-    this.imgMucic = 'assets/icon/son.png';
   }
-
 
 
   selectedGenre(item: string) {

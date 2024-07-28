@@ -1,0 +1,56 @@
+.d-f {
+    display: flex;
+    align-items: center;
+}
+
+.d-b {
+    display: block;
+}
+
+.d-f-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ion-content {
+    .container {
+        margin: 2rem 15px;
+        ion-label {
+            span {
+                color: var(--ion-color-success);
+                font-weight: 700;
+            }
+        }
+        h4 {
+            font-weight: 600;
+            font-size: 18px;
+            gap: 7px;
+            ion-icon {
+                font-size: 25px;
+            }
+        }
+        .input {
+            .canView {
+                padding: 10px;
+                margin-bottom: 5px;
+                gap: 2px;
+            }
+            ion-icon {
+                font-size: 22px;
+            }
+            .content {
+                --background: #8080800d;
+                --padding-start: 10px;
+                font-size: 18px;
+                --border-radius: 10px;
+            }
+        }
+    }
+}

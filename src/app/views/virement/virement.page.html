@@ -1,0 +1,98 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title *ngIf="option === 'Virement'">Virement</ion-title>
+        <ion-title *ngIf="option === 'PayUmoney'">PayUmoney</ion-title>
+        <ion-title *ngIf="option === 'AuthorizeNet'">AuthorizeNet</ion-title>
+        <ion-title *ngIf="option === 'FlutterWave'">AuthorizeNet</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <div class="carte d-f-c">
+            <div class="card">
+                <div class="header">
+                    <img src="assets/icon/chip.png" alt="img" />
+                    <div class="visa">VISA</div>
+                </div>
+                <div class="card-number" *ngIf="option === 'Virement'">
+                    <span>****</span>
+                    <span>****</span>
+                    <span>****</span>
+                    <span>****</span>
+                </div>
+                <div class="card-number" *ngIf="option === 'PayUmoney'">
+                    <span> {{cardNumber || '**** **** **** ****'}} </span>
+                </div>
+                <div class="title">
+                    <span>Nom titulaire</span>
+                    <span>Date exp</span>
+                </div>
+                <div class="footer" *ngIf="option === 'Virement'">
+                    <div class="cardholder-name">
+                        Andre marie Mbida
+                    </div>
+                    <div class="validity-date">06/30</div>
+                </div>
+                <div class="footer" *ngIf="option === 'PayUmoney'">
+                    <div class="cardholder-name">
+                        {{nameTitular|| '********'}}
+                    </div>
+                    <div class="validity-date">{{cvc|| '***'}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="option === 'Virement'">
+            <div class="note">
+                <h4>Note</h4>
+                <p>
+                    Afin de confirmer le transfert bancaire, vous allez devoir télécharger un reçu ou faire la capture d'écran du transfert au plus tard le jour suivant votre achat. Dans le cas contraire, vorte achat sera annulé. Nous vérifierons et confirmerons votre reçu
+                    dans les 3 jours ouvrables suivant son téléchargement.
+                </p>
+            </div>
+            <ion-card button (click)="camera()" class="ion-no-box-shadow">
+                <ion-card-content class="image">
+                    <img *ngIf="isGetImg" src="{{imgPath}}">
+                    <div class="content" *ngIf="!isGetImg">
+                        <ion-icon color="primary" slot="start" name="image"></ion-icon>
+                        <h5>Sélectinner l'image à importer</h5>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+            <ion-button expand="block" shape="round" color="primary">Confirmer le transfert</ion-button>
+        </div>
+
+        <ion-grid *ngIf="option === 'PayUmoney'">
+            <ion-row>
+                <ion-col size="12">
+                    <ion-input [value]="[cardNumber]" inputmode="numeric" fill="outline" required label="Numéro de carte" label-placement="floating" maxlength="19"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="4">
+                    <ion-input [value]="[expireDate]" inputmode="numeric" label="MM/AA" required label-placement="floating" fill="outline" maxlength="5" pattern="\d*"></ion-input>
+                </ion-col>
+                <ion-col size="3">
+                    <ion-input [value]="[cvc]" inputmode="numeric" label="CVC" required label-placement="floating" fill="outline" maxlength="3"></ion-input>
+                </ion-col>
+                <ion-col size="5">
+                    <ion-input inputmode="text" label="Code poste" required label-placement="floating" fill="outline"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-input [value]="[nameTitular]" inputmode="text" fill="outline" required label="Nom sur la carte" label-placement="floating"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col size="12">
+                    <ion-button expand="block" shape="round" color="primary">Continuer</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
+</ion-content>

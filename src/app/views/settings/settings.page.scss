@@ -34,7 +34,21 @@ ion-header {
         }
         ion-img {
             position: relative;
-            transform: translate(5px, 52px);
+            bottom: -70px;
+            // transform: translate(20px, 65px);
+        }
+        .texte {
+            ion-button {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-wrap: break-word;
+                white-space: nowrap;
+                --background: white;
+                color: var(--ion-color-primary);
+                font-weight: 600;
+                margin: 5px 0;
+                font-size: 14px;
+            }
         }
     }
     ion-list {

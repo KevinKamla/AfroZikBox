@@ -1,0 +1,82 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title *ngIf="action === 'create'">Créer une adresse</ion-title>
+        <ion-title *ngIf="action === 'edit'">Editer l'adresse</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="pencil-outline"></ion-icon>
+            <ion-input *ngIf="action === 'create'" type="text" label="Nom" labelPlacement="floating" class="content" value=""></ion-input>
+            <ion-input *ngIf="action === 'edit'" type="text" label="Nom" labelPlacement="floating" class="content" value="Mendon"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="call-outline"></ion-icon>
+            <ion-input *ngIf="action === 'create'" type="number" label="Téléphone" labelPlacement="floating" class="content" value=""></ion-input>
+            <ion-input *ngIf="action === 'edit'" type="number" label="Téléphone" labelPlacement="floating" class="content" value="652618994"></ion-input>
+        </div>
+        <ion-item id="open-modal-country" button="true" class="ion-no-border">
+            <div class="canView d-f-s">
+                <ion-icon name="flag-outline"></ion-icon>
+                <div *ngIf="action === 'create'" class="contentBlock">{{valueCountry}}</div>
+                <div *ngIf="action === 'edit'" class="contentBlock">{{'Canada'}}</div>
+            </div>
+        </ion-item>
+        <div class="canView d-f-s">
+            <ion-icon name="globe-outline"></ion-icon>
+            <ion-input *ngIf="action === 'create'" type="text" label="Ville" labelPlacement="floating" class="content" value=""></ion-input>
+            <ion-input *ngIf="action === 'edit'" type="text" label="Ville" labelPlacement="floating" class="content" value="quebec"></ion-input>
+        </div>
+        <div class="canView d-f-s">
+            <ion-icon name="square-outline"></ion-icon>
+            <ion-input *ngIf="action === 'create'" type="number" label="Code postal" class="content" value=""></ion-input>
+            <ion-input *ngIf="action === 'edit'" type="number" label="Code postal" class="content" value="1234567890"></ion-input>
+        </div>
+        <div class="canView d-f">
+            <ion-icon name="location-outline"></ion-icon>
+            <ion-textarea *ngIf="action === 'create'" label="Adresse" labelPlacement="floating" class="content"></ion-textarea>
+            <ion-textarea *ngIf="action === 'edit'" label="Adresse" labelPlacement="floating" class="content" value="13eme rue vvvb"></ion-textarea>
+        </div>
+        <ion-button expand="block" shape="round" class="ion-margin">
+            Créer
+        </ion-button>
+    </div>
+</ion-content>
+
+
+
+
+
+
+<ion-modal id="modal-country" trigger="open-modal-country" #modale_country handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le pays</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <div *ngFor="let item of countryList">
+                        <ion-item (click)="selectedContry(item)" class="ion-no-border">
+                            <ion-label>{{item}}</ion-label>
+                        </ion-item>
+                    </div>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_country.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

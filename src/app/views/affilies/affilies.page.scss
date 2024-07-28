@@ -1,0 +1,41 @@
+.profil {
+    margin: 1rem;
+    gap: 5px;
+    align-items: center;
+    h5 {
+        margin: 0;
+        font-size: 15px;
+    }
+    p {
+        margin: 0;
+        font-size: 12px;
+    }
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    margin-inline: 1rem;
+}
+
+ion-item {
+    --border-color: transparent;
+    --background: transparent;
+    border: 1px solid var(--ion-color-success);
+    border-radius: 30px;
+    margin: 1rem 5px;
+    ion-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: break-word;
+    }
+}
+
+.indic {
+    margin-top: -15px;
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+    font-size: 12px;
+}

@@ -1,0 +1,108 @@
+.carte {
+    margin-top: 1rem;
+}
+
+.card {
+    width: 300px;
+    height: 200px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    color: white;
+    background-image: linear-gradient(60deg, #644edf, #ff5e62), url("/src/assets/icon/map1.png");
+    backface-visibility: hidden;
+    overflow: hidden;
+}
+
+.card .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.card .header img {
+    width: 40px !important;
+}
+
+.card .header .visa {
+    color: white;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.card .card-number {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    display: flex;
+    gap: 5px;
+}
+
+.card .card-number span {
+    color: white;
+    font-weight: 600;
+}
+
+.card .title,
+.card .footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card .title span {
+    font-size: 13px;
+    color: white
+}
+
+.card .cardholder-name {
+    left: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.card .validity-date {
+    right: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.container {
+    .note {
+        h4 {
+            text-align: center;
+            text-decoration: underline;
+            text-decoration-color: var(--ion-color-primary);
+            font-weight: 600;
+        }
+        p {
+            padding-inline: 1rem;
+            text-align: justify;
+            font-size: 15px;
+        }
+    }
+}
+
+ion-card {
+    max-height: 190px;
+    background: #f0f5fd10;
+    box-shadow: none;
+    width: 50%;
+    margin-left: 10%;
+}
+
+.image {
+    .content {
+        padding: 10%;
+        text-align: center;
+    }
+    h5 {
+        color: var(--ion-color-primary);
+        font-size: 14px;
+        text-align: center;
+        font-weight: 600;
+        font-weight: 600;
+    }
+    ion-icon {
+        font-size: 50px;
+    }
+}
