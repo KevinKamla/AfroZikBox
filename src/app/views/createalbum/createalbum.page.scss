@@ -1,5 +1,6 @@
 .d-f {
     display: flex;
+    align-items: center;
 }
 
 .d-b {
@@ -27,7 +28,7 @@ ion-content {
 
 ion-card {
     max-height: 190px;
-    background: #f0f5fd3d;
+    background: #f0f5fd1c;
     box-shadow: none;
     width: 90%;
 }
@@ -50,6 +51,15 @@ ion-card {
 }
 
 .input {
+    ion-item {
+        --background: transparent;
+        .canView {
+            gap: 5px;
+            width: 100%;
+            background: #8080800d;
+            ;
+        }
+    }
     .canView {
         padding: 10px;
         margin-bottom: 5px;
@@ -59,7 +69,7 @@ ion-card {
         font-size: 30px;
     }
     .content {
-        --background: #e3eeff3d;
+        --background: #8080800d;
         --padding-start: 10px;
         font-size: 20px;
         --border-radius: 10px;

@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
@@ -137,6 +137,30 @@ const routes: Routes = [
   {
     path: 'auth2fa',
     loadChildren: () => import('./views/auth2fa/auth2fa.module').then( m => m.Auth2faPageModule)
+  },
+  {
+    path: 'managesession',
+    loadChildren: () => import('./views/managesession/managesession.module').then( m => m.ManagesessionPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./views/auth/register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./views/auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'genre',
+    loadChildren: () => import('./views/genre/genre.module').then( m => m.GenrePageModule)
+  },
+  {
+    path: 'resetpassword',
+    loadChildren: () => import('./views/auth/resetpassword/resetpassword.module').then( m => m.ResetpasswordPageModule)
+  },
+  {
+    path: '',
+    loadChildren: () => import('./views/auth/home/home.module').then( m => m.HomePageModule)
   },
 ];
 @NgModule({

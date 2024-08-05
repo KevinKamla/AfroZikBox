@@ -1,0 +1,22 @@
+.container {
+    margin: 10px;
+    .ion-item {
+        width: 100%;
+        border-bottom: 1px solid #80808018;
+        gap: 7px;
+        ion-thumbnail {
+            --border-radius: 10px;
+            margin-right: 10px;
+        }
+        ion-label {
+            display: flex;
+            gap: 4px;
+            font-weight: 600;
+            margin-block: 10px;
+        }
+        p {
+            font-size: 11px;
+            margin-block: 5px;
+        }
+    }
+}

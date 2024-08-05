@@ -9,16 +9,55 @@
 
 <ion-content [fullscreen]="true">
     <div class="container">
-        <h3>Authentification à deux facteurs</h3>
+        <h4>Authentification à deux facteurs</h4>
         <p>
-            Activer l'authentification à deux facteurs pour améliorer la sécurité de vos comptes.
-
+            Activer l'authentification à deux facteurs pour améliorer la sécurité de vos comptes. Une fois activée, vous utiliserez à la fois votre mote de passe et un code de sécurité à 6 chiffres envoyé sur votre téléphone ou votre e-mail pour vous connecter.
         </p>
         <div class="input">
-            <div class="canView d-f-s">
-                <ion-input type="password" label="Mot de passe actuel" labelPlacement="floating" class="content"></ion-input>
+            <ion-item id="open-modal-option" button="true" class="ion-no-border">
+                <div class="canView d-f-s">
+                    <ion-icon name="shield"></ion-icon>
+                    <div class="contentBlock">{{isActive}}</div>
+                </div>
+            </ion-item>
+            <div class="canView" *ngIf="isCodeSend">
+                <ion-input type="number" class="content" label="Code de confirmation" labelPlacement="floating"></ion-input>
             </div>
-
+            <ion-button (click)="sendCode()" *ngIf="isActive === 'Activer'" expand="block" shape="round">
+                Envoyer le code
+            </ion-button>
+            <ion-button *ngIf="isActive === 'Désactiver'" expand="block" shape="round">
+                Sauvegarder
+            </ion-button>
         </div>
     </div>
 </ion-content>
+
+
+<ion-modal id="modal-option" trigger="open-modal-option" #modale_option handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le moyen de paiement</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <div *ngFor="let item of optionList">
+                        <ion-item button (click)="selectedOption(item)" class="ion-no-border">
+                            <ion-label>{{item}}</ion-label>
+                        </ion-item>
+                    </div>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_option.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

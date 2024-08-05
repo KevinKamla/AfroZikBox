@@ -1,0 +1,38 @@
+    .container {
+        margin-inline: 1rem;
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        p {
+            text-align: justify;
+        }
+        .input {
+            .canView {
+                padding: 10px;
+                margin-bottom: 15px;
+                gap: 10px;
+            }
+            ion-icon {
+                font-size: 22px;
+            }
+            .content {
+                --background: #8080800d;
+                --padding-start: 10px;
+                font-size: 18px;
+                --border-radius: 10px;
+            }
+            ion-item {
+                --border-color: transparent;
+                margin-top: 2rem;
+                border-radius: 10px;
+            }
+        }
+    }
+    
+    ion-modal#modal-option {
+        --min-width: 250px;
+        --height: 50%;
+        --border-radius: 25px;
+        padding: 25px;
+    }

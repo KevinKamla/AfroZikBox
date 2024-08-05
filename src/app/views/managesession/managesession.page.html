@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Gérer la session</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <div class=" ion-item d-f-s">
+            <ion-avatar>
+                <img [src]="['assets/icon/profil.png']" />
+            </ion-avatar>
+            <div>
+                <ion-label>
+                    Android Web
+                </ion-label>
+                <p> Navaigateur : Google Chrome</p>
+                <p> Vu pour la denière fois : 2 days ago</p>
+                <p> Adresse IP : 192.165.100.5</p>
+            </div>
+            <ion-button (click)="confirmDelete()">
+                <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+        </div>
+    </div>
+</ion-content>
+
+<ion-alert [isOpen]="confirDeletIsOpen" header="Avertissement" subHeader='Êtes-vous sûr de vouloir vous déconnecter de cet appareil ?' [buttons]="confirDeletButtons" [backdropDismiss]="false"></ion-alert>

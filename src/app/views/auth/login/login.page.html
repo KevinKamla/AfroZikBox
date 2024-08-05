@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Connexion</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <div class="logo d-f-c">
+            <img src="assets/icon/logo.png" alt="logo">
+        </div>
+        <h2>Connecter vous a votre compte </h2>
+        <form action="" method="post">
+            <div class="input">
+                <div class="canView d-f-s">
+                    <ion-icon slot="start" name="mail"></ion-icon>
+                    <ion-input type="email" label="E-mail" labelPlacement="floating"></ion-input>
+                </div>
+                <div class="canView d-f-s">
+                    <ion-icon slot="start" name="lock-closed"></ion-icon>
+                    <ion-input type="password" label="Mot de passe" labelPlacement="floating"></ion-input>
+                </div>
+                <div class="d-f-c" style="gap: 10px;">
+                    <ion-checkbox></ion-checkbox>
+                    <ion-label>Se souvenir de moi</ion-label>
+                </div>
+                <ion-button expand="block" shape="round" [routerLink]="['/tabs']">
+                    Se connecter
+                </ion-button>
+                <p style="margin-bottom: 1rem;" [routerLink]="['/resetpassword']">Mot de passe oublié?</p>
+            </div>
+        </form>
+        <p>Vous n'avez pas encore de compte ?<span [routerLink]="['/register']"> S'inscrire</span></p>
+    </div>
+</ion-content>

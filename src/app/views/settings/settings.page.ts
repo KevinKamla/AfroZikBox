@@ -1,4 +1,6 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  themeList = ["Light", "Dark"];
 
+  constructor(
+    private modal: ModalController,
+  ) { }
+  
+  selectedTheme(theme: string) {
+    this.modal.dismiss();
+  }
   ngOnInit() {
   }
 

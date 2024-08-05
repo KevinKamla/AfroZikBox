@@ -38,6 +38,7 @@ ion-header {
             // transform: translate(20px, 65px);
         }
         .texte {
+            width: 60%;
             ion-button {
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -47,7 +48,9 @@ ion-header {
                 color: var(--ion-color-primary);
                 font-weight: 600;
                 margin: 5px 0;
-                font-size: 14px;
+                width: 90%;
+                font-size: 13px;
+                text-transform: math-auto;
             }
         }
     }
@@ -58,5 +61,15 @@ ion-header {
                 font-size: 20px;
             }
         }
+    }
+}
+
+ion-modal#modal-theme {
+    --min-width: 250px;
+    --height: 30%;
+    --border-radius: 25px;
+    padding: 25px;
+    ion-item {
+        --background: transparent;
     }
 }
