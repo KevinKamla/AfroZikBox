@@ -2,14 +2,14 @@
     <div class="scroll-box">
         <div class="movie" [routerLink]="['/addstory']">
             <div class="bg-img" [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc), url(assets/icon/people.png)'}">
-                <ion-avatar><img [src]="['assets/icon/people.png']" style="height: auto;" /></ion-avatar>
+                <ion-avatar><img [src]="['assets/icon/people.png']" style="height: auto; width: 100%;" /></ion-avatar>
                 <p>Créer une story</p>
             </div>
         </div>
-        <ng-container *ngFor="let item of [1]">
-            <div class="movie">
+        <ng-container *ngFor="let item of [true,false]">
+            <div class="movie" (click)="item? openActut() : openPopup()">
                 <div class="bg-img" [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc ),url(assets/icon/gims.png)'}">
-                    <ion-avatar><img [src]="['assets/icon/gims.png']" style="height: auto;" /></ion-avatar>
+                    <ion-avatar><img [src]="['assets/icon/gims.png']" style="height: auto;width: 100%;" /></ion-avatar>
                     <p>Kvnkamla</p>
                 </div>
             </div>
@@ -45,16 +45,14 @@
 
 <div class="Genre">
     <div class="box-title">
-
         <h3>Genres</h3>
-        <p>Voir plus</p>
     </div>
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/gims.png">
-                <p>Afrobeat</p>
+            <div class="movie" *ngFor="let item of ['Afrobeat','Rap','Zouk', 'Moutoumbou','Mbole','Zik']">
+                <img class="img-intro" src="assets/icon/album.png" [routerLink]="['/musicbygenre',item]">
+                <p>{{item}}</p>
             </div>
         </div>
     </div>
@@ -104,13 +102,13 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/gims.png">
+            <div class="movie" *ngFor="let item of [[1,'buy'],[1,'free'],[1,'free'],[1,'buy'],[1,'free'],]">
+                <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../albumdetail','page']">
                 <div class="p">Mon coeur avait raison</div>
-                <ion-label>admin</ion-label>
+                <ion-label>Maitre Gims</ion-label>
                 <div class="number_price">
                     <div class="number_sons">13 chansons</div>
-                    <ion-badge color="danger">$4.99</ion-badge>
+                    <ion-badge color="danger" *ngIf="item[1] === 'buy'">$4.99</ion-badge>
                 </div>
             </div>
         </div>
@@ -126,6 +124,8 @@
     </div>
 </div>
 
+
+
 <div class="artiste">
     <div class="box-title">
 
@@ -136,11 +136,12 @@
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/profil.png" (click)="playMusic(item)">
+                <img class="img-intro" src="assets/icon/profil.png" [routerLink]="['../../artistprofil']">
                 <p>Maître Gims</p>
             </div>
         </div>
     </div>
+
     <ng-template>
         <div class="container-scroll">
             <div class="scroll-box">
@@ -151,3 +152,6 @@
         </div>
     </ng-template>
 </div>
+
+<ion-alert [isOpen]="isOpenmodalAchat" header="Achat requits" subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]="confirDeletButtons" [backdropDismiss]="false"></ion-alert>
+<ion-alert [isOpen]="walletIsOpen" header="Wallet" subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie" [buttons]="walletButtons" [backdropDismiss]="false"></ion-alert>

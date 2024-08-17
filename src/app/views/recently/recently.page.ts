@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
+import { musicTab } from '../play/play.page';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-recently',
@@ -9,6 +11,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
   styleUrls: ['./recently.page.scss'],
 })
 export class RecentlyPage implements OnInit {
+  idUser: any;
 
   constructor(
     private modalCtrl: ModalController,
@@ -27,6 +30,8 @@ export class RecentlyPage implements OnInit {
   }
 
   goToPlay() {
+    musicTab.musicIsPlay = true;
+    musicTab.isClose = false;
     this.navCtrl.navigateForward('play');
   }
 

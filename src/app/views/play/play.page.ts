@@ -4,15 +4,21 @@ import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 
+export let musicTab = {
+  musicIsPlay: false,
+  isClose: true
+}
+
 @Component({
   selector: 'app-play',
   templateUrl: './play.page.html',
   styleUrls: ['./play.page.scss'],
 })
+
+
 export class PlayPage implements OnInit {
 
-
-  musicIsPlay = false;
+  musictabOption = musicTab;
   muteIcon: string = "mute";
   pauseIcon: string = "play";
   gesVol: string = "medium";
@@ -34,15 +40,17 @@ export class PlayPage implements OnInit {
   play() {
     if (this.pauseIcon == "pause") {
       this.pauseIcon = "play";
-      this.musicIsPlay = false;
-      
+      musicTab.isClose = false;
+      musicTab.musicIsPlay = false;
+
     } else {
       this.pauseIcon = "pause";
-      this.musicIsPlay = true;
+      musicTab.isClose = false;
+      musicTab.musicIsPlay = true;
     }
   }
-  
-    
+
+
 
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
@@ -57,6 +65,8 @@ export class PlayPage implements OnInit {
 
 
   ngOnInit() {
+    musicTab.musicIsPlay? this.pauseIcon = 'pause' : this.pauseIcon = 'play';
+    
   }
 
 }

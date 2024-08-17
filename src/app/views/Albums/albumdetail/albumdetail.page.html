@@ -1,0 +1,48 @@
+<ion-header [translucent]="true" class="ion-no-border">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="goToRoute()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="container">
+        <div class="img-detail">
+            <img src="assets/icon/gims.png" />
+            <div class="title">
+                <h3>Ceinture Rouge</h3>
+                <p>10 Chansons | 0 Achat(s)</p>
+            </div>
+        </div>
+
+        <div class="block-btn-header ">
+            <ion-buttons slot="start">
+                <ion-button expand="bloc" shape="round">
+                    <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
+                <ion-button shape="round" expand="bloc" class="btn-Lecture">
+                    <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
+            </ion-buttons>
+        </div>
+        <div class="list_chansons">
+            <div class="ion-item" *ngFor="let song of [1,1,1,1]">
+                <img src="assets/icon/gims.png" />
+                <div class="title">
+                    <h3>Mon coeur avait raison</h3>
+                    <p>admin | 3.59</p>
+                </div>
+                <div class="block-btn">
+                    <ion-button class="btn-play" (click)="play()">
+                        <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="openOptionSound()">
+                        <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+                    </ion-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ion-content>

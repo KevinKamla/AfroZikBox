@@ -1,0 +1,35 @@
+<ion-header class="ion-no-border">
+    <ion-toolbar>
+        <ion-range min="0" max="100" (ionChange)="rangeChange($event)" value="50%" color="primary"></ion-range>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="container">
+        <ion-img [src]="['assets/icon/first0.png']" alt=""></ion-img>
+    </div>
+</ion-content>
+
+<ion-footer>
+    <div class="footer d-f-s">
+        <div class="d-f-c" style="gap: 7px;">
+            <ion-avatar>
+                <img [src]="['assets/icon/people.png']" />
+            </ion-avatar>
+            <ion-label>Username
+                <p>Il y'a 4 semaines</p>
+            </ion-label>
+        </div>
+        <ion-buttons slot="start">
+            <ion-button>
+                <ion-icon slot="icon-only" name="eye"></ion-icon>
+            </ion-button>
+            <ion-button>
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+            <ion-button (click)="closeModal()">
+                <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </div>
+</ion-footer>

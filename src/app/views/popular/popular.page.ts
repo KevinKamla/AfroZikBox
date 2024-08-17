@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
+import { musicTab } from '../play/play.page';
 
 @Component({
   selector: 'app-popular',
@@ -28,6 +29,8 @@ export class PopularPage implements OnInit {
   }
 
   goToPlay() {
+    musicTab.musicIsPlay = true;
+    musicTab.isClose = false;
     this.navCtrl.navigateForward('play');
   }
 

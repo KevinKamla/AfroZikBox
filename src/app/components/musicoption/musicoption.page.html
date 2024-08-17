@@ -14,19 +14,19 @@
         </div>
     </div>
     <div class="ion-padding container-sound">
-        <ion-item button>
+        <ion-item button (click)="addToNext()">
             <ion-icon slot="start" name="arrow-forward-circle-outline"></ion-icon>
             <ion-label>Jouer à la suite</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()">
             <ion-icon slot="start" name="hourglass-outline"></ion-icon>
             <ion-label>Ajouter à la file d'attente de lecture</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="openCreatePlaylist()">
             <ion-icon slot="start" name="document-text-outline"></ion-icon>
             <ion-label>Ajouter à la playlist</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()" (click)="goToRoute('artistprofil')">
             <ion-icon slot="start" name="person-outline"></ion-icon>
             <ion-label>Aller à l'artiste</ion-label>
         </ion-item>
@@ -34,29 +34,37 @@
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label>Détails</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()" id="opentoastRepubic">
             <ion-icon slot="start" name="swap-vertical-outline"></ion-icon>
             <ion-label>Re-publier</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()" id="signaler">
             <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
             <ion-label>Signaler cette chanson</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()" id="signalerDroitAuteur">
             <ion-icon slot="start" name="hand-left-outline"></ion-icon>
             <ion-label>Signaler le droit d'auteur</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()">
             <ion-icon slot="start" name="call-outline"></ion-icon>
             <ion-label>Définir comme sonnerie</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()" id="opentoastBlackList">
             <ion-icon slot="start" name="close-circle-outline"></ion-icon>
             <ion-label>Ajouter à la liste noir</ion-label>
         </ion-item>
-        <ion-item button>
+        <ion-item button (click)="closeModal()">
             <ion-icon slot="start" name="hand-left-outline"></ion-icon>
             <ion-label>Partager</ion-label>
         </ion-item>
     </div>
 </ion-content>
+
+
+<ion-alert isOpen="{{addStory}}" header="Sélectionner une playlist" [buttons]="btnAddPlaylist"></ion-alert>
+<ion-alert trigger="signaler" header="Signaler cete chanson" [inputs]="inputInformation" [buttons]="btnSignale"></ion-alert>
+<ion-alert trigger="signalerDroitAuteur" header="Signaler le droit d'auteur" message="Je crois de bonne foi que l'utilisation de l'oeuvre protégée par le droit d'auteur décrit ci-dessus n'est pas autorisée par le propriétaire du droit d'auteur, son agent ou la loi. Je confirme que je suis le titulaire du droit d'auteur ou que je suis autorisée a agir au nom du propriétaire d'un droit exclusif prétendument violé"
+    [inputs]="inputInformation" [buttons]="btnSignale"></ion-alert>
+<ion-toast trigger="opentoastRepubic" message="La chansons a été partagée avec success sur votre timeline" [duration]="3000" icon="checkmark-sharp" color="primary"></ion-toast>
+<ion-toast trigger="opentoastBlackList" message="La chansons a été ajoutée à la lsite noir" [duration]="3000" icon="checkmark-sharp" color="primary"></ion-toast>

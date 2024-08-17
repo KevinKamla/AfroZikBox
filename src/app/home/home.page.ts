@@ -12,7 +12,6 @@ import { MenuactionhomePage } from '../components/menuactionhome/menuactionhome.
 export class HomePage implements OnInit {
 
   selectedSegment = 'suggestions';
-
   constructor(
     public route: Router,
     private actionSheetCtrl: ActionSheetController,

@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'album',
-    loadChildren: () => import('./views/album/album.module').then( m => m.AlbumPageModule)
+    loadChildren: () => import('./views/Albums/album/album.module').then( m => m.AlbumPageModule)
   },
   {
     path: 'popular',
@@ -32,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'artist',
-    loadChildren: () => import('./views/artist/artist.module').then( m => m.ArtistPageModule)
+    loadChildren: () => import('./views/Artists/artist/artist.module').then( m => m.ArtistPageModule)
   },
   {
     path: 'addstory',
@@ -60,7 +60,7 @@ const routes: Routes = [
   },
   {
     path: 'createalbum',
-    loadChildren: () => import('./views/createalbum/createalbum.module').then( m => m.CreatealbumPageModule)
+    loadChildren: () => import('./views/Albums/createalbum/createalbum.module').then( m => m.CreatealbumPageModule)
   },
   {
     path: 'createpub',
@@ -92,15 +92,15 @@ const routes: Routes = [
   },
   {
     path: 'edituserinfo',
-    loadChildren: () => import('./views/edituserinfo/edituserinfo.module').then( m => m.EdituserinfoPageModule)
+    loadChildren: () => import('./views/Account/edituserinfo/edituserinfo.module').then( m => m.EdituserinfoPageModule)
   },
   {
     path: 'myaccount',
-    loadChildren: () => import('./views/myaccount/myaccount.module').then( m => m.MyaccountPageModule)
+    loadChildren: () => import('./views/Account/myaccount/myaccount.module').then( m => m.MyaccountPageModule)
   },
   {
     path: 'devenirartiste',
-    loadChildren: () => import('./views/devenirartiste/devenirartiste.module').then( m => m.DevenirartistePageModule)
+    loadChildren: () => import('./views/Artists/devenirartiste/devenirartiste.module').then( m => m.DevenirartistePageModule)
   },
   {
     path: 'userlock',
@@ -108,23 +108,23 @@ const routes: Routes = [
   },
   {
     path: 'myadresse',
-    loadChildren: () => import('./views/myadresse/myadresse.module').then( m => m.MyadressePageModule)
+    loadChildren: () => import('./views/Adresse/myadresse/myadresse.module').then( m => m.MyadressePageModule)
   },
   {
     path: 'createadresse/:action',
-    loadChildren: () => import('./views/createadresse/createadresse.module').then( m => m.CreateadressePageModule)
+    loadChildren: () => import('./views/Adresse/createadresse/createadresse.module').then( m => m.CreateadressePageModule)
   },
   {
     path: 'retraits',
-    loadChildren: () => import('./views/retraits/retraits.module').then( m => m.RetraitsPageModule)
+    loadChildren: () => import('./views/Money/retraits/retraits.module').then( m => m.RetraitsPageModule)
   },
   {
     path: 'wallet',
-    loadChildren: () => import('./views/wallet/wallet.module').then( m => m.WalletPageModule)
+    loadChildren: () => import('./views/Money/wallet/wallet.module').then( m => m.WalletPageModule)
   },
   {
     path: 'virement/:option',
-    loadChildren: () => import('./views/virement/virement.module').then( m => m.VirementPageModule)
+    loadChildren: () => import('./views/Money/virement/virement.module').then( m => m.VirementPageModule)
   },
   {
     path: 'affilies',
@@ -132,15 +132,15 @@ const routes: Routes = [
   },
   {
     path: 'changepassword',
-    loadChildren: () => import('./views/changepassword/changepassword.module').then( m => m.ChangepasswordPageModule)
+    loadChildren: () => import('./views/auth/changepassword/changepassword.module').then( m => m.ChangepasswordPageModule)
   },
   {
     path: 'auth2fa',
-    loadChildren: () => import('./views/auth2fa/auth2fa.module').then( m => m.Auth2faPageModule)
+    loadChildren: () => import('./views/auth/auth2fa/auth2fa.module').then( m => m.Auth2faPageModule)
   },
   {
     path: 'managesession',
-    loadChildren: () => import('./views/managesession/managesession.module').then( m => m.ManagesessionPageModule)
+    loadChildren: () => import('./views/Account/managesession/managesession.module').then( m => m.ManagesessionPageModule)
   },
   {
     path: 'register',
@@ -162,6 +162,66 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./views/auth/home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'statut',
+    loadChildren: () => import('./views/statut/statut.module').then( m => m.StatutPageModule)
+  },
+  {
+    path: 'amisinvite',
+    loadChildren: () => import('./views/amisinvite/amisinvite.module').then( m => m.AmisinvitePageModule)
+  },
+  {
+    path: 'deleteaccount',
+    loadChildren: () => import('./views/Account/deleteaccount/deleteaccount.module').then( m => m.DeleteaccountPageModule)
+  },
+  {
+    path: 'help',
+    loadChildren: () => import('./views/help/help.module').then( m => m.HelpPageModule)
+  },
+  {
+    path: 'conditionsutilisation',
+    loadChildren: () => import('./views/conditionsutilisation/conditionsutilisation.module').then( m => m.ConditionsutilisationPageModule)
+  },
+  {
+    path: 'musicbygenre/:genre',
+    loadChildren: () => import('./views/musicbygenre/musicbygenre.module').then( m => m.MusicbygenrePageModule)
+  },
+  {
+    path: 'conversation',
+    loadChildren: () => import('./views/Conversations/conversation/conversation.module').then( m => m.ConversationPageModule)
+  },
+  {
+    path: 'chat/:idUser',
+    loadChildren: () => import('./views/Conversations/chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'artistprofil',
+    loadChildren: () => import('./views/Artists/artistprofil/artistprofil.module').then( m => m.ArtistprofilPageModule)
+  },
+  {
+    path: 'listtendance',
+    loadChildren: () => import('./views/Tendances/listtendance/listtendance.module').then( m => m.ListtendancePageModule)
+  },
+  {
+    path: 'detailtendance',
+    loadChildren: () => import('./views/Tendances/detailtendance/detailtendance.module').then( m => m.DetailtendancePageModule)
+  },
+  {
+    path: 'myplaylist',
+    loadChildren: () => import('./views/Playlist/myplaylist/myplaylist.module').then( m => m.MyplaylistPageModule)
+  },
+  {
+    path: 'playlistpopular',
+    loadChildren: () => import('./views/Playlist/playlistpopular/playlistpopular.module').then( m => m.PlaylistpopularPageModule)
+  },
+  {
+    path: 'playlistdetail',
+    loadChildren: () => import('./views/Playlist/playlistdetail/playlistdetail.module').then( m => m.PlaylistdetailPageModule)
+  },
+  {
+    path: 'abonnement',
+    loadChildren: () => import('./views/abonnement/abonnement.module').then( m => m.AbonnementPageModule)
+  }
 ];
 @NgModule({
   imports: [

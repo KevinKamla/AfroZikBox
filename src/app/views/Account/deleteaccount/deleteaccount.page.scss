@@ -1,0 +1,36 @@
+h4 {
+    margin-inline: 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.input {
+    .canView {
+        padding: 10px;
+        margin-bottom: 5px;
+        gap: 2px;
+    }
+    ion-icon {
+        font-size: 25px;
+    }
+    .content {
+        --background: #8080800d;
+        --padding-start: 10px;
+        font-size: 17px;
+        --border-radius: 10px;
+    }
+}
+
+.div-check {
+    margin: 1rem;
+    ion-checkbox {
+        p {
+            font-size: 15px;
+        }
+    }
+}
+
+ion-button {
+    margin-top: 2rem;
+    text-transform: capitalize;
+}

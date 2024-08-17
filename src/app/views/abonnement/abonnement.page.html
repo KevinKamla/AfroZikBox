@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <h2>Abonnez-vous à l'offre Premium</h2>
+        <p>Ecouter les chansons avec une meilleur qualité audio, sans restrictions et sans publicités</p>
+        <div class="card">
+            <div class="header">
+                <ion-icon slot="icon-only" name="ribbon"></ion-icon>
+                <p>$9 / Mois</p>
+            </div>
+            <p>Télécharger des chansons en illimité</p>
+            <p>Insigne professionnel</p>
+            <p>Mettez en valeur vos chansons(features)</p>
+            <p>Télécharger des chansons</p>
+            <ion-button shape="round" id="wallet">
+                Mettre à jour maintenant
+            </ion-button>
+        </div>
+    </div>
+</ion-content>
+
+<ion-alert trigger="wallet" header="Wallet" subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie" [buttons]="walletButtons"></ion-alert>

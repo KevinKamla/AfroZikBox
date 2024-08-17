@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+    <div class="container">
+        <div class="img-detail d-f">
+            <img src="assets/icon/gims.png" />
+            <div class="title">
+                <h3>Ceinture Rouge</h3>
+                <p>33 Chansons</p>
+                <ion-buttons slot="start">
+                    <ion-button id="modal-avertissement">
+                        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+                    </ion-button>
+                    <ion-button>
+                        <ion-icon slot="icon-only" name="share-social"></ion-icon>
+                    </ion-button>
+                </ion-buttons>
+            </div>
+        </div>
+
+        <div class="block-btn-header ">
+            <ion-buttons slot="start">
+                <ion-button expand="bloc" shape="round">
+                    <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
+                <ion-button shape="round" expand="bloc" class="btn-Lecture">
+                    <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
+            </ion-buttons>
+        </div>
+        <div class="list_chansons">
+            <div class="ion-item" *ngFor="let song of [1,1,1,1]">
+                <img src="assets/icon/gims.png" />
+                <div class="title">
+                    <h3>Mon coeur avait raison</h3>
+                    <p>admin | 3.59</p>
+                </div>
+                <div class="block-btn">
+                    <ion-button class="btn-play" (click)="play()">
+                        <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
+                    </ion-button>
+                    <ion-button (click)="openOptionSound()">
+                        <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+                    </ion-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>
+<ion-alert trigger="modal-avertissement" header="Avertissement" message="Pour ce service, votre compte doit être mis à niveau" [buttons]="buttonAvert"></ion-alert>

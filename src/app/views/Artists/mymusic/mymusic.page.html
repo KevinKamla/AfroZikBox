@@ -1,0 +1,77 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="goToRoute()">
+                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>{{type}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="list_chansons" *ngIf="type === 'Rencents'">
+        <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1,1,1,1,1]">
+            <img src="assets/icon/gims.png" />
+            <div class="title">
+                <h3>Mon coeur avait raison</h3>
+                <p>admin | 3.59</p>
+            </div>
+            <div class="block-btn">
+                <ion-button class="btn-play" (click)="goToPlay()">
+                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openOptionSound()">
+                    <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+                </ion-button>
+            </div>
+        </div>
+    </div>
+    <div class="list_chansons" *ngIf="type === 'Meilleurs'">
+        <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1]">
+            <img src="assets/icon/gims.png" />
+            <div class="title">
+                <h3>Mon coeur avait raison</h3>
+                <p>admin | 3.59</p>
+            </div>
+            <div class="block-btn">
+                <ion-button class="btn-play" (click)="goToPlay()">
+                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openOptionSound()">
+                    <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+                </ion-button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="list_albums" *ngIf="type === 'Albums'">
+        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of [[1,'buy'],[1,'free'],[1,'free'],[1,'buy']]">
+            <div class="bg-album" [routerLink]="['../../../albumdetail','page']">
+                <img class="background-image" src="assets/icon/gims.png" />
+                <div class="orange-disc"></div>
+                <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
+            </div>
+            <div class="details">
+                <div class="title">
+                    <h3>Mon coeur avait raison</h3>
+                    <p>Maitre Gims</p>
+                </div>
+                <div class="info ">
+                    <ion-badge color="primary" shape="round">
+                        Ceinture Rouge
+                    </ion-badge>
+                    <ion-badge color="medium" shape="round">
+                        26 Chansons
+                    </ion-badge>
+                    <ion-badge color="danger" shape="round" *ngIf="album[1] === 'buy'">
+                        $4.99
+                    </ion-badge>
+                </div>
+            </div>
+        </ion-item>
+    </div>
+
+
+</ion-content>

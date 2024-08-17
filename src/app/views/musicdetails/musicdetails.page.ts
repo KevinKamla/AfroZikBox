@@ -19,7 +19,7 @@ export class MusicdetailsPage implements OnInit {
     if (route) {
       this.route.navigate([route]);
     } else {
-      this.navCtrl.pop();
+      this.navCtrl.back();
     }
   }
 

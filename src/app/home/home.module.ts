@@ -12,9 +12,9 @@ import { SuggestionsPage } from '../views/suggestions/suggestions.page';
 import { BestSongsPage } from '../views/best-songs/best-songs.page';
 import { NewsPage } from '../views/news/news.page';
 import { RecentlyPage } from '../views/recently/recently.page';
-import { AlbumPage } from '../views/album/album.page';
+import { AlbumPage } from '../views/Albums/album/album.page';
 import { PopularPage } from '../views/popular/popular.page';
-import { ArtistPage } from '../views/artist/artist.page';
+import { ArtistPage } from '../views/Artists/artist/artist.page';
 
 @NgModule({
   imports: [

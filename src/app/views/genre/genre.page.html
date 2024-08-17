@@ -1,13 +1,39 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>genre</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Genres</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">genre</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="container">
+        <p style="color: var(--ion-color-success);">Sélectionner votre préférence musiccal</p>
+        <p>Vous pouvez les modifier plus tard</p>
+        <div class="div-row">
+            <ion-card *ngFor="let genre of genres" button (click)="toggleCheckbox(genre)">
+                <ion-card-header>
+                    <ion-card-title>{{ genre.name }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-icon *ngIf="genre.checked" slot="start" name="checkmark-circle"></ion-icon>
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <!-- <ion-row>
+            <ion-col *ngFor="let genre of genres">
+                <ion-card>
+                    <ion-checkbox slot="start" [(ngModel)]="genre.selected">
+                    </ion-checkbox>
+                    <ion-card-header>
+                        <ion-card-title>{{ genre.name }}5555555555</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <img [src]="genre.image" alt="{{ genre.name }}">
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row> -->
+    </div>
 </ion-content>

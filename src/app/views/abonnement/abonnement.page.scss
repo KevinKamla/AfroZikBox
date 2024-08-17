@@ -1,0 +1,36 @@
+.container {
+    padding: 1rem;
+    text-align: center;
+    h2 {
+        color: var(--ion-color-primary);
+        margin-block: 1rem;
+    }
+    p {
+        margin-block: 1rem;
+        color: white;
+    }
+    .card {
+        background-color: var(--ion-color-primary);
+        border-radius: 20px;
+        text-align: center;
+        padding: 1rem;
+        .header {
+            border-bottom: 1px solid white;
+            margin-bottom: 2rem;
+            ion-icon {
+                color: white;
+                font-size: 70px;
+            }
+            p {
+                font-size: 30px;
+            }
+        }
+        ion-button {
+            --background: white;
+            color: var(--ion-color-primary);
+            text-transform: capitalize;
+            margin-top: 1rem;
+            font-weight: 700;
+        }
+    }
+}

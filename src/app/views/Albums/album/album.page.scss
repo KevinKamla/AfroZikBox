@@ -1,0 +1,127 @@
+.d-f {
+    display: flex;
+}
+
+.d-b {
+    display: block;
+}
+
+.d-f-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header {
+    h4 {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+        cursor: pointer;
+        ion-icon {
+            font-size: 25px;
+        }
+    }
+}
+
+.list_albums {
+    .img-detail {
+        gap: 15px;
+        --border-color: transparent;
+        margin-bottom: 6px;
+        .bg-album {
+            position: relative;
+            display: inline-block;
+            .background-image {
+                min-width: 100px;
+                width: 100%;
+                border-radius: 15px;
+            }
+            .orange-disc {
+                position: absolute;
+                top: 50%;
+                left: 65%;
+                width: 100%;
+                height: 90%;
+                background-color: var(--ion-color-primary);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                z-index: -1;
+            }
+            .play-icon {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+                font-size: 30px;
+                transform: translate(50%, 50%);
+                z-index: 2;
+            }
+        }
+        ion-thumbnail {
+            height: auto;
+            max-width: 110px;
+            max-height: 110px;
+            width: auto;
+            --border-radius: 20px;
+            // width: 50%;
+            // height: 90%;
+            // min-height: 100px;
+        }
+        .details {
+            margin-left: 2rem;
+            .info {
+                display: table-caption;
+                // flex-wrap: wrap;
+                // justify-content: space-between;
+                // align-items: center;
+                // gap: 10px;
+                ion-badge {
+                    margin-bottom: 3px;
+                }
+            }
+        }
+        .title {
+            margin-bottom: 5px;
+            h3 {
+                font-weight: 800;
+                font-size: 14px;
+                margin: 0;
+                word-wrap: break-word;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            p {
+                color: gray;
+                margin: 0;
+                margin-block: 5px;
+            }
+        }
+    }
+    ion-buttons {
+        .btn-play {
+            height: 50px;
+            width: 50px;
+            ion-icon {
+                font-size: 40px;
+                --padding-start: 0px !important;
+            }
+        }
+    }
+}

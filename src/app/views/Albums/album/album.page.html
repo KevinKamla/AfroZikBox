@@ -1,0 +1,57 @@
+<div class="header d-f-s">
+    <h4> 7 Albums</h4>
+    <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
+    </span>
+</div>
+
+<div class="list_albums">
+    <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of [[1,'buy'],[1,'free'],[1,'free'],[1,'buy'],[1,'free'],]">
+        <div class="bg-album" [routerLink]="['../../albumdetail','page']">
+            <img class="background-image" src="assets/icon/gims.png" />
+            <div class="orange-disc"></div>
+            <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
+        </div>
+        <div class="details">
+            <div class="title">
+                <h3>Mon coeur avait raison</h3>
+                <p>Maitre Gims</p>
+            </div>
+            <div class="info ">
+                <ion-badge color="primary" shape="round">
+                    Ceinture Rouge
+                </ion-badge>
+                <ion-badge color="medium" shape="round">
+                    26 Chansons
+                </ion-badge>
+                <ion-badge color="danger" shape="round" *ngIf="album[1] === 'buy'">
+                    $4.99
+                </ion-badge>
+            </div>
+        </div>
+    </ion-item>
+</div>
+
+<ion-popover trigger="popover-button" [dismissOnSelect]="true">
+    <ng-template>
+        <ion-content>
+            <form action="" method="post">
+                <ion-list>
+                    <ion-radio-group value="option1">
+                        <ion-item>
+                            <ion-label>Ascendante</ion-label>
+                            <ion-radio color="primary" default value="option2"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Descendante</ion-label>
+                            <ion-radio color="primary" value="option3"></ion-radio>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label>Données ajoutées</ion-label>
+                            <ion-radio color="primary" value="option3"></ion-radio>
+                        </ion-item>
+                    </ion-radio-group>
+                </ion-list>
+            </form>
+        </ion-content>
+    </ng-template>
+</ion-popover>

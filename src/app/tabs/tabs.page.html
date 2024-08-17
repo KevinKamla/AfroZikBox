@@ -1,6 +1,6 @@
 <ion-tabs>
 
-    <div class="player" [ngClass]="{'none':isClose}">
+    <div class="player" [ngClass]="{'none':musictabOption.isClose}">
         <div class="progress-bar">
             <div>
                 <ion-range min="0" max="100" value="50" color="primary"> </ion-range>
@@ -8,14 +8,14 @@
         </div>
         <ion-row>
             <ion-col size="2">
-                <img src="assets/icon/gims.png" alt="" class="img" (click)="goToPlay()">
+                <ion-img src="assets/icon/gims.png" alt="son" class="img" (click)="goToPlay()"></ion-img>
             </ion-col>
             <ion-col size="5" class="d-b " (click)="goToPlay()">
                 <b>Mon coeur avait raison</b>
                 <span>Maitre Gims</span>
             </ion-col>
             <ion-col size="5" class="bloc-icon">
-                <div *ngIf="musicIsPlay; else templateName">
+                <div *ngIf="musictabOption.musicIsPlay; else templateName">
                     <ion-button fill="clear" shape="round" (click)="play()">
                         <ion-icon slot="icon-only" name="pause"></ion-icon>
                     </ion-button>
@@ -35,7 +35,7 @@
         </ion-row>
     </div>
     <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home" href="/tabs/home">
+        <ion-tab-button tab="home" href="/tabs">
             <ion-icon aria-hidden="true" name="home"></ion-icon>
             <ion-label>Accueil</ion-label>
         </ion-tab-button>
@@ -52,7 +52,12 @@
 
         <ion-tab-button tab="myliste" href="/tabs/myliste">
             <ion-icon aria-hidden="true" name="document-text"></ion-icon>
-            <ion-label>Ma liste</ion-label>
+            <ion-label>Ma ZikBox</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore">
+            <ion-icon aria-hidden="true" name="storefront"></ion-icon>
+            <ion-label>Store</ion-label>
         </ion-tab-button>
 
         <ion-tab-button tab="profil" href="/tabs/profil">

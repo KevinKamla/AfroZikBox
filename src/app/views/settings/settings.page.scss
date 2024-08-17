@@ -64,9 +64,17 @@ ion-header {
     }
 }
 
+.btn-white {
+    color: var(--ion-color-primary);
+}
+
+.btn-primary {
+    background-color: var(--ion-color-primary);
+}
+
 ion-modal#modal-theme {
     --min-width: 250px;
-    --height: 30%;
+    --height: 40%;
     --border-radius: 25px;
     padding: 25px;
     ion-item {

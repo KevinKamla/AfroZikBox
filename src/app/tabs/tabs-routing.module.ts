@@ -14,7 +14,7 @@ const routes: Routes = [
       },
       {
         path: 'tendance',
-        loadChildren: () => import('../views/tendance/tendance.module').then(m => m.TendancePageModule)
+        loadChildren: () => import('../views/Tendances/tendance/tendance.module').then(m => m.TendancePageModule)
       },
       {
         path: 'favoris',
@@ -22,7 +22,11 @@ const routes: Routes = [
       },
       {
         path: 'myliste',
-        loadChildren: () => import('../views/myliste/myliste.module').then(m => m.MylistePageModule)
+        loadChildren: () => import('../views/myzikbox/myliste.module').then(m => m.MylistePageModule)
+      },
+      {
+        path: 'afrozikstore',
+        loadChildren: () => import('../views/afrozikstore/afrozikstore.module').then( m => m.AfrozikstorePageModule)
       },
       {
         path: 'profil',
@@ -35,6 +39,14 @@ const routes: Routes = [
       {
         path: 'notification',
         loadChildren: () => import('../views/notification/notification.module').then( m => m.NotificationPageModule)
+      },
+      {
+        path: 'albumdetail/:state',
+        loadChildren: () => import('../views/Albums/albumdetail/albumdetail.module').then( m => m.AlbumdetailPageModule)
+      },
+      {
+        path: 'artistprofil',
+        loadChildren: () => import('../views/Artists/artistprofil/artistprofil.module').then( m => m.ArtistprofilPageModule)
       },
       {
         path: '',

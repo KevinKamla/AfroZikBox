@@ -1,0 +1,109 @@
+ion-toolbar {
+    --background: transparent;
+}
+
+.container {
+    margin-inline: 15px;
+    .img-detail {
+        text-align: center;
+        img {
+            height: 130px;
+            width: 130px;
+            border-radius: 20px;
+        }
+        .title {
+            overflow: hidden;
+            h3 {
+                font-weight: 900;
+                font-size: 18px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            p {
+                color: gray;
+            }
+        }
+    }
+    .block-btn-header {
+        border-bottom: 1px solid #eeeeee2e;
+        padding-bottom: 1rem;
+        ion-buttons {
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 5px;
+            ion-button {
+                --background: var(--ion-color-primary);
+                color: white;
+                text-transform: capitalize;
+                font-weight: 800;
+                font-size: 17px;
+                --padding-start: 7px;
+                --padding-end: 1rem;
+                ion-icon {
+                    margin-block: 0.5rem;
+                }
+            }
+            .btn-Lecture {
+                --background: #ebceff;
+                color: var(--ion-color-primary);
+            }
+        }
+    }
+    .list_chansons {
+        // padding-inline: 1rem;
+        .ion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-block: 1rem;
+            .img-detail {
+                gap: 15px;
+                margin-block: 8px;
+            }
+            .block-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                ion-button {
+                    --background: transparent;
+                    --box-shadow: none;
+                }
+            }
+            img {
+                height: 80px;
+                width: 80px;
+                border-radius: 20px;
+                margin-right: 10px;
+            }
+        }
+        .title {
+            overflow: hidden;
+            h3 {
+                font-weight: 800;
+                font-size: 18px;
+                // word-wrap: break-word;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+            p {
+                color: gray;
+            }
+        }
+        .btn-play {
+            // height: 50px;
+            // width: 50px;
+            ion-icon {
+                font-size: 40px;
+                --padding-start: 0px !important;
+            }
+        }
+    }
+}
+
+ion-popover {
+    ion-item {
+        width: auto;
+    }
+}

@@ -1,0 +1,41 @@
+    .container {
+        padding: 1rem;
+        p {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .div-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            ion-card {
+                height: 100px;
+                width: 100px;
+                background: black;
+                position: relative;
+                overflow: hidden;
+                box-shadow: none;
+                margin: 10px;
+                ion-card-title {
+                    font-size: 15px;
+                }
+                ion-card-content {
+                    margin-top: -15px;
+                }
+            }
+        }
+        ion-card::before {
+            content: "";
+            position: absolute;
+            top: 55%;
+            left: 40%;
+            width: 80%;
+            height: 80%;
+            background: url('url(../../../../../assets/icon/album.png');
+            background-size: cover;
+            transform: rotate(324deg);
+            border-radius: 10px;
+        }
+        ion-checkbox {
+            display: none;
+        }
+    }

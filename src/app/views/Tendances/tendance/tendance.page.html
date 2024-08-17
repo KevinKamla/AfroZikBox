@@ -1,0 +1,45 @@
+<ion-header [translucent]="false" class="ion-no-border">
+    <ion-toolbar color="">
+        <ion-buttons slot="start">
+            <img style="height: 40px;" src="../../assets/icon/logo.png" />
+        </ion-buttons>
+        <ion-buttons shape="round" slot="end">
+            <ion-button>
+                <ion-icon color="primary" slot="icon-only" name="cart"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="bloc_search" [routerLink]="['../search']">
+        <ion-searchbar disabled class="ion-no-border" color="" placeholder="Recherche"></ion-searchbar>
+    </div>
+    <div class="bloc_popular_playlist">
+        <h5>Playlists populaires</h5>
+        <div class="container-scroll">
+            <div class="scroll-box">
+                <div class="movie" *ngFor="let item of [1,1,1,1,1]">
+                    <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../playlistdetail']" />
+                    <p>On my way</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bloc_news">
+        <div class="box-title">
+            <h3>AfroZikNews</h3>
+            <p [routerLink]="['/listtendance']">Voir plus</p>
+        </div>
+        <ion-card button [routerLink]="['/detailtendance']">
+            <img src="assets/icon/imgNew.png" style="width: 100%;" />
+            <div class="footer">
+                <div class="info d-f-s">
+                    <ion-label>Spotlights</ion-label>
+                    <ion-label>2 months ago</ion-label>
+                </div>
+                <p>Qui est Sarah Magally, la célèbre musiciene Algerienne? </p>
+            </div>
+        </ion-card>
+    </div>
+</ion-content>

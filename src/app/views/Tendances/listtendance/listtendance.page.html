@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>AfroZikNews</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-list>
+        <div *ngFor="let item of [1,1,1]">
+            <ion-card button [routerLink]="['/detailtendance']">
+                <img src="assets/icon/imgNew.png" style="width: 100%;" />
+                <div class="footer">
+                    <div class="info d-f-s">
+                        <ion-label>Spotlights</ion-label>
+                        <ion-label>2 months ago</ion-label>
+                    </div>
+                    <p>Qui est Sarah Magally, la célèbre musiciene Algerienne? </p>
+                </div>
+            </ion-card>
+        </div>
+    </ion-list>
+</ion-content>

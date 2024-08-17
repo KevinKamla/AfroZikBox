@@ -1,0 +1,35 @@
+.d-f {
+    display: flex;
+}
+
+.d-b {
+    display: block;
+}
+
+.d-f-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.d-f-s {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item {
+    margin: 20px;
+    border-bottom: 1px solid #eeeeee3e;
+    padding-bottom: 20px;
+    .logo-title {
+        gap: 20px;
+        ion-avatar {
+            height: 90px;
+            width: 90px;
+        }
+        p {
+            color: #aaa;
+        }
+    }
+}

@@ -1,7 +1,8 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
+import { musicTab } from '../play/play.page';
 
 @Component({
   selector: 'app-favoris',
@@ -12,6 +13,7 @@ export class FavorisPage implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
+    private navCtrl: NavController
   ) { }
 
 
@@ -24,6 +26,13 @@ export class FavorisPage implements OnInit {
     })
     
     await modal.present();
+  }
+
+  goToPlay() {
+    
+    musicTab.musicIsPlay = true;
+    musicTab.isClose = false;
+    this.navCtrl.navigateForward('play');
   }
 
   ngOnInit() {
