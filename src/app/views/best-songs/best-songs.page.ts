@@ -15,7 +15,7 @@ export class BestSongsPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
-    
+    private topsService: TopSongsService,
   ) { }
 
 
@@ -36,9 +36,22 @@ export class BestSongsPage implements OnInit {
     this.navCtrl.navigateForward('play');
   }
 
-
+  numberOfTopSongs: number = 0;
   ngOnInit() {
- 
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        console.log('Meilleur songs récupérés :', response);
+        this.topSongs = response.data;
+
+        const numberOfSongs = this.topSongs.length;
+        console.log('Nombre de Meilleur songs :', numberOfSongs);
+
+        this.numberOfTopSongs = numberOfSongs;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+      }
+    );
   }
 
 }

@@ -15,7 +15,7 @@ export class ArtistPage implements OnInit {
     this.artistService.getArtists().subscribe(
       (response) => {
         console.log('Artistes récupérés :', response);
-        this.artists = response.data;
+        this.artists = response.data.data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des artistes :', error);

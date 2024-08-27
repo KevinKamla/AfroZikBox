@@ -24,10 +24,10 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+            <div class="movie" *ngFor="let topSong of topSongs">
+                <img class="img-intro"[src]="topSong.thumbnail" (click)="playMusic(topSong)">
                 <p>
-                    <ion-label>On my way - king saha (Lyrical video)</ion-label>
+                    <ion-label>{{topSong.songArray.USER_DATA.s_name}} On my way - king saha (Lyrical video)</ion-label>
                 </p>
             </div>
         </div>
@@ -50,9 +50,9 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of ['Afrobeat','Rap','Zouk', 'Moutoumbou','Mbole','Zik']">
-                <img class="img-intro" src="assets/icon/album.png" [routerLink]="['/musicbygenre',item]">
-                <p>{{item}}</p>
+            <div class="movie"  *ngFor="let genre of genres">
+                <img class="img-intro" [src]="genre.background_thumb" [routerLink]="['/musicbygenre',genre]">
+                <p>{{genre.cateogry_name}}</p>
             </div>
         </div>
     </div>
@@ -135,9 +135,9 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/profil.png" [routerLink]="['../../artistprofil']">
-                <p>Maître Gims</p>
+            <div class="movie" *ngFor="let artist of artists">
+                <img class="img-intro" [src]="artist.avatar" [routerLink]="['../../artistprofil']">
+                <p>{{ artist.name }}</p>
             </div>
         </div>
     </div>

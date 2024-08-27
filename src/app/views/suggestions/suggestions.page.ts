@@ -4,6 +4,10 @@ import { ModalController, NavController } from '@ionic/angular';
 import { StatutPage } from '../statut/statut.page';
 import { musicTab } from '../../views/play/play.page';
 import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
+import { TopSongsService } from '../../services/top-songs.service';
+import { SuggestionsService } from '../../services/suggestions.service';
+import { ArtistService } from '../../services/artist.service';
+import { GenresService } from '../../services/genres.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -11,11 +15,15 @@ import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
   styleUrls: ['./suggestions.page.scss'],
 })
 export class SuggestionsPage implements OnInit {
-
+ 
   constructor(
     private route: Router,
     private navCtrl: NavController,
-    private modal: ModalController
+    private modal: ModalController,
+    private topsService: TopSongsService,
+    private suggestionsService: SuggestionsService,
+    private artistService: ArtistService,
+    private genresService: GenresService,
   ) { }
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -86,10 +94,47 @@ export class SuggestionsPage implements OnInit {
     this.isOpenmodalAchat = true;
   }
 
-
+  topSongs: any[] = [];
+  artists: any[] = [];
+  suggestions: any[] = [];
+  genres: any[] = [];
   ngOnInit() {
-    
-    this
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        console.log('Meilleur songs récupérés :', response);
+        this.topSongs = response.data.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+      }
+    );
+    this.artistService.getArtists().subscribe(
+      (response) => {
+        console.log('Artistes récupérés :', response);
+        this.artists = response.data.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des artistes :', error);
+      }
+    );
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        console.log('suggestions récupérés :', response);
+        this.artists = response.new_releases.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
+    this.genresService.getGenre().subscribe(
+      (response) => {
+        console.log('genres récupérés :', response);
+        this.genres = response.data.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des genres :', error);
+      }
+    );
   }
 
 }
