@@ -10,10 +10,10 @@
 
 <ion-content>
     <div class="container">
-        <div class="img-detail">
+        <div class="img-detail" *ngIf="topAlbums">
             <img src="assets/icon/gims.png" />
             <div class="title">
-                <h3>Ceinture Rouge</h3>
+                <h3>Ceinture Rouge {{ topAlbums.title }}</h3>
                 <p>10 Chansons | 0 Achat(s)</p>
             </div>
         </div>

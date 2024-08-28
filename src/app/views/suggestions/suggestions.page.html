@@ -51,7 +51,7 @@
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie"  *ngFor="let genre of genres">
-                <img class="img-intro" [src]="genre.background_thumb" [routerLink]="['/musicbygenre',genre]">
+                <img class="img-intro" [src]="genre.background_thumb" [routerLink]="['/musicbygenre',genre.id]">
                 <p>{{genre.cateogry_name}}</p>
             </div>
         </div>
@@ -102,13 +102,13 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of [[1,'buy'],[1,'free'],[1,'free'],[1,'buy'],[1,'free'],]">
-                <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../albumdetail','page']">
-                <div class="p">Mon coeur avait raison</div>
-                <ion-label>Maitre Gims</ion-label>
+            <div class="movie" *ngFor="let album of topalbums">
+                <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../albumdetail',album.id]">
+                <div class="p">{{album.title}}</div>
+                <ion-label>{{album.publisher.username}}</ion-label>
                 <div class="number_price">
-                    <div class="number_sons">13 chansons</div>
-                    <ion-badge color="danger" *ngIf="item[1] === 'buy'">$4.99</ion-badge>
+                    <div class="number_sons">{{album.count_songs}} Chansons</div>
+                    <ion-badge color="danger">$ {{album.price}}</ion-badge>
                 </div>
             </div>
         </div>

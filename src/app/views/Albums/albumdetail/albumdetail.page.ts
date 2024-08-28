@@ -3,6 +3,7 @@ import { ModalController, NavController,} from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../../play/play.page';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TopAlbumsService } from '../../../services/top-albums.service';
 
 @Component({
   selector: 'app-albumdetail',
@@ -13,12 +14,14 @@ export class AlbumdetailPage implements OnInit {
 
   pauseIcon: string = "play-circle";
   state = 'modal';
-
+  topAlbums:any;
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     public route: Router,
     private aroute: ActivatedRoute,
+    private routes: ActivatedRoute,
+    private topAlbumsService:TopAlbumsService,
   ) { }
 
 
@@ -62,9 +65,20 @@ export class AlbumdetailPage implements OnInit {
   closeModal() {
     this.modalCtrl.dismiss();
   }
-
+  places :any;
   ngOnInit() {
     this.state = this.aroute.snapshot.params['state'];
+    const albumId = this.routes.snapshot.paramMap.get('id');
+
+    this.topAlbumsService.getTopAlbums(albumId).subscribe(
+      (response) => {
+        this.topAlbums = response.top_albums;
+        console.log('Détails de l\'albums récupérés :', this.topAlbums);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des détails de l\'artiste :', error);
+      }
+    );
   }
 
 }
