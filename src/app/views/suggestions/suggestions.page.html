@@ -103,7 +103,7 @@
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie" *ngFor="let album of topalbums">
-                <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../albumdetail',album.id]">
+                <img class="img-intro" [src]="album.thumbnail" [routerLink]="['../../albumdetail',album.id]">
                 <div class="p">{{album.title}}</div>
                 <ion-label>{{album.publisher.username}}</ion-label>
                 <div class="number_price">
