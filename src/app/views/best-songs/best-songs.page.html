@@ -9,7 +9,7 @@
       <img [src]="topSong.thumbnail" alt="">
         <div class="title">
             <h3>{{ topSong.title }}</h3>
-            <p>{{ topSong.description }} | {{ topSong.duration }}</p>
+            <p  class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
         </div>
         <div class="block-btn">
             <ion-button class="btn-play" (click)="goToPlay()">

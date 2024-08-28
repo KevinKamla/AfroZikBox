@@ -104,7 +104,7 @@
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
             <div class="movie" *ngFor="let album of topalbums">
                 <img class="img-intro" [src]="album.thumbnail" [routerLink]="['../../albumdetail',album.id]">
-                <div class="p">{{album.title}}</div>
+                <div class="p" class="song-description">{{album.title}}</div>
                 <ion-label>{{album.publisher.username}}</ion-label>
                 <div class="number_price">
                     <div class="number_sons">{{album.count_songs}} Chansons</div>
