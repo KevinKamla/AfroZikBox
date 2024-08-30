@@ -1,7 +1,17 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { AlbumdetailPageModule } from './views/Albums/albumdetail/albumdetail.module';
+
 const routes: Routes = [
+
+  { path: 'albumdetail/:id',
+    loadChildren: () => import('./views/Albums/albumdetail/albumdetail.module').then(m => m.AlbumdetailPageModule)
+  },
+  {
+    path: 'detailtendance/:id ',
+    loadChildren: () => import('./views/Tendances/detailtendance/detailtendance.module').then( m => m.DetailtendancePageModule)
+  },
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)

@@ -27,6 +27,7 @@ export class SuggestionsPage implements OnInit {
     private artistService: ArtistService,
     private genresService: GenresService,
     private topAlbumsService:TopAlbumsService,
+    private router: Router
   ) { }
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -61,9 +62,9 @@ export class SuggestionsPage implements OnInit {
     
   }
 
-  goToSegment(segment: string) {
-    this.route.navigate(['tabs/home', segment]);
-  }
+  // goToSegment(segment: string) {
+  //   this.route.navigate(['tabs/home', segment]);
+  // }
 
   goToPlay() {
     this.navCtrl.navigateForward('play');
@@ -103,6 +104,8 @@ export class SuggestionsPage implements OnInit {
   genres: any[] = [];
   albums:any[]=[];
   songs:any[]=[];
+  latest:any[]=[];
+
   ngOnInit() {
     this.topsService.getTopSongs().subscribe(
       (response) => {
@@ -127,7 +130,8 @@ export class SuggestionsPage implements OnInit {
         console.log('suggestions récupérés :', response);
         this.albums = response.randoms.album;
         this.songs = response.randoms.song;
-        console.log(this.albums);
+        this.latest = response.new_releases.data;
+        console.log(this.latest,'latest sonfs');
       },
       (error) => {
         console.error('Erreur lors de la récupération des suggestions :', error);
@@ -151,6 +155,26 @@ export class SuggestionsPage implements OnInit {
         console.error('Erreur lors de la récupération des meilleurs albums :', error);
       }
     );
+  }
+  selectGenre(genre: any) {
+    // Ajouter les informations du genre au localStorage
+    localStorage.setItem('selectedGenre', JSON.stringify(genre));
+    
+    // Naviguer vers la page du genre sélectionné
+    this.router.navigate(['/musicbygenre', genre.id]);
+  }
+
+  selectAlbum(album: any) {
+    // Ajouter les informations de l'album au localStorage
+    localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    
+    // Naviguer vers la page des détails de l'album sélectionné
+    this.router.navigate(['albumdetail', album.id]);
+  }
+
+  goToSegment(segment: string) {
+    // Exemple de méthode pour naviguer vers un segment spécifique
+    this.router.navigate([segment]);
   }
 
 }

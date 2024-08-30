@@ -43,6 +43,7 @@ export class MusicbygenrePage implements OnInit {
 
   ngOnInit() {    
     this.genre = this.actvroute.snapshot.params['genre'];
+    
     const genreId = this.route.snapshot.paramMap.get('id');
 
     this.genreService.getGenre(genreId).subscribe(

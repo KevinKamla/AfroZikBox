@@ -11,10 +11,10 @@
 <ion-content>
     <div class="container">
         <div class="img-detail" *ngIf="topAlbums">
-            <img src="assets/icon/gims.png" />
+            <img [src]="album.thumbnail" />
             <div class="title">
-                <h3>Ceinture Rouge {{ topAlbums.title }}</h3>
-                <p>10 Chansons | 0 Achat(s)</p>
+                <h3>{{ album.title }}</h3>
+                <p> {{album.count_songs}} Chansons | {{album.purchases}} Achat(s)</p>
             </div>
         </div>
 
@@ -27,11 +27,11 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of [1,1,1,1]">
+            <div class="ion-item" *ngFor="let song of songs">
                 <img src="assets/icon/gims.png" />
                 <div class="title">
-                    <h3>Mon coeur avait raison</h3>
-                    <p>admin | 3.59</p>
+                    <h3>{{ song.title }}</h3>
+                    <p>{{ song.publisher.username }} | {{ song.duration }}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" (click)="play()">

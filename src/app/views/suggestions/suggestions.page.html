@@ -56,6 +56,7 @@
             </div>
         </div>
     </div>
+   
     <ng-template>
         <div class="container-scroll">
             <div class="scroll-box">
@@ -76,9 +77,9 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let item of tabSong">
-                <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
-                <p>Mon coeur avait raison</p>
+            <div class="movie" *ngFor="let latest of latest">
+                <img class="img-intro" [src]="latest.thumbnail" (click)="playMusic(latest)">
+                <p  class="song-description">{{latest.title}}</p>
             </div>
         </div>
     </div>
@@ -93,18 +94,18 @@
     </ng-template>
 </div>
 
+
 <div class="album">
     <div class="box-title">
-
         <h3>Meilleurs albums</h3>
         <p (click)="goToSegment('album')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="tabSong.length > 0;">
-            <div class="movie" *ngFor="let album of topalbums">
-                <img class="img-intro" [src]="album.thumbnail" [routerLink]="['../../albumdetail',album.id]">
-                <div class="p" class="song-description">{{album.title}}</div>
+            <div class="movie" *ngFor="let album of topalbums" (click)="selectAlbum(album)">
+                <img class="img-intro" [src]="album.thumbnail">
+                <div class="song-description">{{album.title}}</div>
                 <ion-label>{{album.publisher.username}}</ion-label>
                 <div class="number_price">
                     <div class="number_sons">{{album.count_songs}} Chansons</div>
@@ -112,6 +113,7 @@
                 </div>
             </div>
         </div>
+        
         <ng-template>
             <div class="container-scroll">
                 <div class="scroll-box">

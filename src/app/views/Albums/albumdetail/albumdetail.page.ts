@@ -24,6 +24,8 @@ export class AlbumdetailPage implements OnInit {
     private topAlbumsService:TopAlbumsService,
   ) { }
 
+  album: any;
+  songs: any[] = [];
 
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
@@ -61,7 +63,7 @@ export class AlbumdetailPage implements OnInit {
   //   musicTab.musicIsPlay = true;
   //   musicTab.isClose = false;
   // }
-
+ 
   closeModal() {
     this.modalCtrl.dismiss();
   }
@@ -70,6 +72,17 @@ export class AlbumdetailPage implements OnInit {
     this.state = this.aroute.snapshot.params['state'];
     const albumId = this.routes.snapshot.paramMap.get('id');
 
+    const storedAlbum = localStorage.getItem('selectedAlbum');
+
+    // Vérifier si l'album existe dans le localStorage
+    if (storedAlbum) {
+      // Convertir la chaîne JSON en un objet
+      this.album = JSON.parse(storedAlbum);
+      this.songs = this.album.songs
+      console.log(this.songs, this.album);
+    } else {
+      console.log('Aucun album n\'est stocké dans le localStorage');
+    }
     this.topAlbumsService.getTopAlbums(albumId).subscribe(
       (response) => {
         this.topAlbums = response.top_albums;

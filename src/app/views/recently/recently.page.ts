@@ -4,6 +4,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
 import { ActivatedRoute } from '@angular/router';
+import { SuggestionsService } from '../../services/suggestions.service';
 
 @Component({
   selector: 'app-recently',
@@ -12,10 +13,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class RecentlyPage implements OnInit {
   idUser: any;
+  suggestions: any[] = [];
 
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private suggestionsService: SuggestionsService,
+
   ) { }
 
   
@@ -36,8 +40,24 @@ export class RecentlyPage implements OnInit {
   }
 
 
+  recently:any[]=[];
+  numberOfRecently: number = 0;
 
   ngOnInit() {
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        console.log('suggestions récupérés :', response);
+        this.recently = response.recently_played;
+        console.log(this.recently);
+        const numberOfRecentlys = this.recently.length;
+        console.log('Nombre de recently :', numberOfRecentlys);
+
+        this.numberOfRecently = numberOfRecentlys;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
   }
 
 }
