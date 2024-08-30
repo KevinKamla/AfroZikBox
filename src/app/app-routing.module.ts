@@ -207,21 +207,45 @@ const routes: Routes = [
     loadChildren: () => import('./views/Tendances/detailtendance/detailtendance.module').then( m => m.DetailtendancePageModule)
   },
   {
-    path: 'myplaylist',
-    loadChildren: () => import('./views/Playlist/myplaylist/myplaylist.module').then( m => m.MyplaylistPageModule)
-  },
-  {
-    path: 'playlistpopular',
-    loadChildren: () => import('./views/Playlist/playlistpopular/playlistpopular.module').then( m => m.PlaylistpopularPageModule)
+    path: 'abonnement',
+    loadChildren: () => import('./views/abonnement/abonnement.module').then( m => m.AbonnementPageModule)
   },
   {
     path: 'playlistdetail',
     loadChildren: () => import('./views/Playlist/playlistdetail/playlistdetail.module').then( m => m.PlaylistdetailPageModule)
   },
   {
-    path: 'abonnement',
-    loadChildren: () => import('./views/abonnement/abonnement.module').then( m => m.AbonnementPageModule)
-  }
+    path: 'playlistoption',
+    loadChildren: () => import('./components/playlistoption/playlistoption.module').then( m => m.PlaylistoptionPageModule)
+  },
+  {
+    path: 'editeplaylist',
+    loadChildren: () => import('./components/editeplaylist/editeplaylist.module').then( m => m.EditeplaylistPageModule)
+  },
+  {
+    path: 'cart',
+    loadChildren: () => import('./views/cart/cart.module').then( m => m.CartPageModule)
+  },
+  {
+    path: 'musicaime',
+    loadChildren: () => import('./views/musicaime/musicaime.module').then( m => m.MusicaimePageModule)
+  },
+  {
+    path: 'download',
+    loadChildren: () => import('./views/download/download.module').then( m => m.DownloadPageModule)
+  },
+  {
+    path: 'partager',
+    loadChildren: () => import('./views/partager/partager.module').then( m => m.PartagerPageModule)
+  },
+  {
+    path: 'myplaylist',
+    loadChildren: () => import('./views/Playlist/myplaylist/myplaylist.module').then( m => m.MyplaylistPageModule)
+  },
+  {
+    path: 'listachat',
+    loadChildren: () => import('./views/Store/listachat/listachat.module').then( m => m.ListachatPageModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Panier</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="Buy()">
+                Acheter
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <div class="container">
+        <h2>Détails d'expédition</h2>
+        <p>Ajouter une nouvelle adresse</p>
+        <ion-card button (click)="checked()">
+            <div class="d-f-s">
+                <div class="addrese d-f-c">
+                    <ion-icon slot="start" color="primary" name="location"></ion-icon>
+                    Obobogo
+                </div>
+                <ion-buttons slot="end">
+                    <ion-checkbox [(ngModel)]="isChecked"></ion-checkbox>
+                </ion-buttons>
+            </div>
+            <ion-card-content>
+                <p>694775920</p>
+                <p>13eme rue bobre </p>
+                <p>Madagascar / Manao</p>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>
+<ion-footer>
+    <div class="total d-f-s">
+        <p>Total</p>
+        <span>$0</span>
+    </div>
+</ion-footer>
+
+<ion-alert isOpen={{alertOpen}} header="Wallet" subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie" [buttons]="walletButtons" [backdropDismiss]="false"></ion-alert>
+<ion-toast color="primary" [duration]="3000" isOpen={{ionToast}} message="Veiller ajouter une adresse s'il vous plait"></ion-toast>

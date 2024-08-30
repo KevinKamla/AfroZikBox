@@ -26,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'afrozikstore',
-        loadChildren: () => import('../views/afrozikstore/afrozikstore.module').then( m => m.AfrozikstorePageModule)
+        loadChildren: () => import('../views/Store/afrozikstore/afrozikstore.module').then( m => m.AfrozikstorePageModule)
       },
       {
         path: 'profil',
@@ -47,6 +47,14 @@ const routes: Routes = [
       {
         path: 'artistprofil',
         loadChildren: () => import('../views/Artists/artistprofil/artistprofil.module').then( m => m.ArtistprofilPageModule)
+      },
+      {
+        path: 'myplaylist',
+        loadChildren: () => import('../views/Playlist/myplaylist/myplaylist.module').then( m => m.MyplaylistPageModule)
+      },
+      {
+        path: 'playlistpopular',
+        loadChildren: () => import('../views/Playlist/playlistpopular/playlistpopular.module').then( m => m.PlaylistpopularPageModule)
       },
       {
         path: '',

@@ -1,13 +1,29 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>conversation</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Conversations</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">conversation</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <div class="container">
+        <ion-list>
+            <ion-item button>
+                <div class="ion-item">
+                    <div class="d-f-c" style="width: 80%;" [routerLink]="['/chat',1]">
+                        <ion-avatar slot="start">
+                            <img [src]="['assets/icon/profil.png']" />
+                        </ion-avatar>
+                        <div class="title">
+                            <h3>Username</h3>
+                            <p>Message text au niveau du contenu</p>
+                        </div>
+                    </div>
+                    <p>5 jours</p>
+                </div>
+            </ion-item>
+        </ion-list>
+    </div>
 </ion-content>

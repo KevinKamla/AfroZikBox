@@ -4,8 +4,8 @@
             <img style="height: 40px;" src="../../assets/icon/logo.png" />
         </ion-buttons>
         <ion-buttons shape="round" slot="end">
-            <ion-button>
-                <ion-icon color="primary" slot="icon-only" name="cart"></ion-icon>
+            <ion-button [routerLink]="['/conversation']">
+                <ion-icon color="primary" slot="icon-only" name="chatbubble-ellipses"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
@@ -22,7 +22,7 @@
             <div class="container-scroll">
                 <div class="scroll-box">
                     <div class="movie" *ngFor="let item of [1,1,1,1]">
-                        <img class="img-intro" src="assets/icon/gims.png">
+                        <img class="img-intro" src="assets/icon/gims.png" (click)="goToPlay()">
                         <ion-label>On my way - king saha (Lyrical video)</ion-label>
                     </div>
                 </div>
@@ -31,23 +31,19 @@
     </div>
     <div class="bloc_news">
         <ion-list>
-            <ion-item button (click)="onClick()">
-                <ion-icon slot="start" color="primary" name="albums-outline"></ion-icon>
-                <ion-label>Ecoutées récements</ion-label>
-            </ion-item>
-            <ion-item button [routerLink]="['../../myplaylist']">
+            <ion-item button [routerLink]="['/myplaylist']">
                 <ion-icon slot="start" color="primary" name="albums-outline"></ion-icon>
                 <ion-label>Playlist</ion-label>
             </ion-item>
-            <ion-item button (click)="onClick()">
+            <ion-item button [routerLink]="['/musicaime']">
                 <ion-icon slot="start" color="primary" name="heart-outline"></ion-icon>
                 <ion-label>J'aime</ion-label>
             </ion-item>
-            <ion-item button (click)="onClick()">
+            <ion-item button [routerLink]="['/download']">
                 <ion-icon slot="start" color="primary" name="cloud-download-outline"></ion-icon>
                 <ion-label>Téléchargements</ion-label>
             </ion-item>
-            <ion-item button (click)="onClick()">
+            <ion-item button [routerLink]="['/partager']">
                 <ion-icon slot="start" color="primary" name="share-social-outline"></ion-icon>
                 <ion-label>Partagé</ion-label>
             </ion-item>

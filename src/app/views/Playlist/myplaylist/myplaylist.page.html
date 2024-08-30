@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
     <div class="container">
-        <ion-item button>
+        <ion-item button (click)="openCreatePlaylist()">
             <ion-button>
                 <ion-icon slot="icon-only" name="add"></ion-icon>
             </ion-button>
@@ -17,14 +17,14 @@
         </ion-item>
         <ion-list>
             <div class="img-detail d-f-s" *ngFor="let item of [1,1]">
-                <div class="d-f-c">
+                <div class="d-f-c" [routerLink]="['../playlistdetail']">
                     <img src="assets/icon/gims.png" />
                     <div class="title">
                         <h3>Ceinture Rouge</h3>
                         <p>33 Chansons</p>
                     </div>
                 </div>
-                <ion-button id="modal-avertissement" fill="clear" shape="round">
+                <ion-button (click)="openOptionPlaylist()" fill="clear" shape="round">
                     <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
                 </ion-button>
             </div>
