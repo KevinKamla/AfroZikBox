@@ -31,14 +31,14 @@
             <h3>AfroZikNews</h3>
             <p [routerLink]="['/listtendance']">Voir plus</p>
         </div>
-        <ion-card button [routerLink]="['/detailtendance']">
-            <img src="assets/icon/imgNew.png" style="width: 100%;" />
+        <ion-card button [routerLink]="['/detailtendance']"  *ngFor="let article of article" (click)="selectArticle(article)">
+            <img [src]="article.thumbnail" style="width: 100%;" />
             <div class="footer">
                 <div class="info d-f-s">
                     <ion-label>Spotlights</ion-label>
-                    <ion-label>2 months ago</ion-label>
+                    <ion-label>{{ article.created_at }}</ion-label>
                 </div>
-                <p>Qui est Sarah Magally, la célèbre musiciene Algerienne? </p>
+                <p  class="song-description">{{ article.title }}</p>
             </div>
         </ion-card>
     </div>

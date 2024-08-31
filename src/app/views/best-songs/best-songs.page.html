@@ -1,15 +1,15 @@
 <div class="header d-f-s">
-    <h5> 26 Chansons</h5>
+    <h5> {{ numberOfTopSongs }} Chansons</h5>
     <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
     </span>
 </div>
 
 <div class="list_chansons">
-    <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1,1,1,1,1]">
-        <img src="assets/icon/gims.png" />
+    <div class="ion-item" *ngFor="let topSong of topSongs">
+      <img [src]="topSong.thumbnail" alt="">
         <div class="title">
-            <h3>Mon coeur avait raison</h3>
-            <p>admin | 3.59</p>
+            <h3>{{ topSong.title }}</h3>
+            <p  class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
         </div>
         <div class="block-btn">
             <ion-button class="btn-play" (click)="goToPlay()">

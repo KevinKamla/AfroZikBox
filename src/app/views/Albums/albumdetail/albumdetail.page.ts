@@ -3,6 +3,7 @@ import { ModalController, NavController,} from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../../play/play.page';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TopAlbumsService } from '../../../services/top-albums.service';
 
 @Component({
   selector: 'app-albumdetail',
@@ -13,14 +14,18 @@ export class AlbumdetailPage implements OnInit {
 
   pauseIcon: string = "play-circle";
   state = 'modal';
-
+  topAlbums:any;
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     public route: Router,
     private aroute: ActivatedRoute,
+    private routes: ActivatedRoute,
+    private topAlbumsService:TopAlbumsService,
   ) { }
 
+  album: any;
+  songs: any[] = [];
 
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
@@ -58,13 +63,35 @@ export class AlbumdetailPage implements OnInit {
   //   musicTab.musicIsPlay = true;
   //   musicTab.isClose = false;
   // }
-
+ 
   closeModal() {
     this.modalCtrl.dismiss();
   }
-
+  places :any;
   ngOnInit() {
     this.state = this.aroute.snapshot.params['state'];
+    const albumId = this.routes.snapshot.paramMap.get('id');
+
+    const storedAlbum = localStorage.getItem('selectedAlbum');
+
+    // Vérifier si l'album existe dans le localStorage
+    if (storedAlbum) {
+      // Convertir la chaîne JSON en un objet
+      this.album = JSON.parse(storedAlbum);
+      this.songs = this.album.songs
+      console.log(this.songs, this.album);
+    } else {
+      console.log('Aucun album n\'est stocké dans le localStorage');
+    }
+    this.topAlbumsService.getTopAlbums(albumId).subscribe(
+      (response) => {
+        this.topAlbums = response.top_albums;
+        console.log('Détails de l\'albums récupérés :', this.topAlbums);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des détails de l\'artiste :', error);
+      }
+    );
   }
 
 }

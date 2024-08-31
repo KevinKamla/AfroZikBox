@@ -1,12 +1,12 @@
 <ion-list>
-    <div class="d-f-s item" *ngFor="let item of [1,1,1,1,1,1,1,1,1]">
-        <div class="d-f-s logo-title" [routerLink]="['../../artistprofil']">
+    <div class="d-f-s item" *ngFor="let artist of artists">
+        <div class="d-f-s logo-title" [routerLink]="['/artist-profil', artist.id]">
             <ion-avatar slot="start">
-                <img [src]="['assets/icon/profil.png']" />
+                <img [src]="artist.avatar" />
             </ion-avatar>
             <div class="detail">
-                <h5>Maitre Gims</h5>
-                <p>Artiste</p>
+                <h5>{{ artist.name }}</h5>
+                <p>artists</p>
             </div>
         </div>
         <ion-button expand="block" shape="round">

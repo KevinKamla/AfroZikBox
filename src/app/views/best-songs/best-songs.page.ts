@@ -3,7 +3,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, NgModule, OnInit } from '@angular/co
 import { IonPopover, ModalController, NavController, PopoverController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../../views/play/play.page';
-
+import { TopSongsService } from '../../services/top-songs.service';
 @Component({
   selector: 'app-best-songs',
   templateUrl: './best-songs.page.html',
@@ -11,10 +11,11 @@ import { musicTab } from '../../views/play/play.page';
 })
 export class BestSongsPage implements OnInit {
 
-
+  topSongs: any[] = [];
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private topsService: TopSongsService,
   ) { }
 
 
@@ -35,9 +36,22 @@ export class BestSongsPage implements OnInit {
     this.navCtrl.navigateForward('play');
   }
 
-
+  numberOfTopSongs: number = 0;
   ngOnInit() {
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        console.log('Meilleur songs récupérés :', response);
+        this.topSongs = response.data;
 
+        const numberOfSongs = this.topSongs.length;
+        console.log('Nombre de Meilleur songs :', numberOfSongs);
+
+        this.numberOfTopSongs = numberOfSongs;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+      }
+    );
   }
 
 }
