@@ -5,30 +5,48 @@
 </div>
 
 <div class="list_albums">
-    <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of topalbums">
-        <div class="bg-album" [routerLink]="['../../albumdetail',album.id]">
-            <img class="background-image" [src]="album.thumbnail" />
-            <div class="orange-disc"></div>
-            <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
-        </div>
-        <div class="details">
-            <div class="title">
-                <h3>{{album.title}}</h3>
-                <p>{{album.description}}</p>
+
+    <div *ngIf="topalbums.length > 0; else ionSkeletonAlbum">
+        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of topalbums">
+            <div class="bg-album" [routerLink]="['../../albumdetail',album.id]">
+                <img class="background-image" [src]="album.thumbnail" />
+                <div class="orange-disc"></div>
+                <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
             </div>
-            <div class="info ">
-                <ion-badge color="primary" shape="round">
-                    {{album.category_name}}
-                </ion-badge>
-                <ion-badge color="medium" shape="round">
-                    {{album.count_songs}} Chansons
-                </ion-badge>
-                <ion-badge color="danger" shape="round">
-                    $ {{album.price}}
-                </ion-badge>
+            <div class="details">
+                <div class="title">
+                    <h3>{{album.title}}</h3>
+                    <p>{{album.description}}</p>
+                </div>
+                <div class="info ">
+                    <ion-badge color="primary" shape="round">
+                        {{album.category_name}}
+                    </ion-badge>
+                    <ion-badge color="medium" shape="round">
+                        {{album.count_songs}} Chansons
+                    </ion-badge>
+                    <ion-badge color="danger" shape="round">
+                        $ {{album.price}}
+                    </ion-badge>
+                </div>
             </div>
-        </div>
-    </ion-item>
+        </ion-item>
+    </div>
+    <ng-template #ionSkeletonAlbum>
+        <ion-item class="img-detail d-f-s ion-no-border item-skel" *ngFor="let album of [1,1,1,1,1]">
+            <div class="bg-album bg-album-skel">
+                <ion-thumbnail>
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-thumbnail>
+            </div>
+            <div class="details" style="width: 200px;">
+                <div class="title">
+                    <h3><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h3>
+                    <p><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
+                </div>
+            </div>
+        </ion-item>
+    </ng-template>
 </div>
 
 <ion-popover trigger="popover-button" [dismissOnSelect]="true">

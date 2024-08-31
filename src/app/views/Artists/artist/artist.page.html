@@ -1,16 +1,32 @@
-<ion-list>
-    <div class="d-f-s item" *ngFor="let artist of artists">
-        <div class="d-f-s logo-title" [routerLink]="['/artist-profil', artist.id]">
-            <ion-avatar slot="start">
-                <img [src]="artist.avatar" />
-            </ion-avatar>
-            <div class="detail">
-                <h5>{{ artist.name }}</h5>
-                <p>artists</p>
+<div>
+    <div *ngIf="artists.length > 0; else ionSkeletonArtist">
+        <div class="d-f-s item" *ngFor="let artist of artists">
+            <div class="d-f-s logo-title" [routerLink]="['/artist-profil', artist.id]">
+                <ion-avatar slot="start">
+                    <img [src]="artist.avatar" />
+                </ion-avatar>
+                <div class="detail">
+                    <h5>{{ artist.name }}</h5>
+                    <p>artists</p>
+                </div>
+            </div>
+            <ion-button expand="block" shape="round">
+                Suivre
+            </ion-button>
+            </div>
+    </div>
+
+    <ng-template #ionSkeletonArtist>
+        <div class="ion-item d-f" style="margin-bottom: 1rem;" *ngFor="let song of [1,1,1,1]">
+            <div class="d-f-s logo-title skel">
+                <ion-avatar slot="start">
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-avatar>
+                <div class="detail" style="width: 150px;">
+                    <h5><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h5>
+                    <p><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+                </div>
             </div>
         </div>
-        <ion-button expand="block" shape="round">
-            Suivre
-        </ion-button>
-    </div>
-</ion-list>
+    </ng-template>
+</div>

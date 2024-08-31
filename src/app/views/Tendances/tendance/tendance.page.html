@@ -17,7 +17,7 @@
     </div>
     <div class="bloc_popular_playlist">
         <h5>Playlists populaires</h5>
-        <div class="container-scroll">
+        <div class="container-scroll" *ngIf="10 > 1; else ionSkeletonPlaylist">
             <div class="scroll-box">
                 <div class="movie" *ngFor="let item of [1,1,1,1,1]">
                     <img class="img-intro" src="assets/icon/gims.png" [routerLink]="['../../playlistdetail']" />
@@ -25,21 +25,52 @@
                 </div>
             </div>
         </div>
+        <ng-template #ionSkeletonPlaylist>
+            <div class="container-scroll">
+                <div class="scroll-box">
+                    <div class="movie" *ngFor="let item of [1,2,3,4,5]">
+                        <ion-thumbnail slot="start">
+                            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                        </ion-thumbnail>
+                        <p>
+                            <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
     </div>
     <div class="bloc_news">
         <div class="box-title">
             <h3>AfroZikNews</h3>
             <p [routerLink]="['/listtendance']">Voir plus</p>
         </div>
-        <ion-card button [routerLink]="['/detailtendance']"  *ngFor="let article of article" (click)="selectArticle(article)">
-            <img [src]="article.thumbnail" style="width: 100%;" />
-            <div class="footer">
-                <div class="info d-f-s">
-                    <ion-label>Spotlights</ion-label>
-                    <ion-label>{{ article.created_at }}</ion-label>
+        <div *ngIf="article.length > 0; else ionSkeletonArticle">
+            <ion-card button [routerLink]="['/detailtendance']" *ngFor="let article of article"
+                (click)="selectArticle(article)">
+                <img [src]="article.thumbnail" style="width: 100%;" />
+                <div class="footer">
+                    <div class="info d-f-s">
+                        <ion-label>Spotlights</ion-label>
+                        <ion-label>{{ article.created_at }}</ion-label>
+                    </div>
+                    <p class="song-description">{{ article.title }}</p>
                 </div>
-                <p  class="song-description">{{ article.title }}</p>
-            </div>
-        </ion-card>
+            </ion-card>
+        </div>
+        <ng-template #ionSkeletonArticle>
+            <ion-card *ngFor="let article of [1,1,1,1]">
+                <ion-thumbnail>
+                    <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                </ion-thumbnail>
+                <div class="footer">
+                    <div class="info d-f-s">
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </div>
+                    <p class="song-description"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+                </div>
+            </ion-card>
+        </ng-template>
     </div>
 </ion-content>
