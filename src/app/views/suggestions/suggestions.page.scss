@@ -87,9 +87,12 @@
     border-radius: 30px
 }
 
-.scroll-box ion-skeleton-text {
+.scroll-box ion-skeleton-text {    
+    background-color: #ffffff14;
+}
+.scroll-box ion-thumbnail{    
     height: 150px;
-    max-width: none;
+    width: 120px;
     border-radius: 20px;
 }
 

@@ -29,12 +29,14 @@ ion-content {
 
 .header {
     margin-inline: 15px;
+
     h3 {
         font-weight: 700;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
     span {
         display: flex;
         justify-content: center;
@@ -44,34 +46,50 @@ ion-content {
         font-weight: 600;
         color: var(--ion-color-primary);
         cursor: pointer;
+
         ion-icon {
             font-size: 25px;
         }
     }
 }
 
+
 .container {
-    padding-inline: 7px;
+    padding-inline: 15px;
+
     .list_chansons {
+
         // padding-inline: 1rem;
         .ion-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-block: 1rem;
+
             .img-detail {
                 gap: 15px;
                 margin-block: 8px;
             }
+
             .block-btn {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 ion-button {
                     --background: transparent;
                     --box-shadow: none;
                 }
             }
+
+            ion-thumbnail {
+                height: 80px;
+                width: 80px;
+                border-radius: 20px;
+                margin-right: 15px;
+            }
+
+            ion-skeleton-text {
+                background-color: #ffffff14;
+            }
+
             img {
                 height: 80px;
                 width: 80px;
@@ -79,8 +97,10 @@ ion-content {
                 margin-right: 10px;
             }
         }
+
         .title {
             overflow: hidden;
+
             h3 {
                 font-weight: 900;
                 font-size: 18px;
@@ -89,11 +109,14 @@ ion-content {
                 text-overflow: ellipsis;
                 overflow: hidden;
             }
+
             p {
                 color: gray;
             }
         }
+
         .btn-play {
+
             // height: 50px;
             // width: 50px;
             ion-icon {
@@ -110,6 +133,7 @@ ion-content {
         gap: 1rem;
         margin-top: 5px;
         padding-inline: 7px;
+
         ion-button {
             --background: var(--ion-color-primary);
             color: white;
@@ -118,10 +142,12 @@ ion-content {
             font-size: 17px;
             --padding-start: 7px;
             --padding-end: 1rem;
+
             ion-icon {
                 margin-block: 0.5rem;
             }
         }
+
         .btn-conference {
             --background: #ebceff;
             color: var(--ion-color-primary);

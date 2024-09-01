@@ -38,7 +38,7 @@ ion-header {
             // transform: translate(20px, 65px);
         }
         .texte {
-            width: 60%;
+            width: 800px;
             ion-button {
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -47,7 +47,7 @@ ion-header {
                 --background: white;
                 color: var(--ion-color-primary);
                 font-weight: 600;
-                margin: 5px 0;
+                margin-top: 15px;
                 width: 90%;
                 font-size: 13px;
                 text-transform: math-auto;

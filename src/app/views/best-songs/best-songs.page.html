@@ -5,21 +5,34 @@
 </div>
 
 <div class="list_chansons">
-    <div class="ion-item" *ngFor="let topSong of topSongs">
-      <img [src]="topSong.thumbnail" alt="">
-        <div class="title">
-            <h3>{{ topSong.title }}</h3>
-            <p  class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
-        </div>
-        <div class="block-btn">
-            <ion-button class="btn-play" (click)="goToPlay()">
-                <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
-            </ion-button>
-            <ion-button (click)="openOptionSound()">
-                <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
-            </ion-button>
+    <div *ngIf="topSongs.length > 0; else ionSkeletonBestSon">
+        <div class="ion-item d-f-s" *ngFor="let topSong of topSongs">
+            <img [src]="topSong.thumbnail" alt="">
+            <div class="title">
+                <h3>{{ topSong.title }}</h3>
+                <p class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
+            </div>
+            <div class="block-btn">
+                <ion-button class="btn-play" (click)="goToPlay()">
+                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openOptionSound()">
+                    <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+                </ion-button>
+            </div>
         </div>
     </div>
+    <ng-template #ionSkeletonBestSon>
+        <div class="ion-item d-f" *ngFor="let song of [1,1,1,1,1]">
+            <ion-thumbnail>
+                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+            </ion-thumbnail>
+            <div class="title" style="width:150px;">
+                <h3><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h3>
+                <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+            </div>
+        </div>
+    </ng-template>
 </div>
 
 <ion-popover trigger="popover-button" [dismissOnSelect]="true">
