@@ -45,8 +45,8 @@ export class ArtistprofilPage implements OnInit {
   }
 
 
-  followers() {
-    this.suivre === 'Suivre' ? this.suivre = 'Followers' : this.suivre = 'Suivre';
+  Following() {
+    this.suivre === 'Suivre' ? this.suivre = 'Following' : this.suivre = 'Suivre';
     this.suivre === 'Suivre' ? this.isFollowers = false : this.isFollowers = true;
   }
 
