@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -8,12 +8,26 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private apiUrl = 'https://afrozikbox.com/endpoint/auth/login';
+  private apiUrl = 'https://www.afrozikbox.com/endpoint/auth/login?username=PGES&password=Faruja@&server_key=d012ab7a1e170f66e8ed63176dcc4e7b&ios_device_id=,vjjkblnkghdgfdwxfjgki_yhkn';
 
   private apiUrl1 = 'https://afrozikbox.com/endpoint/auth/signup';
 
+  private apiUrl2 = 'https://www.afrozikbox.com/endpoint/auth/login';
+
 
   constructor(private http: HttpClient) {}
+
+  login(username: string, password: string, server_key: string, ios_device_id: string): Observable<any> {
+    // Ajout des paramètres à l'URL
+    const params = new HttpParams()
+      .set('username', username)
+      .set('password', password)
+      .set('server_key', server_key)
+      .set('ios_device_id', ios_device_id);
+
+    // Requête GET avec les paramètres
+    return this.http.get(this.apiUrl2, { params });
+  }
 
   authenticateUser(username: string, password: string, deviceId: string): Observable<any> {
     const headers = new HttpHeaders({

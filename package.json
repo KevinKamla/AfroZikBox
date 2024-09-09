@@ -35,6 +35,7 @@
         "@ionic-native/file-chooser": "^5.36.0",
         "@ionic/angular": "^8.0.0",
         "@ionic/pwa-elements": "^3.3.0",
+        "@ionic/storage-angular": "^4.0.0",
         "cordova-plugin-file": "^8.1.0",
         "cordova-plugin-media": "^7.0.0",
         "ionicons": "^7.0.0",

@@ -1,6 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController } from '@ionic/angular';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-settings',
@@ -10,8 +11,10 @@ import { ActionSheetController, ModalController } from '@ionic/angular';
 export class SettingsPage implements OnInit {
 
   themeList = ["Light", "Dark"];
+  email: string = '';  
 
   constructor(
+    private storage: Storage,
     private modal: ModalController,
     private actionSheetController: ActionSheetController
 
@@ -45,7 +48,14 @@ export class SettingsPage implements OnInit {
   selectedTheme(theme: string) {
     this.modal.dismiss();
   }
-  ngOnInit() {
+  async ngOnInit() {
+    await this.storage.create(); 
+
+    // Récupérer les informations utilisateur stockées
+    const user = await this.storage.get('user');
+    if (user) {
+      this.email = user.email;  // Assigner l'email stocké à la variable
+    }
   }
 
 }

@@ -110,7 +110,7 @@ export class SuggestionsPage implements OnInit {
     this.topsService.getTopSongs().subscribe(
       (response) => {
         this.topSongs = response.data;
-        console.log('Meilleur songs récupérés :', this.topSongs);
+        // console.log('Meilleur songs récupérés :', this.topSongs);
       },
       (error) => {
         console.error('Erreur lors de la récupération des Meilleur songs :', error);
@@ -118,7 +118,7 @@ export class SuggestionsPage implements OnInit {
     );
     this.artistService.getArtists().subscribe(
       (response) => {
-        console.log('Artistes récupérés :', response);
+        // console.log('Artistes récupérés :', response);
         this.artists = response.data.data;
       },
       (error) => {
@@ -127,11 +127,11 @@ export class SuggestionsPage implements OnInit {
     );
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
-        console.log('suggestions récupérés :', response);
+        // console.log('suggestions récupérés :', response);
         this.albums = response.randoms.album;
         this.songs = response.randoms.song;
         this.latest = response.new_releases.data;
-        console.log(this.latest,'latest sonfs');
+        // console.log(this.latest,'latest sonfs');
       },
       (error) => {
         console.error('Erreur lors de la récupération des suggestions :', error);
@@ -140,7 +140,7 @@ export class SuggestionsPage implements OnInit {
     this.genresService.getGenre().subscribe(
       (response) => {
         this.genres = response.data;
-        console.log('genres récupérés :', this.genres);
+        // console.log('genres récupérés :', this.genres);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);
@@ -149,7 +149,7 @@ export class SuggestionsPage implements OnInit {
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        console.log('meilleurs albums récupérés :', this.topalbums);
+        // console.log('meilleurs albums récupérés :', this.topalbums);
       },
       (error) => {
         console.error('Erreur lors de la récupération des meilleurs albums :', error);
@@ -157,23 +157,18 @@ export class SuggestionsPage implements OnInit {
     );
   }
   selectGenre(genre: any) {
-    // Ajouter les informations du genre au localStorage
     localStorage.setItem('selectedGenre', JSON.stringify(genre));
     
-    // Naviguer vers la page du genre sélectionné
     this.router.navigate(['/musicbygenre', genre.id]);
   }
 
   selectAlbum(album: any) {
-    // Ajouter les informations de l'album au localStorage
     localStorage.setItem('selectedAlbum', JSON.stringify(album));
     
-    // Naviguer vers la page des détails de l'album sélectionné
     this.router.navigate(['albumdetail', album.id]);
   }
 
   goToSegment(segment: string) {
-    // Exemple de méthode pour naviguer vers un segment spécifique
     this.router.navigate([segment]);
   }
 

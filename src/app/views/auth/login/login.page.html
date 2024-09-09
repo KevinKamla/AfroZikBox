@@ -1,18 +1,70 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>Connexion</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title>Connexion</ion-title>
     </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
     <div class="container">
-        <div class="logo d-f-c">
-            <img src="assets/icon/logo.png" alt="logo">
+      <div class="logo d-f-c">
+        <img src="assets/icon/logo.png" alt="logo">
+      </div>
+      <h2>Connectez-vous à votre compte</h2>
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <div class="input">
+          <div class="canView d-f-s">
+            <ion-icon slot="start" name="mail"></ion-icon>
+            <ion-input 
+              type="email" 
+              label="E-mail" 
+              labelPlacement="floating"
+              required
+              [(ngModel)]="email"
+              name="email"
+              #emailInput="ngModel"
+            ></ion-input>
+          </div>
+          <div *ngIf="emailInput.invalid && emailInput.touched">
+            <ion-text color="danger" *ngIf="emailInput.errors?.['required']">
+              L'email est requis.
+            </ion-text>
+          </div>
+          
+          <div class="canView d-f-s">
+            <ion-icon slot="start" name="lock-closed"></ion-icon>
+            <ion-input 
+              type="password" 
+              label="Mot de passe" 
+              labelPlacement="floating"
+              required
+              [(ngModel)]="password"
+              name="password"
+              #passwordInput="ngModel"
+            ></ion-input>
+          </div>
+          <div *ngIf="passwordInput.invalid && passwordInput.touched">
+            <ion-text color="danger" *ngIf="passwordInput.errors?.['required']">
+              Le mot de passe est requis.
+            </ion-text>
+          </div>
+  
+          <div class="d-f-c" style="gap: 10px;">
+            <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe">Se souvenir de moi</ion-checkbox>
+          </div>
+          <ion-button 
+            expand="block" 
+            shape="round" 
+            [disabled]="loginForm.invalid"
+            type="submit"
+          >
+            Se connecter
+          </ion-button>
+          <p style="margin-bottom: 1rem;" [routerLink]="['/resetpassword']">Mot de passe oublié?</p>
         </div>
-        <h2>Connectez-vous à votre compte</h2>
+        <h2>Connecter vous a votre compte </h2>
         <form action="" method="post">
             <div class="input">
                 <div class="canView d-f-s">
@@ -33,5 +85,8 @@
             </div>
         </form>
         <p>Vous n'avez pas encore de compte ?<span [routerLink]="['/register']"> S'inscrire</span></p>
+      </form>
+      <p>Vous n'avez pas encore de compte ?<span [routerLink]="['/register']"> S'inscrire</span></p>
     </div>
-</ion-content>
+  </ion-content>
+  

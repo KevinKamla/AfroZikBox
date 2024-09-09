@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    IonicStorageModule.forRoot(),  // Ajoutez cette ligne
     HttpClientModule ,
 
   ],
