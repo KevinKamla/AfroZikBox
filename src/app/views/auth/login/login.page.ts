@@ -18,7 +18,7 @@ export class LoginPage implements OnInit {
   serverKey: string = 'd012ab7a1e170f66e8ed63176dcc4e7b';
   iosDeviceId: string = 'vjjkblnkghdgfdwxfjgki_yhkn';
   rememberMe: boolean = false; 
-
+  errorMessage ='';
   // constructor(private authService: AuthService, private storage: Storage, private router: Router) {
   //   this.init();
   // }
@@ -75,13 +75,18 @@ export class LoginPage implements OnInit {
       async (response) => {
         console.log('Connexion réussie', response);
 
+        if(this.email=='PGES' && this.password=='Faruja@'){
+          this.router.navigate(['/tabs']);
+        }else{
+          console.error('identifiants incorrects');
+          this.errorMessage = 'identifiants incorrects';
+        }
         // Si l'utilisateur a coché "Se souvenir de moi", stocker les informations
         if (this.rememberMe) {
           await this.storage.set('user', { email: this.email });
         }
 
         // Rediriger vers la page d'accueil
-        this.router.navigate(['/tabs']);
       },
       (error) => {
         console.error('Erreur lors de la connexion', error);
