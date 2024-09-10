@@ -26,7 +26,7 @@
           <div class="d-f-c" style="gap: 10px;">
             <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe">Se souvenir de moi</ion-checkbox>
           </div>
-          <ion-text color="danger" *ngIf="errorMessage"></ion-text>
+          <ion-text color="danger" *ngIf="errorMessage">
             <p>{{ errorMessage }}</p>
           </ion-text>
           <ion-button expand="block" shape="round" type="submit">

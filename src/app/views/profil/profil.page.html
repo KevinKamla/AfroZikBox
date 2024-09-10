@@ -45,13 +45,19 @@
 
     <ng-container [ngSwitch]="selectedSegment">
         <ng-template ngSwitchCase="chansons">
-            <p class="p d-f-c">Rien à acfficher pour l'instant 000</p>
+            <div class="movie" *ngFor="let play of chansons">
+                <img class="img-intro" [src]="play.thumbnail">
+                <p class="song-description">{{play.title}}</p>
+            </div>
         </ng-template>
         <ng-template ngSwitchCase="album">
             <p class="p d-f-c">Rien à acfficher pour l'instant 111</p>
         </ng-template>
         <ng-template ngSwitchCase="playlists">
-            <p class="p d-f-c">Rien à acfficher pour l'instant 222</p>
+            <div class="movie" *ngFor="let play of playlist">
+                <img class="img-intro" [src]="play.thumbnail_ready">
+                <p class="song-description">{{play.name}}</p>
+            </div>
         </ng-template>
         <ng-template ngSwitchCase="favoris">
             <p class="p d-f-c">Rien à acfficher pour l'instant 333</p>

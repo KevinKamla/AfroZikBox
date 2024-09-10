@@ -118,7 +118,7 @@ export class SuggestionsPage implements OnInit {
     );
     this.artistService.getArtists().subscribe(
       (response) => {
-        // console.log('Artistes récupérés :', response);
+        console.log('Artistes récupérés :', response);
         this.artists = response.data.data;
       },
       (error) => {
@@ -140,7 +140,7 @@ export class SuggestionsPage implements OnInit {
     this.genresService.getGenre().subscribe(
       (response) => {
         this.genres = response.data;
-        // console.log('genres récupérés :', this.genres);
+        console.log('genres récupérés :', this.genres);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);
@@ -149,7 +149,7 @@ export class SuggestionsPage implements OnInit {
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        // console.log('meilleurs albums récupérés :', this.topalbums);
+        console.log('meilleurs albums récupérés :', this.topalbums);
       },
       (error) => {
         console.error('Erreur lors de la récupération des meilleurs albums :', error);

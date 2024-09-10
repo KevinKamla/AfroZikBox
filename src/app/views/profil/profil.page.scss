@@ -99,3 +99,58 @@ ion-segment {
     height: 50%;
     font-weight: 700;
 }
+.movie {
+    margin-right: 5px;
+    p {
+        font-weight: 600;
+        font-size: 16px;
+    }
+    ion-label {
+        margin-block: 5px;
+    }
+    .number_price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .number_sons {
+            padding: 5px;
+            background-color: grey;
+            border-radius: 15px;
+            color: white;
+            font-size: 13px;
+            text-wrap: nowrap;
+            overflow: hidden;
+            word-wrap: break-word;
+            text-overflow: ellipsis;
+        }
+    }
+    .bg-img {
+        position: relative;
+        height: 100%;
+        width: 120px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        border-radius: 15px;
+        height: 154px;
+        text-align: center;
+        ion-avatar {
+            position: absolute;
+            bottom: 0;
+            transform: translate(125%, 0);
+            width: 35px;
+        }
+        p {
+            font-size: 12px;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    }
+}
+.movie img {
+    height: 130px;
+    max-width: none;
+    border-radius: 30px
+}

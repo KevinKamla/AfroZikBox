@@ -19,39 +19,6 @@ export class LoginPage implements OnInit {
   iosDeviceId: string = 'vjjkblnkghdgfdwxfjgki_yhkn';
   rememberMe: boolean = false; 
   errorMessage ='';
-  // constructor(private authService: AuthService, private storage: Storage, private router: Router) {
-  //   this.init();
-  // }
-
-  // async init() {
-  //   await this.storage['create']();
-  //   const savedUser = await this.storage['get']('user');
-  //   if (savedUser) {
-  //     this.router.navigate(['/tabs']);
-  //   }
-  // }
-
-  // async login() {
-  //   if (this.email.trim() === '' || this.password.trim() === '') {
-  //     console.log('Email ou mot de passe est vide');
-  //     return;
-  //   }
-
-  //   this.authService.login(this.email, this.password, this.serverKey, this.iosDeviceId).subscribe(
-  //     async (response) => {
-  //       console.log('Connexion réussie', response);
-
-  //       if (this.rememberMe) {
-  //         await this.storage['set']('user', { email: this.email });
-  //       }
-
-  //       this.router.navigate(['/tabs']);
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors de la connexion', error);
-  //     }
-  //   );
-  // }
 
   constructor(private authService: AuthService, private storage: Storage, private router: Router) {
     this.init();
