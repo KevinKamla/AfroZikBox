@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { musicTab } from '../views/play/play.page';
+import { NativeAudio } from '@capacitor-community/native-audio';
 
 @Component({
   selector: 'app-tabs',
@@ -13,12 +14,16 @@ import { musicTab } from '../views/play/play.page';
 
 export class TabsPage implements OnInit{
   musictabOption = musicTab;
+  dataSon : any;
   constructor(
     private navCtrl: NavController,
   ) { }
 
   play() {
-    musicTab.musicIsPlay = !musicTab.musicIsPlay;
+    // musicTab.musicIsPlay = !musicTab.musicIsPlay;
+    NativeAudio.play({
+      assetId: 'fire',
+  });
   }
   
   close() {
@@ -31,8 +36,12 @@ export class TabsPage implements OnInit{
   }
 
   ngOnInit() {
-    this
+    const music = localStorage.getItem('music');
     
+    if(music){
+      this.dataSon = JSON.parse(music);
+      console.log(this.dataSon)
+    }
   }
 
 }
