@@ -91,13 +91,13 @@ export class SuggestionsPage implements OnInit {
       console.log('Erreur lors du préchargement', err);
     });
 
-    // NativeAudio.play({
-    //   assetId: 'fire'
-    // }).then(() => {
-    //   console.log('Lecture en cours');
-    // }).catch(err => {
-    //   console.log('Erreur lors de la lecture', err);
-    // });
+    NativeAudio.play({
+      assetId: 'fire'
+    }).then(() => {
+      console.log('Lecture en cours');
+    }).catch(err => {
+      console.log('Erreur lors de la lecture', err);
+    });
 
 
   }
