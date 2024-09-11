@@ -8,6 +8,7 @@ import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
+import { Media } from '@awesome-cordova-plugins/media/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,8 @@ import { IonicStorageModule } from '@ionic/storage-angular';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FileChooser
+    FileChooser,
+    Media
   ],
   bootstrap: [AppComponent],
 })

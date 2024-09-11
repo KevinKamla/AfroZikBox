@@ -1,69 +1,75 @@
-<ion-tabs>
 
-    <div class="player" [ngClass]="{'none':musictabOption.isClose}">
-        <div class="progress-bar">
+    <ion-tabs>
+
+        <div class="player" [ngClass]="{'none': musictabOption.isClose}">
+          <div class="progress-bar">
             <div>
-                <ion-range min="0" max="100" value="50" color="primary"> </ion-range>
+              <!-- Barre de progression du son -->
+              <ion-range [min]="0" [max]="duration" [value]="currentTime" (ionChange)="seekTo($event)" color="primary">
+              </ion-range>
             </div>
-        </div>
-        <ion-row>
+          </div>
+          <ion-row>
             <ion-col size="2">
-                <ion-img src="assets/icon/gims.png" alt="son" class="img" (click)="goToPlay()"></ion-img>
+              <ion-img [src]="dataSon.thumbnail" alt="son" class="img" (click)="goToPlay()"></ion-img>
             </ion-col>
             <ion-col size="5" class="d-b " (click)="goToPlay()">
-                <b>Mon coeur avait raison</b>
-                <span>Maitre Gims</span>
+              <b>{{ dataSon.description }}</b>
+              <span>{{ dataSon.title }}</span>
             </ion-col>
             <ion-col size="5" class="bloc-icon">
-                <div *ngIf="musictabOption.musicIsPlay; else templateName">
-                    <ion-button fill="clear" shape="round" (click)="play()">
-                        <ion-icon slot="icon-only" name="pause"></ion-icon>
-                    </ion-button>
-                </div>
-                <ng-template #templateName>
-                    <ion-button fill="clear" shape="round" (click)="play()">
-                        <ion-icon slot="icon-only" name="play"></ion-icon>
-                    </ion-button>
-                </ng-template>
-                <ion-button fill="clear" shape="round">
-                    <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+              <div *ngIf="musictabOption.musicIsPlay; else templateName">
+                <ion-button fill="clear" shape="round" (click)="play()">
+                  <ion-icon slot="icon-only" name="pause"></ion-icon>
                 </ion-button>
-                <ion-button fill="clear" shape="round" (click)="close()">
-                    <ion-icon slot="icon-only" color="dark" name="close"></ion-icon>
+              </div>
+              <ng-template #templateName>
+                <ion-button fill="clear" shape="round" (click)="play()">
+                  <ion-icon slot="icon-only" name="play"></ion-icon>
                 </ion-button>
+              </ng-template>
+              <ion-button fill="clear" shape="round">
+                <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" shape="round" (click)="close()">
+                <ion-icon slot="icon-only" color="dark" name="close"></ion-icon>
+              </ion-button>
             </ion-col>
-        </ion-row>
-    </div>
-    <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home" href="/tabs">
-            <ion-icon aria-hidden="true" name="home"></ion-icon>
-            <ion-label>Accueil</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="tendance" href="/tabs/tendance">
-            <ion-icon aria-hidden="true" name="trending-up"></ion-icon>
-            <ion-label>Tendances</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="favoris" href="/tabs/favoris">
-            <ion-icon aria-hidden="true" name="heart"></ion-icon>
-            <ion-label>Favoris</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="myliste" href="/tabs/myliste">
-            <ion-icon aria-hidden="true" name="document-text"></ion-icon>
-            <ion-label>ZikBox</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore">
-            <ion-icon aria-hidden="true" name="storefront"></ion-icon>
-            <ion-label>ZikStore</ion-label>
-        </ion-tab-button>
-
-        <ion-tab-button tab="profil" href="/tabs/profil">
-            <ion-icon aria-hidden="true" name="person"></ion-icon>
-            <ion-label>Profil</ion-label>
-        </ion-tab-button>
-    </ion-tab-bar>
-
-</ion-tabs>
+          </ion-row>
+        </div>
+      
+        <ion-tab-bar slot="bottom">
+            <ion-tab-button tab="home" href="/tabs">
+                <ion-icon aria-hidden="true" name="home"></ion-icon>
+                <ion-label>Accueil</ion-label>
+            </ion-tab-button>
+    
+            <ion-tab-button tab="tendance" href="/tabs/tendance">
+                <ion-icon aria-hidden="true" name="trending-up"></ion-icon>
+                <ion-label>Tendances</ion-label>
+            </ion-tab-button>
+    
+            <ion-tab-button tab="favoris" href="/tabs/favoris">
+                <ion-icon aria-hidden="true" name="heart"></ion-icon>
+                <ion-label>Favoris</ion-label>
+            </ion-tab-button>
+    
+            <ion-tab-button tab="myliste" href="/tabs/myliste">
+                <ion-icon aria-hidden="true" name="document-text"></ion-icon>
+                <ion-label>ZikBox</ion-label>
+            </ion-tab-button>
+    
+            <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore">
+                <ion-icon aria-hidden="true" name="storefront"></ion-icon>
+                <ion-label>ZikStore</ion-label>
+            </ion-tab-button>
+    
+            <ion-tab-button tab="profil" href="/tabs/profil">
+                <ion-icon aria-hidden="true" name="person"></ion-icon>
+                <ion-label>Profil</ion-label>
+            </ion-tab-button>
+        </ion-tab-bar>
+      
+      </ion-tabs>
+      
+  
