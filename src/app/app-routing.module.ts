@@ -255,7 +255,11 @@ const routes: Routes = [
   {
     path: 'listachat',
     loadChildren: () => import('./views/Store/listachat/listachat.module').then( m => m.ListachatPageModule)
+  },  {
+    path: 'userinfo',
+    loadChildren: () => import('./views/Account/userinfo/userinfo.module').then( m => m.UserinfoPageModule)
   },
+
 ];
 @NgModule({
   imports: [

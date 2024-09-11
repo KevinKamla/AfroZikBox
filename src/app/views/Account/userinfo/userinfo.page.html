@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">
+  <div class="bg-header"
+    [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/profil.png)'}">
+    <div class="back-boutton">
+      <ion-buttons slot="start">
+        <ion-button (click)="goToRoute()">
+          <ion-icon slot="icon-only" name="chevron-back-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+  <div class="bloc-info">
+    <h3>Infomation du profil</h3>
+    <p><ion-icon slot="start" name="location"></ion-icon> Inconue</p>
+    <div class="following d-f-s">
+      <div>
+        <h1 style="text-align: center;">0</h1>
+        <p>Piste</p>
+      </div>
+      <div>
+        <h1 style="text-align: center;">0</h1>
+        <p>Following</p>
+      </div>
+      <div>
+        <h1 style="text-align: center;">0</h1>
+        <p>Followers</p>
+      </div>
+    </div>
+    <p><ion-icon slot="start" name="mail"></ion-icon> {{'kvnkamla4@gmail.com'}}</p>
+    <p><ion-icon slot="start" name="man"></ion-icon> Homme</p>
+  </div>
+</ion-content>

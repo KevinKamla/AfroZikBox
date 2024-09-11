@@ -1,11 +1,12 @@
 <ion-content [fullscreen]="false" class="">
-    <div class="bg-header" [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/casque.png)'}">
+    <div class="bg-header"
+        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/casque.png)'}">
         <div class="header">
             <ion-buttons slot="end">
-                <ion-button fill="clear">
+                <ion-button fill="clear" [routerLink]="['/userinfo']">
                     <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
                 </ion-button>
-                <ion-button fill="clear">
+                <ion-button fill="clear" id="openOptionProfil">
                     <ion-icon slot="icon-only" name="ellipsis-horizontal-outline"></ion-icon>
                 </ion-button>
             </ion-buttons>
@@ -24,7 +25,7 @@
         </ion-text>
         <div class="item d-f-c">
             <div class="d-f-s block-edit-settings">
-                <ion-button shape="round" fill="clear">
+                <ion-button shape="round" fill="clear" [routerLink]="['/edituserinfo']">
                     <ion-icon name="pencil" slot="icon-only"></ion-icon>
                 </ion-button>
                 <p>Modifier les informations du profil</p>
@@ -36,31 +37,140 @@
         </div>
     </div>
 
-    <ion-segment mode="md" scrollHide scrollHide [(ngModel)]="selectedSegment">
+    <ion-segment mode="md" scrollable scrollHide mode="md" [(ngModel)]="selectedSegment">
         <ion-segment-button value="chansons">Chansons</ion-segment-button>
         <ion-segment-button value="album"> Albums</ion-segment-button>
         <ion-segment-button value="playlists">Playlists</ion-segment-button>
         <ion-segment-button value="favoris">Favoris</ion-segment-button>
+        <ion-segment-button value="activites">Activites</ion-segment-button>
+        <ion-segment-button value="afroZikStore">AfroZikStore</ion-segment-button>
+        <ion-segment-button value="radio">Radio</ion-segment-button>
+        <ion-segment-button value="evénements">Evénements</ion-segment-button>
     </ion-segment>
 
     <ng-container [ngSwitch]="selectedSegment">
-        <ng-template ngSwitchCase="chansons">
-            <div class="movie" *ngFor="let play of chansons">
-                <img class="img-intro" [src]="play.thumbnail">
-                <p class="song-description">{{play.title}}</p>
-            </div>
-        </ng-template>
-        <ng-template ngSwitchCase="album">
-            <p class="p d-f-c">Rien à acfficher pour l'instant 111</p>
-        </ng-template>
-        <ng-template ngSwitchCase="playlists">
-            <div class="movie" *ngFor="let play of playlist">
-                <img class="img-intro" [src]="play.thumbnail_ready">
-                <p class="song-description">{{play.name}}</p>
-            </div>
-        </ng-template>
-        <ng-template ngSwitchCase="favoris">
-            <p class="p d-f-c">Rien à acfficher pour l'instant 333</p>
-        </ng-template>
+        <div style="padding-bottom: 3rem;">
+
+            <ng-template ngSwitchCase="chansons">
+                <div class="list_chansons">
+                    <div *ngIf="chansons.length > 0; else ionSkeletonSon">
+                        <div class="ion-item d-f-s" *ngFor="let play of chansons">
+                            <img class="" [src]="play.thumbnail">
+                            <div class="title">
+                                <h3>{{play.title}}</h3>
+                            </div>
+                            <div class="block-btn">
+                                <ion-button class="btn-play">
+                                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="openOptionSound()">
+                                    <ion-icon slot="icon-only" color="primary"
+                                        name="ellipsis-vertical-outline"></ion-icon>
+                                </ion-button>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #ionSkeletonSon>
+                        <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                    </ng-template>
+                </div>
+            </ng-template>
+
+            <ng-template ngSwitchCase="album">
+                <div class="list_albums">
+                    <div *ngIf="albums.length === 0; else ionSkeletonAlbum">
+                        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let item of [1,1,1,1]">
+                            <div class="bg-album" [routerLink]="['../../albumdetail',1]">
+                                <img class="background-image" [src]="['assets/icon/people.png']" />
+                                <div class="orange-disc"></div>
+                                <ion-icon class="play-icon" color="primary" slot="icon-only"
+                                    name="play-circle"></ion-icon>
+                            </div>
+                            <div class="details">
+                                <div class="title">
+                                    <h3>album.title</h3>
+                                    <p>album.description</p>
+                                </div>
+                                <div class="info ">
+                                    <ion-badge color="primary" shape="round">
+                                        album.category_name
+                                    </ion-badge>
+                                    <ion-badge color="medium" shape="round">
+                                        album.count_songs Chansons
+                                    </ion-badge>
+                                    <ion-badge color="danger" shape="round">
+                                        $ album.price
+                                    </ion-badge>
+                                </div>
+                            </div>
+                        </ion-item>
+                    </div>
+                    <ng-template #ionSkeletonAlbum>
+                        <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                    </ng-template>
+                </div>
+            </ng-template>
+
+            <ng-template ngSwitchCase="playlists">
+                <div *ngIf="chansons.length > 0; else ionplaylist">
+                    <div class="img-detail d-f-s" *ngFor="let play of playlist">
+                        <div class="d-f-c" [routerLink]="['../playlistdetail']">
+                            <img [src]="play.thumbnail_ready">
+                            <div class="title">
+                                <h3>{{play.name}}</h3>
+                                <p>33 Chansons</p>
+                            </div>
+                        </div>
+                        <ion-button (click)="openOptionPlaylist()" fill="clear" shape="round">
+                            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+                        </ion-button>
+                    </div>
+                </div>
+                <ng-template #ionplaylist>
+                    <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                </ng-template>
+            </ng-template>
+
+            <ng-template ngSwitchCase="favoris">
+                <div class="list_chansons">
+                    <div *ngIf="chansons.length > 0; else ionSkeletonSon">
+                        <div class="ion-item d-f-s" *ngFor="let play of chansons">
+                            <img class="" [src]="play.thumbnail">
+                            <div class="title">
+                                <h3>{{play.title}}</h3>
+                            </div>
+                            <div class="block-btn">
+                                <ion-button class="btn-play">
+                                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                                </ion-button>
+                                <ion-button (click)="openOptionSound()">
+                                    <ion-icon slot="icon-only" color="primary"
+                                        name="ellipsis-vertical-outline"></ion-icon>
+                                </ion-button>
+                            </div>
+                        </div>
+                    </div>
+                    <ng-template #ionSkeletonSon>
+                        <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                    </ng-template>
+                </div>
+            </ng-template>
+
+            <ng-template ngSwitchCase="afroZikStore">
+                <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+            </ng-template>
+
+            <ng-template ngSwitchCase="radio">
+                <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+            </ng-template>
+
+            <ng-template ngSwitchCase="evénements">
+                <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+            </ng-template>
+
+        </div>
     </ng-container>
 </ion-content>
+
+
+<ion-alert trigger="openOptionProfil" [buttons]="btnoptionProfil"></ion-alert>

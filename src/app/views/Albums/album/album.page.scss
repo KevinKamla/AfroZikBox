@@ -43,6 +43,8 @@
 }
 
 .list_albums {
+    padding-top: 20px;
+    padding-inline: 1rem;
     .img-detail {
         gap: 15px;
         --border-color: transparent;
@@ -54,6 +56,7 @@
 
             .background-image {
                 min-width: 100px;
+                max-width: 185px;
                 width: 100%;
                 border-radius: 15px;
             }
