@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { musicTab } from '../views/play/play.page';
 import { NativeAudio } from '@capacitor-community/native-audio';
+import { SongsService } from 'src/app/services/songs.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tabs',
@@ -17,7 +19,7 @@ export class TabsPage implements OnInit, OnDestroy {
   duration = 0;  // Durée du morceau, sera récupérée dynamiquement
   intervalId: any; // ID pour stocker l'intervalle qui met à jour la position actuelle
 
-  constructor(private navCtrl: NavController) { }
+  constructor(private navCtrl: NavController,    private songService: SongsService  ) { }
 
   // Méthode pour jouer ou mettre en pause la musique
   play() {
@@ -97,14 +99,16 @@ export class TabsPage implements OnInit, OnDestroy {
 
   // Méthode pour récupérer la durée du morceau
   updateDuration() {
-    NativeAudio.getDuration({
-      assetId: 'fire'
-    }).then(result => {
-      this.duration = result.duration; // Mettre à jour la durée de la musique
-      console.log('Duration: ', this.duration);
-    }).catch(err => {
-      console.log('Erreur lors de la récupération de la durée', err);
-    });
+    if (this.currentSong) {
+      NativeAudio.getDuration({
+        assetId: 'fire'
+      }).then(result => {
+        this.duration = result.duration;
+        console.log('Duration: ', this.duration);
+      }).catch(err => {
+        console.log('Erreur lors de la récupération de la durée', err);
+      });
+    }
   }
 
   // Méthode pour arrêter complètement la musique
@@ -124,14 +128,23 @@ export class TabsPage implements OnInit, OnDestroy {
   goToPlay() {
     this.navCtrl.navigateForward('play');
   }
+  currentSong: any;
+  private songSubscription: Subscription | undefined;
 
   ngOnInit() {
+    // Récupérer les données de localStorage
     const music = localStorage.getItem('music');
-    
     if (music) {
       this.dataSon = JSON.parse(music);
-      this.updateDuration(); // Mettre à jour la durée de la musique au chargement
     }
+
+    // S'abonner au service pour obtenir les détails actuels de la chanson
+    this.songSubscription = this.songService.currentSong$.subscribe(song => {
+      this.currentSong = song;
+      if (song) {
+        this.updateDuration();
+      }
+    });
   }
 
   ngOnDestroy() {
