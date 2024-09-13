@@ -10,7 +10,10 @@ export class PlaylistService {
 
   constructor(private http: HttpClient) { }
 
-  getPlaylists(): Observable<any> {
+  // getPlaylists(): Observable<any> {
+  //   return this.http.get<any>(this.baseUrl);
+  // }
+  getPlaylists(playlistid?: string | null): Observable<any> {
     return this.http.get<any>(this.baseUrl);
   }
 }

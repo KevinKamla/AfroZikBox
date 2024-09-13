@@ -114,11 +114,11 @@
             <ng-template ngSwitchCase="playlists">
                 <div *ngIf="chansons.length > 0; else ionplaylist">
                     <div class="img-detail d-f-s" *ngFor="let play of playlist">
-                        <div class="d-f-c" [routerLink]="['../playlistdetail']">
+                        <div class="d-f-c" (click)="selectPlaylist(play)">
                             <img [src]="play.thumbnail_ready">
                             <div class="title">
                                 <h3>{{play.name}}</h3>
-                                <p>33 Chansons</p>
+                                <p>{{play.songs}} Chansons</p>
                             </div>
                         </div>
                         <ion-button (click)="openOptionPlaylist()" fill="clear" shape="round">

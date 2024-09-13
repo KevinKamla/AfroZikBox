@@ -110,6 +110,9 @@ export class ProfilPage implements OnInit {
     }
   }
 
-
+  selectPlaylist(playlist: any) {
+    localStorage.setItem('selectedPlaylist', JSON.stringify(playlist));
+    this.route.navigate(['playlistdetail', playlist.id]);
+  }
 
 }
