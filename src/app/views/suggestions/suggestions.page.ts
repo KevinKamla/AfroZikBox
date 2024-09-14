@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
 import { SuggestionsService } from '../../services/suggestions.service';
@@ -44,7 +44,8 @@ export class SuggestionsPage implements OnInit {
     private topAlbumsService: TopAlbumsService,
     private songService: SongsService,
     private media: Media,
-    private platform: Platform
+    private platform: Platform,
+    private alertController: AlertController
   ) { }
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -62,70 +63,71 @@ export class SuggestionsPage implements OnInit {
     },
   ];
 
+  // Méthode pour afficher une alerte
+  async showAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Erreur',
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
+  // Méthode pour arrêter la musique en cours
+  stopCurrentMusic(): Promise<void>  {
+    return this.songService.stopMusic().then(() => {
+      console.log('Son arrêté');
+    }).catch(err => {
+      console.log('Erreur lors de l\'arrêt du son', err);
+      this.showAlert('Une erreur est survenue : ' + err);
+    });
+  }
+
   // Méthode pour jouer ou mettre en pause la musique
-  playMusic = (item: any) => {
+  playMusic(item: any) {
     console.log(item);
     localStorage.setItem('music', JSON.stringify(item));
-    musicTab.isClose = false;
-    musicTab.musicIsPlay = true;
-    console.log('musicTab : ', musicTab);
-    const songUrl = item.audio_location;
-    const songId = item.id; // Track the song ID
-
-    // Arrête le son en cours si nécessaire
-    if (this.isPlaying && this.currentSongId !== songId) {
-      this.stopCurrentMusic().then(() => {
-        this.loadAndPlayMusic(songUrl, songId);
-      }).catch(err => {
-        console.log('Erreur lors de l\'arrêt du son', err);
-      });
-    } else if (!this.isPlaying) {
-      this.loadAndPlayMusic(songUrl, songId);
-    }
     this.songService.updateCurrentSong(item); // Met à jour l'état global
 
-  };
+    const songUrl = item.audio_location;
+    const songId = item.id;
 
-  // Méthode pour arrêter le son en cours
-  stopCurrentMusic() {
-    return NativeAudio.stop({
-      assetId: 'fire'
-    }).then(() => {
-      console.log('Son arrêté');
-      return NativeAudio.unload({
-        assetId: 'fire'
-      });
-    }).then(() => {
-      this.isPlaying = false;
+    this.songService.isPlaying$.subscribe(isPlaying => {
+      if (isPlaying && this.currentSongId !== songId) {
+        this.stopCurrentMusic().then(() => {
+          this.songService.loadSong(songUrl, songId).then(() => {
+            this.showAlert('Success loaded song file');
+            this.songService.playMusic().catch(err => {
+            this.showAlert('Erreur lors de la lecture de la chanson : ' + err);
+            console.log('Erreur lors de la lecture de la chanson', err);
+            });
+          }).catch(err => {
+            console.log('Erreur lors du chargement de la chanson', err);
+          });
+        }).catch(err => {
+          console.log('Erreur lors de l\'arrêt du son', err);
+        });
+      } else if (!isPlaying) {
+        this.songService.loadSong(songUrl, songId).then(() => {
+          this.songService.playMusic().catch(err => {
+            this.showAlert('Erreur lors de la lecture de la chanson : ' + err);
+            console.log('Erreur lors de la lecture de la chanson', err);
+          });
+        }).catch(err => {
+          console.log('Erreur lors du chargement de la chanson', err);
+        });
+      } else {
+        this.songService.pauseMusic().then(() => {
+          console.log('Musique mise en pause');
+        }).catch(err => {
+          console.log('Erreur lors de la mise en pause', err);
+          this.showAlert('Erreur lors de la mise en pause : ' + err);
+        });
+      }
     });
   }
 
-  // Méthode pour charger et jouer la nouvelle musique
-  loadAndPlayMusic(songUrl: string, songId: string) {
-    // Si un fichier est déjà en cours de lecture, arrêtez-le et libérez les ressources
-    if (this.file) {
-      this.file.stop();
-      this.file.release();
-      this.isPlaying = false;
-    }
-
-    this.platform.ready().then(() => {
-      // Crée un nouvel objet Media à partir de l'URL de la chanson
-      this.file = this.media.create(songUrl);
-      this.currentSongId = songId;  // Met à jour l'ID de la chanson actuelle
-      
-      // Lance la lecture après la création du MediaObject
-      this.file.play();
-      this.isPlaying = true;
-      console.log("son charger avec succes et en lecture")
-      // Facultatif : surveiller les événements de lecture
-      this.file.onStatusUpdate.subscribe(status => console.log('Status Update: ', status));
-      this.file.onSuccess.subscribe(() => console.log('Lecture terminée'));
-      this.file.onError.subscribe(error => console.log('Erreur: ', error));
-    }).catch(err => {
-      console.log('Erreur lors du chargement de la plateforme', err);
-    });
-  }
   // loadAndPlayMusic(songUrl: string, songId: string) {
     
   //   NativeAudio.preload({
@@ -191,6 +193,16 @@ export class SuggestionsPage implements OnInit {
   }
 
   ngOnInit() {
+    this.songService.isPlaying$.subscribe(isPlaying => {
+      this.isPlaying = isPlaying;
+    });
+
+    this.songService.currentSong$.subscribe(currentSong => {
+      if (currentSong) {
+        this.currentSongId = currentSong.id;
+      }
+    });
+
     // this.songService.fetchTopSongs();
     this.topsService.getTopSongs().subscribe(
       (response) => {

@@ -22,19 +22,17 @@ export class TabsPage implements OnInit, OnDestroy {
   intervalId: any; // ID pour stocker l'intervalle qui met à jour la position actuelle
 
   constructor(private navCtrl: NavController,    private songService: SongsService  ) { }
-  play() {
+   // Méthode pour jouer ou mettre en pause la musique
+   play() {
     if (!this.isPlaying) {
-      // Si le fichier audio est déjà chargé, continuer à partir du temps actuel
-      if (this.file) {
-        this.file.play({ playAudioWhenScreenIsLocked: true });
-        this.file.seekTo(this.currentTime * 1000); // Seek in milliseconds
-      }
-      this.isPlaying = true;
-      musicTab.musicIsPlay = true;
-
-      // Commence à mettre à jour la position actuelle
-      this.startProgressUpdater();
-      this.updateDuration(); // Mettre à jour la durée après la lecture
+      this.songService.playMusic().then(() => {
+        this.isPlaying = true;
+        musicTab.musicIsPlay = true;
+        this.startProgressUpdater();
+        this.updateDuration(); // Mettre à jour la durée après la lecture
+      }).catch(err => {
+        console.log('Erreur lors de la lecture de la musique', err);
+      });
     } else {
       this.pause();
     }
@@ -42,44 +40,33 @@ export class TabsPage implements OnInit, OnDestroy {
 
   // Méthode pour mettre en pause la musique
   pause() {
-    if (this.file) {
-      this.file.getCurrentPosition().then((position) => {
-        if (position >= 0) {
-          this.currentTime = position;
-        }
-        this.file?.pause();
-        this.isPlaying = false;
-        musicTab.musicIsPlay = false;
-        this.stopProgressUpdater(); // Arrêter la mise à jour de la progression
-      }).catch(err => {
-        console.log('Erreur lors de la récupération du temps actuel', err);
-      });
-    }
+    this.songService.pauseMusic().then(() => {
+      this.isPlaying = false;
+      musicTab.musicIsPlay = false;
+      this.stopProgressUpdater(); // Arrêter la mise à jour de la progression
+    }).catch(err => {
+      console.log('Erreur lors de la mise en pause de la musique', err);
+    });
   }
 
   // Méthode pour aller à une nouvelle position dans la musique
   seekTo(event: any) {
     const newPosition = event.detail.value;
     this.currentTime = newPosition;
-
-    if (this.file) {
-      this.file.seekTo(this.currentTime * 1000); // Seek in milliseconds
-    }
+    this.songService.seekTo(newPosition).catch(err => {
+      console.log('Erreur lors de la recherche dans la musique', err);
+    });
   }
 
   // Méthode pour démarrer la mise à jour de la progression
   startProgressUpdater() {
     this.intervalId = setInterval(() => {
-      if (this.file) {
-        this.file.getCurrentPosition().then((position) => {
-          if (position >= 0) {
-            this.currentTime = position;
-            console.log('Current time: ', this.currentTime);
-          }
-        }).catch(err => {
-          console.log('Erreur lors de la récupération du temps actuel', err);
-        });
-      }
+      this.songService.getCurrentTime().then(position => {
+        this.currentTime = position;
+        console.log('Current time: ', this.currentTime);
+      }).catch(err => {
+        console.log('Erreur lors de la récupération du temps actuel', err);
+      });
     }, 1000); // Mettre à jour chaque seconde
   }
 
@@ -89,6 +76,64 @@ export class TabsPage implements OnInit, OnDestroy {
       clearInterval(this.intervalId);
     }
   }
+
+  // Méthode pour fermer le lecteur de musique
+  close() {
+    musicTab.isClose = true;
+    musicTab.musicIsPlay = false;
+    this.stopMusic();
+  }
+
+  // Méthode pour récupérer la durée du morceau
+  updateDuration() {
+    this.songService.getDuration().then(duration => {
+      this.duration = duration;
+      console.log('Duration: ', this.duration);
+    }).catch(err => {
+      console.log('Erreur lors de la récupération de la durée', err);
+    });
+  }
+
+  // Méthode pour arrêter complètement la musique
+  stopMusic() {
+    this.songService.stopMusic().then(() => {
+      this.isPlaying = false;
+      this.currentTime = 0;
+      this.stopProgressUpdater(); // Arrêter la mise à jour de la progression
+      console.log('Musique arrêtée');
+    }).catch(err => {
+      console.log('Erreur lors de l\'arrêt de la musique', err);
+    });
+  }
+
+
+  // Méthode pour aller à la page de lecture
+  goToPlay() {
+    this.navCtrl.navigateForward('play');
+  }
+  currentSong: any;
+  private songSubscription: Subscription | undefined;
+
+  ngOnInit() {
+    // Récupérer les données de localStorage
+    const music = localStorage.getItem('music');
+    if (music) {
+      this.dataSon = JSON.parse(music);
+    }
+
+    // S'abonner au service pour obtenir les détails actuels de la chanson
+    this.songSubscription = this.songService.currentSong$.subscribe(song => {
+      this.currentSong = song;
+      if (song) {
+        this.updateDuration();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.stopProgressUpdater(); // Nettoyer l'intervalle lors de la destruction du composant
+  }
+}
 
   // Méthode pour jouer ou mettre en pause la musique
   // play() {
@@ -158,40 +203,7 @@ export class TabsPage implements OnInit, OnDestroy {
   // stopProgressUpdater() {
   //   clearInterval(this.intervalId);
   // }
-
-  // Méthode pour fermer le lecteur de musique
-  close() {
-    musicTab.isClose = true;
-    musicTab.musicIsPlay = false;
-    this.stopMusic();
-  }
-
-  // Méthode pour récupérer la durée du morceau
-  updateDuration() {
-    if (this.file) {
-      const duration = this.file.getDuration();
-      if (duration > 0) {
-        this.duration = duration;
-        console.log('Duration: ', this.duration);
-      } else {
-        console.log('Durée non disponible pour le moment');
-      }
-    }
-  }
-
-  // Méthode pour arrêter complètement la musique
-  stopMusic() {
-    if (this.file) {
-      this.file.stop(); // Arrête la musique
-      this.isPlaying = false;
-      this.currentTime = 0;
-      this.file.release(); // Libérer les ressources
-      this.stopProgressUpdater(); // Arrêter la mise à jour de la progression
-      console.log('Musique arrêtée');
-    }
-  }
-
-
+  
   // // Méthode pour récupérer la durée du morceau
   // updateDuration() {
   //   if (this.currentSong) {
@@ -218,31 +230,3 @@ export class TabsPage implements OnInit, OnDestroy {
   //     console.log('Erreur lors de l\'arrêt de la musique', err);
   //   });
   // }
-
-  // Méthode pour aller à la page de lecture
-  goToPlay() {
-    this.navCtrl.navigateForward('play');
-  }
-  currentSong: any;
-  private songSubscription: Subscription | undefined;
-
-  ngOnInit() {
-    // Récupérer les données de localStorage
-    const music = localStorage.getItem('music');
-    if (music) {
-      this.dataSon = JSON.parse(music);
-    }
-
-    // S'abonner au service pour obtenir les détails actuels de la chanson
-    this.songSubscription = this.songService.currentSong$.subscribe(song => {
-      this.currentSong = song;
-      if (song) {
-        this.updateDuration();
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.stopProgressUpdater(); // Nettoyer l'intervalle lors de la destruction du composant
-  }
-}
