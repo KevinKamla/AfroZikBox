@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { musicTab } from '../views/play/play.page';
-import { NativeAudio } from '@capacitor-community/native-audio';
 import { SongsService } from 'src/app/services/songs.service';
 import { Subscription } from 'rxjs';
 import { MediaObject } from '@awesome-cordova-plugins/media/ngx';
@@ -11,7 +10,6 @@ import { MediaObject } from '@awesome-cordova-plugins/media/ngx';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-
 export class TabsPage implements OnInit, OnDestroy {
   musictabOption = musicTab;
   dataSon: any;
@@ -19,11 +17,14 @@ export class TabsPage implements OnInit, OnDestroy {
   isPlaying = false;
   currentTime = 0; // Position actuelle du morceau
   duration = 0;  // Durée du morceau, sera récupérée dynamiquement
-  intervalId: any; // ID pour stocker l'intervalle qui met à jour la position actuelle
+  intervalId: any = null; // ID pour stocker l'intervalle qui met à jour la position actuelle
+  currentSong: any;
+  private songSubscription: Subscription | undefined;
 
-  constructor(private navCtrl: NavController,    private songService: SongsService  ) { }
-   // Méthode pour jouer ou mettre en pause la musique
-   play() {
+  constructor(private navCtrl: NavController, private songService: SongsService) {}
+
+  // Méthode pour jouer ou mettre en pause la musique
+  play() {
     if (!this.isPlaying) {
       this.songService.playMusic().then(() => {
         this.isPlaying = true;
@@ -60,20 +61,23 @@ export class TabsPage implements OnInit, OnDestroy {
 
   // Méthode pour démarrer la mise à jour de la progression
   startProgressUpdater() {
-    this.intervalId = setInterval(() => {
-      this.songService.getCurrentTime().then(position => {
-        this.currentTime = position;
-        console.log('Current time: ', this.currentTime);
-      }).catch(err => {
-        console.log('Erreur lors de la récupération du temps actuel', err);
-      });
-    }, 1000); // Mettre à jour chaque seconde
+    if (!this.intervalId) { // Vérifie si un intervalle est déjà défini
+      this.intervalId = setInterval(() => {
+        this.songService.getCurrentTime().then(position => {
+          this.currentTime = position;
+          console.log('Current time: ', this.currentTime);
+        }).catch(err => {
+          console.log('Erreur lors de la récupération du temps actuel', err);
+        });
+      }, 1000); // Mettre à jour chaque seconde
+    }
   }
 
   // Méthode pour arrêter la mise à jour de la progression
   stopProgressUpdater() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = null; // Réinitialiser l'ID de l'intervalle
     }
   }
 
@@ -106,13 +110,10 @@ export class TabsPage implements OnInit, OnDestroy {
     });
   }
 
-
   // Méthode pour aller à la page de lecture
   goToPlay() {
     this.navCtrl.navigateForward('play');
   }
-  currentSong: any;
-  private songSubscription: Subscription | undefined;
 
   ngOnInit() {
     // Récupérer les données de localStorage
@@ -132,8 +133,12 @@ export class TabsPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopProgressUpdater(); // Nettoyer l'intervalle lors de la destruction du composant
+    if (this.songSubscription) {
+      this.songSubscription.unsubscribe(); // Désabonner pour éviter les fuites de mémoire
+    }
   }
 }
+
 
   // Méthode pour jouer ou mettre en pause la musique
   // play() {

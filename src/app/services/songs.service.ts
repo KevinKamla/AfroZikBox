@@ -127,6 +127,18 @@ export class SongsService {
     }
   }
   
+  seekTo(position: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.mediaObject) {
+        this.mediaObject.seekTo(position * 1000); // Position en millisecondes
+        resolve();
+      } else {
+        this.showAlert('Aucun objet média pour se déplacer');
+        reject(new Error('No media object to seek'));
+      }
+    });
+  }
+
   async getCurrentTime(): Promise<number> {
     if (this.mediaObject) {
       try {

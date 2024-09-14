@@ -45,6 +45,25 @@ export class SuggestionsPage implements OnInit, OnDestroy {
     private alertController: AlertController
   ) { }
 
+  tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  isOpenmodalAchat = false;
+  walletIsOpen = false;
+  
+  walletButtons = [
+    {
+      text: 'Annuler',
+      handler: () => { this.walletIsOpen = false; },
+    },
+    {
+      text: 'Ajouter un porte monnaie',
+      handler: () => { this.walletIsOpen = false; this.navCtrl.navigateForward('/wallet'); },
+    },
+  ];
+
+    openPopup() {
+    this.isOpenmodalAchat = true;
+  }
+  
   // Méthode pour afficher une alerte
   async showAlert(message: string) {
     const alert = await this.alertController.create({
