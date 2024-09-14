@@ -86,6 +86,7 @@ export class SuggestionsPage implements OnInit {
 
   // Méthode pour jouer ou mettre en pause la musique
   playMusic(item: any) {
+    this.showAlert('Success loaded song file');
     console.log(item);
     localStorage.setItem('music', JSON.stringify(item));
     this.songService.updateCurrentSong(item); // Met à jour l'état global

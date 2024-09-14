@@ -27,7 +27,8 @@ export class SongsService {
   // Méthode pour afficher une alerte
   async showAlert(message: string) {
     const alert = await this.alertController.create({
-      header: 'Erreur',
+      header: 'Alert',
+      subHeader: 'A Sub Header Is Optional',
       message: message,
       buttons: ['OK']
     });
@@ -36,6 +37,7 @@ export class SongsService {
   }
 
   loadSong(songUrl: string, songId: string): Promise<void> {
+    this.showAlert("test ok !")
     return new Promise<void>((resolve, reject) => {
       this.platform.ready().then(() => {
         if (this.mediaObject) {
@@ -59,6 +61,7 @@ export class SongsService {
         // Démarrer la lecture
         try {
           this.mediaObject.play({ playAudioWhenScreenIsLocked: true });
+          this.showAlert('Lecture en cours !');
           this.isPlayingSubject.next(true);
           this.updateCurrentSong({ url: songUrl, id: songId });
           resolve();
