@@ -1,7 +1,8 @@
 {
   "name": "afrozikbox",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

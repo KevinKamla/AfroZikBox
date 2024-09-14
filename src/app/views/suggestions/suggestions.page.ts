@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
 import { SuggestionsService } from '../../services/suggestions.service';
@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 import { NativeAudio } from '@capacitor-community/native-audio';
 import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
+import {Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
 
 @Component({
   selector: 'app-suggestions',
@@ -21,8 +22,9 @@ import { StatutPage } from '../statut/statut.page';
 export class SuggestionsPage implements OnInit {
 
   topalbums: any[] = [];
+  file: MediaObject | null = null;
   isPlaying: boolean = false;
-  currentSongId: string | null = null; // Track the current song ID
+  currentSongId: string = '';
   genres: any[]=[];
   latest: any[] = [];
   songs: any[] = [];
@@ -40,7 +42,9 @@ export class SuggestionsPage implements OnInit {
     private artistService: ArtistService,
     private genresService: GenresService,
     private topAlbumsService: TopAlbumsService,
-    private songService: SongsService
+    private songService: SongsService,
+    private media: Media,
+    private platform: Platform
   ) { }
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -98,28 +102,54 @@ export class SuggestionsPage implements OnInit {
 
   // Méthode pour charger et jouer la nouvelle musique
   loadAndPlayMusic(songUrl: string, songId: string) {
-    NativeAudio.preload({
-      assetId: 'fire',
-      assetPath: songUrl,
-      audioChannelNum: 1,
-      isUrl: true
-    }).then(() => {
-      console.log('Audio préchargé');
-      this.isPlaying = true;
-      this.currentSongId = songId; // Update current song ID
+    // Si un fichier est déjà en cours de lecture, arrêtez-le et libérez les ressources
+    if (this.file) {
+      this.file.stop();
+      this.file.release();
+      this.isPlaying = false;
+    }
 
-      // Jouer la musique seulement après le préchargement réussi
-      NativeAudio.play({
-        assetId: 'fire'
-      }).then(() => {
-        console.log('Lecture en cours');
-      }).catch(err => {
-        console.log('Erreur lors de la lecture', err);
-      });
+    this.platform.ready().then(() => {
+      // Crée un nouvel objet Media à partir de l'URL de la chanson
+      this.file = this.media.create(songUrl);
+      this.currentSongId = songId;  // Met à jour l'ID de la chanson actuelle
+      
+      // Lance la lecture après la création du MediaObject
+      this.file.play();
+      this.isPlaying = true;
+      console.log("son charger avec succes et en lecture")
+      // Facultatif : surveiller les événements de lecture
+      this.file.onStatusUpdate.subscribe(status => console.log('Status Update: ', status));
+      this.file.onSuccess.subscribe(() => console.log('Lecture terminée'));
+      this.file.onError.subscribe(error => console.log('Erreur: ', error));
     }).catch(err => {
-      console.log('Erreur lors du préchargement', err);
+      console.log('Erreur lors du chargement de la plateforme', err);
     });
   }
+  // loadAndPlayMusic(songUrl: string, songId: string) {
+    
+  //   NativeAudio.preload({
+  //     assetId: 'fire',
+  //     assetPath: songUrl,
+  //     audioChannelNum: 1,
+  //     isUrl: true
+  //   }).then(() => {
+  //     console.log('Audio préchargé');
+  //     this.isPlaying = true;
+  //     this.currentSongId = songId; // Update current song ID
+
+  //     // Jouer la musique seulement après le préchargement réussi
+  //     NativeAudio.play({
+  //       assetId: 'fire'
+  //     }).then(() => {
+  //       console.log('Lecture en cours');
+  //     }).catch(err => {
+  //       console.log('Erreur lors de la lecture', err);
+  //     });
+  //   }).catch(err => {
+  //     console.log('Erreur lors du préchargement', err);
+  //   });
+  // }
 
   async openActut() {
     const modal = await this.modal.create({
