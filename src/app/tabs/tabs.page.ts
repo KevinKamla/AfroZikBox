@@ -41,6 +41,7 @@ export class TabsPage implements OnInit, OnDestroy {
     }
   }
 
+
   // Méthode pour mettre en pause la musique
   pause() {
     NativeAudio.getCurrentTime({
