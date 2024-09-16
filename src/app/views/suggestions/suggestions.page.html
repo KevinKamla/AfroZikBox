@@ -29,7 +29,7 @@
             <div class="movie" *ngFor="let topSong of topSongs">
                 <img class="img-intro" [src]="topSong.thumbnail" (click)="playMusic(topSong)">
                 <p>
-                    <ion-label>{{topSong.songArray.USER_DATA.s_name}} On my way - king saha (Lyrical video)</ion-label>
+                    <ion-label>{{topSong.title}}</ion-label>
                 </p>
             </div>
         </div>
@@ -183,7 +183,7 @@
 </div>
 
 <ion-alert [isOpen]="isOpenmodalAchat" header="Achat requits"
-    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]="confirDeletButtons"
+    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]=""
     [backdropDismiss]="false"></ion-alert>
 <ion-alert [isOpen]="walletIsOpen" header="Wallet"
     subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie"

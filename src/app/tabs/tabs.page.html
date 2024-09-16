@@ -5,30 +5,37 @@
           <div class="progress-bar">
             <div>
               <!-- Barre de progression du son -->
-              <ion-range [min]="0" [max]="duration" [value]="currentTime" (ionChange)="seekTo($event)" color="primary">
+              <ion-range 
+                min="0" 
+                [max]="duration" 
+                step="1" 
+                [(ngModel)]="currentTime" 
+                (ionChange)="seekTo($event)">
+                <ion-label slot="start">0</ion-label>
+                <ion-label slot="end">{{ duration | number:'1.0-0' }}</ion-label>
               </ion-range>
             </div>
           </div>
           <ion-row>
             <ion-col size="2">
-              <ion-img [src]="dataSon.thumbnail" alt="son" class="img" (click)="goToPlay()"></ion-img>
+              <ion-img [src]="currentSong?.thumbnail" alt="son" class="img" (click)="goToPlay()"></ion-img>
             </ion-col>
             <ion-col size="5" class="d-b " (click)="goToPlay()">
-              <b>{{ dataSon.description }}</b>
-              <span>{{ dataSon.title }}</span>
+              <b>{{ currentSong?.description }}</b>
+              <span>{{ currentSong?.title }}</span>
             </ion-col>
             <ion-col size="5" class="bloc-icon">
               <div *ngIf="musictabOption.musicIsPlay; else templateName">
-                <ion-button fill="clear" shape="round" (click)="play(false)">
+                <ion-button fill="clear" shape="round" (click)="play()">
                   <ion-icon slot="icon-only" name="pause"></ion-icon>
                 </ion-button>
               </div>
               <ng-template #templateName>
-                <ion-button fill="clear" shape="round" (click)="play(false)">
+                <ion-button fill="clear" shape="round" (click)="play()">
                   <ion-icon slot="icon-only" name="play"></ion-icon>
                 </ion-button>
               </ng-template>
-              <ion-button fill="clear" shape="round">
+              <ion-button fill="clear" shape="round" (click)="changeSong(newSongUrl)">
                 <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
               </ion-button>
               <ion-button fill="clear" shape="round" (click)="close()">
@@ -71,5 +78,3 @@
         </ion-tab-bar>
       
       </ion-tabs>
-      
-  

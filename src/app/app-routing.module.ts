@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./views/Tendances/detailtendance/detailtendance.module').then( m => m.DetailtendancePageModule)
   },
   {
+    path: 'playlistdetail/:id',
+    loadChildren: () => import('./views/Playlist/playlistdetail/playlistdetail.module').then( m => m.PlaylistdetailPageModule)
+  },
+  {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
@@ -255,7 +259,8 @@ const routes: Routes = [
   {
     path: 'listachat',
     loadChildren: () => import('./views/Store/listachat/listachat.module').then( m => m.ListachatPageModule)
-  },  {
+  },
+  {
     path: 'userinfo',
     loadChildren: () => import('./views/Account/userinfo/userinfo.module').then( m => m.UserinfoPageModule)
   },
