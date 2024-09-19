@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage-angular';
 })
 export class LoginPage implements OnInit {
 
-  // email: string = 'PGES';  // 
+  // email: string = 'PGES';
   // username: string = 'PGES';
   // password: string = 'Faruja@';
   email: string = '';
@@ -37,31 +37,38 @@ export class LoginPage implements OnInit {
       console.log('Email ou mot de passe est vide');
       return;
     }
-
     this.authService.login(this.email, this.password, this.serverKey, this.iosDeviceId).subscribe(
-      async (response) => {
-        console.log('Connexion réussie', response);
-
-        if(this.email=='PGES' && this.password=='Faruja@'){
-          this.router.navigate(['/tabs']);
-        }else{
-          console.error('identifiants incorrects');
-          this.errorMessage = 'identifiants incorrects';
-        }
-        // Si l'utilisateur a coché "Se souvenir de moi", stocker les informations
+      response => {
+        console.log('Login successful:', response);
+        localStorage.setItem("UserData", JSON.stringify(response))
         if (this.rememberMe) {
-          await this.storage.set('user', { email: this.email });
+          this.storage.set('user', { email: this.email });
         }
-
-        // Rediriger vers la page d'accueil
+        this.router.navigate(['/tabs']);
       },
-      (error) => {
-        console.error('Erreur lors de la connexion', error);
+      error => {
+        console.error('Login failed:', error);
+        // Handle login error
       }
+      // async (response) => {
+      //   console.log('Connexion réussie', response);
+
+      //   if(this.email=='PGES' && this.password=='Faruja@'){
+      //     this.router.navigate(['/tabs']);
+      //   }else{
+      //     console.error('identifiants incorrects');
+      //     this.errorMessage = 'identifiants incorrects';
+      //   }
+      //   if (this.rememberMe) {
+      //     await this.storage.set('user', { email: this.email });
+      //   }
+      // },
+      // (error) => {
+      //   console.error('Erreur lors de la connexion', error);
+      // }
     );
   }
   ngOnInit() {
   }
-
 
 }

@@ -24,7 +24,7 @@ export class AuthService {
       .set('password', password)
       .set('server_key', server_key)
       .set('ios_device_id', ios_device_id);
-
+      console.log("Information de la requete ",params)
     // Requête GET avec les paramètres
     return this.http.get(this.apiUrl2, { params });
   }

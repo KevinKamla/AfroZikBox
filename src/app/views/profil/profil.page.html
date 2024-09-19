@@ -13,11 +13,11 @@
         </div>
         <div class="d-f-c block-img">
             <ion-avatar class="logo">
-                <img src="assets/icon/people.png" alt="" />
+                <img [src]="[UserData.avatar]" alt="avatar" />
             </ion-avatar>
         </div>
         <ion-label>
-            {{ email }}
+            {{ UserData.email }}
             <ion-icon color="success" name="checkmark-circle"></ion-icon>
         </ion-label>
         <ion-text>

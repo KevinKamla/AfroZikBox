@@ -18,7 +18,7 @@ export class ProfilPage implements OnInit {
 
 
   selectedSegment: string = 'Chansons';
-
+  UserData : any
   email: string = '';
   latest: any[] = [];
   playlist: any[] = [];
@@ -51,13 +51,17 @@ export class ProfilPage implements OnInit {
     },
   ];
   async ngOnInit() {
-    await this.storage.create();
+    const userdata =localStorage.getItem("UserData")
+    if (userdata) {
+      this.UserData = JSON.parse(userdata).data
+
+      // this.email = user.email;  // Assigner l'email stocké à la variable
+    }
+    
+    // await this.storage.create();
 
     // Récupérer les informations utilisateur stockées
-    const user = await this.storage.get('user');
-    if (user) {
-      this.email = user.email;  // Assigner l'email stocké à la variable
-    }
+    // const user = await this.storage.get('user');
 
     this.playlistService.getPlaylists().subscribe(
       (response) => {
