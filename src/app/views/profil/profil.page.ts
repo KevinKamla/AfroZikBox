@@ -18,6 +18,7 @@ export class ProfilPage implements OnInit {
 
 
   selectedSegment: string = 'Chansons';
+
   UserData : any
   email: string = '';
   latest: any[] = [];
@@ -54,14 +55,14 @@ export class ProfilPage implements OnInit {
     const userdata =localStorage.getItem("UserData")
     if (userdata) {
       this.UserData = JSON.parse(userdata).data
-
-      // this.email = user.email;  // Assigner l'email stocké à la variable
     }
-    
-    // await this.storage.create();
+    await this.storage.create();
 
     // Récupérer les informations utilisateur stockées
-    // const user = await this.storage.get('user');
+    const user = await this.storage.get('user');
+    if (user) {
+      this.email = user.email;  // Assigner l'email stocké à la variable
+    }
 
     this.playlistService.getPlaylists().subscribe(
       (response) => {
@@ -114,6 +115,9 @@ export class ProfilPage implements OnInit {
     }
   }
 
-
+  selectPlaylist(playlist: any) {
+    localStorage.setItem('selectedPlaylist', JSON.stringify(playlist));
+    this.route.navigate(['playlistdetail', playlist.id]);
+  }
 
 }

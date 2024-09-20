@@ -40,6 +40,7 @@ export class LoginPage implements OnInit {
     this.authService.login(this.email, this.password, this.serverKey, this.iosDeviceId).subscribe(
       response => {
         console.log('Login successful:', response);
+        alert('Login successful')
         localStorage.setItem("UserData", JSON.stringify(response))
         if (this.rememberMe) {
           this.storage.set('user', { email: this.email });
@@ -48,6 +49,8 @@ export class LoginPage implements OnInit {
       },
       error => {
         console.error('Login failed:', error);
+        alert('Login failed:')
+        
         // Handle login error
       }
       // async (response) => {

@@ -15,10 +15,10 @@
 
         <div class="bg-img">
             <div class="img-details">
-                <img src="assets/icon/gims.png" alt="" srcset="">
+                <img [src]="currentSong?.thumbnail"  alt="" srcset="">
                 <div class="tags">
-                    <b [ngClass]="{'ative':musictabOption.musicIsPlay}">Mon coeur avait raison(official audio)</b>
-                    <p>Maitre Gims</p>
+                    <b [ngClass]="{'ative':musictabOption.musicIsPlay}">{{ currentSong.title }}</b>
+                    <p>{{ currentSong.description }}</p>
                 </div>
             </div>
 
