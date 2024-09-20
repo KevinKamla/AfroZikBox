@@ -13,11 +13,15 @@
             <img src="assets/icon/logo.png" alt="logo">
         </div>
         <h2>Créer un compte</h2>
-        <form (ngSubmit)="onRegister()">
+        <form (ngSubmit)="registerPressed()">
             <div class="input">
-                <div class=" canView d-f-s">
+                <div class="canView d-f-s">
                     <ion-icon slot="start" name="person"></ion-icon>
-                    <ion-input type="text" label="Nom d'utilisateur" labelPlacement="floating" name="username" [(ngModel)]="name" required></ion-input>
+                    <ion-input type="text" label="Nom & Prénom" labelPlacement="floating" name="name" [(ngModel)]="name" required></ion-input>
+                </div>
+                <div class="canView d-f-s">
+                    <ion-icon slot="start" name="person"></ion-icon>
+                    <ion-input type="text" label="Nom d'utilisateur" labelPlacement="floating" name="username" [(ngModel)]="username" required></ion-input>
                 </div>
                 <div class="canView d-f-s">
                     <ion-icon slot="start" name="mail"></ion-icon>
@@ -31,14 +35,12 @@
                     <ion-icon slot="start" name="lock-closed"></ion-icon>
                     <ion-input type="password" label="Confirmer le passe" labelPlacement="floating" [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
                 </div>
-
-                <p>En vous inscrivant vous acceptez nos</p>
-                <p style="font-weight: 600;">Conditions d'utilisations</p>
-
-                <ion-button expand="block" shape="round" type="submit">
-                    S'inscrire
-                </ion-button>
             </div>
+            <p>En vous inscrivant vous acceptez nos</p>
+            <p style="font-weight: 600;">Conditions d'utilisations</p>
+            <ion-button expand="block" shape="round" type="submit">
+                S'inscrire
+            </ion-button>
         </form>
           
         <p>Vous avez déjà un compte ?<span [routerLink]="['/login']"> Se connecter</span></p>
