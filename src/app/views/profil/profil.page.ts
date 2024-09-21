@@ -23,6 +23,8 @@ export class ProfilPage implements OnInit {
   email: string = '';
   avatar: any;
   cover: any;
+  like: any;
+  email_on_follow_user: any;
   latest: any[] = [];
   playlist: any[] = [];
   chansons: any[] = [];
@@ -63,6 +65,8 @@ export class ProfilPage implements OnInit {
       this.email = UserData.email
       this.avatar = UserData.avatar
       this.cover = UserData.cover
+      this.like = UserData.email_on_follow_user
+      this.email_on_follow_user = UserData.email_on_follow_user
     }
     // Récupérer les informations utilisateur stockées
     // const user = await this.storage.get('user');
