@@ -14,6 +14,7 @@ export class DetailtendancePage implements OnInit {
     private routes: ActivatedRoute,
   ) { }
   article: any;
+  cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
 
   ngOnInit() {
     const albumId = this.routes.snapshot.paramMap.get('id');
@@ -28,7 +29,20 @@ export class DetailtendancePage implements OnInit {
       console.log(this.article);
     } else {
       console.log('Aucun article n\'est stocké dans le localStorage');
-    }
+    } 
+
+  const content = this.article.content;
+  const parser = new DOMParser();
+  const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
+  // console.log(decodedContent);
+  
+  if (decodedContent) {
+    this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
+  } else {
+    console.log('Le contenu décodé est null ou undefined');
+  }
+
+
   }
 
 }

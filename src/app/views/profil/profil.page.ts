@@ -1,3 +1,4 @@
+import { UserData } from './../../models/user-info';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -20,6 +21,8 @@ export class ProfilPage implements OnInit {
   selectedSegment: string = 'Chansons';
 
   email: string = '';
+  avatar: any;
+  cover: any;
   latest: any[] = [];
   playlist: any[] = [];
   chansons: any[] = [];
@@ -51,13 +54,21 @@ export class ProfilPage implements OnInit {
     },
   ];
   async ngOnInit() {
-    await this.storage.create();
+    // await this.storage.create();
 
-    // Récupérer les informations utilisateur stockées
-    const user = await this.storage.get('user');
-    if (user) {
-      this.email = user.email;  // Assigner l'email stocké à la variable
+    const u = localStorage.getItem("UserData")
+    if (u) {
+      const UserData = JSON.parse(u)
+      console.log("userdata :", UserData )
+      this.email = UserData.email
+      this.avatar = UserData.avatar
+      this.cover = UserData.cover
     }
+    // Récupérer les informations utilisateur stockées
+    // const user = await this.storage.get('user');
+    // if (user) {
+    //   this.email = user.email;  // Assigner l'email stocké à la variable
+    // }
 
     this.playlistService.getPlaylists().subscribe(
       (response) => {

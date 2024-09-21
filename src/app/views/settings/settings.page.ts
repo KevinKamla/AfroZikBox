@@ -12,6 +12,9 @@ export class SettingsPage implements OnInit {
 
   themeList = ["Light", "Dark"];
   email: string = '';  
+  avatar: any;
+  name = ''
+  
 
   constructor(
     private storage: Storage,
@@ -49,13 +52,21 @@ export class SettingsPage implements OnInit {
     this.modal.dismiss();
   }
   async ngOnInit() {
-    await this.storage.create(); 
+    const u = localStorage.getItem("UserData")
+    if (u) {
+      const UserData = JSON.parse(u)
+      console.log("userdata :", UserData )
+      this.email = UserData.email
+      this.avatar = UserData.avatar
+      this.name = UserData.name
+    }
+    // await this.storage.create(); 
 
     // Récupérer les informations utilisateur stockées
-    const user = await this.storage.get('user');
-    if (user) {
-      this.email = user.email;  // Assigner l'email stocké à la variable
-    }
+    // const user = await this.storage.get('user');
+    // if (user) {
+    //   this.email = user.email;  // Assigner l'email stocké à la variable
+    // }
   }
 
 }

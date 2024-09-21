@@ -52,6 +52,7 @@ export class LoginPage {
       console.log(response);
       
       if (response && response.loginSuccess ) {
+        localStorage.setItem("UserData", JSON.stringify(response.loginSuccess.data))
         if (this.rememberMe) {
           localStorage.setItem('username', this.username);
           localStorage.setItem('password', this.password);
@@ -75,6 +76,15 @@ export class LoginPage {
       console.error('Erreur lors de la connexion:', error);
       this.presentToast('Une erreur est survenue lors de la connexion.');
       this.errorMessage = 'Une erreur est survenue lors de la connexion.'; 
+    }
+  }
+  async ngOnInit() {
+    const username = localStorage.getItem("username")
+    const password = localStorage.getItem("password")
+    if (typeof username === 'string' && typeof password === 'string') {
+      this.username = username
+      this.password = password
+      this.loginPressed()
     }
   }
 }

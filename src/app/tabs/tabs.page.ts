@@ -69,32 +69,54 @@ export class TabsPage implements OnInit, OnDestroy {
         this.file.stop();
         this.file.release();
       }
-      if (this.newSongUrl) {
-        this.file = this.media.create(this.newSongUrl);
+      if (this.currentSong && this.currentSong.url) {
+        this.file = this.media.create(this.currentSong.url);
         this.file.play();
         this.currentTime = 0;
-        musicTab.musicIsPlay = true;
+        this.isPlaying = true;
         this.startProgressUpdater();
-        setTimeout(() => this.updateDuration(), 1000); // Attendre une seconde avant d'appeler updateDuration
+        setTimeout(() => this.updateDuration(), 1000);
       } else {
-        console.error('URL de la nouvelle chanson non définie');
+        console.error('URL de la chanson actuelle non définie');
+        return;
       }
     } else {
-      if (this.isPlaying) {
-        this.pause();
-      } else {
-        if (this.file) {
-          this.file.play({ playAudioWhenScreenIsLocked: true });
-          this.isPlaying = true;
-          musicTab.musicIsPlay = true;
-          this.startProgressUpdater();
+      if (!this.file && this.currentSong && this.currentSong.url) {
+        this.file = this.media.create(this.currentSong.url);
+      }
+  
+      if (this.file) {
+        if (this.isPlaying) {
+          this.pause();
         } else {
-          console.error('Aucun fichier audio disponible pour jouer');
+          this.file.play();
+          this.isPlaying = true;
+          this.startProgressUpdater();
         }
+      } else {
+        console.error('Aucun fichier audio disponible pour jouer');
+        return;
       }
     }
-  }
   
+    musicTab.musicIsPlay = this.isPlaying;
+  
+    // Gestion des erreurs
+    this.file.onStatusUpdate.subscribe(status => {
+      if (status === 2) { // MEDIA_ERROR
+        console.error('Erreur de lecture du média');
+        this.isPlaying = false;
+        musicTab.musicIsPlay = false;
+      }
+    });
+  
+    this.file.onSuccess.subscribe(() => {
+      console.log('Lecture terminée avec succès');
+      this.isPlaying = false;
+      musicTab.musicIsPlay = false;
+      this.stopProgressUpdater(); 
+    });
+  }
   
   pause() {
     if (this.file) {
@@ -156,6 +178,15 @@ export class TabsPage implements OnInit, OnDestroy {
     musicTab.isClose = true;
     musicTab.musicIsPlay = false;
     this.stopMusic();
+    // Ajout de ces lignes
+    if (this.file) {
+      this.file.stop();
+      this.file.release();
+      this.file = null;
+    }
+    this.isPlaying = false;
+    this.currentTime = 0;
+    this.stopProgressUpdater();
   }
 
   updateDuration() {
@@ -190,9 +221,10 @@ export class TabsPage implements OnInit, OnDestroy {
   stopMusic() {
     if (this.file) {
       this.file.stop(); // Arrêter la musique
+      this.file.release();
+      this.file = null;
       this.isPlaying = false;
       this.currentTime = 0;
-      this.file.release(); // Libérer les ressources
       this.stopProgressUpdater(); // Arrêter la mise à jour de la progression
       console.log('Musique arrêtée');
     }

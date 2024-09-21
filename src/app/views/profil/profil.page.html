@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="false" class="">
     <div class="bg-header"
-        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/casque.png)'}">
+        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(' + cover + ')'}">
         <div class="header">
             <ion-buttons slot="end">
                 <ion-button fill="clear" [routerLink]="['/userinfo']">
@@ -13,7 +13,7 @@
         </div>
         <div class="d-f-c block-img">
             <ion-avatar class="logo">
-                <img src="assets/icon/people.png" alt="" />
+                <img [src]="[avatar]" alt="" />
             </ion-avatar>
         </div>
         <ion-label>
