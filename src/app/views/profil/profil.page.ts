@@ -120,4 +120,5 @@ export class ProfilPage implements OnInit {
     this.route.navigate(['playlistdetail', playlist.id]);
   }
 
+
 }

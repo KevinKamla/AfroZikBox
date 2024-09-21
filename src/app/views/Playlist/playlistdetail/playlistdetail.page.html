@@ -10,10 +10,10 @@
 
     <div class="container">
         <div class="img-detail d-f">
-            <img src="assets/icon/gims.png" />
+            <img [src]="plays.thumbnail_ready" />
             <div class="title">
-                <h3>Ceinture Rouge</h3>
-                <p>33 Chansons</p>
+                <h3>{{plays.name}}</h3>
+                <p>{{plays.songs}} Chansons</p>
                 <ion-buttons slot="start">
                     <ion-button id="modal-avertissement">
                         <ion-icon slot="icon-only" name="download-outline"></ion-icon>
@@ -37,7 +37,7 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of [1,1,1,1]">
+            <div class="ion-item" *ngFor="let song of playlists">
                 <img src="assets/icon/gims.png" />
                 <div class="title">
                     <h3>Mon coeur avait raison</h3>

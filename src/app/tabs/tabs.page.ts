@@ -23,7 +23,6 @@ export class TabsPage implements OnInit, OnDestroy {
   private songSubscription: Subscription | undefined;
   currentSong: any; // Ajoutez cette propriété si ce n'est pas déjà fait
 
-  
   constructor(
     private navCtrl: NavController,
     private songService: SongsService,
@@ -208,4 +207,5 @@ export class TabsPage implements OnInit, OnDestroy {
     }
   }
   
+
 }

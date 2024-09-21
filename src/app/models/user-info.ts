@@ -1,0 +1,112 @@
+// src/app/models/user-info.models.ts
+
+import { Publisher } from './publisher';
+import { Album } from './album';
+import { Playlist } from './playlist';
+import { Song } from './song';
+import { Activity } from './activity';
+import { Event } from './event';
+import { Details } from './details';
+import { EmailPrivacy } from './email-privacy';
+
+export type MultipleValues = any[]; // Tableau générique (à affiner selon les données)
+
+export interface UserInfoSuccessModel {
+  status?: number;
+  data?: UserData;
+  details?: Details;
+}
+
+export interface UserData {
+  id?: number;
+  username?: string;
+  email?: string;
+  ip_address?: string;
+  password?: string;
+  name?: string;
+  gender?: string;
+  email_code?: string;
+  language?: string;
+  avatar?: string;
+  cover?: string;
+  src?: string;
+  country_id?: number;
+  age?: number;
+  about?: string;
+  google?: string;
+  facebook?: string;
+  twitter?: string;
+  instagram?: string;
+  linkedIn?: string;
+  vk?: string;
+  qq?: string;
+  wechat?: string;
+  discord?: string;
+  mailru?: string;
+  active?: number;
+  admin?: number;
+  verified?: number;
+  last_active?: number;
+  registered?: string;
+  uploads?: MultipleValues;
+  wallet?: string;
+  balance?: string;
+  website?: string;
+  artist?: number;
+  is_pro?: number;
+  pro_type?: number;
+  pro_time?: number;
+  last_follow_id?: number;
+  ios_device_id?: string;
+  android_device_id?: string;
+  web_device_id?: string;
+  two_factor?: number;
+  two_factor_hash?: string;
+  new_email?: string;
+  two_factor_verified?: number;
+  new_phone?: string;
+  phone_number?: string;
+  last_login_data?: string;
+  referrer?: number;
+  ref_user_id?: number;
+  upload_import?: number;
+  paypal_email?: string;
+  info_file?: string;
+  time_code_sent?: number;
+  time?: number;
+  permission?: string;
+  email_privacy?: EmailPrivacy;
+  or_avatar?: string;
+  or_cover?: string;
+  url?: string;
+  about_decoded?: any;
+  org_wallet?: string;
+  wallet_format?: string;
+  or_balance?: number;
+  name_v?: string;
+  country_name?: string;
+  is_following?: boolean;
+  email_on_follow_user?: MultipleValues;
+  email_on_liked_track?: MultipleValues;
+  email_on_liked_comment?: MultipleValues;
+  email_on_artist_status_changed?: MultipleValues;
+  email_on_receipt_status_changed?: MultipleValues;
+  email_on_new_track?: MultipleValues;
+  email_on_reviewed_track?: MultipleValues;
+  email_on_comment_replay_mention?: MultipleValues;
+  email_on_comment_mention?: MultipleValues;
+  gender_text?: string;
+  is_blocked?: boolean;
+  followers?: Publisher[][];
+  following?: Publisher[][];
+  albums?: Album[][];
+  playlists?: Playlist[][];
+  recently_played?: Song[][];
+  liked?: Song[][];
+  activities?: Activity[][];
+  latestsongs?: Song[][];
+  top_songs?: Song[][];
+  store?: Song[][];
+  stations?: Song[][];
+  events?: Event[];
+}

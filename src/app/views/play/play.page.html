@@ -23,12 +23,12 @@
             </div>
 
             <div color="" class="bloc_range">
-                <ion-range min="0" max="100" value="33">
+                <ion-range min="0" max="{{currentSong.duration}}" value="33">
                     <ion-label slot="end">x{{1}}</ion-label>
                 </ion-range>
                 <div class="time d-f-s">
                     <ion-label slot="end">{{01}}:{{22}}</ion-label>
-                    <ion-label slot="start">{{03}}:{{50}}</ion-label>
+                    <ion-label slot="start">{{currentSong.duration}}</ion-label>
                 </div>
             </div>
 

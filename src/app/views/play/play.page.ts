@@ -287,4 +287,6 @@ export class PlayPage implements OnInit {
       console.log('Musique arrêtée');
     }
   }
+
 }
+
