@@ -207,4 +207,5 @@ export class TabsPage implements OnInit, OnDestroy {
     }
   }
   
+
 }

@@ -12,6 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LoginPage {
   username: string = '';
+
   password: string = '';
   server_key: string ='d012ab7a1e170f66e8ed63176dcc4e7b';
   DeviceId: string = '';
@@ -39,6 +40,7 @@ export class LoginPage {
       this.presentToast('Veuillez entrer un nom d’utilisateur.');
       return;
     }
+
 
     if (!this.password.trim()) {
       this.presentToast('Veuillez entrer un mot de passe.');

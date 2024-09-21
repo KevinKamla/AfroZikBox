@@ -11,7 +11,7 @@ import { Storage } from '@ionic/storage-angular';
 export class SettingsPage implements OnInit {
 
   themeList = ["Light", "Dark"];
-  email: string = '';  
+  UserData: any;  
 
   constructor(
     private storage: Storage,
@@ -49,13 +49,20 @@ export class SettingsPage implements OnInit {
     this.modal.dismiss();
   }
   async ngOnInit() {
-    await this.storage.create(); 
+
+    const userdata =localStorage.getItem("UserData")
+    if (userdata) {
+      this.UserData = JSON.parse(userdata).data
+
+      // this.email = user.email;  // Assigner l'email stocké à la variable
+    }
+    // await this.storage.create(); 
 
     // Récupérer les informations utilisateur stockées
-    const user = await this.storage.get('user');
-    if (user) {
-      this.email = user.email;  // Assigner l'email stocké à la variable
-    }
+    // const user = await this.storage.get('user');
+    // if (user) {
+    //   this.email = user.email;  // Assigner l'email stocké à la variable
+    // }
   }
 
 }
