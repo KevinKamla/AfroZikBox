@@ -99,6 +99,7 @@ export class SuggestionsPage implements OnInit {
         return; // Sortie immédiate si aucune musique n'est jouée
     }
 
+
     try {
         // Arrête la musique et libère les ressources
         this.file.stop(); // Arrête la lecture
@@ -231,4 +232,6 @@ export class SuggestionsPage implements OnInit {
       }
     );
   }
+
 }
+

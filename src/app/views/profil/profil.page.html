@@ -14,12 +14,14 @@
         <div class="d-f-c block-img">
             <ion-avatar class="logo">
                 <img [src]="[avatar]" alt="" />
+                <img [src]="UserData?.avatar" alt="" />
             </ion-avatar>
         </div>
         <ion-label>
-            {{ email }}
+            {{ UserData?.email }}
             <ion-icon color="success" name="checkmark-circle"></ion-icon>
         </ion-label>
+        
         <ion-text>
             {{like}} Like - {{email_on_follow_user}} Abonné
         </ion-text>

@@ -25,6 +25,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+
   registerUser(
     name: string,
     email: string,
@@ -36,6 +37,7 @@ export class AuthService {
   ): Observable<{
     [x: string]: any; success?: RegisterSuccessModel; error?: SessionErrorModel 
 }> {
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
