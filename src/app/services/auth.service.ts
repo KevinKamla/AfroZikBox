@@ -20,12 +20,26 @@ import {
 })
 export class AuthService {
   private apiUrl = `${environment.api}auth/login`;
+  private apiUrl2 = `${environment.api}auth/forgot-password`;
+  // https://afrozikbox.com/endpoint/auth/forgot-password?
   private url = `${environment.api}auth/signup?server_key=d012ab7a1e170f66e8ed63176dcc4e7b&id`;
   private serverKey = environment.server_key;
 
   constructor(private http: HttpClient) {}
 
+  forgotPassword(email: string): Observable<any> {
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('email', email);
 
+    return this.http.get(this.apiUrl2, { params }).pipe(
+      map(response => {
+        console.log('Réponse de réinitialisation du mot de passe:', response);
+        return response;
+      }),
+      catchError(error => this.handleError(error))
+    );
+  }
   registerUser(
     name: string,
     email: string,
@@ -132,5 +146,11 @@ export class AuthService {
         return throwError(() => error);
       })
     );
+  }
+  isLoggedIn(): boolean {
+    const userData = localStorage.getItem('UserData');
+    const username = localStorage.getItem('username');
+    const password = localStorage.getItem('password');
+    return !!userData && !!username && !!password;
   }
 }

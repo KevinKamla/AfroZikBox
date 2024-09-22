@@ -15,7 +15,7 @@ export class SettingsPage implements OnInit {
   avatar: any;
   name = ''
   
-  UserData: any;  
+
   constructor(
     private storage: Storage,
     private modal: ModalController,
@@ -59,12 +59,6 @@ export class SettingsPage implements OnInit {
       this.email = UserData.email
       this.avatar = UserData.avatar
       this.name = UserData.name
-
-    const userdata =localStorage.getItem("UserData")
-    if (userdata) {
-      this.UserData = JSON.parse(userdata).data
-
-      // this.email = user.email;  // Assigner l'email stocké à la variable
     }
     // await this.storage.create(); 
 
@@ -74,6 +68,5 @@ export class SettingsPage implements OnInit {
     //   this.email = user.email;  // Assigner l'email stocké à la variable
     // }
   }
-  }
-}
 
+}

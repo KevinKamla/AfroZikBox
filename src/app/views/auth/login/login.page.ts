@@ -12,7 +12,6 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LoginPage {
   username: string = '';
-
   password: string = '';
   server_key: string ='d012ab7a1e170f66e8ed63176dcc4e7b';
   DeviceId: string = '';
