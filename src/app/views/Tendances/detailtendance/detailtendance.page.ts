@@ -15,7 +15,7 @@ export class DetailtendancePage implements OnInit {
   ) { }
   article: any;
   cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
-
+  cleanTitle: string = '';  // Nouvelle propriété pour stocker le titre nettoyé
   ngOnInit() {
     const albumId = this.routes.snapshot.paramMap.get('id');
 
@@ -32,14 +32,22 @@ export class DetailtendancePage implements OnInit {
     } 
 
   const content = this.article.content;
+  const title = this.article.title;
+  const image = this.article.thumbnail;
   const parser = new DOMParser();
   const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
+  const decodedTitle = parser.parseFromString(title, 'text/html').body.textContent;
   // console.log(decodedContent);
   
   if (decodedContent) {
     this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
   } else {
     console.log('Le contenu décodé est null ou undefined');
+  }
+  if (decodedTitle) {
+    this.cleanTitle = decodedTitle.replace(/<[^>]+>/g, '');
+  } else {
+    console.log('Le titre décodé est null ou undefined');
   }
 
 

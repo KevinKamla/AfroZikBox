@@ -3,15 +3,15 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>{{article.title}}</ion-title>
+        <ion-title>{{cleanTitle}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <div class="container">
         <ion-card>
-            <h3>{{article.title}} </h3>
-            <img src="assets/icon/imgNew.png" style="width: 100%;" alt="img">
+            <h3>{{cleanTitle}} </h3>
+            <img [src]="article.thumbnail" style="width: 100%;" alt="img">
 
             <p class="date d-f">
                 Date :
