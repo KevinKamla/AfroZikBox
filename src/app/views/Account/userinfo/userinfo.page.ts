@@ -8,15 +8,29 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./userinfo.page.scss'],
 })
 export class UserinfoPage implements OnInit {
-
+  email: string = '';  
+  avatar: any;
+  email_on_follow_user:any;
+  gender:any;
+  name = ''
   constructor(
     private navCtrl: NavController,
     public route: Router,
 
   ) { }
 
+
   ngOnInit() {
-    this
+    const u = localStorage.getItem("UserData")
+    if (u) {
+      const UserData = JSON.parse(u)
+      console.log("userdata :", UserData )
+      this.email = UserData.email
+      this.avatar = UserData.avatar
+      this.name = UserData.name
+      this.gender = UserData.gender
+      this.email_on_follow_user = UserData.email_on_follow_user
+    }
   }
 
   goToRoute(route: string = '') {

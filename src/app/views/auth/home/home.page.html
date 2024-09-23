@@ -13,7 +13,7 @@
             </swiper-slide>
         </swiper-container>
         <div class="bouttons">
-            <ion-button expand="block" shape="round" [routerLink]="['/login']" routerLinkActive="router-link-active">Commencer</ion-button>
+            <ion-button expand="block" shape="round" (click)="onStart()" routerLinkActive="router-link-active" >Commencer</ion-button>
             <ion-button expand="block" color="dark" shape="round" [routerLink]="['/tabs']">Annuler</ion-button>
         </div>
     </div>

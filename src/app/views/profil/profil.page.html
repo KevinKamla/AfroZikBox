@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="false" class="">
     <div class="bg-header"
-        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(assets/icon/casque.png)'}">
+        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(' + cover + ')'}">
         <div class="header">
             <ion-buttons slot="end">
                 <ion-button fill="clear" [routerLink]="['/userinfo']">
@@ -13,16 +13,15 @@
         </div>
         <div class="d-f-c block-img">
             <ion-avatar class="logo">
-                <img [src]="UserData?.avatar" alt="" />
+                <img [src]="[avatar]" alt="" />
             </ion-avatar>
         </div>
         <ion-label>
-            {{ UserData?.email }}
+            {{ email }}
             <ion-icon color="success" name="checkmark-circle"></ion-icon>
         </ion-label>
-        
         <ion-text>
-            0 Like - 0 Abonné
+            {{like}} Like - {{email_on_follow_user}} Abonné
         </ion-text>
         <div class="item d-f-c">
             <div class="d-f-s block-edit-settings">
@@ -80,27 +79,27 @@
             <ng-template ngSwitchCase="album">
                 <div class="list_albums">
                     <div *ngIf="albums.length === 0; else ionSkeletonAlbum">
-                        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let item of [1,1,1,1]">
+                        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of albums">
                             <div class="bg-album" [routerLink]="['../../albumdetail',1]">
-                                <img class="background-image" [src]="['assets/icon/people.png']" />
+                                <img class="background-image" [src]="album.thumbnail" />
                                 <div class="orange-disc"></div>
                                 <ion-icon class="play-icon" color="primary" slot="icon-only"
                                     name="play-circle"></ion-icon>
                             </div>
                             <div class="details">
                                 <div class="title">
-                                    <h3>album.title</h3>
-                                    <p>album.description</p>
+                                    <h3>{{album.title}}</h3>
+                                    <p>{{album.description}}</p>
                                 </div>
                                 <div class="info ">
                                     <ion-badge color="primary" shape="round">
-                                        album.category_name
+                                        {{album.category_name}}
                                     </ion-badge>
                                     <ion-badge color="medium" shape="round">
-                                        album.count_songs Chansons
+                                        {{album.count_songs}} Chansons
                                     </ion-badge>
                                     <ion-badge color="danger" shape="round">
-                                        $ album.price
+                                        $ {{album.price}}
                                     </ion-badge>
                                 </div>
                             </div>
