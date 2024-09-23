@@ -4,6 +4,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 import { musicTab } from '../../play/play.page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TopAlbumsService } from '../../../services/top-albums.service';
+import { AlbumsService } from 'src/app/services/albums.service';
 
 @Component({
   selector: 'app-albumdetail',
@@ -15,6 +16,8 @@ export class AlbumdetailPage implements OnInit {
   pauseIcon: string = "play-circle";
   state = 'modal';
   topAlbums:any;
+  albumId: any;
+  albumSongs: any[] = [];
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
@@ -22,6 +25,7 @@ export class AlbumdetailPage implements OnInit {
     private aroute: ActivatedRoute,
     private routes: ActivatedRoute,
     private topAlbumsService:TopAlbumsService,
+    private albumsService: AlbumsService
   ) { }
 
   album: any;
@@ -67,11 +71,38 @@ export class AlbumdetailPage implements OnInit {
   closeModal() {
     this.modalCtrl.dismiss();
   }
+
+  convertSecondsToMinutes(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}m ${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}s`;  
+  }
+
+  loadAlbumSongs() {
+    this.albumsService.getAlbumsr(this.albumId, '').subscribe(
+      (response) => {
+        console.log(response);
+        this.albumSongs = response.data.data.map((song:any) => {
+          song.time = this.convertSecondsToMinutes(song.time);
+          return song;
+        });
+        console.log(`Chansons pour l'album ${this.albumId} :`, this.albumSongs);  
+      },
+      (error) => {
+        console.error(`Erreur lors de la récupération des chansons pour l'album ${this.albumId} :`, error);
+      }
+    );
+  }
+
   places :any;
   ngOnInit() {
     this.state = this.aroute.snapshot.params['state'];
-    const albumId = this.routes.snapshot.paramMap.get('id');
+    const albumId1 = this.routes.snapshot.paramMap.get('id');
+    this.albumId = this.routes.snapshot.paramMap.get('id');
 
+    this.songs = [];
+    this.loadAlbumSongs();
+    console.log(this.songs, this.album);
     const storedAlbum = localStorage.getItem('selectedAlbum');
 
     // Vérifier si l'album existe dans le localStorage
@@ -83,7 +114,7 @@ export class AlbumdetailPage implements OnInit {
     } else {
       console.log('Aucun album n\'est stocké dans le localStorage');
     }
-    this.topAlbumsService.getTopAlbums(albumId).subscribe(
+    this.topAlbumsService.getTopAlbums(albumId1).subscribe(
       (response) => {
         this.topAlbums = response.top_albums;
         console.log('Détails de l\'albums récupérés :', this.topAlbums);
