@@ -40,11 +40,14 @@ export class TabsPage implements OnInit, OnDestroy {
     // S'abonner au service pour obtenir les détails actuels de la chanson
     this.songSubscription = this.songService.currentSong$.subscribe(song => {
       this.currentSong = song;
+      
+      
       if (song) {
         this.changeSong(song.url); // Supposons que vous avez une propriété 'url' pour la chanson
         this.updateDuration();
       }
     });
+    console.log('leonel',this.songSubscription );
   }
 
   ngOnDestroy() {

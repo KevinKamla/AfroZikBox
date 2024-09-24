@@ -37,11 +37,11 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of playlists">
-                <img src="assets/icon/gims.png" />
+            <div class="ion-item" *ngFor="let item of playlists">
+                <img [src]="item.thumbnail" />
                 <div class="title">
-                    <h3>Mon coeur avait raison</h3>
-                    <p>admin | 3.59</p>
+                    <h3>{{ item.title }}</h3>
+                    <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" (click)="play()">
