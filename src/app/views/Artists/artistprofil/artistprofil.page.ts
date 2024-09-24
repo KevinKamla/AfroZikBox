@@ -14,7 +14,7 @@ export class ArtistprofilPage implements OnInit {
   suivre = 'Suivre';
   isFollowers = false;
   username = 'Bolingo';
-  artist: any []= [];
+  artist: any;
 
   constructor(
     private navCtrl: NavController,
