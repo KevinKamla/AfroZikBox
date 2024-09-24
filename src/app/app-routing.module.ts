@@ -225,7 +225,7 @@ const routes: Routes = [
     loadChildren: () => import('./views/abonnement/abonnement.module').then( m => m.AbonnementPageModule)
   },
   {
-    path: 'playlistdetail',
+    path: 'playlistdetail/:id',
     loadChildren: () => import('./views/Playlist/playlistdetail/playlistdetail.module').then( m => m.PlaylistdetailPageModule)
   },
   {

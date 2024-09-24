@@ -18,6 +18,9 @@ export class PlaylistdetailPage implements OnInit {
   currentRoute = '';
   playlists: any[]=[];
   playlist = '';
+  publicPlaylist: any[] = [];
+  playlistId: number | undefined;
+  playlistSongs: any[] = [];
   constructor(
     private modalCtrl: ModalController,
     public route: Router,
@@ -25,6 +28,7 @@ export class PlaylistdetailPage implements OnInit {
     private navCtrl: NavController,
     private actvroute: ActivatedRoute, 
     private playlistService: PlaylistService,
+    private publicPlaylistService: PlaylistService
 
   ) { }
   buttonAvert = [
@@ -92,9 +96,9 @@ export class PlaylistdetailPage implements OnInit {
   plays: any;
   songs: any[] = [];
   ngOnInit() {
-    this.playlist = this.actvroute.snapshot.params['playlist'];
+    // this.playlist = this.actvroute.snapshot.params['playlist'];
     
-    const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
+    // const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
 
     const storedAlbum = localStorage.getItem('selectedPlaylist');
 
@@ -107,15 +111,46 @@ export class PlaylistdetailPage implements OnInit {
       console.log('Aucune playlist n\'est stocké dans le localStorage');
     }
     
-    this.playlistService.getPlaylists(playlistid).subscribe(
-      (response) => {
-        this.playlist = response.playlists.songs;
-        console.log('playlist récupérés :', this.playlist);
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des genres :', error);
+    // this.playlistService.getPlaylists(playlistid).subscribe(
+    //   (response) => {
+    //     this.playlist = response.playlists.songs;
+    //     console.log('playlist récupérés :', this.playlist);
+    //   },
+    //   (error) => {
+    //     console.error('Erreur lors de la récupération des genres :', error);
+    //   }
+    // );
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
+  
+      if (playlistId) {
+          // Fetch playlist songs using the API service
+          this.publicPlaylistService
+              .getPlayListSongs(
+                  parseInt(playlistId, 10), // Assurez-vous que playlistId est bien un nombre
+                  localStorage.getItem('accessToken') || ''
+              )
+              .subscribe(
+                  (response) => {
+                      if (response.success) {
+                          this.playlists = response.success.songs;
+                          console.log(this.playlists);
+                          
+                      } else if (response.sessionError) {
+                          console.error('Session error:', response.sessionError);
+                      } else {
+                          // Handle other errors
+                          console.error('Error fetching playlist songs:', response.error);
+                      }
+                  },
+                  (error) => {
+                      console.error('Error fetching playlist songs:', error);
+                  }
+              );
+      } else {
+          console.error('Playlist ID is undefined. Unable to fetch playlist songs.');
       }
-    );
+  });
 
   }
 
