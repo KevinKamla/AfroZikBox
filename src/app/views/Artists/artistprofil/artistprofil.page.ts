@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { musicTab } from '../../play/play.page';
 import { AlbumdetailPage } from '../../Albums/albumdetail/albumdetail.page';
@@ -14,11 +14,13 @@ export class ArtistprofilPage implements OnInit {
   suivre = 'Suivre';
   isFollowers = false;
   username = 'Bolingo';
+  artist: any []= [];
 
   constructor(
     private navCtrl: NavController,
     public route: Router,
-    private modal: ModalController
+    private modal: ModalController,
+    private routes: ActivatedRoute,
   ) { }
 
   goToRoute(route: string = '') {
@@ -65,7 +67,12 @@ export class ArtistprofilPage implements OnInit {
   ];
 
   ngOnInit() {
-    this
+    const artist = this.routes.snapshot.paramMap.get('id');
+    const artists = localStorage.getItem('artist');
+    console.log(artists);
+    if (artists) {
+      this.artist = JSON.parse(artists);
+    }
   }
 
 }

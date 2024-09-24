@@ -10,6 +10,7 @@ import { AlbumsService } from 'src/app/services/albums.service';
 import { ChansonsService } from 'src/app/services/chansons.service';
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { TopAlbumsService } from 'src/app/services/top-albums.service';
 
 @Component({
   selector: 'app-profil',
@@ -31,6 +32,8 @@ export class ProfilPage implements OnInit {
   playlist: any[] = [];
   chansons: any[] = [];
   albums: any[] = [];
+  topalbums: any[] = [];
+  albumSongs: { [key: string]: any[] } = {};
 
   constructor(
     private storage: Storage,
@@ -39,7 +42,8 @@ export class ProfilPage implements OnInit {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     public route: Router,
-    private albumsService: AlbumsService
+    private albumsService: AlbumsService,
+    private topAlbumsService: TopAlbumsService,
   ) { }
 
 
@@ -100,6 +104,26 @@ export class ProfilPage implements OnInit {
       }
     );
 
+    // this.albumsService.getAlbumsr(this.UserData.id, 'access_token').subscribe(
+    //   (response) => {
+    //     this.albums = response.albums;
+    //     console.log('albums récupérés :', this.albums);
+    //   },
+    //   (error) => {
+    //     console.error('Erreur lors de la récupération des albums :', error);
+    //   }
+    // );
+
+    this.topAlbumsService.getTopAlbums().subscribe(
+      (response) => {
+        this.albums = response.top_albums;
+        console.log('meilleurs albums récupérés :', this.albums);
+        this.loadSongsForTopAlbums();
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des meilleurs albums :', error);
+      }
+    );
     this.chansonService.getChansons().subscribe(
       (response) => {
         this.chansons = response.data;
@@ -111,6 +135,25 @@ export class ProfilPage implements OnInit {
     );
   }
 
+  loadSongsForTopAlbums() {
+    this.topalbums.forEach(album => {
+      this.albumsService.getAlbumsr(album.id, '').subscribe(
+        (response) => {
+          // console.log(response, 'response');
+          this.albumSongs[album.id] = response.songs; // Stocke les chansons pour chaque album
+          console.log(`Chansons pour l'album ${album.id} :`, response.songs);
+        },
+        (error) => {
+          console.error(`Erreur lors de la récupération des chansons pour l'album ${album.id} :`, error);
+        }
+      );
+    });
+  }
+
+  selectAlbum(album: any) {
+    localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    this.route.navigate(['albumdetail', album.id]);
+  }
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,

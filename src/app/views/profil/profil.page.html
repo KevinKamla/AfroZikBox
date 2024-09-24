@@ -78,13 +78,12 @@
 
             <ng-template ngSwitchCase="album">
                 <div class="list_albums">
-                    <div *ngIf="albums.length === 0; else ionSkeletonAlbum">
+                    <div *ngIf="albums.length > 0; else ionSkeletonAlbum">
                         <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of albums">
-                            <div class="bg-album" [routerLink]="['../../albumdetail',1]">
+                            <div class="bg-album" (click)="selectAlbum(album)">
                                 <img class="background-image" [src]="album.thumbnail" />
                                 <div class="orange-disc"></div>
-                                <ion-icon class="play-icon" color="primary" slot="icon-only"
-                                    name="play-circle"></ion-icon>
+                                <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
                             </div>
                             <div class="details">
                                 <div class="title">

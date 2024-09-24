@@ -14,9 +14,9 @@
 <ion-content>
     <div class="container">
         <div class="img-detail">
-            <img src="assets/icon/profil.png" />
+            <img [src]="artist.avatar" />
             <div class="title d-f-c">
-                <h3>Username</h3>
+                <h3>{{artist.username}}</h3>
                 <ion-icon color="success" name="checkmark-circle"></ion-icon>
             </div>
             <p>Aucune information</p>

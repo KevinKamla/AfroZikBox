@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { CreateplaylistPage } from 'src/app/components/createplaylist/createplaylist.page';
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-myplaylist',
@@ -11,10 +12,12 @@ import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistop
 })
 export class MyplaylistPage implements OnInit {
 
+  playlist : any []=[];
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     public route: Router,
+    public playlistService : PlaylistService,
   ) { }
 
   
@@ -50,7 +53,16 @@ export class MyplaylistPage implements OnInit {
 
 
   ngOnInit() {
-    this
+    this.playlistService.getPublicPlayList().subscribe(
+      (response) => {
+        console.log(response);
+        this.playlist = response.success.playlists;
+        console.log('playlist récupérés :', this.playlist);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des playlist :', error);
+      }
+    );
   }
 
 

@@ -91,6 +91,12 @@ export class SuggestionsPage implements OnInit {
     this.songService.updateCurrentSong(item);
 };
 
+ // Méthode pour jouer ou mettre en pause la musique
+ artistDetail = (item: any) => {
+  console.log(item);
+  localStorage.setItem('artist', JSON.stringify(item));
+  this.route.navigate(['/artistprofil', item.id]);
+};
 
 
   // Méthode pour arrêter le son en cours
@@ -189,7 +195,7 @@ export class SuggestionsPage implements OnInit {
         (response) => {
           // console.log(response, 'response');
           this.albumSongs[album.id] = response.songs; // Stocke les chansons pour chaque album
-          console.log(`Chansons pour l'album ${album.id} :`, response.songs);
+          // console.log(`Chansons pour l'album ${album.id} :`, response.songs);
         },
         (error) => {
           console.error(`Erreur lors de la récupération des chansons pour l'album ${album.id} :`, error);
@@ -200,10 +206,21 @@ export class SuggestionsPage implements OnInit {
 
   albumSongs: { [key: string]: any[] } = {};
   ngOnInit() {
+    this.suggestionsService.getSuggestion(2, '').subscribe(
+      (response) => {
+        console.log('suggestions récupérés :', response);
+        this.albums = response.top_albums;
+        this.songs = response.top_songs;
+
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        console.log('meilleurs albums récupérés :', this.topalbums);
+        // console.log('meilleurs albums récupérés :', this.topalbums);
         this.loadSongsForTopAlbums();
       },
       (error) => {
@@ -219,9 +236,9 @@ export class SuggestionsPage implements OnInit {
         console.error('Erreur lors de la récupération des Meilleur songs :', error);
       }
     );
-    this.artistService.getArtists().subscribe(
+    this.artistService.getArtist('').subscribe(
       (response) => {
-        // console.log('Artistes récupérés :', response);
+        console.log('Artistes récupérés :', response);
         this.artists = response.data.data;
       },
       (error) => {
@@ -230,12 +247,7 @@ export class SuggestionsPage implements OnInit {
     );
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
-        console.log('suggestions récupérés :', response);
-        this.albums = response.randoms.album;
-        this.songs = response.randoms.song;
         this.latest = response.new_releases.data;
-        // console.log(this.latest, 'latest songs');
-        console.log(this.albums, 'albums');
       },
       (error) => {
         console.error('Erreur lors de la récupération des suggestions :', error);
@@ -244,7 +256,7 @@ export class SuggestionsPage implements OnInit {
     this.genresService.getGenre().subscribe(
       (response) => {
         this.genres = response.data;
-        console.log('genres récupérés :', this.genres);
+        // console.log('genres récupérés :', this.genres);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);

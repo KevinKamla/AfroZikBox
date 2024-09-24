@@ -4,7 +4,10 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AlbumdetailPageModule } from './views/Albums/albumdetail/albumdetail.module';
 
 const routes: Routes = [
-
+  {
+    path: 'artistprofil/:id',
+    loadChildren: () => import('./views/Artists/artistprofil/artistprofil.module').then( m => m.ArtistprofilPageModule)
+  },
   { path: 'albumdetail/:id',
     loadChildren: () => import('./views/Albums/albumdetail/albumdetail.module').then(m => m.AlbumdetailPageModule)
   },

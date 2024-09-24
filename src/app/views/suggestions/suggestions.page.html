@@ -160,7 +160,7 @@
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="artists.length > 0; else ionSkeletonArtiste">
             <div class="movie" *ngFor="let artist of artists">
-                <img class="img-intro" [src]="artist.avatar" [routerLink]="['../../artistprofil']">
+                <img class="img-intro" [src]="artist.avatar" (click)="artistDetail(artist)">
                 <p>{{ artist.name }}</p>
             </div>
         </div>

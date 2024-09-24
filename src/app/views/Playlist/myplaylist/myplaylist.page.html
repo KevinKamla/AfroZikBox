@@ -16,12 +16,12 @@
             <ion-label>Ajouter une nouvelle playlist</ion-label>
         </ion-item>
         <ion-list>
-            <div class="img-detail d-f-s" *ngFor="let item of [1,1]">
+            <div class="img-detail d-f-s" *ngFor="let item of playlist">
                 <div class="d-f-c" [routerLink]="['../playlistdetail']">
-                    <img src="assets/icon/gims.png" />
+                <img [src]="item.thumbnail_ready" />
                     <div class="title">
-                        <h3>Ceinture Rouge</h3>
-                        <p>33 Chansons</p>
+                        <h3>{{item.name}}</h3>
+                        <p>{{item.songs}} Chansons</p>
                     </div>
                 </div>
                 <ion-button (click)="openOptionPlaylist()" fill="clear" shape="round">
