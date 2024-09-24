@@ -56,6 +56,8 @@ export class LoginPage {
         const accessToken = response.loginSuccess.accessToken;
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('userId', JSON.stringify(response.loginSuccess.data?.id));
+          console.log(response.loginSuccess.data?.id,'id')
           console.log(accessToken,'accessToken')
         }
         

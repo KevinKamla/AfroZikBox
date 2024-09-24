@@ -22,18 +22,18 @@
     </div>
     <div class="container">
         <div class="header d-f-s">
-            <h4> 4 Favoris</h4>
+            <h4> {{favoris.length}} Favoris</h4>
             <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
             </span>
         </div>
 
         <div class="list_chansons">
             <div *ngIf="10 > 1; else ionSkeletonSon">
-                <div class="ion-item d-f-s" *ngFor="let song of [1,1,1,1]">
-                    <img src="assets/icon/gims.png" />
+                <div class="ion-item d-f-s" *ngFor="let song of favoris">
+                    <img [src]="song.thumbnail" />
                     <div class="title">
-                        <h3>Mon coeur avait raison</h3>
-                        <p>admin | 3.59</p>
+                        <h3>{{song.title}}</h3>
+                        <p>{{song.publisher.username}} | {{song.time}}</p>
                     </div>
                     <div class="block-btn">
                         <ion-button class="btn-play">

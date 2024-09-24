@@ -8,6 +8,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
 import { AlbumsService } from 'src/app/services/albums.service';
 import { ChansonsService } from 'src/app/services/chansons.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { TopAlbumsService } from 'src/app/services/top-albums.service';
@@ -34,7 +35,9 @@ export class ProfilPage implements OnInit {
   albums: any[] = [];
   topalbums: any[] = [];
   albumSongs: { [key: string]: any[] } = {};
-
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  favoris: any[] = [];
   constructor(
     private storage: Storage,
     private playlistService: PlaylistService,
@@ -44,6 +47,7 @@ export class ProfilPage implements OnInit {
     public route: Router,
     private albumsService: AlbumsService,
     private topAlbumsService: TopAlbumsService,
+    private favoriteService: FavoriteService
   ) { }
 
 
@@ -81,19 +85,11 @@ export class ProfilPage implements OnInit {
       this.cover = UserData.cover
       this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user
-      // const userId = this.UserData.id; // Récupérer l'ID de l'utilisateur
-      // console.log("userId :", userId)
-      // this.albumsService.getAlbum(2, 'access_token').subscribe(
-      //   (response) => {
-      //     this.albums = response.songs;
-      //     console.log('albums récupérés :', this.albums);
-      //   },
-      //   (error) => {  
-      //     console.error('Erreur lors de la récupération des albums :', error);
-      //   }
-      // );
     }
-
+    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+      console.log(res);
+      this.favoris = res.data.data;
+    });
     this.playlistService.getPlaylists().subscribe(
       (response) => {
         this.playlist = response.playlists;
@@ -103,17 +99,6 @@ export class ProfilPage implements OnInit {
         console.error('Erreur lors de la récupération des genres :', error);
       }
     );
-
-    // this.albumsService.getAlbumsr(this.UserData.id, 'access_token').subscribe(
-    //   (response) => {
-    //     this.albums = response.albums;
-    //     console.log('albums récupérés :', this.albums);
-    //   },
-    //   (error) => {
-    //     console.error('Erreur lors de la récupération des albums :', error);
-    //   }
-    // );
-
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.albums = response.top_albums;

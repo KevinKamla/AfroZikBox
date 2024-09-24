@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-favoris',
@@ -10,10 +12,16 @@ import { musicTab } from '../play/play.page';
   styleUrls: ['./favoris.page.scss'],
 })
 export class FavorisPage implements OnInit {
-
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  favoris: any[] = [];
+  // userId!: number;
   constructor(
     private modalCtrl: ModalController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private favoriteService: FavoriteService,
+    private authService: AuthService 
+
   ) { }
 
 
@@ -35,6 +43,11 @@ export class FavorisPage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+      console.log(res);
+      this.favoris = res.data.data;
+    });
   }
 
 }

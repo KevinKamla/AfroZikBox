@@ -64,6 +64,9 @@ export class MyplaylistPage implements OnInit {
       }
     );
   }
-
+  playlistDetail(playlist: any) {
+    localStorage.setItem('playlist', JSON.stringify(playlist));
+    this.route.navigate(['playlistdetail', playlist.id]);
+  }
 
 }

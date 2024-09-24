@@ -133,7 +133,7 @@
             <ng-template ngSwitchCase="favoris">
                 <div class="list_chansons">
                     <div *ngIf="chansons.length > 0; else ionSkeletonSon">
-                        <div class="ion-item d-f-s" *ngFor="let play of chansons">
+                        <div class="ion-item d-f-s" *ngFor="let play of favoris">
                             <img class="" [src]="play.thumbnail">
                             <div class="title">
                                 <h3>{{play.title}}</h3>
