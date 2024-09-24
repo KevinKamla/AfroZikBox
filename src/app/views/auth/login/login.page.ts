@@ -13,6 +13,7 @@ import { AuthService } from '../../../services/auth.service';
 export class LoginPage {
   username: string = '';
   password: string = '';
+  accessToken: string = '';
   server_key: string ='d012ab7a1e170f66e8ed63176dcc4e7b';
   DeviceId: string = '';
   rememberMe: boolean = false;
@@ -50,10 +51,12 @@ export class LoginPage {
       const response = await this.authService
         .login(this.username, this.password, this.server_key)
         .toPromise();
-      console.log(response);
+      console.log(response?.loginSuccess?.accessToken,'tttttttttttttttt');
+      // localStorage.setItem('accessToken',response?.loginSuccess?.accessToken)
+      
       
       if (response && response.loginSuccess ) {
-        localStorage.setItem("UserData", JSON.stringify(response.loginSuccess.data))
+        localStorage.setItem("UserData", JSON.stringify(response.loginSuccess.data));
         if (this.rememberMe) {
           localStorage.setItem('username', this.username);
           localStorage.setItem('password', this.password);

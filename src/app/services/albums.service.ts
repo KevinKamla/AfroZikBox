@@ -32,7 +32,6 @@ export class AlbumsService {
   private serverKey = environment.server_key;
   private urlGetAlbumSongs = `${environment.api}/get-album-songs`;
   private urlDeleteAlbum = `${environment.api}/delete-album`;
-
   constructor(private http: HttpClient) {}
 
   // getAlbums(): Observable<any> {
@@ -47,36 +46,41 @@ export class AlbumsService {
 
     return this.http.get<any>(this.baseUrl, { params });
   }
+  
   getAlbumSongs(
-    albumId: number,
-    accessToken: string
-  ): Observable<GetAlbumSongsModel['GetAlbumSongsSuccessModel']> {
-    const params = {
-      access_token: accessToken,
-      id: albumId,
-      server_key: this.serverKey,
-    };
+  albumId: number,
+  accessToken: string
+): Observable<GetAlbumSongsModel['GetAlbumSongsSuccessModel']> {
+  const params = {
+    id: albumId,
+    server_key: this.serverKey,
+    access_token: accessToken,
+  };
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
 
-    return this.http.post(this.urlGetAlbumSongs, params, { headers }).pipe(
-      map((response: any) => {
-        if (response.status === 200) {
-          return response as GetAlbumSongsModel['GetAlbumSongsSuccessModel'];
-        } else {
-          throw new Error(
-            "Erreur lors de la récupération des chansons de l'album"
-          );
-        }
-      }),
-      catchError((error) => {
-        console.error('Erreur:', error);
-        return throwError(() => new Error('Erreur de la requête HTTP'));
-      })
-    );
-  }
+  console.log('URL:', this.urlGetAlbumSongs);
+  console.log('Params:', params);
+
+  return this.http.post(this.urlGetAlbumSongs, params, { headers }).pipe(
+    map((response: any) => {
+      console.log('Response:', response);
+      if (response.status === 200) {
+        return response as GetAlbumSongsModel['GetAlbumSongsSuccessModel'];
+      } else {
+        throw new Error(
+          "Erreur lors de la récupération des chansons de l'album"
+        );
+      }
+    }),
+    catchError((error) => {
+      console.error('Erreur:', error);
+      return throwError(() => new Error('Erreur de la requête HTTP'));
+    })
+  );
+}
 
   deleteAlbum(
     albumId: number,

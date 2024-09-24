@@ -24,6 +24,7 @@ export class AuthService {
   // https://afrozikbox.com/endpoint/auth/forgot-password?
   private url = `${environment.api}auth/signup?server_key=d012ab7a1e170f66e8ed63176dcc4e7b&id`;
   private serverKey = environment.server_key;
+  private accessToken = localStorage.getItem('access_token');
 
   constructor(private http: HttpClient) {}
 

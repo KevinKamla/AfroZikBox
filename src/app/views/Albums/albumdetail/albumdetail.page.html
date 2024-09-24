@@ -27,11 +27,11 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of songs">
-                <img src="assets/icon/gims.png" />
+            <div class="ion-item" *ngFor="let song of albumSongs">
+                <img [src]="song.avatar" />
                 <div class="title">
-                    <h3>{{ song.title }}</h3>
-                    <p>{{ song.publisher.username }} | {{ song.duration }}</p>
+                    <h3>{{ song.name }}</h3>
+                    <p>{{ song.username }} | {{ song.time }}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" (click)="play()">
