@@ -184,30 +184,12 @@ export class SuggestionsPage implements OnInit {
   }
 
   loadSongsForTopAlbums() {
-    // this.topalbums.forEach(album => {
-    //   this.albumsService.getAlbumsr(album.id, '').subscribe(
-    //     (response) => {
-    //       // console.log(response, 'response');
-    //       this.albumSongs[album.id] = response.data; // Stocke les chansons pour chaque album
-    //       console.log(`Chansons pour l'album ${album.id} :`, response.data);
-    //     },
-    //     (error) => {
-    //       console.error(`Erreur lors de la récupération des chansons pour l'album ${album.id} :`, error);
-    //     }
-    //   );
-    // });
-    const accessToken = 'ad5b54b73d3d4211fc7f5554fc424197a234ce4417271106981b63a8f6f5910e7312453dbcab776ee3'; // Assurez-vous que l'accès token est récupéré correctement
-    // const accessToken = localStorage.getItem('accessToken'); // Assurez-vous que l'accès token est récupéré correctement
-    if (!accessToken) {
-      console.error('Access token is missing');
-      return;
-    }
     this.topalbums.forEach(album => {
-      this.albumsService.getAlbumSongs(album.id, accessToken).subscribe(
+      this.albumsService.getAlbumsr(album.id, '').subscribe(
         (response) => {
-          console.log('Album Songs Response:', response);
-          // this.albumSongs[album.id] = response.data.songs; // Assurez-vous que 'response.data.songs' est correct
-          // console.log(`Chansons pour l'album ${album.id} :`, response.data.songs);
+          // console.log(response, 'response');
+          this.albumSongs[album.id] = response.songs; // Stocke les chansons pour chaque album
+          console.log(`Chansons pour l'album ${album.id} :`, response.songs);
         },
         (error) => {
           console.error(`Erreur lors de la récupération des chansons pour l'album ${album.id} :`, error);
@@ -218,15 +200,6 @@ export class SuggestionsPage implements OnInit {
 
   albumSongs: { [key: string]: any[] } = {};
   ngOnInit() {
-    // this.albumsService.getAlbumsr(1, '').subscribe(
-    //   (response) => {
-    //     this.albums = response.data;
-    //     console.log('albums récupéréeeeeeeeees :', this.albums);
-    //   },
-    //   (error) => {
-    //     console.error('Erreur lors de la récupération des albums :', error);
-    //   }
-    // );
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;

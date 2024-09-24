@@ -82,10 +82,7 @@ export class AlbumdetailPage implements OnInit {
     this.albumsService.getAlbumsr(this.albumId, '').subscribe(
       (response) => {
         console.log(response);
-        this.albumSongs = response.data.data.map((song:any) => {
-          song.time = this.convertSecondsToMinutes(song.time);
-          return song;
-        });
+        this.albumSongs = response.songs;
         console.log(`Chansons pour l'album ${this.albumId} :`, this.albumSongs);  
       },
       (error) => {

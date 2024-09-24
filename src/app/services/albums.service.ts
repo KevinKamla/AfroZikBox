@@ -32,6 +32,7 @@ export class AlbumsService {
   private serverKey = environment.server_key;
   private urlGetAlbumSongs = `${environment.api}/get-album-songs`;
   private urlDeleteAlbum = `${environment.api}/delete-album`;
+  private accessToken = localStorage.getItem('accessToken');
   constructor(private http: HttpClient) {}
 
   // getAlbums(): Observable<any> {
@@ -42,9 +43,8 @@ export class AlbumsService {
     const params = new HttpParams()
       .set('id', id.toString())
       .set('server_key', this.serverKey)
-      .set('access_token', accessToken);
-
-    return this.http.get<any>(this.baseUrl, { params });
+      .set('access_token', this.accessToken || ''); 
+    return this.http.get<any>(this.url, { params });
   }
   
   getAlbumSongs(

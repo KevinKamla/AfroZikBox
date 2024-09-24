@@ -48,12 +48,19 @@ export class LoginPage {
     }
 
     try {
-      const response = await this.authService
-        .login(this.username, this.password, this.server_key)
-        .toPromise();
+      const response = await this.authService.login(this.username, this.password, this.server_key).toPromise();
       console.log(response?.loginSuccess?.accessToken,'tttttttttttttttt');
       // localStorage.setItem('accessToken',response?.loginSuccess?.accessToken)
-      
+      if (response && response.loginSuccess) {
+        // Récupérer et stocker l'accessToken
+        const accessToken = response.loginSuccess.accessToken;
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          console.log(accessToken,'accessToken')
+        }
+        
+        // ... reste du code existant ...
+      }
       
       if (response && response.loginSuccess ) {
         localStorage.setItem("UserData", JSON.stringify(response.loginSuccess.data));
