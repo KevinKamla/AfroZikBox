@@ -18,9 +18,12 @@ export class DetailtendancePage implements OnInit {
 
   ngOnInit() {
     const albumId = this.routes.snapshot.paramMap.get('id');
-
+    const storedArticles = localStorage.getItem('selectedArticle');
     const storedArticle = localStorage.getItem('selectArticle');
-
+    if(storedArticles){
+      this.article = JSON.parse(storedArticles);
+      console.log(this.article);
+    }
     // Vérifier si l'album existe dans le localStorage
     if (storedArticle) {
       // Convertir la chaîne JSON en un objet

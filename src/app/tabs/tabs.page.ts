@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { musicTab } from '../views/play/play.page';
 import { SongsService } from 'src/app/services/songs.service';
 import { Subscription } from 'rxjs';
 import { Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
 import { Platform } from '@ionic/angular';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -12,6 +14,7 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['tabs.page.scss']
 })
 export class TabsPage implements OnInit, OnDestroy {
+  isUserLoggedIn: boolean = false;
   musictabOption = musicTab;
   dataSon: any;
   file: MediaObject | null = null;
@@ -27,10 +30,37 @@ export class TabsPage implements OnInit, OnDestroy {
     private navCtrl: NavController,
     private songService: SongsService,
     private media: Media,
-    private platform: Platform
+    private platform: Platform,
+    private authService: AuthService,
+    private alertController: AlertController,
+    private router: Router
   ) {}
 
+  async verifierConnexion(onglet: string) {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate([`/tabs/${onglet}`]);
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Accès refusé',
+        message: 'Vous devez être connecté pour accéder à cette page.',
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            this.router.navigate(['/tabs/home']);
+          }
+        }]
+      });
+      await alert.present();
+    }
+  }
+  
   ngOnInit() {
+
+    this.authService.isAuthenticated().subscribe(
+      (authenticated: boolean) => {
+        this.isUserLoggedIn = authenticated;
+      }
+    );
     // Récupérer les données de localStorage
     const music = localStorage.getItem('music');
     if (music) {

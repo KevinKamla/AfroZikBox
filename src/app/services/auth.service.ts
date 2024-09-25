@@ -5,7 +5,7 @@ import {
   HttpHeaders,
   HttpParams,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import {
@@ -21,12 +21,29 @@ import {
 export class AuthService {
   private apiUrl = `${environment.api}auth/login`;
   private apiUrl2 = `${environment.api}auth/forgot-password`;
-  // https://afrozikbox.com/endpoint/auth/forgot-password?
   private url = `${environment.api}auth/signup?server_key=d012ab7a1e170f66e8ed63176dcc4e7b&id`;
   private serverKey = environment.server_key;
   private accessToken = localStorage.getItem('access_token');
+  private _isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.checkAuthStatus();
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    return this._isAuthenticated.asObservable();
+  }
+
+  private checkAuthStatus(): void {
+    // Vérifier s'il y a un token dans le localStorage
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      // Vérifier si le token est valide (vous pouvez ajouter une logique supplémentaire ici)
+      this._isAuthenticated.next(true);
+    } else {
+      this._isAuthenticated.next(false);
+    }
+  }
 
   forgotPassword(email: string): Observable<any> {
     const params = new HttpParams()

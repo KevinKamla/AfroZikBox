@@ -9,17 +9,31 @@
 
 <ion-content [fullscreen]="true">
     <ion-list>
-        <div *ngFor="let item of [1,1,1]">
-            <ion-card button [routerLink]="['/detailtendance']">
-                <img src="assets/icon/imgNew.png" style="width: 100%;" />
+        <div *ngFor="let item of article">
+            <ion-card button (click)="selectArticle(item)">
+                <img [src]="item.thumbnail" style="width: 100%;" />
                 <div class="footer">
                     <div class="info d-f-s">
                         <ion-label>Spotlights</ion-label>
-                        <ion-label>2 months ago</ion-label>
+                        <ion-label>{{ item.created_at }}</ion-label>
                     </div>
-                    <p>Qui est Sarah Magally, la célèbre musiciene Algerienne? </p>
+                    <p>{{ item.title }}</p>
                 </div>
             </ion-card>
+            <ng-template #ionSkeletonArticle>
+                <ion-card *ngFor="let article of [1,1,1,1]">
+                    <ion-thumbnail>
+                        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                    </ion-thumbnail>
+                    <div class="footer">
+                        <div class="info d-f-s">
+                            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                        </div>
+                        <p class="song-description"><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></p>
+                    </div>
+                </ion-card>
+            </ng-template>
         </div>
     </ion-list>
 </ion-content>

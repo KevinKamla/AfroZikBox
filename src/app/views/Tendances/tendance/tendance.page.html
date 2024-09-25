@@ -20,7 +20,7 @@
         <div class="container-scroll" *ngIf="publicPlaylist.length > 0; else ionSkeletonPlaylist">
             <div class="scroll-box">
               <div class="movie" *ngFor="let item of publicPlaylist" (click)="selectAlbum(item)">
-                <img class="img-intro" [src]="item.thumbnail_ready" [routerLink]="['/playlistdetail', item.id]" />
+                <img class="img-intro" [src]="item.thumbnail_ready" />
                 <p>{{ item.name }}</p>
               </div>
             </div>
@@ -46,20 +46,20 @@
             <p [routerLink]="['/listtendance']">Voir plus</p>
         </div>
         <div *ngIf="article.length > 0; else ionSkeletonArticle">
-            <ion-card button [routerLink]="['/detailtendance']" *ngFor="let article of article"
-                (click)="selectArticle(article)">
-                <img [src]="article.thumbnail" style="width: 100%;" />
+            <ion-card button [routerLink]="['/detailtendance']"
+                (click)="selectArticle(article[0])">
+                <img [src]="article[0].thumbnail" style="width: 100%;" />
                 <div class="footer">
                     <div class="info d-f-s">
                         <ion-label>Spotlights</ion-label>
-                        <ion-label>{{ article.created_at }}</ion-label>
+                        <ion-label>{{ article[0].created_at }}</ion-label>
                     </div>
-                    <p class="song-description">{{ article.title }}</p>
+                    <p class="song-description">{{ article[0].title }}</p>
                 </div>
             </ion-card>
         </div>
         <ng-template #ionSkeletonArticle>
-            <ion-card *ngFor="let article of [1,1,1,1]">
+            <ion-card *ngFor="let article of [1]">
                 <ion-thumbnail>
                     <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
                 </ion-thumbnail>

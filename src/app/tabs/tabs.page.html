@@ -55,7 +55,7 @@
           <ion-label>Tendances</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="favoris" href="/tabs/favoris">
+      <ion-tab-button tab="favoris" href="/tabs/favoris" (click)="verifierConnexion('favoris')">
           <ion-icon aria-hidden="true" name="heart"></ion-icon>
           <ion-label>Favoris</ion-label>
       </ion-tab-button>
@@ -70,7 +70,7 @@
           <ion-label>ZikStore</ion-label>
       </ion-tab-button>
 
-      <ion-tab-button tab="profil" href="/tabs/profil">
+      <ion-tab-button tab="profil" href="/tabs/profil" (click)="verifierConnexion('profil')">
           <ion-icon aria-hidden="true" name="person"></ion-icon>
           <ion-label>Profil</ion-label>
       </ion-tab-button>
