@@ -32,7 +32,6 @@
                 <ion-button shape="round" class="btn-setting" [routerLink]="['/settings']">
                     <ion-icon slot="icon-only" name="settings"></ion-icon>
                 </ion-button>
-
             </div>
         </div>
     </div>
@@ -164,7 +163,20 @@
             </ng-template>
 
             <ng-template ngSwitchCase="evénements">
-                <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                <div *ngIf="events.length > 0; else ionplaylist">
+                    <div class="img-detail d-f-s" *ngFor="let event of events">
+                        <div class="d-f-c" (click)="selectEvent(event)">
+                            <img [src]="event.thumbnail_ready">
+                            <div class="title">
+                                <h3>{{event.name}}</h3>
+                                <!-- <p>{{event.songs}} Chansons</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #ionplaylist>
+                    <p class="p d-f-c">Rien à acfficher pour l'instant</p>
+                </ng-template>
             </ng-template>
 
         </div>

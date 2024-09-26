@@ -7,11 +7,13 @@ import { Storage } from '@ionic/storage-angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
 import { AlbumsService } from 'src/app/services/albums.service';
+import { ArticlesService } from 'src/app/services/articles.service';
 import { ChansonsService } from 'src/app/services/chansons.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { TopAlbumsService } from 'src/app/services/top-albums.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-profil',
@@ -38,6 +40,8 @@ export class ProfilPage implements OnInit {
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   favoris: any[] = [];
+  events: any[] = [];
+  profile : any[]=[];
   constructor(
     private storage: Storage,
     private playlistService: PlaylistService,
@@ -47,10 +51,15 @@ export class ProfilPage implements OnInit {
     public route: Router,
     private albumsService: AlbumsService,
     private topAlbumsService: TopAlbumsService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private articlesService: ArticlesService,
+    private userService : UserService
   ) { }
 
-
+  selectEvent(event: any) {
+    localStorage.setItem('selectedEvent', JSON.stringify(event));
+    this.route.navigate(['eventdetail', event.id]);
+  }
     
   public btnoptionProfil = [
     {
@@ -83,9 +92,21 @@ export class ProfilPage implements OnInit {
       this.email = UserData.email
       this.avatar = UserData.avatar
       this.cover = UserData.cover
-      this.like = UserData.email_on_follow_user
+      // this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user
     }
+    this.userService.getProfile(this.userId).subscribe((response) => {
+      this.profile = response.details;
+    });
+    this.userService.getLikeds(this.userId).subscribe((response) =>{
+      console.log(response);
+      this.like = response.data.count;
+      console.log(this.like,"likeeeeeeeeee")
+    });
+    this.articlesService.getEvents().subscribe((res) => {
+      console.log('eventtttttttttttt',res);
+      this.events = res.data;
+    });
     this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
       console.log(res);
       this.favoris = res.data.data;
