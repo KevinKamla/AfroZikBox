@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-userlock',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./userlock.page.scss'],
 })
 export class UserlockPage implements OnInit {
-
-  constructor() { }
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  blocks: any[] = [];
+  count: number = 0;
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.getBlocks(this.userId).subscribe((response) =>{
+      console.log(response, 'response');
+      this.blocks = response.data.data;
+      this.count = response.data.count;
+    })
   }
 
 }

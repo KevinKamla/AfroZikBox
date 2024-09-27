@@ -9,5 +9,13 @@
 
 <ion-content [fullscreen]="true">
 
-    <h3>Aucuns utilisateurs bloqué pour l'instant</h3>
+    <h3> {{count}} utilisateurs bloqués pour l'instant </h3>
+        <ion-item *ngFor="let block of blocks">
+            <ion-avatar slot="start">
+                <img [src]="block.user.avatar" alt="Avatar">
+            </ion-avatar>
+            <ion-label>
+                <h2>{{block.user.name}}</h2>
+            </ion-label>
+        </ion-item>
 </ion-content>

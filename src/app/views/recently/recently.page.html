@@ -7,7 +7,7 @@
 <div class="list_chansons">
 
     <div *ngIf="recently.length > 0; else ionSkeletonRecent">
-        <div class="ion-item d-f-s" *ngFor="let recently of recently">
+        <div class="ion-item d-f-s" *ngFor="let recently of recentP">
             <img [src]="recently.thumbnail" />
             <div class="title">
                 <h3>{{recently.title}}</h3>

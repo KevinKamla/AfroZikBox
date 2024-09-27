@@ -5,6 +5,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 import { musicTab } from '../play/play.page';
 import { ActivatedRoute } from '@angular/router';
 import { SuggestionsService } from '../../services/suggestions.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-recently',
@@ -14,11 +15,13 @@ import { SuggestionsService } from '../../services/suggestions.service';
 export class RecentlyPage implements OnInit {
   idUser: any;
   suggestions: any[] = [];
-
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  recentP: any[] = [];
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private suggestionsService: SuggestionsService,
+    private userService: UserService
 
   ) { }
 
@@ -52,12 +55,18 @@ export class RecentlyPage implements OnInit {
         const numberOfRecentlys = this.recently.length;
         console.log('Nombre de recently :', numberOfRecentlys);
 
-        this.numberOfRecently = numberOfRecentlys;
+        // this.numberOfRecently = numberOfRecentlys;
       },
       (error) => {
         console.error('Erreur lors de la récupération des suggestions :', error);
       }
     );
+    this.userService.getRecentPlayed(this.userId).subscribe((response) =>{
+      console.log(response, 'response');
+      this.recentP = response.data.data;
+      this.numberOfRecently = response.data.data.lenght;
+      console.log(this.recentP, 'recentP');
+    })
   }
 
 }

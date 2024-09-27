@@ -14,6 +14,7 @@ import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
 import {Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
 import { AlbumsService } from 'src/app/services/albums.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -46,7 +47,7 @@ export class SuggestionsPage implements OnInit {
     private songService: SongsService,
     private media: Media,
     private platform: Platform,
-    private albumsService: AlbumsService
+    private albumsService: AlbumsService,
   ) { }
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -205,10 +206,11 @@ export class SuggestionsPage implements OnInit {
   }
 
   albumSongs: { [key: string]: any[] } = {};
+  recentP :any []=[];
   ngOnInit() {
     this.suggestionsService.getSuggestion(2, '').subscribe(
       (response) => {
-        console.log('suggestions récupérés :', response);
+        // console.log('suggestions récupérés :', response);
         this.albums = response.top_albums;
         this.songs = response.top_songs;
 
@@ -238,7 +240,7 @@ export class SuggestionsPage implements OnInit {
     );
     this.artistService.getArtist('').subscribe(
       (response) => {
-        console.log('Artistes récupérés :', response);
+        // console.log('Artistes récupérés :', response);
         this.artists = response.data.data;
       },
       (error) => {
