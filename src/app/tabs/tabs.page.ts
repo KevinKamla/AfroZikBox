@@ -7,6 +7,8 @@ import { Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
 import { Platform } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { SuggestionsService } from '../services/suggestions.service';
+import { TopSongsService } from '../services/top-songs.service';
 
 @Component({
   selector: 'app-tabs',
@@ -25,7 +27,8 @@ export class TabsPage implements OnInit, OnDestroy {
   newSongUrl: string = 'https://example.com/new-song.mp3'; // Assurez-vous que l'URL est correcte
   private songSubscription: Subscription | undefined;
   currentSong: any; // Ajoutez cette propriété si ce n'est pas déjà fait
-
+  topSongs: any[] = [];
+  latest: any[] = [];
   constructor(
     private navCtrl: NavController,
     private songService: SongsService,
@@ -33,7 +36,9 @@ export class TabsPage implements OnInit, OnDestroy {
     private platform: Platform,
     private authService: AuthService,
     private alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private topsService: TopSongsService,
+    private suggestionsService: SuggestionsService
   ) {}
 
   async verifierConnexion(onglet: string) {
@@ -55,23 +60,40 @@ export class TabsPage implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
-
+    this.songService.currentSong$.subscribe(song => {
+      if (song) {
+        this.currentSong = song;
+        this.sourceArray = song.sourceArray;
+        console.log('Source du son dans les onglets:', this.sourceArray);
+      }
+    });
     this.authService.isAuthenticated().subscribe(
       (authenticated: boolean) => {
         this.isUserLoggedIn = authenticated;
       }
     );
-    // Récupérer les données de localStorage
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        this.topSongs = response.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+      }
+    );
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        this.latest = response.new_releases.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
     const music = localStorage.getItem('music');
     if (music) {
       this.dataSon = JSON.parse(music);
     }
-
-    // S'abonner au service pour obtenir les détails actuels de la chanson
     this.songSubscription = this.songService.currentSong$.subscribe(song => {
       this.currentSong = song;
-      
-      
       if (song) {
         this.changeSong(song.url); // Supposons que vous avez une propriété 'url' pour la chanson
         this.updateDuration();
@@ -91,20 +113,71 @@ export class TabsPage implements OnInit, OnDestroy {
     }
   }
 
-  play(newSong: boolean = false) {
+  chargerSonsCategorie() {
+    let tableauACharger;
+    
+    if (this.sourceArray && this.latest.some(song => song.id === this.sourceArray)) {
+      tableauACharger = this.latest;
+    } else {
+      tableauACharger = this.topSongs;
+    }
+    
+    this.sonsCategorieActuelle = tableauACharger;
+    this.indexSonActuel = this.sonsCategorieActuelle.findIndex(song => song.id === this.currentSong.id);
+    
+    if (this.indexSonActuel === -1) {
+      console.error('La chanson actuelle n\'a pas été trouvée dans le tableau chargé');
+      this.indexSonActuel = 0;
+    }
+  }
+
+  private async stopCurrentSong(): Promise<void> {
+    if (this.file) {
+      try {
+        await this.file.stop();
+        await this.file.release();
+      } catch (error) {
+        alert('Erreur lors de l\'arrêt de la chanson :'+ error);
+      }
+      this.file = null;
+    }
+    this.isPlaying = false;
+    this.currentTime = 0;
+    this.duration = 0;
+    this.stopProgressUpdater();
+  }
+
+  async next() {
+    if (this.sonsCategorieActuelle.length > 0) {
+      await this.stopCurrentSong();
+
+      this.indexSonActuel = (this.indexSonActuel + 1) % this.sonsCategorieActuelle.length;
+      this.currentSong = this.sonsCategorieActuelle[this.indexSonActuel];
+      this.songService.setCurrentSong(this.currentSong); // Ajoutez cette ligne
+      await new Promise(resolve => setTimeout(resolve, 100));
+      this.play(true);
+    }
+  }
+  sonsCategorieActuelle: any[] = [];
+  indexSonActuel: number = 0;
+  sourceArray!: string;
+
+  async play(newSong: boolean = false) {
     if (!this.platform.is('cordova')) {
       console.error('Cordova n\'est pas disponible');
       return;
     }
   
     if (newSong) {
+      await this.stopCurrentSong();
+      this.chargerSonsCategorie();
       if (this.file) {
-        this.file.stop();
-        this.file.release();
+        await this.file.stop();
+        await this.file.release();
       }
       if (this.currentSong && this.currentSong.url) {
         this.file = this.media.create(this.currentSong.url);
-        this.file.play();
+        await this.file.play();
         this.currentTime = 0;
         this.isPlaying = true;
         this.startProgressUpdater();
@@ -120,9 +193,9 @@ export class TabsPage implements OnInit, OnDestroy {
   
       if (this.file) {
         if (this.isPlaying) {
-          this.pause();
+          await this.pause();
         } else {
-          this.file.play();
+          await this.file.play();
           this.isPlaying = true;
           this.startProgressUpdater();
         }

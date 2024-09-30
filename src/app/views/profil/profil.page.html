@@ -166,10 +166,10 @@
                 <div *ngIf="events.length > 0; else ionplaylist">
                     <div class="img-detail d-f-s" *ngFor="let event of events">
                         <div class="d-f-c" (click)="selectEvent(event)">
-                            <img [src]="event.thumbnail_ready">
+                            <img [src]="event.image">
                             <div class="title">
                                 <h3>{{event.name}}</h3>
-                                <!-- <p>{{event.songs}} Chansons</p> -->
+                                <p>{{event.joined_count}} Chansons</p>
                             </div>
                         </div>
                     </div>

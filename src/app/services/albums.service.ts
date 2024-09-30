@@ -33,11 +33,48 @@ export class AlbumsService {
   private urlGetAlbumSongs = `${environment.api}/get-album-songs`;
   private urlDeleteAlbum = `${environment.api}/delete-album`;
   private accessToken = localStorage.getItem('accessToken');
+  private update = `${environment.api}/update-album`;
+  private purchase = `${environment.api}/user/purchase_album`;
   constructor(private http: HttpClient) {}
 
-  // getAlbums(): Observable<any> {
-  //   return this.http.get<any>(this.url);
-  // }
+  getUpdateAlbum(
+    accessToken: string,
+    albumId: string,
+    albumData: AlbumData,
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    const body = {
+      'album-id': albumId,
+      ...albumData,
+      server_key: this.serverKey,
+    };
+
+    return this.http.post(this.update, body, { headers });
+  }
+
+ getpurchaseAlbum(
+    accessToken: string,
+    purchaseData: PurchaseData
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    });
+  
+    const body = {
+      ...purchaseData,
+      server_key: this.serverKey,
+    };
+  
+    return this.http.post(this.purchase, body, {
+      headers,
+    });
+  }
+
   getAlbumsr(id: number, accessToken: string): Observable<any> {
     // Dynamisation de l'URL avec les paramètres
     const params = new HttpParams()
@@ -192,4 +229,5 @@ export class AlbumsService {
 
     return this.http.get(this.baseUrl, { headers });
   }
+  
 }

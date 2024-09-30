@@ -68,14 +68,33 @@ export class SuggestionsPage implements OnInit {
   // Méthode pour jouer ou mettre en pause la musique
   playMusic = (item: any) => {
     console.log(item);
-    localStorage.setItem('music', JSON.stringify(item));
-    musicTab.isClose = false;
-    musicTab.musicIsPlay = true;
-    console.log('musicTab : ', musicTab);
+    // localStorage.setItem('music', JSON.stringify(item));
+    // musicTab.isClose = false;
+    // musicTab.musicIsPlay = true;
+    // console.log('musicTab : ', musicTab);
     
     const songUrl = item.audio_location;
     const songId = item.id; // Suivi de l'ID de la chanson
+    let sourceArray = '';
+    if (this.latest.some(song => song.id === item.id)) {
+      sourceArray = 'latest';
+      console.log('Le son provient du tableau latest');
+    } else if (this.songs.some(song => song.id === item.id)) {
+      sourceArray = 'songs';
+      console.log('Le son provient du tableau songs');
+    } else {
+      console.log('Le son ne provient ni de latest ni de songs');
+    }
 
+    const musicInfo = {
+      ...item,
+      sourceArray
+    };
+    localStorage.setItem('music', JSON.stringify(musicInfo));
+    
+    musicTab.isClose = false;
+    musicTab.musicIsPlay = true;
+    console.log('musicTab : ', musicTab);
     // Vérifie si une chanson est en cours de lecture
     if (this.isPlaying) {
         // Si la chanson actuelle est différente de la nouvelle chanson, arrêtez-la

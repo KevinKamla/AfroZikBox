@@ -9,6 +9,7 @@ import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistop
 import { AlbumsService } from 'src/app/services/albums.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ChansonsService } from 'src/app/services/chansons.service';
+import { EventService } from 'src/app/services/event.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
@@ -53,7 +54,8 @@ export class ProfilPage implements OnInit {
     private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
     private articlesService: ArticlesService,
-    private userService : UserService
+    private userService : UserService,
+    private eventService : EventService
   ) { }
 
   selectEvent(event: any) {
@@ -99,22 +101,22 @@ export class ProfilPage implements OnInit {
       this.profile = response.details;
     });
     this.userService.getLikeds(this.userId).subscribe((response) =>{
-      console.log(response);
+      // console.log(response);
       this.like = response.data.count;
-      console.log(this.like,"likeeeeeeeeee")
+      // console.log(this.like,"likeeeeeeeeee")
     });
-    this.articlesService.getEvents().subscribe((res) => {
+    this.eventService.getMyEvents(this.userId,'').subscribe((res) => {
       console.log('eventtttttttttttt',res);
       this.events = res.data;
     });
     this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      console.log(res);
+      // console.log(res);
       this.favoris = res.data.data;
     });
     this.playlistService.getPlaylists().subscribe(
       (response) => {
         this.playlist = response.playlists;
-        console.log('playlist récupérés :', this.playlist);
+        // console.log('playlist récupérés :', this.playlist);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);
@@ -123,7 +125,7 @@ export class ProfilPage implements OnInit {
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.albums = response.top_albums;
-        console.log('meilleurs albums récupérés :', this.albums);
+        // console.log('meilleurs albums récupérés :', this.albums);
         this.loadSongsForTopAlbums();
       },
       (error) => {
@@ -133,7 +135,7 @@ export class ProfilPage implements OnInit {
     this.chansonService.getChansons().subscribe(
       (response) => {
         this.chansons = response.data;
-        console.log('chansons récupérés :', this.chansons);
+        // console.log('chansons récupérés :', this.chansons);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);

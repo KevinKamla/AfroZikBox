@@ -19,5 +19,7 @@ export class SongsService {
   updateCurrentSong(song: any) {
     this.currentSongSubject.next(song);
   }
-  
+  setCurrentSong(song: any) {
+    this.currentSongSubject.next(song);
+  }
 }
