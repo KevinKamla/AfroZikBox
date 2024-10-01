@@ -6,7 +6,7 @@
                     <img [src]="artist.avatar" />
                 </ion-avatar>
                 <div class="detail">
-                    <h5>{{ artist.name }}</h5>
+                    <h5>{{ artist.name.length > 10 ? (artist.name | slice:0:10) + '...' : artist.name }}</h5>
                     <p>artists</p>
                 </div>
             </div>
