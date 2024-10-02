@@ -27,7 +27,7 @@
             <div class="movie" *ngFor="let topSong of topSongs">
                 <img class="img-intro"[src]="topSong.thumbnail" (click)="playMusic(topSong)">
                 <p>
-                    <ion-label>{{topSong.songArray.USER_DATA.s_name}} On my way - king saha (Lyrical video)</ion-label>
+                    <ion-label>{{topSong.title}}</ion-label>
                 </p>
             </div>
         </div>

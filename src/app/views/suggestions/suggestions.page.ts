@@ -98,11 +98,12 @@ export class SuggestionsPage implements OnInit {
   artists: any[] = [];
   suggestions: any[] = [];
   genres: any[] = [];
+  sugest: any[] = [];
   ngOnInit() {
     this.topsService.getTopSongs().subscribe(
       (response) => {
-        console.log('Meilleur songs récupérés :', response);
-        this.topSongs = response.data.data;
+        console.log('Meilleur songs récupérés :', response.data);
+        this.topSongs = response.data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des Meilleur songs :', error);
@@ -110,8 +111,8 @@ export class SuggestionsPage implements OnInit {
     );
     this.artistService.getArtists().subscribe(
       (response) => {
-        console.log('Artistes récupérés :', response);
-        this.artists = response.data.data;
+        console.log('Artistes récupérés :', response.data);
+        this.artists = response.data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des artistes :', error);
@@ -120,7 +121,7 @@ export class SuggestionsPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         console.log('suggestions récupérés :', response);
-        this.artists = response.new_releases.data;
+        this.sugest = response.new_releases.data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des suggestions :', error);
@@ -129,7 +130,7 @@ export class SuggestionsPage implements OnInit {
     this.genresService.getGenre().subscribe(
       (response) => {
         console.log('genres récupérés :', response);
-        this.genres = response.data.data;
+        this.genres = response.data;
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);
