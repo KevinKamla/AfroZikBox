@@ -2,16 +2,16 @@
     <div class="scroll-box">
         <div class="movie" [routerLink]="['/addstory']">
             <div class="bg-img"
-                [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc), url(assets/icon/people.png)'}">
-                <ion-avatar><img [src]="['assets/icon/people.png']" style="height: auto; width: 100%;" /></ion-avatar>
+                [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc),  url(' + avatar + ')'}" (click)="handleStoryClick()">
+                <ion-avatar><img [src]="[avatar]" style="height: auto; width: 100%;" /></ion-avatar>
                 <p>Créer une story</p>
             </div>
         </div>
         <ng-container *ngFor="let item of [true,false]">
             <div class="movie" (click)="item? openActut() : openPopup()">
                 <div class="bg-img"
-                    [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc ),url(assets/icon/gims.png)'}">
-                    <ion-avatar><img [src]="['assets/icon/gims.png']" style="height: auto;width: 100%;" /></ion-avatar>
+                    [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc ),url(assets/icon/gims.png)'}" (click)="handleStoryClick()">
+                    <ion-avatar><img [src]="[avatar]" style="height: auto;width: 100%;" /></ion-avatar>
                     <p>Kvnkamla</p>
                 </div>
             </div>
@@ -183,7 +183,7 @@
 </div>
 
 <ion-alert [isOpen]="isOpenmodalAchat" header="Achat requits"
-    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]=""
+    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]="[{ text: 'Fermer', role: 'cancel',}]"
     [backdropDismiss]="false"></ion-alert>
 <ion-alert [isOpen]="walletIsOpen" header="Wallet"
     subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie"

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
 import { SuggestionsService } from '../../services/suggestions.service';
@@ -48,7 +48,8 @@ export class SuggestionsPage implements OnInit {
     private songService: SongsService,
     private media: Media,
     private platform: Platform,
-    private albumsService: AlbumsService
+    private albumsService: AlbumsService,
+    private alertController : AlertController
   ) {}
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   isOpenmodalAchat = false;
@@ -69,13 +70,34 @@ export class SuggestionsPage implements OnInit {
       },
     },
   ];
+  async handleStoryClick() {
+    const userData = localStorage.getItem("UserData");
+    if (!userData) {
+      const alert =await this.alertController.create({
+        header: 'Accès refusé',
+        message: 'Veuillez vous connecter pour voir cette story',
+        buttons: [{
+            text: 'OK',
+            handler: () => {
+              this.route.navigate(['/tabs']);
+            }
+        }]
+      }); 
+     alert.present();
+    } else {
+      alert("vous etes connecter");
+    }
+  }
 
-  // Méthode pour jouer ou mettre en pause la musique
-  artistDetail = (item: any) => {
-    console.log(item);
-    localStorage.setItem('artist', JSON.stringify(item));
-    this.route.navigate(['/artistprofil', item.id]);
-  };
+ // Méthode pour jouer ou mettre en pause la musique
+ artistDetail = (item: any) => {
+  console.log(item);
+  localStorage.setItem('artist', JSON.stringify(item));
+  this.route.navigate(['/artistprofil', item.id]);
+};
+
+
+ 
 
   async openActut() {
     const modal = await this.modal.create({
@@ -86,6 +108,9 @@ export class SuggestionsPage implements OnInit {
     });
 
     await modal.present();
+    modal.onDidDismiss().then(() => {
+      console.log('Modal fermé');
+  });
   }
 
   async openAlbumDetail(props: any) {
@@ -115,6 +140,8 @@ export class SuggestionsPage implements OnInit {
   goToSegment(segment: string) {
     this.route.navigate([segment]);
   }
+
+
 
   // Méthode pour charger et jouer la musique
   currentSongIndex: number = 0;
@@ -247,7 +274,15 @@ export class SuggestionsPage implements OnInit {
     });
   }
 
+  avatar: any;
+
   ngOnInit() {
+    const u = localStorage.getItem("UserData")
+    if (u) {
+      const UserData = JSON.parse(u)
+      console.log("userdata :", UserData )
+      this.avatar = UserData.avatar
+    }
     this.suggestionsService.getSuggestion(2, '').subscribe(
       (response) => {
         this.albums = response.top_albums;

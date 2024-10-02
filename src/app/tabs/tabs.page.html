@@ -82,18 +82,18 @@
     <ion-tab-button
       tab="favoris"
       href="/tabs/favoris"
-      (click)="verifierConnexion('favoris')"
+      (click)="goToFavourites()"
     >
       <ion-icon aria-hidden="true" name="heart"></ion-icon>
       <ion-label>Favoris</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="myliste" href="/tabs/myliste">
+    <ion-tab-button tab="myliste" href="/tabs/myliste"  (click)="goToZikbox()">
       <ion-icon aria-hidden="true" name="document-text"></ion-icon>
       <ion-label>ZikBox</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore">
+    <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore" (click)="goToZikstore()">
       <ion-icon aria-hidden="true" name="storefront"></ion-icon>
       <ion-label>ZikStore</ion-label>
     </ion-tab-button>
@@ -101,7 +101,7 @@
     <ion-tab-button
       tab="profil"
       href="/tabs/profil"
-      (click)="verifierConnexion('profil')"
+      (click)="goToProfile()"
     >
       <ion-icon aria-hidden="true" name="person"></ion-icon>
       <ion-label>Profil</ion-label>

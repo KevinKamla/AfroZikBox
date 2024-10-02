@@ -44,6 +44,43 @@ export class TabsPage implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService
   ) {}
 
+    private suggestionsService: SuggestionsService
+  ) {}
+
+  async verifierConnexion(onglet: string) {
+    const userId = localStorage.getItem('userId'); // Récupérez l'ID de l'utilisateur depuis le localStorage
+    if (userId !== null) {
+        this.router.navigate([`/tabs/${onglet}`]);
+    } else {
+        const alert = await this.alertController.create({
+            header: 'Accès refusé',
+            message: 'Vous devez être connecté pour accéder à cette page.',
+            buttons: [{
+                text: 'OK',
+                handler: () => {
+                  this.router.navigate(['/tabs']);
+                }
+            }]
+        });
+        await alert.present();
+    }
+  }
+  
+  async goToProfile() {
+    await this.verifierConnexion('profile');
+  }
+  
+  async goToZikbox() {
+    await this.verifierConnexion('zikbox');
+  }
+  
+  async goToZikstore() {
+    await this.verifierConnexion('zikstore');
+  }
+
+  async goToFavourites(){
+    await this.verifierConnexion('favoris')
+  }
   ngOnInit() {
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
@@ -158,6 +195,32 @@ export class TabsPage implements OnInit, OnDestroy {
 
  
 
+  private async stopCurrentSong(): Promise<void> {
+    if (this.file) {
+      try {
+        await this.file.stop();
+        await this.file.release();
+      } catch (error) {
+        alert('Erreur lors de l\'arrêt de la chanson :'+ error);
+      }
+      this.file = null;
+    }
+    this.isPlaying = false;
+    this.currentTime = 0;
+    this.duration = 0;
+    this.stopProgressUpdater();
+  }
+
+  async next() {
+    if (this.sonsCategorieActuelle.length > 0) {
+      await this.stopCurrentSong();
+      this.indexSonActuel = (this.indexSonActuel + 1) % this.sonsCategorieActuelle.length;
+      this.currentSong = this.sonsCategorieActuelle[this.indexSonActuel];
+      this.songService.setCurrentSong(this.currentSong); // Ajoutez cette ligne
+      await new Promise(resolve => setTimeout(resolve, 100));
+      this.play(true);
+    }
+  }
   sonsCategorieActuelle: any[] = [];
   indexSonActuel: number = 0;
   sourceArray!: string;
