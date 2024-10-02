@@ -44,27 +44,7 @@ export class TabsPage implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService
   ) {}
 
-    private suggestionsService: SuggestionsService
-  ) {}
 
-  async verifierConnexion(onglet: string) {
-    const userId = localStorage.getItem('userId'); // Récupérez l'ID de l'utilisateur depuis le localStorage
-    if (userId !== null) {
-        this.router.navigate([`/tabs/${onglet}`]);
-    } else {
-        const alert = await this.alertController.create({
-            header: 'Accès refusé',
-            message: 'Vous devez être connecté pour accéder à cette page.',
-            buttons: [{
-                text: 'OK',
-                handler: () => {
-                  this.router.navigate(['/tabs']);
-                }
-            }]
-        });
-        await alert.present();
-    }
-  }
   
   async goToProfile() {
     await this.verifierConnexion('profile');
@@ -208,7 +188,7 @@ export class TabsPage implements OnInit, OnDestroy {
     this.isPlaying = false;
     this.currentTime = 0;
     this.duration = 0;
-    this.stopProgressUpdater();
+    // this.stopProgressUpdater();
   }
 
   async next() {
@@ -218,7 +198,7 @@ export class TabsPage implements OnInit, OnDestroy {
       this.currentSong = this.sonsCategorieActuelle[this.indexSonActuel];
       this.songService.setCurrentSong(this.currentSong); // Ajoutez cette ligne
       await new Promise(resolve => setTimeout(resolve, 100));
-      this.play(true);
+      // this.play(true);
     }
   }
   sonsCategorieActuelle: any[] = [];
@@ -368,6 +348,7 @@ export class TabsPage implements OnInit, OnDestroy {
   }
   
 }
+
 
 // import { Component, OnInit, OnDestroy } from '@angular/core';
 // import { AlertController, NavController } from '@ionic/angular';
