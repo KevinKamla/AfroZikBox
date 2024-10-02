@@ -26,8 +26,8 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
-            <div class="movie" *ngFor="let topSong of topSongs">
-                <img class="img-intro" [src]="topSong.thumbnail" (click)="playMusic(topSong)">
+            <div class="movie" *ngFor="let topSong of topSongs; let i = index">
+                <img class="img-intro" [src]="topSong.thumbnail" (click)="playMusic(topSong,i)">
                 <p>
                     <ion-label>{{topSong.title}}</ion-label>
                 </p>
@@ -89,8 +89,8 @@
 
     <div class="container-scroll">
         <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
-            <div class="movie" *ngFor="let latest of latest">
-                <img class="img-intro" [src]="latest.thumbnail" (click)="playMusic(latest)">
+            <div class="movie" *ngFor="let latest of latest let i = index">
+                <img class="img-intro" [src]="latest.thumbnail" (click)="playMusic(latest, i)">
                 <p class="song-description">{{latest.title}}</p>
             </div>
         </div>
