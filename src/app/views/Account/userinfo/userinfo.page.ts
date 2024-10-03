@@ -36,7 +36,7 @@ export class UserinfoPage implements OnInit {
       this.email = UserData.email
       this.avatar = UserData.avatar
       this.name = UserData.name
-      this.gender = UserData.gender_text
+      this.gender = UserData.gender
       this.email_on_follow_user = UserData.email_on_follow_user
       this.country = UserData.country_name
       this.balance = UserData.balance

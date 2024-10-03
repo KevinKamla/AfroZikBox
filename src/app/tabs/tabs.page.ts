@@ -316,6 +316,8 @@ export class TabsPage implements OnInit, OnDestroy {
     } else {
       console.log('Toutes les chansons ont été jouées.');
     }
+    this.songService.setPlaying(true); // Mettez à jour l'état de la musique
+
   }
 
   playPreviousSong() {

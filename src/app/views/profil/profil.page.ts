@@ -25,12 +25,13 @@ export class ProfilPage implements OnInit {
 
 
   selectedSegment: string = 'Chansons';
-
   UserData : any
   email: string = '';
   avatar: any;
   cover: any;
   like: any;
+  follower: any;
+  following: any;
   email_on_follow_user: any;
   latest: any[] = [];
   playlist: any[] = [];
@@ -43,6 +44,8 @@ export class ProfilPage implements OnInit {
   favoris: any[] = [];
   events: any[] = [];
   profile : any[]=[];
+  isAdmin: boolean = false; // Déclaration de la propriété isAdmin
+
   constructor(
     private storage: Storage,
     private playlistService: PlaylistService,
@@ -91,12 +94,19 @@ export class ProfilPage implements OnInit {
     if (u) {
       const UserData = JSON.parse(u)
       console.log("userdata :", UserData )
-      this.email = UserData.email
-      this.avatar = UserData.avatar
+      this.email = UserData.username;
+      this.isAdmin = this.email === 'admin' ? true : false;
+      this.avatar = UserData.avatar;
       this.cover = UserData.cover
       // this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user
     }
+    this.userService.getFollowers(this.userId).subscribe((response)=>{
+      this.follower = response.data.count;
+    });
+    this.userService.getFollowing(this.userId).subscribe((response)=>{
+      this.following = response.data.count;
+    });
     this.userService.getProfile(this.userId).subscribe((response) => {
       this.profile = response.details;
     });

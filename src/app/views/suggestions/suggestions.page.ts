@@ -150,7 +150,6 @@ export class SuggestionsPage implements OnInit {
   playMusic(item: any, index: number) {
     const songId = item.id;
     let sourceArray = '';
-    // Enregistrer les informations de la chanson dans le localStorage
     const musicInfo = {
       ...item,
       sourceArray,
@@ -158,20 +157,19 @@ export class SuggestionsPage implements OnInit {
     console.log(musicInfo);
     
     localStorage.setItem('music', JSON.stringify(musicInfo));
-
-    // Ouvrir le panneau de lecture et définir l'état de la lecture
+  
     musicTab.isClose = false;
     musicTab.musicIsPlay = true;
-
-    if (this.isPlaying && this.currentSongId !== songId) {
-      // Si une autre chanson est déjà en lecture, arrêtez la chanson actuelle
-      this.stopCurrentMusic();
-      this.loadAndPlayMusic(item.audio_location, songId);
-    } else if (!this.isPlaying) {
-      // Si aucune chanson n'est en lecture, démarrez la lecture
-      this.loadAndPlayMusic(item.audio_location, songId);
-    }
-
+  
+    // Vérifier si une autre chanson est déjà en lecture
+    this.songService.isPlaying$.subscribe(isPlaying => {
+      if (isPlaying && this.currentSongId !== songId) {
+        this.stopCurrentMusic();
+      }
+    });
+  
+    this.loadAndPlayMusic(item.audio_location, songId);
+    this.songService.setPlaying(true); // Mettez à jour l'état de la musique
     this.songService.updateCurrentSong(item);
   }
 
