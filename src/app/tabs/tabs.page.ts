@@ -44,16 +44,14 @@ export class TabsPage implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService
   ) {}
 
-
-  
   async goToProfile() {
     await this.verifierConnexion('profile');
   }
-  
+
   async goToZikbox() {
     await this.verifierConnexion('zikbox');
   }
-  
+
   async goToZikstore() {
     await this.verifierConnexion('zikstore');
   }
@@ -173,8 +171,6 @@ export class TabsPage implements OnInit, OnDestroy {
     }
   }
 
- 
-
   private async stopCurrentSong(): Promise<void> {
     if (this.file) {
       try {
@@ -205,10 +201,6 @@ export class TabsPage implements OnInit, OnDestroy {
   indexSonActuel: number = 0;
   sourceArray!: string;
 
-
-
-  
-
   currentSongIndex: number = 0;
   audio: HTMLAudioElement = new Audio();
 
@@ -227,26 +219,28 @@ export class TabsPage implements OnInit, OnDestroy {
   playMusic(item: any, index: number) {
     const songId = item.id;
     let sourceArray = '';
-  
+
     // Identifier si la chanson vient de la liste "latest" ou "songs"
     // if (this.latest.some((song) => song.id === item.id)) {
     //   sourceArray = 'latest';
     // } else if (this.songs.some((song) => song.id === item.id)) {
     //   sourceArray = 'songs';
     // }
-  
+
     // Enregistrer les informations de la chanson dans le localStorage
-    const musicInfo = {
-      ...item,
-      sourceArray,
-    };
-    localStorage.setItem('music', JSON.stringify(musicInfo));
-  
+    // const musicInfo = {
+    //   ...item,
+    //   sourceArray,
+    // };
+    // localStorage.setItem('music', JSON.stringify(musicInfo));
+
     // Ouvrir le panneau de lecture et définir l'état de la lecture
     musicTab.isClose = false;
     musicTab.musicIsPlay = true;
-  
+
     if (this.isPlaying && this.currentSong !== songId) {
+      console.log(item.audio_location);
+      
       // Si une autre chanson est déjà en lecture, arrêtez la chanson actuelle
       this.stopCurrentMusic();
       this.loadAndPlayMusic(item.audio_location, songId);
@@ -254,31 +248,30 @@ export class TabsPage implements OnInit, OnDestroy {
       // Si aucune chanson n'est en lecture, démarrez la lecture
       this.loadAndPlayMusic(item.audio_location, songId);
     }
-  
+
     // Récupérer la durée de la musique et mettre à jour le service de chanson
     this.getAudioDuration(item.audio_location);
-  
+
     this.songService.updateCurrentSong(item);
   }
-  
+
   // Méthode pour récupérer la durée de la musique
   getAudioDuration(audioUrl: string) {
     const audio = new Audio(audioUrl);
-  
+
     // L'événement "loadedmetadata" est déclenché lorsque les métadonnées audio sont chargées
     audio.addEventListener('loadedmetadata', () => {
       const duration = audio.duration;
       console.log('Durée de l\'audio en secondes:', duration);
-  
+
       // Optionnel : convertir la durée en minutes et secondes
       const minutes = Math.floor(duration / 60);
       const seconds = Math.floor(duration % 60);
       console.log(`Durée : ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-  
-      this.seekTo(duration);
+
+      // this.seekTo(duration);
     });
   }
-  
 
   loadAndPlayMusic(songUrl: string, songId: any) {
     this.audio.src = songUrl;
@@ -336,7 +329,7 @@ export class TabsPage implements OnInit, OnDestroy {
   }
   seekTo(event: any) {
     const value = event.detail.value;
-  
+
     // Vérifie que la valeur est un nombre fini
     if (typeof value === 'number' && isFinite(value)) {
       this.audio.currentTime = value;
@@ -346,9 +339,8 @@ export class TabsPage implements OnInit, OnDestroy {
       console.error('Valeur non valide pour currentTime:', value);
     }
   }
-  
-}
 
+}
 
 // import { Component, OnInit, OnDestroy } from '@angular/core';
 // import { AlertController, NavController } from '@ionic/angular';
@@ -385,7 +377,6 @@ export class TabsPage implements OnInit, OnDestroy {
 //   sonsCategorieActuelle: any[] = [];
 //   indexSonActuel: number = 0;
 //   sourceArray!: string;
-
 
 //   constructor(
 //     private navCtrl: NavController,
@@ -530,5 +521,21 @@ export class TabsPage implements OnInit, OnDestroy {
 
 //   seekTo(event: any) {
 //     this.musicPlayerService.seekTo(event.detail.value);
+//   }
+
+//   async goToProfile() {
+//     await this.verifierConnexion('profile');
+//   }
+
+//   async goToZikbox() {
+//     await this.verifierConnexion('zikbox');
+//   }
+
+//   async goToZikstore() {
+//     await this.verifierConnexion('zikstore');
+//   }
+
+//   async goToFavourites() {
+//     await this.verifierConnexion('favoris');
 //   }
 // }

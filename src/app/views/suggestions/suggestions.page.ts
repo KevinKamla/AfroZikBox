@@ -163,20 +163,24 @@ export class SuggestionsPage implements OnInit {
     musicTab.isClose = false;
     musicTab.musicIsPlay = true;
 
-    if (this.isPlaying && this.currentSongId !== songId) {
-      // Si une autre chanson est déjà en lecture, arrêtez la chanson actuelle
-      this.stopCurrentMusic();
-      this.loadAndPlayMusic(item.audio_location, songId);
-    } else if (!this.isPlaying) {
-      // Si aucune chanson n'est en lecture, démarrez la lecture
-      this.loadAndPlayMusic(item.audio_location, songId);
-    }
+    // if (this.isPlaying && this.currentSongId !== songId) {
+    //   // Si une autre chanson est déjà en lecture, arrêtez la chanson actuelle
+    //   // this.stopCurrentMusic();
+    //   this.loadAndPlayMusic(item.audio_location, songId);
+    // } else if (!this.isPlaying) {
+    //   console.log(songId);
+    //   // Si aucune chanson n'est en lecture, démarrez la lecture
+    //   this.loadAndPlayMusic(item.audio_location, songId);
+    //   this.isPlaying = true;
+    // }
 
     this.songService.updateCurrentSong(item);
   }
 
   loadAndPlayMusic(songUrl: string, songId: any) {
     this.audio.src = songUrl;
+    console.log(this.audio.src);
+    
     this.audio.load();
     this.audio.play();
 
@@ -283,23 +287,23 @@ export class SuggestionsPage implements OnInit {
       console.log("userdata :", UserData )
       this.avatar = UserData.avatar
     }
-    this.suggestionsService.getSuggestion(2, '').subscribe(
-      (response) => {
-        this.albums = response.top_albums;
-        this.songs = response.top_songs;
-      },
-      (error) => {
-        console.error(
-          'Erreur lors de la récupération des suggestions :',
-          error
-        );
-      }
-    );
+    // this.suggestionsService.getSuggestion(2, '').subscribe(
+    //   (response) => {
+    //     this.albums = response.top_albums;
+    //     this.songs = response.top_songs;
+    //   },
+    //   (error) => {
+    //     console.error(
+    //       'Erreur lors de la récupération des suggestions :',
+    //       error
+    //     );
+    //   }
+    // );
 
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        this.loadSongsForTopAlbums();
+        // this.loadSongsForTopAlbums();
       },
       (error) => {
         console.error(
