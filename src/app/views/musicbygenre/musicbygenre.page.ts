@@ -14,13 +14,14 @@ export class MusicbygenrePage implements OnInit {
 
   genre = '';
   genres: any[]=[];
+  genreName = ''; // Ajout d'une propriété pour le nom du genre
+
   constructor(    
     private actvroute: ActivatedRoute, 
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private genreService: GenresService,
     private route: ActivatedRoute,
-
   ) { }
 
   
@@ -49,12 +50,19 @@ export class MusicbygenrePage implements OnInit {
     this.genreService.getGenre(genreId).subscribe(
       (response) => {
         this.genres = response.data;
-        console.log('Détails du genre récupérés :', this.genres);
+        const genre = this.genres.find(g => g.id === Number(this.genre));
+        this.genreName = genre ? genre.cateogry_name : '';
+        console.log('Détails du genre correspondant à l\'ID :', genre); 
       },
       (error) => {
         console.error('Erreur lors de la récupération des détails du genre :', error);
       }
     );
+
+    this.genreService.getTrackGenre(Number(this.genre), '').subscribe((response) => {
+      this.genres = response.tracks.data;
+      console.log('Détails du genre récupérés :', this.genres);
+    });
   }
 
 }

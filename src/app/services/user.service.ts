@@ -17,7 +17,6 @@ export class UserService {
   private accessToken = localStorage.getItem('accessToken');
   private profile = `${environment.api}/user/get-profile`;
   private serverKey = environment.server_key;
-
   constructor(private http: HttpClient) { }
 
   getRecentPlayed(id:number){

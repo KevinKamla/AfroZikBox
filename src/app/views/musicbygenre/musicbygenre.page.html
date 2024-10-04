@@ -3,17 +3,17 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>{{genre}}</ion-title>
+        <ion-title>{{genreName}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
     <div class="list_chansons">
         <div class="ion-item" *ngFor="let genre of genres">
-            <img src="assets/icon/gims.png" />
+            <img [src]="genre.thumbnail" />
             <div class="title">
-                <h3>Mon coeur avait raison</h3>
-                <p>admin | 3.59</p>
+                <h3>{{genre.title}}</h3>
+                <p>{{genre.publisher.username}} | {{genre.duration}}</p>
             </div>
             <div class="block-btn">
                 <ion-button class="btn-play" (click)="goToPlay()">

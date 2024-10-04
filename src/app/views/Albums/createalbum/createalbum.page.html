@@ -23,26 +23,26 @@
     <div class="input">
         <div class="canView d-f-s">
             <ion-icon name="pencil-outline"></ion-icon>
-            <ion-input type="text" placeholder="Titre de l'album" class="content" value=""></ion-input>
+            <ion-input type="text" placeholder="Titre de l'album" class="content" value=""  [(ngModel)]="album.title" name="title"></ion-input>
         </div>
         <div class=" canView d-f">
             <ion-icon name="text-outline"></ion-icon>
-            <ion-textarea placeholder="Description" class="content"></ion-textarea>
+            <ion-textarea placeholder="Description" class="content"  [(ngModel)]="album.description" name="description"></ion-textarea>
         </div>
-        <ion-item id="open-modal-genre" button="true" class="ion-no-border">
+        <ion-item id="open-modal-genre" button="true" class="ion-no-border" name="genre" (click)="openGenreModal()" >
             <div class="canView d-f">
                 <ion-icon name="layers-outline"></ion-icon>
-                <div class="contentBlock">{{valueGenre}}</div>
+                <div class="contentBlock">{{album.genre || 'Choisir un genre'}}</div>
             </div>
         </ion-item>
-        <ion-item id="open-modal-prix" button="true" class="ion-no-border">
+        <ion-item id="open-modal-prix" button="true" class="ion-no-border" name="prix" (click)="openPriceModal()">
             <div class="canView d-f">
                 <ion-icon name="cash-outline"></ion-icon>
-                <div class="contentBlock">{{valuePrice}}</div>
+                <div class="contentBlock">{{album.price || 'Choisir un prix'}}</div>
             </div>
         </ion-item>
 
-        <ion-button expand="block" shape="round" class="ion-margin">
+        <ion-button expand="block" shape="round" class="ion-margin" (click)="submitForm()">
             Continuer
         </ion-button>
     </div>
@@ -60,7 +60,7 @@
             <div class="ion-margin-top">
                 <form action="" method="get">
                     <div *ngFor="let item of genreList">
-                        <ion-item button (click)="selectedGenre(item)" class="ion-no-border">
+                        <ion-item button (click)="selectedGenre(item); modale_genre.dismiss()" class="ion-no-border">
                             <ion-label>{{item}}</ion-label>
                         </ion-item>
                     </div>
@@ -88,7 +88,7 @@
             <div class="ion-margin-top">
                 <form action="" method="get">
                     <div *ngFor="let item of priceList">
-                        <ion-item button (click)="selectedPrix(item)" class="ion-no-border">
+                        <ion-item button (click)="selectedPrix(item); modale_prix.dismiss()" class="ion-no-border">
                             <ion-label>{{item}}</ion-label>
                         </ion-item>
                     </div>

@@ -18,10 +18,10 @@
         </div>
         <ion-label>
             {{ email }}
-            <ion-icon color="success" name="checkmark-circle"></ion-icon>
+            <ion-icon [color]="isAdmin ? 'tertiary' : 'success'" name="checkmark-circle-sharp"></ion-icon>
         </ion-label>
         <ion-text>
-            {{like}} Like - {{email_on_follow_user}} Abonné
+            {{follower}} Followers - {{following}} Following
         </ion-text>
         <div class="item d-f-c">
             <div class="d-f-s block-edit-settings">

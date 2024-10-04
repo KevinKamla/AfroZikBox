@@ -150,7 +150,6 @@ export class SuggestionsPage implements OnInit {
   playMusic(item: any, index: number) {
     const songId = item.id;
     let sourceArray = '';
-    // Enregistrer les informations de la chanson dans le localStorage
     const musicInfo = {
       ...item,
       sourceArray,
@@ -158,8 +157,7 @@ export class SuggestionsPage implements OnInit {
     console.log(musicInfo);
     
     localStorage.setItem('music', JSON.stringify(musicInfo));
-
-    // Ouvrir le panneau de lecture et définir l'état de la lecture
+  
     musicTab.isClose = false;
     musicTab.musicIsPlay = true;
 

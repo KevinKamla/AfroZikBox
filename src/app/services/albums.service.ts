@@ -35,6 +35,7 @@ export class AlbumsService {
   private accessToken = localStorage.getItem('accessToken');
   private update = `${environment.api}/update-album`;
   private purchase = `${environment.api}/user/purchase_album`;
+  private submit = `${environment.api}/submit-album`;
   constructor(private http: HttpClient) {}
 
   getUpdateAlbum(
@@ -52,10 +53,23 @@ export class AlbumsService {
       ...albumData,
       server_key: this.serverKey,
     };
+    console.log("teguee servicesssssss")
 
     return this.http.post(this.update, body, { headers });
   }
+  getSubmitAlbum(accessToken: string,albumData: AlbumData): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    });
 
+    const body = {
+      ...albumData,
+      server_key: this.serverKey,
+    };
+
+    return this.http.post(this.submit, body, { headers });
+  }
  getpurchaseAlbum(
     accessToken: string,
     purchaseData: PurchaseData
