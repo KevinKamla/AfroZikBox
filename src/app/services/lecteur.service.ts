@@ -12,17 +12,22 @@ export class LecteurService {
   public getAudioElement(): HTMLAudioElement {
     return this.audio;
   }
+
   private isPlayingSubject = new BehaviorSubject<boolean>(false);
   private currentSongSubject = new BehaviorSubject<any>(null);
   private durationSubject = new BehaviorSubject<number>(0);
   private currentTimeSubject = new BehaviorSubject<number>(0);
   private audioErrorSubject = new BehaviorSubject<string | null>(null);
+  private isRepeatOneSubject = new BehaviorSubject<boolean>(false);
+  private isShuffleSubject = new BehaviorSubject<boolean>(false);
 
   public isPlaying$ = this.isPlayingSubject.asObservable();
   public currentSong$ = this.currentSongSubject.asObservable();
   public duration$ = this.durationSubject.asObservable();
   public currentTime$ = this.currentTimeSubject.asObservable();
   public audioError$ = this.audioErrorSubject.asObservable();
+  public isRepeatOne$ = this.isRepeatOneSubject.asObservable();
+  public isShuffle$ = this.isShuffleSubject.asObservable();
 
   private currentSongIndex: number = 0;
   public topSongs: any[] = [];
@@ -48,14 +53,18 @@ export class LecteurService {
       this.isPlayingSubject.next(false);
     };
 
-    // Déclencher la lecture de la chanson suivante lorsque la chanson actuelle se termine
-    console.log(this.topSongs);
+    // Déclencher la lecture de la chanson suivante ou répéter
     this.audio.onended = () => {
-      this.playNext(this.topSongs); // Assurez-vous que la liste des chansons est passée ici
+      if (this.isRepeatOneSubject.value) {
+        this.audio.currentTime = 0;
+        this.audio.play();
+      } else {
+        this.playNext(this.topSongs); // Assurez-vous que la liste des chansons est passée ici
+      }
     };
   }
 
-  // Méthode pour charger une nouvelle liste de chansons
+  // Charger une nouvelle liste de chansons
   loadNewPlaylist(songs: any[], startIndex: number = 0): void {
     if (songs.length > 0) {
       this.stopCurrentMusic();  // Arrêter la musique actuelle
@@ -66,6 +75,7 @@ export class LecteurService {
       console.error('La liste de chansons est vide.');
     }
   }
+
   // Jouer une chanson
   playMusic(song: any, index: number): void {
     try {
@@ -74,20 +84,17 @@ export class LecteurService {
         this.audio.src = song.audio_location;
         this.audio.load();
       }
-      this.audio
-        .play()
-        .then(() => {
-          this.isPlayingSubject.next(true);
-          this.currentSongSubject.next(song);
-          this.currentSongIndex = index;
+      this.audio.play().then(() => {
+        this.isPlayingSubject.next(true);
+        this.currentSongSubject.next(song);
+        this.currentSongIndex = index;
 
-          // Sauvegarder l'état dans localStorage
-          this.saveToLocalStorage(song, index, this.audio.currentTime);
-        })
-        .catch((error) => {
-          this.audioErrorSubject.next('Impossible de lire la musique');
-          console.error('Erreur lors du démarrage de la lecture : ', error);
-        });
+        // Sauvegarder l'état dans localStorage
+        this.saveToLocalStorage(song, index, this.audio.currentTime);
+      }).catch((error) => {
+        this.audioErrorSubject.next('Impossible de lire la musique');
+        console.error('Erreur lors du démarrage de la lecture : ', error);
+      });
 
       // Ouvrir le panneau de lecture
       musicTab.isClose = false;
@@ -163,7 +170,16 @@ export class LecteurService {
     );
   }
 
-  // Jouer la chanson suivante
+  // Avancer de 30 secondes
+  skipForward(): void {
+    this.seekTo(this.audio.currentTime + 30);
+  }
+
+  // Reculer de 10 secondes
+  rewind(): void {
+    this.seekTo(this.audio.currentTime - 10);
+  }
+
   // Jouer la chanson suivante
   playNext(songs: any[]): void {
     try {
@@ -173,8 +189,14 @@ export class LecteurService {
         return;
       }
 
-      // Calculer l'index de la prochaine chanson
-      const nextIndex = this.currentSongIndex + 1;
+      let nextIndex;
+      if (this.isShuffleSubject.value) {
+        // Sélection aléatoire de l'index suivant
+        nextIndex = Math.floor(Math.random() * songs.length);
+      } else {
+        // Calculer l'index de la prochaine chanson
+        nextIndex = this.currentSongIndex + 1;
+      }
 
       // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
       if (nextIndex >= songs.length) {
@@ -219,6 +241,16 @@ export class LecteurService {
     }
   }
 
+  // Activer/désactiver la répétition de la chanson actuelle
+  toggleRepeatOne(): void {
+    this.isRepeatOneSubject.next(!this.isRepeatOneSubject.value);
+  }
+
+  // Activer/désactiver le mode aléatoire
+  toggleShuffle(): void {
+    this.isShuffleSubject.next(!this.isShuffleSubject.value);
+  }
+
   // Fermer le lecteur de musique
   closePlayer(): void {
     this.stopCurrentMusic();
@@ -238,34 +270,26 @@ export class LecteurService {
       currentTime,
       isPlaying: this.isPlayingSubject.value,
     };
-    localStorage.setItem('musicState', JSON.stringify(songState));
+    localStorage.setItem('currentSongState', JSON.stringify(songState));
   }
 
   // Charger l'état de lecture à partir de localStorage
   private loadFromLocalStorage(): void {
-    const savedState = localStorage.getItem('musicState');
+    const savedState = localStorage.getItem('currentSongState');
     if (savedState) {
       const { song, index, currentTime, isPlaying } = JSON.parse(savedState);
-      this.currentSongSubject.next(song);
-      this.currentSongIndex = index;
-      this.audio.src = song.audio_location;
-      this.audio.currentTime = currentTime;
-
-      // Si l'état était en lecture, reprendre la chanson
+      this.playMusic(song, index);
+      this.seekTo(currentTime);
       if (isPlaying) {
         this.resumeMusic();
       } else {
-        this.isPlayingSubject.next(false);
+        this.pauseMusic();
       }
     }
   }
 
-  // Effacer les données de lecture dans localStorage
+  // Effacer les données de localStorage
   private clearLocalStorage(): void {
-    localStorage.removeItem('musicState');
-  }
-
-  public setSongList(songs: any[]) {
-    this.songList = songs;
+    localStorage.removeItem('currentSongState');
   }
 }

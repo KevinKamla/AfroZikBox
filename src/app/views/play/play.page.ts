@@ -41,6 +41,8 @@ export class PlayPage implements OnInit, OnDestroy {
   private playSubscription: Subscription | undefined;
   private timeSubscription: Subscription | undefined;
   private durationSubscription: Subscription | undefined;
+  isShuffleEnabled = false;
+  isRepeatOneEnabled = false;
   
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
@@ -133,6 +135,27 @@ export class PlayPage implements OnInit, OnDestroy {
     console.log(this.currentSong);
   }
 
+  toggleShuffle() {
+    this.isShuffleEnabled = !this.isShuffleEnabled;
+    this.musicPlayerService.toggleShuffle();
+  }
+
+  // Activer/désactiver la répétition d'une seule chanson
+  toggleRepeatOne() {
+    this.isRepeatOneEnabled = !this.isRepeatOneEnabled;
+    this.musicPlayerService.toggleRepeatOne();
+  }
+
+  // Sauter de 30 secondes dans la chanson actuelle
+  skipForward() {
+    this.musicPlayerService.skipForward();
+  }
+
+  // Revenir en arrière de 10 secondes
+  rewind() {
+    this.musicPlayerService.rewind();
+  }
+
   togglePlayPause() {
     if (this.isPlaying) {
       this.musicPlayerService.pauseMusic();
@@ -141,6 +164,12 @@ export class PlayPage implements OnInit, OnDestroy {
     }
   }
 
+  formatTime(seconds: number): string {
+    const minutes: number = Math.floor(seconds / 60);
+    const remainingSeconds: number = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  }
+  
   seekTo(event: any) {
     this.musicPlayerService.seekTo(event.detail.value);
   }
