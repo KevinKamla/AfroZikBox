@@ -1,10 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { HttpClient } from '@angular/common/http';
 import { Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { LecteurService } from 'src/app/services/lecteur.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { SongsService } from 'src/app/services/songs.service';
+import { TopSongsService } from 'src/app/services/top-songs.service';
+import { SuggestionsService } from 'src/app/services/suggestions.service';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -27,38 +32,144 @@ export class PlayPage implements OnInit, OnDestroy {
   private songSubscription: Subscription | undefined;
   currentSong: any;
 
+  isUserLoggedIn: boolean = false;
+  musictabOption = musicTab;
+ 
+  sonsCategorieActuelle: any[] = [];
+  indexSonActuel: number = 0;
+  private currentTimeSubject = new BehaviorSubject<number>(0);
+  private playSubscription: Subscription | undefined;
+  private timeSubscription: Subscription | undefined;
+  private durationSubscription: Subscription | undefined;
+  
+  audio: HTMLAudioElement = new Audio();
+  currentSongIndex: number = 0;
+  sourceArray: any;
+  topSongs: any;
+  latest: any;
+
   constructor(
     private media: Media,
     private platform: Platform,
     private http: HttpClient,
     public navCtrl: NavController,
     public route: Router,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private musicPlayerService: LecteurService,
+    private songService: SongsService,
+    private authService: AuthService,
+    private topsService: TopSongsService,
+    private suggestionsService: SuggestionsService,
+    
   ) {}
 
   ngOnInit() {
-    // Vérifie si la musique est en cours de lecture au chargement de la page
-    musicTab.musicIsPlay
-      ? (this.pauseIcon = 'pause')
-      : (this.pauseIcon = 'play');
+    this.songService.currentSong$.subscribe((song) => {
+      if (song) {
+        this.currentSong = song;
+        this.sourceArray = song.sourceArray;
+      }
+    });
+    console.log(this.currentSong);
+    
+    this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
+      this.isUserLoggedIn = authenticated;
+    });
+
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        this.topSongs = response.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des Meilleurs songs :', error);
+      }
+    );
+
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        this.latest = response.new_releases.data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
 
     const music = localStorage.getItem('music');
     if (music) {
       this.currentSong = JSON.parse(music);
-      console.log(this.currentSong);
-      this.loadSong(this.currentSong.url); // Charge et joue la chanson enregistrée dans localStorage
     }
 
-    // Vérifie si un fichier audio est chargé et si la musique est censée être en lecture
-    if (this.file && musicTab.musicIsPlay) {
-      this.isPlaying = true; // La musique est en cours de lecture
-      this.startProgressUpdater(); // Démarre la mise à jour de la progression
+    // this.songSubscription = this.songService.currentSong$.subscribe((song) => {
+    //   this.currentSong = song;
+    // });
+
+    // Souscrire au flux du service pour la chanson actuelle
+    this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
+      (song) => {
+        this.currentSong = song;
+      }
+    );
+
+    // Souscrire à l'état de lecture (playing ou pause)
+    this.playSubscription = this.musicPlayerService.isPlaying$.subscribe(
+      (isPlaying) => {
+        this.isPlaying = isPlaying;
+      }
+    );
+
+    // Souscrire à la mise à jour du temps actuel
+    this.timeSubscription = this.musicPlayerService.currentTime$.subscribe(
+      (time) => {
+        this.currentTime = time;
+      }
+    );
+
+    // Souscrire à la mise à jour de la durée
+    this.durationSubscription = this.musicPlayerService.duration$.subscribe(
+      (duration) => {
+        this.duration = duration;
+      }
+    );
+    console.log(this.currentSong);
+  }
+
+  togglePlayPause() {
+    if (this.isPlaying) {
+      this.musicPlayerService.pauseMusic();
     } else {
-      this.isPlaying = false; // Pas de musique en cours de lecture
+      this.musicPlayerService.resumeMusic();
     }
   }
 
-  musictabOption = musicTab;
+  seekTo(event: any) {
+    this.musicPlayerService.seekTo(event.detail.value);
+  }
+
+   // Méthode pour jouer la prochaine chanson avec MusicService
+   playNextSong() {
+    if (this.currentSongIndex + 1 < this.topSongs.length) {
+      this.currentSongIndex++;
+      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+    } else {
+      console.log('Toutes les chansons ont été jouées.');
+    }
+  }
+
+  // Méthode pour jouer la chanson précédente avec MusicService
+  playPreviousSong() {
+    if (this.currentSongIndex > 0) {
+      this.currentSongIndex--;
+      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+    }
+  }
+
+  playMusic(song: any, index: number): void {
+    // Appelez la méthode playMusic avec song et index
+    this.musicPlayerService.playMusic(song, index);
+    musicTab.musicIsPlay = true;
+    this.currentSong = song;
+    console.log(this.currentSong);
+  }
 
   fetchTopSongs() {
     const apiUrl =

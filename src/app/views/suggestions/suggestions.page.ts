@@ -9,10 +9,10 @@ import { GenresService } from '../../services/genres.service';
 import { TopAlbumsService } from '../../services/top-albums.service';
 import { SongsService } from 'src/app/services/songs.service';
 import { HttpClient } from '@angular/common/http';
-import { Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
 import { AlbumsService } from 'src/app/services/albums.service';
 import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
+import { LecteurService } from 'src/app/services/lecteur.service'; // Import du service de musique
 
 @Component({
   selector: 'app-suggestions',
@@ -22,9 +22,6 @@ import { StatutPage } from '../statut/statut.page';
 export class SuggestionsPage implements OnInit {
   // Déclaration des propriétés
   topalbums: any[] = [];
-  file: MediaObject | null = null;
-  isPlaying: boolean = false;
-  currentSongId: string = '';
   genres: any[] = [];
   latest: any[] = [];
   songs: any[] = [];
@@ -34,6 +31,9 @@ export class SuggestionsPage implements OnInit {
 
   // Ajoutez l'objet pour stocker les chansons d'un album
   albumSongs: { [key: string]: any[] } = {};
+
+  currentSongIndex: number = 0;
+  currentSong: any;
 
   constructor(
     private http: HttpClient,
@@ -46,11 +46,11 @@ export class SuggestionsPage implements OnInit {
     private genresService: GenresService,
     private topAlbumsService: TopAlbumsService,
     private songService: SongsService,
-    private media: Media,
-    private platform: Platform,
     private albumsService: AlbumsService,
-    private alertController : AlertController
+    private alertController: AlertController,
+    private musicService: LecteurService // Injection du service de musique
   ) {}
+
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   isOpenmodalAchat = false;
   walletIsOpen = false;
@@ -70,34 +70,32 @@ export class SuggestionsPage implements OnInit {
       },
     },
   ];
+
   async handleStoryClick() {
     const userData = localStorage.getItem("UserData");
     if (!userData) {
-      const alert =await this.alertController.create({
+      const alert = await this.alertController.create({
         header: 'Accès refusé',
         message: 'Veuillez vous connecter pour voir cette story',
         buttons: [{
-            text: 'OK',
-            handler: () => {
-              this.route.navigate(['/tabs']);
-            }
+          text: 'OK',
+          handler: () => {
+            this.route.navigate(['/tabs']);
+          }
         }]
-      }); 
-     alert.present();
+      });
+      alert.present();
     } else {
-      alert("vous etes connecter");
+      alert("vous êtes connecté");
     }
   }
 
- // Méthode pour jouer ou mettre en pause la musique
- artistDetail = (item: any) => {
-  console.log(item);
-  localStorage.setItem('artist', JSON.stringify(item));
-  this.route.navigate(['/artistprofil', item.id]);
-};
-
-
- 
+  // Méthode pour jouer ou mettre en pause la musique
+  artistDetail = (item: any) => {
+    console.log(item);
+    localStorage.setItem('artist', JSON.stringify(item));
+    this.route.navigate(['/artistprofil', item.id]);
+  };
 
   async openActut() {
     const modal = await this.modal.create({
@@ -110,7 +108,7 @@ export class SuggestionsPage implements OnInit {
     await modal.present();
     modal.onDidDismiss().then(() => {
       console.log('Modal fermé');
-  });
+    });
   }
 
   async openAlbumDetail(props: any) {
@@ -141,122 +139,39 @@ export class SuggestionsPage implements OnInit {
     this.route.navigate([segment]);
   }
 
-
-
-  // Méthode pour charger et jouer la musique
-  currentSongIndex: number = 0;
-  audio: HTMLAudioElement = new Audio();
-
-  playMusic(item: any, index: number) {
-    const songId = item.id;
-    let sourceArray = '';
-    const musicInfo = {
-      ...item,
-      sourceArray,
-    };
-    console.log(musicInfo);
-    
-    localStorage.setItem('music', JSON.stringify(musicInfo));
-  
-    musicTab.isClose = false;
+  // Méthode pour charger et jouer la musique avec MusicService
+  playMusic(song: any, index: number): void {
+    // Appelez la méthode playMusic avec song et index
+    this.musicService.playMusic(song, index);
     musicTab.musicIsPlay = true;
-
-    // if (this.isPlaying && this.currentSongId !== songId) {
-    //   // Si une autre chanson est déjà en lecture, arrêtez la chanson actuelle
-    //   // this.stopCurrentMusic();
-    //   this.loadAndPlayMusic(item.audio_location, songId);
-    // } else if (!this.isPlaying) {
-    //   console.log(songId);
-    //   // Si aucune chanson n'est en lecture, démarrez la lecture
-    //   this.loadAndPlayMusic(item.audio_location, songId);
-    //   this.isPlaying = true;
-    // }
-
-    this.songService.updateCurrentSong(item);
+    this.currentSong = song;
+    console.log(this.currentSong);
   }
 
-  loadAndPlayMusic(songUrl: string, songId: any) {
-    this.audio.src = songUrl;
-    console.log(this.audio.src);
-    
-    this.audio.load();
-    this.audio.play();
-
-    // Mettre à jour l'ID de la chanson actuelle
-    this.currentSongId = songId;
-    this.isPlaying = true;
-
-    // Gérer la fin de la chanson pour passer à la suivante
-    this.audio.onended = () => {
-      this.playNextSong();
-    };
+  playMusicFromTopList(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.topSongs, index);
   }
 
-  // stopCurrentMusic() {
-  //   this.audio.pause();
-  //   this.isPlaying = false;
-  // }
+  // Charger et jouer la liste "Latest Songs"
+  playMusicFromLatestList(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.latest, index);
+  }
 
-
+  // Méthode pour jouer la prochaine chanson avec MusicService
   playNextSong() {
     if (this.currentSongIndex + 1 < this.topSongs.length) {
       this.currentSongIndex++;
-      this.playMusic(
-        this.topSongs[this.currentSongIndex],
-        this.currentSongIndex
-      );
+      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
     } else {
       console.log('Toutes les chansons ont été jouées.');
     }
   }
 
+  // Méthode pour jouer la chanson précédente avec MusicService
   playPreviousSong() {
     if (this.currentSongIndex > 0) {
       this.currentSongIndex--;
-      this.playMusic(
-        this.topSongs[this.currentSongIndex],
-        this.currentSongIndex
-      );
-    }
-  }
-
-  stopCurrentMusic() {
-    if (this.file && this.isPlaying) {
-      try {
-        this.file.stop();
-        this.file.release();
-        this.isPlaying = false;
-      } catch (error) {
-        console.error("Erreur lors de l'arrêt de la musique :", error);
-      }
-    }
-  }
-
-  
-
-  // nextMusic() {
-  //   const currentIndex = this.songs.findIndex(
-  //     (song) => song.id === this.currentSongId
-  //   );
-  //   const nextIndex = (currentIndex + 1) % this.songs.length;
-  //   const nextSong = this.songs[nextIndex];
-
-  //   if (nextSong) {
-  //     this.playMusic(nextSong);
-  //   }
-  // }
-
-  pauseMusic() {
-    if (this.file && this.isPlaying) {
-      this.file.pause();
-      this.isPlaying = false;
-    }
-  }
-
-  resumeMusic() {
-    if (this.file && !this.isPlaying) {
-      this.file.play();
-      this.isPlaying = true;
+      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
     }
   }
 
@@ -279,48 +194,31 @@ export class SuggestionsPage implements OnInit {
   avatar: any;
 
   ngOnInit() {
-    const u = localStorage.getItem("UserData")
+    const u = localStorage.getItem("UserData");
     if (u) {
-      const UserData = JSON.parse(u)
-      console.log("userdata :", UserData )
-      this.avatar = UserData.avatar
+      const UserData = JSON.parse(u);
+      console.log("userdata :", UserData);
+      this.avatar = UserData.avatar;
     }
-    // this.suggestionsService.getSuggestion(2, '').subscribe(
-    //   (response) => {
-    //     this.albums = response.top_albums;
-    //     this.songs = response.top_songs;
-    //   },
-    //   (error) => {
-    //     console.error(
-    //       'Erreur lors de la récupération des suggestions :',
-    //       error
-    //     );
-    //   }
-    // );
 
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        // this.loadSongsForTopAlbums();
+        this.loadSongsForTopAlbums();
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des meilleurs albums :',
-          error
-        );
+        console.error('Erreur lors de la récupération des meilleurs albums :', error);
       }
     );
 
     this.topsService.getTopSongs().subscribe(
       (response) => {
         this.topSongs = response.data;
+        this.loadSongsForTopAlbums();
         console.log(this.topSongs);
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des Meilleur songs :',
-          error
-        );
+        console.error('Erreur lors de la récupération des Meilleur songs :', error);
       }
     );
 
@@ -336,12 +234,10 @@ export class SuggestionsPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         this.latest = response.new_releases.data;
+        this.loadSongsForTopAlbums();
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des suggestions :',
-          error
-        );
+        console.error('Erreur lors de la récupération des suggestions :', error);
       }
     );
 
