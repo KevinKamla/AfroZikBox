@@ -1,10 +1,10 @@
 <ion-content [fullscreen]="true">
     <div class="sound">
         <div class="ion-item">
-            <img src="assets/icon/gims.png" />
+            <img [src]="currentSong?.thumbnail" />
             <div class="title">
-                <h3>Mon coeur avait raison</h3>
-                <p>admin | 3.59</p>
+                <h3>{{ currentSong?.title }}</h3>
+                <p>{{ currentSong?.description }} | {{ currentSong.duration }}</p>
             </div>
             <div class="block-btn">
                 <ion-button fill="clear">

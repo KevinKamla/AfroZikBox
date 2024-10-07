@@ -13,7 +13,7 @@ import { CreateplaylistPage } from '../createplaylist/createplaylist.page';
 export class MusicoptionPage implements OnInit {
 
   addStory = false;
-
+  currentSong:any;
   constructor(
     public navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -88,6 +88,12 @@ goToRoute(route: string = '') {
 
 
   ngOnInit() {
-  }
-
+    const storedSong = localStorage.getItem('currentSong');
+    console.log('werrrrrrrrr',storedSong)
+    if (storedSong) {
+      this.currentSong = JSON.parse(storedSong);
+      console.log('sonngggggg', this.currentSong)
+      // Utiliser this.currentSong comme nécessaire
+    }
+  } 
 }

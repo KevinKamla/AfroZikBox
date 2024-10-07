@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { GenresService } from '../../services/genres.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-musicbygenre',
@@ -22,6 +23,7 @@ export class MusicbygenrePage implements OnInit {
     public navCtrl: NavController,
     private genreService: GenresService,
     private route: ActivatedRoute,
+    private musicService: LecteurService // Injection du service de musique
   ) { }
 
   
@@ -39,8 +41,6 @@ export class MusicbygenrePage implements OnInit {
   goToPlay() {
     this.navCtrl.navigateForward('play');
   }
-
-
 
   ngOnInit() {    
     this.genre = this.actvroute.snapshot.params['genre'];
@@ -65,5 +65,8 @@ export class MusicbygenrePage implements OnInit {
     });
   }
 
+  playMusicFromSongs(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.genres, index);
+  }
 }
 

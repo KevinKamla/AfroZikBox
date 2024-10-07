@@ -16,7 +16,8 @@ import { LecteurService } from '../services/lecteur.service';
   styleUrls: ['tabs.page.scss'],
 })
 export class TabsPage implements OnInit, OnDestroy {
-  isUserLoggedIn: boolean = false;
+  canAccessPrivateTab!: boolean;
+  // isUserLoggedIn: boolean = false;
   musictabOption = musicTab;
   currentSong: any;
   topSongs: any[] = [];
@@ -48,6 +49,26 @@ export class TabsPage implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService
   ) {}
 
+  isUserLoggedIn(): boolean {
+    return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
+  }
+
+  async showLoginPopup() {
+    const alert = await this.alertController.create({
+      header: 'Connexion requise',
+      message: 'Veuillez vous connecter pour accéder à cette fonctionnalité.',
+      buttons: [
+        {
+          text: 'Se connecter',
+          handler: () => {
+            this.router.navigate(['/login']); // Redirige vers la page de connexion
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
   async goToProfile() {
     await this.verifierConnexion('profile');
   }
@@ -65,6 +86,7 @@ export class TabsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
         this.currentSong = song;
@@ -74,7 +96,7 @@ export class TabsPage implements OnInit, OnDestroy {
     console.log(this.currentSong);
 
     this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
-      this.isUserLoggedIn = authenticated;
+      // this.isUserLoggedIn = authenticated;
     });
 
     this.topsService.getTopSongs().subscribe(
@@ -158,22 +180,26 @@ export class TabsPage implements OnInit, OnDestroy {
   }
 
   async verifierConnexion(onglet: string) {
-    if (this.authService.isAuthenticated()) {
+    if (this.authService.isUserLoggedIn()) {
       this.router.navigate([`/tabs/${onglet}`]);
     } else {
-      const alert = await this.alertController.create({
-        header: 'Accès refusé',
-        message: 'Vous devez être connecté pour accéder à cette page.',
-        buttons: [
-          {
-            text: 'OK',
-            handler: () => {
-              this.router.navigate(['/tabs/home']);
+      if (onglet === 'home' || onglet === 'tendance') {
+        this.router.navigate([`/tabs/${onglet}`]); // Accès à l'onglet accueil et tendance
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Accès refusé',
+          message: 'Vous devez être connecté pour accéder à cette page.',
+          buttons: [
+            {
+              text: 'se connecter',
+              handler: () => {
+                this.router.navigate(['/login']); // Redirige vers l'onglet accueil
+              },
             },
-          },
-        ],
-      });
-      await alert.present();
+          ],
+        });
+        await alert.present();
+      }
     }
   }
 

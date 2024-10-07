@@ -33,6 +33,13 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     return this._isAuthenticated.asObservable();
   }
+  isUserLoggedIn(): boolean {
+    const token = localStorage.getItem('authToken');
+    return !!token;
+  }
+  checkUserConnection(): boolean {
+    return this.isLoggedIn() && this._isAuthenticated.value;
+  }
 
   private checkAuthStatus(): void {
     // Vérifier s'il y a un token dans le localStorage
@@ -143,6 +150,12 @@ export class AuthService {
               accessToken: response.access_token,
               data: response.data,
             };
+            if (loginSuccess.accessToken) {
+              localStorage.setItem('authToken', loginSuccess.accessToken);
+            }
+
+            this._isAuthenticated.next(true); 
+
             const userSession = {
               Access_token: loginSuccess.accessToken ?? '',
               User_id: loginSuccess.data?.id ?? 0,

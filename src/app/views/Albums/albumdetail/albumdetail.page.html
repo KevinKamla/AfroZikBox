@@ -27,14 +27,14 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of albumSongs">
+            <div class="ion-item" *ngFor="let song of albumSongs; let i = index">
                 <img [src]="song.thumbnail" />
                 <div class="title">
                     <h3>{{ song.title }}</h3>
                     <p>{{ song.publisher.username }} | {{ song.time }}</p>
                 </div>
                 <div class="block-btn">
-                    <ion-button class="btn-play" (click)="play()">
+                    <ion-button class="btn-play" (click)="playMusicFromSongs(song, i)">
                         <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
                     </ion-button>
                     <ion-button (click)="openOptionSound()">

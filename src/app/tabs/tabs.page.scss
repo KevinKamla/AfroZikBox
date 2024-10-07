@@ -81,3 +81,22 @@ ion-tab-bar {
 ion-range {
     --knob-size: 1px;
 }
+
+/* Ajoutez ceci dans votre fichier CSS */
+.scrolling-text {
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    overflow: hidden; /* Cache le texte qui déborde */
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+    animation: scroll 10s linear infinite; /* Animation de défilement */
+    width: 100%; /* Assurez-vous que l'élément a une largeur définie */
+    display: inline-block; /* Permet à l'élément de s'ajuster à son contenu */
+}
+  
+  @keyframes scroll {
+    0% {
+      transform: translateX(100%); /* Commence à droite */
+    }
+    100% {
+      transform: translateX(-100%); /* Finit à gauche */
+    }
+  }

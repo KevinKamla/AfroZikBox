@@ -29,14 +29,14 @@
 
         <div class="list_chansons">
             <div *ngIf="10 > 1; else ionSkeletonSon">
-                <div class="ion-item d-f-s" *ngFor="let song of favoris">
+                <div class="ion-item d-f-s" *ngFor="let song of favoris; let i = index">
                     <img [src]="song.thumbnail" />
                     <div class="title">
                         <h3>{{song.title}}</h3>
                         <p>{{song.publisher.username}} | {{song.time}}</p>
                     </div>
                     <div class="block-btn">
-                        <ion-button class="btn-play">
+                        <ion-button class="btn-play" (click)="playMusicFromFavoris(song, i)">
                             <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                         </ion-button>
                         <ion-button (click)="openOptionSound()">

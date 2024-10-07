@@ -5,6 +5,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 import { musicTab } from '../play/play.page';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-favoris',
@@ -20,7 +21,9 @@ export class FavorisPage implements OnInit {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private favoriteService: FavoriteService,
-    private authService: AuthService 
+    private authService: AuthService,
+    private musicService: LecteurService // Injection du service de musique
+
 
   ) { }
 
@@ -48,6 +51,10 @@ export class FavorisPage implements OnInit {
       console.log(res);
       this.favoris = res.data.data;
     });
+  }
+
+  playMusicFromFavoris(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.favoris, index);
   }
 
 }

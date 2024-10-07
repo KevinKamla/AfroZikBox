@@ -24,7 +24,7 @@
 
       <ion-col size="5" class="d-b" (click)="goToPlay()">
         <b>{{ currentSong?.description }}</b>
-        <span>{{ currentSong?.title }}</span>
+        <span> <p class="scrolling-text">{{ currentSong?.title }}</p></span>
       </ion-col>
 
       <ion-col size="5" class="bloc-icon">
@@ -48,40 +48,40 @@
   </div>
 
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home" href="/tabs">
+    <ion-tab-button tab="home" href="/tabs" (click)="verifierConnexion('home')">
       <ion-icon aria-hidden="true" name="home"></ion-icon>
       <ion-label>Accueil</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="tendance" href="/tabs/tendance">
+    <ion-tab-button tab="tendance" href="/tabs/tendance" (click)="verifierConnexion('tendance')">
       <ion-icon aria-hidden="true" name="trending-up"></ion-icon>
       <ion-label>Tendances</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button
-      tab="favoris"
-      href="/tabs/favoris"
-      (click)="goToFavourites()"
-    >
+    <ion-tab-button 
+      tab="favoris" 
+      href="/tabs/favoris" (click)="verifierConnexion('favoris')">
       <ion-icon aria-hidden="true" name="heart"></ion-icon>
       <ion-label>Favoris</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="myliste" href="/tabs/myliste"  (click)="goToZikbox()">
+    <ion-tab-button 
+      tab="myliste" 
+      href="/tabs/myliste" (click)="verifierConnexion('Zikbox')">
       <ion-icon aria-hidden="true" name="document-text"></ion-icon>
       <ion-label>ZikBox</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="afrozikstore" href="/tabs/afrozikstore" (click)="goToZikstore()">
+    <ion-tab-button 
+      tab="afrozikstore" 
+      href="/tabs/afrozikstore" (click)="verifierConnexion('zikstore')">
       <ion-icon aria-hidden="true" name="storefront"></ion-icon>
       <ion-label>ZikStore</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button
-      tab="profil"
-      href="/tabs/profil"
-      (click)="goToProfile()"
-    >
+    <ion-tab-button 
+      tab="profil" 
+      href="/tabs/profil" (click)="verifierConnexion('profil')">
       <ion-icon aria-hidden="true" name="person"></ion-icon>
       <ion-label>Profil</ion-label>
     </ion-tab-button>
