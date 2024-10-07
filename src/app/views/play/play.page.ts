@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SongsService } from 'src/app/services/songs.service';
 import { TopSongsService } from 'src/app/services/top-songs.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
+import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -62,10 +63,20 @@ export class PlayPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
+    private musicControls: MusicControls
     
   ) {}
 
   ngOnInit() {
+
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
+        this.initializeMusicControls();
+      } else {
+        console.log('Cordova n\'est pas disponible');
+      }
+    });
+    
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
         this.currentSong = song;
@@ -134,6 +145,45 @@ export class PlayPage implements OnInit, OnDestroy {
     );
     console.log(this.currentSong);
   }
+
+  initializeMusicControls() {
+    this.musicControls.create({
+      track: this.currentSong.title,
+      artist: this.currentSong.artist,
+      cover: this.currentSong.cover,
+      isPlaying: this.isPlaying,
+      dismissable: true,
+      hasPrev: true,
+      hasNext: true,
+      hasClose: true,
+    }).then(() => {
+      this.musicControls.subscribe().subscribe((action) => {
+        switch (action.message) {
+          case 'music-controls-next':
+            this.playNextSong();
+            break;
+          case 'music-controls-previous':
+            this.playPreviousSong();
+            break;
+          case 'music-controls-pause':
+            this.pause();
+            this.musicControls.updateIsPlaying(false);
+            break;
+          case 'music-controls-play':
+            this.play();
+            this.musicControls.updateIsPlaying(true);
+            break;
+          case 'music-controls-destroy':
+            this.stopMusic();
+            break;
+        }
+      });
+
+      this.musicControls.listen();
+      this.musicControls.updateIsPlaying(this.isPlaying);
+    });
+  }
+
 
   toggleShuffle() {
     this.isShuffleEnabled = !this.isShuffleEnabled;

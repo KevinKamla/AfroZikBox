@@ -9,6 +9,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Media } from '@awesome-cordova-plugins/media/ngx';
+import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +24,7 @@ import { Media } from '@awesome-cordova-plugins/media/ngx';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FileChooser,
+    FileChooser,MusicControls,
     Media
   ],
   bootstrap: [AppComponent],
