@@ -10,6 +10,7 @@ import { NavController } from '@ionic/angular';
 })
 export class MusicdetailsPage implements OnInit {
 
+  currentSong:any;
   constructor(
     public navCtrl: NavController,
     public route: Router,
@@ -17,7 +18,7 @@ export class MusicdetailsPage implements OnInit {
 
   goToRoute(route: string = '') {
     if (route) {
-      this.route.navigate([route]);
+      this.route.navigate(['/play']);
     } else {
       this.navCtrl.back();
     }
@@ -25,6 +26,13 @@ export class MusicdetailsPage implements OnInit {
 
 
   ngOnInit() {
-  }
+    const storedSong = localStorage.getItem('currentSong');
+    console.log('werrrrrrrrr',storedSong)
+    if (storedSong) {
+      this.currentSong = JSON.parse(storedSong);
+      console.log('sonngggggg', this.currentSong)
+      // Utiliser this.currentSong comme nécessaire
+    }
+  } 
 
 }

@@ -12,6 +12,7 @@ import { ChansonsService } from 'src/app/services/chansons.service';
 import { EventService } from 'src/app/services/event.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { GenresService } from 'src/app/services/genres.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { TopAlbumsService } from 'src/app/services/top-albums.service';
 import { UserService } from 'src/app/services/user.service';
@@ -58,7 +59,9 @@ export class ProfilPage implements OnInit {
     private favoriteService: FavoriteService,
     private articlesService: ArticlesService,
     private userService : UserService,
-    private eventService : EventService
+    private eventService : EventService,
+    private musicService: LecteurService // Injection du service de musique
+
   ) { }
 
   selectEvent(event: any) {
@@ -207,5 +210,11 @@ export class ProfilPage implements OnInit {
     this.route.navigate(['playlistdetail', playlist.id]);
   }
 
+  playMusicFromSongs(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.chansons, index);
+  }
+  playMusicFromFavoris(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.favoris, index);
+  }
 
 }

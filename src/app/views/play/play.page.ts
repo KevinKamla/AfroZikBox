@@ -81,6 +81,7 @@ export class PlayPage implements OnInit, OnDestroy {
       if (song) {
         this.currentSong = song;
         this.sourceArray = song.sourceArray;
+        localStorage.setItem('currentSong', JSON.stringify(song));
       }
     });
     console.log(this.currentSong);
@@ -144,6 +145,7 @@ export class PlayPage implements OnInit, OnDestroy {
       }
     );
     console.log(this.currentSong);
+    localStorage.setItem('currentSong', JSON.stringify(this.currentSong)); // Ajouté pour conserver la chanson actuelle dans le localStorage
   }
 
   initializeMusicControls() {

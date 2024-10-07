@@ -150,6 +150,7 @@ export class SuggestionsPage implements OnInit {
 
   playMusicFromTopList(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.topSongs, index);
+    console.log(this.topSongs,'top songsssssss')
   }
 
   // Charger et jouer la liste "Latest Songs"
