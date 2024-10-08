@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { musicTab } from '../play/play.page';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { ModalController, NavController } from '@ionic/angular';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-musicaime',
@@ -9,10 +10,12 @@ import { ModalController, NavController } from '@ionic/angular';
   styleUrls: ['./musicaime.page.scss'],
 })
 export class MusicaimePage implements OnInit {
-
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  likes: any[]=[];
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private userService:UserService
   ) { }
 
 
@@ -35,7 +38,10 @@ export class MusicaimePage implements OnInit {
 
 
   ngOnInit() {
-    this
+    this.userService.getLikeds(this.userId).subscribe((response)=>{
+      this.likes = response.data.data;
+      console.log(this.likes,'likeeeeeeeeeeeees')
+    });
   }
 
 }
