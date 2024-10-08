@@ -4,6 +4,7 @@ import { musicTab } from '../play/play.page';
 import { ModalController, NavController } from '@ionic/angular';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { UserService } from 'src/app/services/user.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-myliste',
@@ -20,7 +21,9 @@ export class MylistePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     public suggestionsService : SuggestionsService,
-    private userService: UserService
+    private userService: UserService,
+    private musicService: LecteurService // Injection du service de musique
+
 
   ) { }
 
@@ -52,6 +55,10 @@ export class MylistePage implements OnInit {
       this.numberOfRecently = response.data.data.lenght;
       console.log(this.recentP, 'recentP');
     });
+  }
+
+  playMusicFromSongs(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.recentP, index);
   }
 
 }

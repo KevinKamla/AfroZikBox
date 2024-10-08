@@ -216,5 +216,5 @@ export class ProfilPage implements OnInit {
   playMusicFromFavoris(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.favoris, index);
   }
-
+ 
 }
