@@ -10,11 +10,11 @@
 <ion-content [fullscreen]="true">
     <div class="container">
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of [1,1,1,1]">
-                <img src="assets/icon/gims.png" />
+            <div class="ion-item" *ngFor="let song of likes">
+                <img [src]="song.thumbnail" />
                 <div class="title">
-                    <h3>Mon coeur avait raison</h3>
-                    <p>admin | 3.59</p>
+                    <h3>{{song.title}}</h3>
+                    <p>{{song.publisher.username}} | {{song.duration}}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" (click)="goToPlay()">

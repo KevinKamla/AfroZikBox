@@ -24,13 +24,18 @@ export class MusicdetailsPage implements OnInit {
     }
   }
 
-
+  tags: any[]=[];
   ngOnInit() {
     const storedSong = localStorage.getItem('currentSong');
     console.log('werrrrrrrrr',storedSong)
     if (storedSong) {
       this.currentSong = JSON.parse(storedSong);
-      console.log('sonngggggg', this.currentSong)
+      this.tags = this.currentSong.tags.split(',');
+      console.log('sonngggggg', this.tags);
+      console.log('sonnggggggssssss', this.currentSong)
+      this.tags.forEach((tag: string) => {
+        console.log('Tag:', tag.trim()); // Utiliser trim() pour enlever les espaces
+      }); 
       // Utiliser this.currentSong comme nécessaire
     }
   } 

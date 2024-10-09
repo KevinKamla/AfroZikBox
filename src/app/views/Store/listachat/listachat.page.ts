@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { musicTab } from '../../play/play.page';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { ModalController, NavController } from '@ionic/angular';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-listachat',
@@ -9,9 +10,13 @@ import { ModalController, NavController } from '@ionic/angular';
   styleUrls: ['./listachat.page.scss'],
 })
 export class ListachatPage implements OnInit {
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  purchases : any []=[];
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private userService:UserService
   ) { }
 
 
@@ -32,7 +37,10 @@ export class ListachatPage implements OnInit {
   }
 
   ngOnInit() {
-    this
+    this.userService.getPurchases(this.userId).subscribe((response)=>{
+      this.purchases = response;
+      console.log(this.purchases,'purchasesss')
+    });
   }
 
 }

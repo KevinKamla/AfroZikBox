@@ -21,9 +21,11 @@
 
             <div class="container-scroll" *ngIf="10 > 1; else ionSkeletonRecent">
                 <div class="scroll-box">
-                    <div class="movie" *ngFor="let latest of recentP">
-                        <img class="img-intro" [src]="latest.thumbnail" (click)="goToPlay(latest)">
-                        <ion-label>{{latest.title}}</ion-label>
+                    <div class="movie" *ngFor="let latest of recentP; let i = index">
+                        <div  (click)="playMusicFromSongs(latest, i)">
+                            <img class="img-intro" [src]="latest.thumbnail" (click)="goToPlay(latest)">
+                            <ion-label>{{latest.title}}</ion-label>
+                        </div>
                     </div>
                 </div>
             </div>
