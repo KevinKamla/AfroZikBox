@@ -38,7 +38,7 @@ export class ListachatPage implements OnInit {
 
   ngOnInit() {
     this.userService.getPurchases(this.userId).subscribe((response)=>{
-      this.purchases = response;
+      this.purchases = response.data;
       console.log(this.purchases,'purchasesss')
     });
   }
