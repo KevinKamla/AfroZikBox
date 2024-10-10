@@ -1,10 +1,10 @@
 <ion-content [fullscreen]="true">
     <div class="sound">
         <div class="ion-item">
-            <img [src]="playlistId.thumbnail_ready" />
+            <img [src]="selectedPlaylist.thumbnail_ready" />
             <div class="title">
-                <h3> {{playlistId?.name}}</h3>
-                <p>{{playlistId?.song}} chanson</p>
+                <h3> {{selectedPlaylist.name}}</h3>
+                <p>{{selectedPlaylist.songs}} chansons</p>
             </div>
         </div>
     </div>
