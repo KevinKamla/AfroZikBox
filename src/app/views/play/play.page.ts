@@ -71,8 +71,8 @@ export class PlayPage implements OnInit, OnDestroy {
 
     // this.platform.ready().then(() => {
     //   if (this.platform.is('cordova')) {
-        this.initializeMusicControls();
-        console.log(this.initializeMusicControls());
+        // this.initializeMusicControls();
+        // console.log(this.initializeMusicControls());
         
     //   } else {
     //     console.log('Cordova n\'est pas disponible');
