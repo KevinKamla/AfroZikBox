@@ -4,7 +4,7 @@
             <img [src]="currentSong?.thumbnail" />
             <div class="title">
                 <h3>{{ currentSong?.title }}</h3>
-                <p>{{ currentSong?.description }} | {{ currentSong.duration }}</p>
+                <p>{{ cleanText }} | {{ currentSong.duration }}</p>
             </div>
             <div class="block-btn">
                 <ion-button fill="clear">

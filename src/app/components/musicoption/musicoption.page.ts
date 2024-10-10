@@ -51,7 +51,7 @@ export class MusicoptionPage implements OnInit {
     },
   ];
 
-  
+   
 
   closeModal() {
     this.modalCtrl.dismiss();
@@ -85,6 +85,7 @@ goToRoute(route: string = '') {
     this.navCtrl.back();
   }
 }
+cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
 
 
   ngOnInit() {
@@ -95,5 +96,16 @@ goToRoute(route: string = '') {
       console.log('sonngggggg', this.currentSong)
       // Utiliser this.currentSong comme nécessaire
     }
+    const content = this.currentSong.description;
+    const parser = new DOMParser();
+    const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
+    // console.log(decodedContent);
+    
+    if (decodedContent) {
+      this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
+    } else {
+      console.log('Le contenu décodé est null ou undefined');
+    }
   } 
+  
 }
