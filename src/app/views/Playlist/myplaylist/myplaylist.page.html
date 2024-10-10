@@ -17,18 +17,17 @@
         </ion-item>
         <ion-list>
             <div class="img-detail d-f-s" *ngFor="let item of playlist">
-                <div class="d-f-c" [routerLink]="['../playlistdetail', item.id]">
+                <div class="d-f-c" [routerLink]="['../playlistdetail', item.id]" (click)="item.id ? null : openOptionPlaylist(item.id)">
                 <img [src]="item.thumbnail_ready" />
                     <div class="title">
                         <h3>{{item.name}}</h3>
                         <p>{{item.songs}} Chansons</p>
                     </div>
                 </div>
-                <ion-button (click)="openOptionPlaylist(item)" fill="clear" shape="round">
+                <ion-button (click)="openOptionPlaylist(item.id)" fill="clear" shape="round">
                     <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
                 </ion-button>
             </div>
         </ion-list>
     </div>
-    <div *ngIf="message">{{ message }}</div>
 </ion-content>

@@ -6,6 +6,7 @@ import { musicTab } from '../play/play.page';
 import { ActivatedRoute } from '@angular/router';
 import { SuggestionsService } from '../../services/suggestions.service';
 import { UserService } from 'src/app/services/user.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-recently',
@@ -21,7 +22,8 @@ export class RecentlyPage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private suggestionsService: SuggestionsService,
-    private userService: UserService
+    private userService: UserService,
+    private musicService: LecteurService // Injection du service de musique
 
   ) { }
 
@@ -50,10 +52,10 @@ export class RecentlyPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         console.log('suggestions récupérés :', response);
-        this.recently = response.recently_played;
-        console.log(this.recently);
+        // this.recently = response.recently_played;
+        // console.log(this.recently);
         const numberOfRecentlys = this.recently.length;
-        console.log('Nombre de recently :', numberOfRecentlys);
+        // console.log('Nombre de recently :', numberOfRecentlys);
 
         // this.numberOfRecently = numberOfRecentlys;
       },
@@ -63,10 +65,14 @@ export class RecentlyPage implements OnInit {
     );
     this.userService.getRecentPlayed(this.userId).subscribe((response) =>{
       console.log(response, 'response');
-      this.recentP = response.data.data;
-      this.numberOfRecently = response.data.data.lenght;
-      console.log(this.recentP, 'recentP');
+      this.recently = response.data.data;
+      this.numberOfRecently = response.data;
+      console.log('Nombre de recently :', this.numberOfRecently);
+
     })
   }
 
+  playMusicFromSongs(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.recently, index);
+  }
 }

@@ -36,6 +36,7 @@ export class AlbumsService {
   private update = `${environment.api}/update-album`;
   private purchase = `${environment.api}/user/purchase_album`;
   private submit = `${environment.api}/submit-album`;
+  private accesstoken = localStorage.getItem('accessToken') || '';
   constructor(private http: HttpClient) {}
 
   getUpdateAlbum(
@@ -243,5 +244,32 @@ export class AlbumsService {
 
     return this.http.get(this.baseUrl, { headers });
   }
+
+
+  createAlbum(title: string, description: string, albumThumbnail: File, songs: number[], albumPrice: number, categoryId?: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.accessToken}`,
+    });
+    // Création de l'objet FormData pour envoyer les fichiers et les autres données du formulaire
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('album-thumbnail', albumThumbnail, albumThumbnail.name);
+    formData.append('album-price', albumPrice.toString());
+    formData.append('server_key', this.serverKey);
+    formData.append('server_key', this.accesstoken);
+
+    if (categoryId) {
+      formData.append('category_id', categoryId.toString());
+    }
+
+    // Ajout des chansons sélectionnées
+    songs.forEach((songId, index) => {
+      formData.append(`songs[${index}]`, songId.toString());
+    });
+
+    return this.http.post(this.submit, formData, { headers });
+  }
+ 
   
 }

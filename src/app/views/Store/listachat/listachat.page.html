@@ -11,10 +11,10 @@
     <div class="container">
         <div class="list_chansons">
             <div class="ion-item" *ngFor="let song of purchases">
-                <img [src]="song.image" />
+                <img [src]="song.event.image" />
                 <div class="title">
-                    <h3>{{song.name}}</h3>
-                    <p>{{song.user_data.username}} | {{song.end_time}}</p>
+                    <h3>{{song.title}}</h3>
+                    <p>Prix: ${{song.price}} | Date: {{song.timestamp}}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" >

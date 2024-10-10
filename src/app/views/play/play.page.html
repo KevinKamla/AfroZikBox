@@ -18,7 +18,7 @@
           <img [src]="currentSong?.thumbnail" alt="">
           <div class="tags">
             <b [ngClass]="{'ative': musictabOption.musicIsPlay}">{{ currentSong.title }}</b> 
-            <p>{{ currentSong?.description }}</p>
+            <p [innerText]="currentSong?.description"></p>
           </div>
         </div>
   

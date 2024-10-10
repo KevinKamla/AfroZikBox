@@ -9,6 +9,8 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./playlistoption.page.scss'],
 })
 export class PlaylistoptionPage implements OnInit {
+
+  
   @Input() playlistId: any | undefined;
   @Output() playlistDeleted = new EventEmitter<{ id: number, success: boolean }>();;
   playlistIdToDelete: any | null = null;

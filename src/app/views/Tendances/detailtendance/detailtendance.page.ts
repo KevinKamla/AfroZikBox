@@ -22,7 +22,7 @@ export class DetailtendancePage implements OnInit {
     const storedArticle = localStorage.getItem('selectArticle');
     if(storedArticles){
       this.article = JSON.parse(storedArticles);
-      console.log(this.article);
+      console.log(this.article); 
     }
     // Vérifier si l'album existe dans le localStorage
     if (storedArticle) {

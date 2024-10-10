@@ -1,5 +1,8 @@
 <div class="header d-f-s">
-    <h5> {{ numberOfPopular }} Chansons</h5>
+    <h5 *ngIf="numberOfPopular > 0; else noSongs">{{ numberOfPopular }} Chansons</h5>
+    <ng-template #noSongs>
+        <h5>Aucune chanson n'est disponible</h5>
+    </ng-template>    
     <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
     </span>
 </div>

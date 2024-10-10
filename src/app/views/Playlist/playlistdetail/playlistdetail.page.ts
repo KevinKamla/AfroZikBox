@@ -6,6 +6,7 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-playlistdetail',
@@ -28,7 +29,8 @@ export class PlaylistdetailPage implements OnInit {
     private navCtrl: NavController,
     private actvroute: ActivatedRoute, 
     private playlistService: PlaylistService,
-    private publicPlaylistService: PlaylistService
+    private publicPlaylistService: PlaylistService,
+    private musicService: LecteurService // Injection du service de musique
 
   ) { }
   buttonAvert = [
@@ -95,31 +97,33 @@ export class PlaylistdetailPage implements OnInit {
 
   plays: any;
   songs: any[] = [];
+  selectedPlaylist:any
   ngOnInit() {
     // this.playlist = this.actvroute.snapshot.params['playlist'];
     
     // const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
 
-    const storedAlbum = localStorage.getItem('selectedPlaylist');
-
+    const storedAlbum = localStorage.getItem('playlist');
+    const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
+    
+    console.log(storedAlbum,'loacal storage playlist')
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.plays = JSON.parse(storedAlbum);
+      this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
+      if (this.selectedPlaylist) {
+          console.log('Playlist sélectionnée:', this.selectedPlaylist);
+      } else {
+          console.log('Aucune playlist trouvée avec cet ID');
+      }
       this.songs = this.plays.songs
-      console.log(this.plays,this.songs);
+      console.log(this.plays,'playyyyyys');
     } else {
       console.log('Aucune playlist n\'est stocké dans le localStorage');
     }
+
     
-    // this.playlistService.getPlaylists(playlistid).subscribe(
-    //   (response) => {
-    //     this.playlist = response.playlists.songs;
-    //     console.log('playlist récupérés :', this.playlist);
-    //   },
-    //   (error) => {
-    //     console.error('Erreur lors de la récupération des genres :', error);
-    //   }
-    // );
+   
     this.activatedRoute.queryParams.subscribe((params) => {
       const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
   
@@ -154,4 +158,7 @@ export class PlaylistdetailPage implements OnInit {
 
   }
 
+  playMusicFromSongs(song: any, index: number) {
+    this.musicService.loadNewPlaylist(this.playlists, index);
+  }
 }

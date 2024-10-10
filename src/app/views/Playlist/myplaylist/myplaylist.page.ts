@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
 import { CreateplaylistPage } from 'src/app/components/createplaylist/createplaylist.page';
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
 import { PlaylistService } from 'src/app/services/playlist.service';
@@ -11,25 +10,28 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   templateUrl: './myplaylist.page.html',
   styleUrls: ['./myplaylist.page.scss'],
 })
-export class MyplaylistPage implements OnInit, OnDestroy {
-  playlist: any[] = [];
-  playlists: any[] = [];
-  playlistSubscription: Subscription | undefined;
-  message: string = '';
+export class MyplaylistPage implements OnInit {
+
+  playlist : any []=[];
+  playlistSubscription: any;
+  message: string | undefined;
+  playlists: any;
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     public route: Router,
-    public playlistService: PlaylistService
-  ) {}
+    public playlistService : PlaylistService,
+  ) { }
 
+  
   async openCreatePlaylist() {
     const modale = await this.modalCtrl.create({
       component: CreateplaylistPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios',
-    });
+      mode: 'ios'
+
+    })
     await modale.present();
   }
 
@@ -41,23 +43,19 @@ export class MyplaylistPage implements OnInit, OnDestroy {
     }
   }
 
-  // async openOptionPlaylist(playlistId: any) {
+  // async openOptionPlaylist() {
   //   const modale = await this.modalCtrl.create({
   //     component: PlaylistoptionPage,
-  //     componentProps: { playlistId },
   //     initialBreakpoint: 0.75,
   //     breakpoints: [0.5, 0.75, 1],
-  //     mode: 'ios',
-  //   });
+  //     mode: 'ios'
+
+  //   })
   //   await modale.present();
   // }
 
+
   ngOnInit() {
-    this.playlistSubscription = this.playlistService.playlists$.subscribe(
-      (playlists) => {
-        this.playlists = playlists;
-      }
-    );
     this.playlistService.getPublicPlayList().subscribe(
       (response) => {
         console.log(response);
@@ -76,7 +74,6 @@ export class MyplaylistPage implements OnInit, OnDestroy {
         console.error('Erreur lors de la récupération des playlists :', error);
       }
     );
-    this.playlistService.getPlaylists();
   }
   playlistDetail(playlist: any) {
     localStorage.setItem('playlist', JSON.stringify(playlist));
@@ -101,7 +98,7 @@ export class MyplaylistPage implements OnInit, OnDestroy {
 
   onPlaylistDeleted(playlistId: number) {
     this.playlists = this.playlists.filter(
-      (playlist) => playlist.id !== playlistId
+      (playlist: { id: number; }) => playlist.id !== playlistId
     );
     this.message = 'Playlist supprimée avec succès !';
     setTimeout(() => (this.message = ''), 3000);
