@@ -59,7 +59,7 @@ export class PlaylistdetailPage implements OnInit {
   async openOptionPlaylist() {
     const modale = await this.modalCtrl.create({
       component: PlaylistoptionPage,
-      componentProps: { selectedPlaylist: this.selectedPlaylist }, // Passer selectedPlaylist à la modal
+      componentProps: { selectedPlaylist: this.selectedPlaylist }, // Passer selectedPlaylist à la modal 
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios'

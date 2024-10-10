@@ -102,9 +102,41 @@ export class PlaylistoptionPage implements OnInit {
     this.modalCtrl.dismiss();
   }
   selectedPlaylist: any;
-
+  playlistIds!: any;
+  playlistData: any;
+  playlist:any[]=[];
   ngOnInit() {
+    this.playlistService.getPublicPlayList().subscribe(
+      (response) => {
+        console.log(response);
+        const u = localStorage.getItem('UserData');
+        if (u) {
+          const UserData = JSON.parse(u);
+          const userId = UserData.id;
+          this.playlist = response.success.playlists.filter(
+            (playlist: any) => playlist.publisher.id === userId
+          );
+
+          console.log('Playlists récupérées et filtrées:', this.playlist);
+          localStorage.setItem('playlist', JSON.stringify(this.playlist));
+
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des playlists :', error);
+      }
+    );
+    this.playlistIds = this.navParams.get('playlistId');
+    // console.log('Playlist ID:', this.playlistIds);
+    const selectedPlaylist = this.playlist.find(playlist => playlist.id === this.playlistIds); // Recherche de l'élément
+    console.log('Playlistsssss:', this.selectedPlaylist);
+
+    if (selectedPlaylist) {
+      console.log('Playlist sélectionnée:', selectedPlaylist); // Afficher la playlist trouvée
+    } else {
+      console.log('Aucune playlist trouvée avec l\'ID:', this.playlistIds);
+    }
     this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
-    console.log(this.selectedPlaylist); 
+    // console.log(this.selectedPlaylist); 
   }
 }

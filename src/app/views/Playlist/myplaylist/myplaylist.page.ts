@@ -54,6 +54,7 @@ export class MyplaylistPage implements OnInit {
   //   await modale.present();
   // }
 
+  selectedPlaylist:any
 
   ngOnInit() {
     this.playlistService.getPublicPlayList().subscribe(
@@ -68,6 +69,8 @@ export class MyplaylistPage implements OnInit {
           );
 
           console.log('Playlists récupérées et filtrées:', this.playlist);
+          localStorage.setItem('playlist', JSON.stringify(this.playlist));
+
         }
       },
       (error) => {
@@ -81,9 +84,12 @@ export class MyplaylistPage implements OnInit {
   }
 
   async openOptionPlaylist(playlistId: any) {
+    const selectedPlaylistId = playlistId.id;
+
+    const playlistData = this.playlist.find(playlist => playlist.id === selectedPlaylistId); // Modification pour charger les données
     const modal = await this.modalCtrl.create({
       component: PlaylistoptionPage,
-      componentProps: { playlistId },
+      componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios',
