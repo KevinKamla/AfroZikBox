@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { EditeplaylistPage } from '../editeplaylist/editeplaylist.page';
 import { PlaylistService } from 'src/app/services/playlist.service';
 
@@ -17,6 +17,7 @@ export class PlaylistoptionPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public playlistService: PlaylistService,
+    private navParams: NavParams,
     private alertController: AlertController // Ajoutez AlertController
   ) {}
 
@@ -100,13 +101,10 @@ export class PlaylistoptionPage implements OnInit {
   closeModal() {
     this.modalCtrl.dismiss();
   }
+  selectedPlaylist: any;
+
   ngOnInit() {
-    console.log(this.playlistId);
-    
-    if (this.playlistId === undefined) {
-      console.error('Playlist ID is undefined');
-    } else {
-      this.playlistIdToDelete = this.playlistId; // Affecter l'ID reçu
-    }
+    this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
+    console.log(this.selectedPlaylist); 
   }
 }
