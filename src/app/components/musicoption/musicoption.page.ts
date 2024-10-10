@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { musicTab } from 'src/app/views/play/play.page';
 import { CreateplaylistPage } from '../createplaylist/createplaylist.page';
+import { AddplaylistPage } from '../addplaylist/addplaylist.page';
 
 @Component({
   selector: 'app-musicoption',
@@ -32,7 +33,7 @@ export class MusicoptionPage implements OnInit {
   public btnAddPlaylist = [
     {
       text: 'Créer',
-      handler: async() => { await this.openCreatePlaylist()},
+      handler: async() => { await this.addToPlaylist()},
     },
     {
       text: 'Fait',
@@ -65,9 +66,9 @@ export class MusicoptionPage implements OnInit {
     this.closeModal();
   }
   
-  async openCreatePlaylist() {
+  async addToPlaylist() {
     const modal = await this.modalCtrl.create({
-      component: CreateplaylistPage,
+      component: AddplaylistPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios'

@@ -61,11 +61,19 @@ export class MyplaylistPage implements OnInit, OnDestroy {
     this.playlistService.getPublicPlayList().subscribe(
       (response) => {
         console.log(response);
-        this.playlist = response.success.playlists;
-        console.log('playlist récupérés :', this.playlist);
+        const u = localStorage.getItem('UserData');
+        if (u) {
+          const UserData = JSON.parse(u);
+          const userId = UserData.id;
+          this.playlist = response.success.playlists.filter(
+            (playlist: any) => playlist.publisher.id === userId
+          );
+
+          console.log('Playlists récupérées et filtrées:', this.playlist);
+        }
       },
       (error) => {
-        console.error('Erreur lors de la récupération des playlist :', error);
+        console.error('Erreur lors de la récupération des playlists :', error);
       }
     );
     this.playlistService.getPlaylists();
@@ -84,18 +92,19 @@ export class MyplaylistPage implements OnInit, OnDestroy {
       mode: 'ios',
     });
     await modal.present();
-    
+
     const { data } = await modal.onDidDismiss();
     if (data?.deleted) {
       this.onPlaylistDeleted(playlistId.id); // Supprimer playlistId.id
     }
   }
-  
 
   onPlaylistDeleted(playlistId: number) {
-    this.playlists = this.playlists.filter((playlist) => playlist.id !== playlistId);
+    this.playlists = this.playlists.filter(
+      (playlist) => playlist.id !== playlistId
+    );
     this.message = 'Playlist supprimée avec succès !';
-    setTimeout(() => this.message = '', 3000);
+    setTimeout(() => (this.message = ''), 3000);
   }
 
   ngOnDestroy() {

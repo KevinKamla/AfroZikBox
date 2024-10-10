@@ -266,7 +266,11 @@ const routes: Routes = [
   {
     path: 'userinfo',
     loadChildren: () => import('./views/Account/userinfo/userinfo.module').then( m => m.UserinfoPageModule)
+  },  {
+    path: 'addplaylist',
+    loadChildren: () => import('./components/addplaylist/addplaylist.module').then( m => m.AddplaylistPageModule)
   },
+
 
 ];
 @NgModule({
