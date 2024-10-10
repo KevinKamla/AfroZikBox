@@ -88,15 +88,15 @@ export class UserService {
       .set('limit',3);
     return this.http.get<any>(this.membership, { params });
   }
-  getPurchases1(id:number) {
+  getPurchases(id:number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
       .set('limit',3);
-    return this.http.get<any>(this.purchases, { params });
+    return this.http.get<any>(this.purchases1, { params });
   }
-  getPurchases(id:number) {
+  getPurchases1(id:number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')

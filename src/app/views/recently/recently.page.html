@@ -7,14 +7,14 @@
 <div class="list_chansons">
 
     <div *ngIf="recently.length > 0; else ionSkeletonRecent">
-        <div class="ion-item d-f-s" *ngFor="let recently of recentP">
+        <div class="ion-item d-f-s" *ngFor="let recently of recently; let i = index">
             <img [src]="recently.thumbnail" />
             <div class="title">
                 <h3>{{recently.title}}</h3>
                 <p>{{ recently.description}} | {{ recently.duration}}</p>
             </div>
             <div class="block-btn">
-                <ion-button class="btn-play" (click)="goToPlay()">
+                <ion-button class="btn-play" (click)="playMusicFromSongs(recently, i)">
                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openOptionSound()">

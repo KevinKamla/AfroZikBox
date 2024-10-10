@@ -10,10 +10,10 @@
 
     <div class="container">
         <div class="img-detail d-f">
-            <img [src]="plays.thumbnail_ready" />
+            <img [src]="selectedPlaylist.thumbnail_ready" />
             <div class="title">
-                <h3>{{plays.name}}</h3>
-                <p>{{plays.songs}} Chansons</p>
+                <h3>{{selectedPlaylist.name}}</h3>
+                <p>{{selectedPlaylist.songs}} Chansons</p>
                 <ion-buttons slot="start">
                     <ion-button id="modal-avertissement">
                         <ion-icon slot="icon-only" name="download-outline"></ion-icon>
@@ -37,14 +37,14 @@
             </ion-buttons>
         </div>
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let item of playlists">
+            <div class="ion-item" *ngFor="let item of playlists; let i = index">
                 <img [src]="item.thumbnail" />
                 <div class="title">
                     <h3>{{ item.title }}</h3>
                     <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
                 </div>
                 <div class="block-btn">
-                    <ion-button class="btn-play" (click)="play()">
+                    <ion-button class="btn-play" (click)="playMusicFromSongs(item, i)">
                         <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
                     </ion-button>
                     <ion-button (click)="openOptionSound()">

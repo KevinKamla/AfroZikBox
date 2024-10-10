@@ -9,6 +9,7 @@ import { EditeplaylistPage } from '../editeplaylist/editeplaylist.page';
 })
 export class PlaylistoptionPage implements OnInit {
 
+  
   constructor(
     private modalCtrl: ModalController,
   ) { }

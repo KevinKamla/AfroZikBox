@@ -16,8 +16,7 @@
             <div class="details">
                 <div class="title">
                     <h3>{{album.title}}</h3>
-                    <p>{{album.description}}</p>
-                </div>
+                    <p>{{ album.description.length > 15 ? (album.description | slice:0:15) + '...' : album.description }}</p>                </div>
                 <div class="info ">
                     <ion-badge color="primary" shape="round">
                         {{album.category_name}}

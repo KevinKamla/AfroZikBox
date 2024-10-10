@@ -17,7 +17,7 @@
         </ion-item>
         <ion-list>
             <div class="img-detail d-f-s" *ngFor="let item of playlist">
-                <div class="d-f-c" [routerLink]="['../playlistdetail', item.id]">
+                <div class="d-f-c" [routerLink]="['../playlistdetail', item.id]" (click)="item.id ? null : openOptionPlaylist()">
                 <img [src]="item.thumbnail_ready" />
                     <div class="title">
                         <h3>{{item.name}}</h3>

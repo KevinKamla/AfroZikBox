@@ -57,6 +57,7 @@ export class MyplaylistPage implements OnInit {
       (response) => {
         console.log(response);
         this.playlist = response.success.playlists;
+        // localStorage.setItem('playlist', JSON.stringify(this.playlist));
         console.log('playlist récupérés :', this.playlist);
       },
       (error) => {
