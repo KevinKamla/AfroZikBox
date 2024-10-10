@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { ModalController } from '@ionic/angular';
 
@@ -9,7 +9,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class EditeplaylistPage implements OnInit {
 
-
+  @Input() playlistId: any | undefined;
+  playlistEdit: any | null = null;
   valueConfid = 'Publique';
   isGetImg = false;
   imgPath: string = '';
@@ -40,7 +41,12 @@ export class EditeplaylistPage implements OnInit {
   }
   
   ngOnInit() {
-    this
+    if (this.playlistId && this.playlistId.thumbnail_ready) {
+      this.imgPath = this.playlistId.thumbnail_ready;
+      this.isGetImg = true;
+    } else {
+      console.log("playlistId ou thumbnail_ready est undefined");
+    }
   }
 
 }

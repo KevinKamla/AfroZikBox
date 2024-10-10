@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { musicTab } from '../views/play/play.page';
+import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
 
 @Injectable({
   providedIn: 'root',
@@ -33,75 +34,112 @@ export class LecteurService {
   public topSongs: any[] = [];
   private songList: any[] = [];
 
-  constructor() {
-    // Charger la dernière chanson jouée à partir de localStorage au démarrage
+  constructor(private musicControls: MusicControls) {
+    // Charger l'état initial de la chanson
     this.loadFromLocalStorage();
 
-    // Mise à jour du temps actuel et de la durée pendant la lecture
-    this.audio.ontimeupdate = () => {
+    // Gestion des événements audio
+    this.audio.ontimeupdate = () =>
       this.currentTimeSubject.next(this.audio.currentTime);
-    };
-
-    this.audio.onloadedmetadata = () => {
+    this.audio.onloadedmetadata = () =>
       this.durationSubject.next(this.audio.duration);
-    };
-
-    // Gestion des erreurs
     this.audio.onerror = () => {
       this.audioErrorSubject.next('Erreur lors de la lecture de la musique');
-      console.error('Erreur de lecture : ', this.audio.error);
       this.isPlayingSubject.next(false);
     };
-
-    // Déclencher la lecture de la chanson suivante ou répéter
     this.audio.onended = () => {
       if (this.isRepeatOneSubject.value) {
         this.audio.currentTime = 0;
         this.audio.play();
       } else {
-        this.playNext(this.topSongs); // Assurez-vous que la liste des chansons est passée ici
+        this.playNext(this.topSongs);
       }
     };
+
+    // Initialiser les contrôles
+    this.initializeMusicControls();
+  }
+
+  // Méthode pour initialiser et gérer les MusicControls
+  initializeMusicControls() {
+    const currentSong = this.currentSongSubject.value;
+    if (!currentSong) return;
+
+    this.musicControls.create({
+      track: currentSong?.title,
+      artist: currentSong?.artist,
+      cover: currentSong?.thumbnail,
+      isPlaying: true,
+      dismissable: true,
+      hasPrev: true,
+      hasNext: true,
+      hasClose: true,
+    });
+
+    // S'abonner aux événements de MusicControls
+    this.musicControls.subscribe().subscribe((action) => {
+      const message = action.message;
+
+      switch (message) {
+        case 'music-controls-next':
+          this.playNext(this.topSongs);
+          break;
+        case 'music-controls-previous':
+          this.playPrevious(this.topSongs);
+          break;
+        case 'music-controls-pause':
+          this.pauseMusic();
+          break;
+        case 'music-controls-play':
+          this.resumeMusic();
+          break;
+        case 'music-controls-destroy':
+          this.stopCurrentMusic();
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  // Méthodes pour jouer, mettre en pause, arrêter, etc.
+  playMusic(song: any, index: number): void {
+    try {
+      if (this.audio.src !== song.audio_location) {
+        this.stopCurrentMusic();
+        this.audio.src = song.audio_location;
+        this.audio.load();
+      }
+      this.audio
+        .play()
+        .then(() => {
+          this.isPlayingSubject.next(true);
+          this.currentSongSubject.next(song);
+          this.currentSongIndex = index;
+
+          this.initializeMusicControls();
+          this.saveToLocalStorage(song, index, this.audio.currentTime);
+        })
+        .catch((error) => {
+          this.audioErrorSubject.next('Impossible de lire la musique');
+        });
+
+      musicTab.isClose = false;
+      musicTab.musicIsPlay = true;
+    } catch (error) {
+      this.audioErrorSubject.next("Une erreur s'est produite");
+    }
   }
 
   // Charger une nouvelle liste de chansons
   loadNewPlaylist(songs: any[], startIndex: number = 0): void {
     if (songs.length > 0) {
-      this.stopCurrentMusic();  // Arrêter la musique actuelle
-      this.songList = songs;  // Définir la nouvelle liste
-      this.currentSongIndex = startIndex;  // Commencer à l'index spécifié
-      this.playMusic(songs[startIndex], startIndex);  // Jouer la première musique de la nouvelle liste
+      this.stopCurrentMusic(); // Arrêter la musique actuelle
+      this.songList = songs; // Définir la nouvelle liste
+      this.currentSongIndex = startIndex; // Commencer à l'index spécifié
+      this.playMusic(songs[startIndex], startIndex); // Jouer la première musique de la nouvelle liste
     } else {
       console.error('La liste de chansons est vide.');
-    }
-  }
-
-  // Jouer une chanson
-  playMusic(song: any, index: number): void {
-    try {
-      if (this.audio.src !== song.audio_location) {
-        this.stopCurrentMusic(); // Arrêter la chanson précédente
-        this.audio.src = song.audio_location;
-        this.audio.load();
-      }
-      this.audio.play().then(() => {
-        this.isPlayingSubject.next(true);
-        this.currentSongSubject.next(song);
-        this.currentSongIndex = index;
-
-        // Sauvegarder l'état dans localStorage
-        this.saveToLocalStorage(song, index, this.audio.currentTime);
-      }).catch((error) => {
-        this.audioErrorSubject.next('Impossible de lire la musique');
-        console.error('Erreur lors du démarrage de la lecture : ', error);
-      });
-
-      // Ouvrir le panneau de lecture
-      musicTab.isClose = false;
-      musicTab.musicIsPlay = true;
-    } catch (error) {
-      this.audioErrorSubject.next("Une erreur s'est produite");
-      console.error('Erreur générale : ', error);
     }
   }
 
@@ -123,13 +161,13 @@ export class LecteurService {
     }
   }
 
-  // Reprendre la chanson
+  // Ajoute la méthode resumeMusic pour les contrôles multimédias
   resumeMusic(): void {
     try {
       this.audio.play();
       this.isPlayingSubject.next(true);
 
-      // Mettre à jour l'état dans localStorage
+      this.initializeMusicControls(); // Appel pour initialiser les contrôles de musique
       this.saveToLocalStorage(
         this.currentSongSubject.value,
         this.currentSongIndex,
