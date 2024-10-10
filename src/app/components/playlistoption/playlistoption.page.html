@@ -1,19 +1,19 @@
 <ion-content [fullscreen]="true">
     <div class="sound">
         <div class="ion-item">
-            <img src="assets/icon/gims.png" />
+            <img [src]="playlistId.thumbnail_ready" />
             <div class="title">
-                <h3>Ma playlist</h3>
-                <p>1 chanson</p>
+                <h3> {{playlistId?.name}}</h3>
+                <p>{{playlistId?.song}} chanson</p>
             </div>
         </div>
     </div>
     <div class="ion-padding container-sound">
-        <ion-item button (click)="openEditPlaylist()">
+        <ion-item button (click)="openEditPlaylist(playlistId)">
             <ion-icon slot="start" name="create-outline"></ion-icon>
             <ion-label>Modifier la liste de lecture</ion-label>
         </ion-item>
-        <ion-item button (click)="closeModal()" id="alertDelete">
+        <ion-item button (click)="presentAlertConfirm()" id="alertDelete">
             <ion-icon slot="start" name="trash-outline"></ion-icon>
             <ion-label>Supprimer la playlist</ion-label>
         </ion-item>
@@ -24,4 +24,4 @@
     </div>
 </ion-content>
 
-<ion-alert trigger="alertDelete" header="Supprimer la playlist" message="Etes vous sûr de vouloir Supprimer cette playlist ?" [buttons]="btnConfirDelete"></ion-alert>
+<ion-alert trigger="alertDelete" header="Supprimer la playlist" message="Etes vous sûr de vouloir Supprimer cette playlist ?" ></ion-alert>

@@ -17,7 +17,7 @@
     <div class="input">
         <div class="canView d-f-s">
             <ion-icon name="pencil-outline"></ion-icon>
-            <ion-input type="text" value="Nom playlist" placeholder="Titre de la Playlist" class="content"></ion-input>
+            <ion-input type="text" value="{{playlistId?.name}}" placeholder="Titre de la Playlist" class="content"></ion-input>
         </div>
 
         <ion-item id="open-modal-confid" button="true" class="ion-no-border">
@@ -32,7 +32,7 @@
             Annuler
         </ion-button>
         <ion-button (click)="closeModal()" expand="bloc" shape="round">
-            Créer
+            Modifier
         </ion-button>
     </div>
 </ion-content>

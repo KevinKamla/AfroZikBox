@@ -69,14 +69,16 @@ export class PlayPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.platform.ready().then(() => {
-      if (this.platform.is('cordova')) {
+    // this.platform.ready().then(() => {
+    //   if (this.platform.is('cordova')) {
         this.initializeMusicControls();
-      } else {
-        console.log('Cordova n\'est pas disponible');
-      }
-    });
-    
+        console.log(this.initializeMusicControls());
+        
+    //   } else {
+    //     console.log('Cordova n\'est pas disponible');
+    //   }
+    // });
+
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
         this.currentSong = song;
