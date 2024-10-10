@@ -22,6 +22,7 @@ export class PlaylistService {
   private accessToken = localStorage.getItem('accessToken') || '';
   private playlistsSubject = new BehaviorSubject<any[]>([]);
   playlists$ = this.playlistsSubject.asObservable().pipe(shareReplay(1));
+  avatarFile: any;
 
   constructor(private http: HttpClient) {}
 
@@ -198,13 +199,6 @@ export class PlaylistService {
       Authorization: `Bearer ${this.accessToken}`,
       'Content-Type': 'application/json',
     });
-    console.log(1223);
-    
-    // Si playlists est une chaîne, la convertir en tableau
-    // if (typeof playlists === 'string') {
-    //   playlists = [playlists];
-    // }
-
     const params = new HttpParams()
       .set('playlists', playlists.toString())
       .set('id', songId.toString())
@@ -232,7 +226,6 @@ export class PlaylistService {
       .post(`${environment.api}/playlist/create`, formData, { headers })
       .pipe(
         map((response) => {
-          // Assurez-vous que la réponse contient les données de la nouvelle playlist
           const newPlaylist = response;
           this.playlistsSubject.next([
             ...this.playlistsSubject.value,
@@ -266,10 +259,8 @@ export class PlaylistService {
         const apiStatus = response.status;
 
         if (apiStatus === 200) {
-          // Mapping de la réponse vers DeletePlaylistSuccessModel
           return { success: response };
         } else {
-          // Mapping de la réponse vers SessionErrorModel
           return { sessionError: response };
         }
       }),
@@ -278,5 +269,28 @@ export class PlaylistService {
         return throwError(() => error);
       })
     );
+  }
+
+  updatePlaylist(
+    playlistId: number,
+    name: string,
+    privacy: number,
+    avatar: any
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.accessToken}`,
+    });
+    let accessToken = localStorage.getItem('accessToken') || '';
+    const formData = new FormData();
+    formData.append('id', playlistId.toString());
+    formData.append('name', name);
+    formData.append('privacy', privacy.toString());
+    formData.append('server_key', this.serverKey);
+    formData.append('access_token', accessToken);
+    if (avatar) {
+      formData.append('avatar', avatar, avatar.name);
+    }
+
+    return this.http.post(this.apiUrl, formData, { headers });
   }
 }

@@ -14,8 +14,9 @@ export class CreateplaylistPage implements OnInit {
   isGetImg = false;
   imgPath: string = '';
   playlistName: string = '';
-  avatarFile: File | null = null;
+  avatarFile: File | undefined;
   privacy: number = 0;
+  playlistid: any
 
   constructor(
     private modalCtrl: ModalController,
@@ -115,5 +116,21 @@ export class CreateplaylistPage implements OnInit {
         console.error('Erreur :', error);
       }
     );
+  }
+  onAvatarSelected(event: any) {
+    this.avatarFile = event.target.files[0]; // Récupère le fichier avatar sélectionné
+  }
+
+  updatePlaylist() {
+    this.playlistService.updatePlaylist(this.playlistid, this.playlistName, this.privacy, this.avatarFile)
+      .subscribe(response => {
+        if (response.status === 200) {
+          console.log('Playlist mise à jour avec succès');
+        } else {
+          console.error('Erreur lors de la mise à jour de la playlist');
+        }
+      }, error => {
+        console.error('Erreur serveur', error);
+      });
   }
 }
