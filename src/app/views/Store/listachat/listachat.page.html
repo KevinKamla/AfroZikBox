@@ -10,11 +10,11 @@
 <ion-content [fullscreen]="true">
     <div class="container">
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of [1]">
-                <img src="assets/icon/gims.png" />
+            <div class="ion-item" *ngFor="let song of purchases">
+                <img [src]="song.image" />
                 <div class="title">
-                    <h3>Mon coeur avait raison</h3>
-                    <p>admin | 3.59</p>
+                    <h3>{{song.name}}</h3>
+                    <p>{{song.user_data.username}} | {{song.end_time}}</p>
                 </div>
                 <div class="block-btn">
                     <ion-button class="btn-play" >
@@ -26,6 +26,6 @@
                 </div>
             </div>
         </div>
-        <h4>Aucune chanson achetée trouvée</h4>
+        <!-- <h4>Aucune chanson achetée trouvée</h4> -->
     </div>
 </ion-content>

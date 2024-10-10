@@ -13,7 +13,8 @@ export class UserService {
   private userBlock = `${environment.api}/user/get-blocks`;
   private recommanded = `${environment.api}/user/get-recommended`;
   private membership = `${environment.api}/user/upgrade-membership`;
-  private purchases = `${environment.api}/user/my-purchases`;
+  private purchases1 = `${environment.api}/user/my-purchases`;
+  private purchases = `${environment.api}/event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
   private profile = `${environment.api}/user/get-profile`;
   private serverKey = environment.server_key;
@@ -87,12 +88,19 @@ export class UserService {
       .set('limit',3);
     return this.http.get<any>(this.membership, { params });
   }
-  getPurchases(id:number) {
+  getPurchases1(id:number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
       .set('limit',3);
+    return this.http.get<any>(this.purchases, { params });
+  }
+  getPurchases(id:number) {
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('user_id', id.toString())
     return this.http.get<any>(this.purchases, { params });
   }
 }
