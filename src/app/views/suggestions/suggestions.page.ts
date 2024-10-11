@@ -13,6 +13,7 @@ import { AlbumsService } from 'src/app/services/albums.service';
 import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
 import { LecteurService } from 'src/app/services/lecteur.service'; // Import du service de musique
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -21,6 +22,8 @@ import { LecteurService } from 'src/app/services/lecteur.service'; // Import du 
 })
 export class SuggestionsPage implements OnInit {
   // Déclaration des propriétés
+  isUserLoggedIn: boolean = false;
+
   topalbums: any[] = [];
   genres: any[] = [];
   latest: any[] = [];
@@ -37,6 +40,7 @@ export class SuggestionsPage implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private authService:AuthService,
     private route: Router,
     private navCtrl: NavController,
     private modal: ModalController,
@@ -195,6 +199,8 @@ export class SuggestionsPage implements OnInit {
   avatar: any;
 
   ngOnInit() {
+    this.isUserLoggedIn = this.authService.isLoggedIn();
+
     const u = localStorage.getItem("UserData");
     if (u) {
       const UserData = JSON.parse(u);

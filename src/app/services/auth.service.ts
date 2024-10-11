@@ -33,6 +33,10 @@ export class AuthService {
   isAuthenticated(): Observable<boolean> {
     return this._isAuthenticated.asObservable();
   }
+  isLoggedIn1(): boolean {
+    // Vérifiez si l'utilisateur est connecté (par exemple, en vérifiant un token dans le localStorage)
+    return !!localStorage.getItem('userToken'); // Remplacez 'userToken' par votre clé
+  }
   isUserLoggedIn(): boolean {
     const token = localStorage.getItem('authToken');
     return !!token;

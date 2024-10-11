@@ -122,5 +122,6 @@ export class AlbumdetailPage implements OnInit {
 
   playMusicFromSongs(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.albumSongs, index);
+    this.goToRoute('tabs'); // Ajout de la navigation vers les onglets
   }
 }

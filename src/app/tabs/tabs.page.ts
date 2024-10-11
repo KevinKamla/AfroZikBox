@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { SuggestionsService } from '../services/suggestions.service';
 import { TopSongsService } from '../services/top-songs.service';
 import { LecteurService } from '../services/lecteur.service';
+import { TopAlbumsService } from '../services/top-albums.service';
+import { FavoriteService } from '../services/favorite.service';
 
 @Component({
   selector: 'app-tabs',
@@ -33,9 +35,13 @@ export class TabsPage implements OnInit, OnDestroy {
   private timeSubscription: Subscription | undefined;
   private durationSubscription: Subscription | undefined;
 
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
   sourceArray: any;
+  topalbums:any[]=[];
+  favoris: any[] = [];
 
   constructor(
     private navCtrl: NavController,
@@ -46,7 +52,9 @@ export class TabsPage implements OnInit, OnDestroy {
     private router: Router,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    private musicPlayerService: LecteurService
+    private musicPlayerService: LecteurService,
+    private topAlbumsService:TopAlbumsService,
+    private favoriteService: FavoriteService,
   ) {}
 
   isUserLoggedIn(): boolean {
@@ -86,6 +94,15 @@ export class TabsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+      console.log(res);
+      this.favoris = res.data.data;
+    });
+    this.topAlbumsService.getTopAlbums().subscribe(
+      (response) => {
+        this.topalbums = response.top_albums;
+      }
+    );
     
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
