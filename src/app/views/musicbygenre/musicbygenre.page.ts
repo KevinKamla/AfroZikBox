@@ -5,6 +5,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { GenresService } from '../../services/genres.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
+import { musicTab } from '../play/play.page';
+import { PlaylistService }  from '../../services/playlist.service';
 
 @Component({
   selector: 'app-musicbygenre',
@@ -22,6 +24,7 @@ export class MusicbygenrePage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private genreService: GenresService,
+    private PlaylistService: PlaylistService,
     private route: ActivatedRoute,
     private musicService: LecteurService // Injection du service de musique
   ) { }
@@ -65,8 +68,16 @@ export class MusicbygenrePage implements OnInit {
     });
   }
 
-  playMusicFromSongs(song: any, index: number) {
-    this.musicService.loadNewPlaylist(this.genres, index);
+  // playMusicFromSongs(song: any, index: number) {
+  //   this.musicService.loadNewPlaylist(this.genres, index);
+  // }
+
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
+    musicTab.musicIsPlay = true;
   }
 }
 

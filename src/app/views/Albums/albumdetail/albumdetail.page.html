@@ -34,7 +34,8 @@
                     <p>{{ song.publisher.username }} | {{ song.time }}</p>
                 </div>
                 <div class="block-btn">
-                    <ion-button class="btn-play" (click)="playMusicFromSongs(song, i)">
+                    <ion-button class="btn-play" (click)="loadsong(albumSongs, i)">
+                    <!-- <ion-button class="btn-play" (click)="playMusicFromSongs(song, i)"> -->
                         <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
                     </ion-button>
                     <ion-button (click)="openOptionSound()">

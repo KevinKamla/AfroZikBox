@@ -14,6 +14,7 @@ import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
 import { LecteurService } from 'src/app/services/lecteur.service'; // Import du service de musique
 import { AuthService } from 'src/app/services/auth.service';
+import { PlaylistService } from'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -50,6 +51,7 @@ export class SuggestionsPage implements OnInit {
     private genresService: GenresService,
     private topAlbumsService: TopAlbumsService,
     private songService: SongsService,
+    private PlaylistService: PlaylistService,
     private albumsService: AlbumsService,
     private alertController: AlertController,
     private musicService: LecteurService // Injection du service de musique
@@ -130,12 +132,12 @@ export class SuggestionsPage implements OnInit {
   }
 
   selectGenre(genre: any) {
-    localStorage.setItem('selectedGenre', JSON.stringify(genre));
+    // localStorage.setItem('selectedGenre', JSON.stringify(genre));
     this.route.navigate(['/musicbygenre', genre.id]);
   }
 
   selectAlbum(album: any) {
-    localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    // localStorage.setItem('selectedAlbum', JSON.stringify(album));
     this.route.navigate(['albumdetail', album.id]);
   }
 
@@ -159,17 +161,22 @@ export class SuggestionsPage implements OnInit {
 
   // Charger et jouer la liste "Latest Songs"
   playMusicFromLatestList(song: any, index: number) {
+
     this.musicService.loadNewPlaylist(this.latest, index);
   }
 
   // Méthode pour jouer la prochaine chanson avec MusicService
   playNextSong() {
-    if (this.currentSongIndex + 1 < this.topSongs.length) {
-      this.currentSongIndex++;
-      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
-    } else {
-      console.log('Toutes les chansons ont été jouées.');
+    let song = this.PlaylistService.getnextsong()
+    if (song) {
+      this.playMusic(song, this.currentSongIndex);
     }
+    // if (this.currentSongIndex + 1 < this.topSongs.length) {
+    //   this.currentSongIndex++;
+    //   this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+    // } else {
+    //   console.log('Toutes les chansons ont été jouées.');
+    // }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
@@ -256,5 +263,23 @@ export class SuggestionsPage implements OnInit {
         console.error('Erreur lors de la récupération des genres :', error);
       }
     );
+  }
+
+
+
+
+
+
+
+
+
+
+
+  // Gestion chargement de la musique et playlist 
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 }

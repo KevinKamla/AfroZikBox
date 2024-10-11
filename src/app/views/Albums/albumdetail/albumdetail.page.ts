@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TopAlbumsService } from '../../../services/top-albums.service';
 import { AlbumsService } from 'src/app/services/albums.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from '../../../services/playlist.service';
 
 @Component({
   selector: 'app-albumdetail',
@@ -27,6 +28,7 @@ export class AlbumdetailPage implements OnInit {
     private routes: ActivatedRoute,
     private topAlbumsService:TopAlbumsService,
     private albumsService: AlbumsService,
+    private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
 
   ) { }
@@ -120,8 +122,16 @@ export class AlbumdetailPage implements OnInit {
     );
   }
 
-  playMusicFromSongs(song: any, index: number) {
-    this.musicService.loadNewPlaylist(this.albumSongs, index);
-    this.goToRoute('tabs'); // Ajout de la navigation vers les onglets
+  // playMusicFromSongs(song: any, index: number) {
+  //   this.musicService.loadNewPlaylist(this.albumSongs, index);
+  //   this.goToRoute('tabs'); // Ajout de la navigation vers les onglets
+  // }
+
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
+    musicTab.musicIsPlay = true;
   }
 }
