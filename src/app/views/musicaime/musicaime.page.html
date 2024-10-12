@@ -10,14 +10,14 @@
 <ion-content [fullscreen]="true">
     <div class="container">
         <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of likes">
+            <div class="ion-item" *ngFor="let song of likes; let i = index">
                 <img [src]="song.thumbnail" />
                 <div class="title">
                     <h3>{{song.title}}</h3>
                     <p>{{song.publisher.username}} | {{song.duration}}</p>
                 </div>
                 <div class="block-btn">
-                    <ion-button class="btn-play" (click)="goToPlay()">
+                    <ion-button class="btn-play" (click)="loadsong(likes, i)">
                         <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                     </ion-button>
                     <ion-button (click)="openOptionSound()">

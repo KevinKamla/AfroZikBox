@@ -30,6 +30,7 @@ export class PlaylistdetailPage implements OnInit {
     private actvroute: ActivatedRoute, 
     private playlistService: PlaylistService,
     private publicPlaylistService: PlaylistService,
+    private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
 
   ) { }
@@ -162,4 +163,11 @@ export class PlaylistdetailPage implements OnInit {
   playMusicFromSongs(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.playlists, index);
   }
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
+  }
+  
 }

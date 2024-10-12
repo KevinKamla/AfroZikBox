@@ -44,7 +44,7 @@
                     <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
                 </div>
                 <div class="block-btn">
-                    <ion-button class="btn-play" (click)="playMusicFromSongs(item, i)">
+                    <ion-button class="btn-play" (click)="loadsong(playlists, i)">
                         <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
                     </ion-button>
                     <ion-button (click)="openOptionSound()">
