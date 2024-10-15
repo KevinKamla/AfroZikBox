@@ -54,12 +54,12 @@
                 <div class="list_chansons">
                     <div *ngIf="chansons.length > 0; else ionSkeletonSon">
                         <div class="ion-item d-f-s" *ngFor="let play of chansons; let i = index">
-                            <img class="" [src]="play.thumbnail">
+                            <img class="" [src]="play.thumbnail" >
                             <div class="title">
                                 <h3>{{play.title}}</h3>
                             </div>
                             <div class="block-btn">
-                                <ion-button class="btn-play" (click)="playMusicFromSongs(play, i)">
+                                <ion-button class="btn-play" (click)="loadsong(chansons, i)">
                                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                                 </ion-button>
                                 <ion-button (click)="openOptionSound()">
@@ -138,7 +138,7 @@
                                 <h3>{{play.title}}</h3>
                             </div>
                             <div class="block-btn">
-                                <ion-button class="btn-play" (click)="playMusicFromFavoris(play, i)">
+                                <ion-button class="btn-play" (click)="loadsong(favoris, i)">
                                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                                 </ion-button>
                                 <ion-button (click)="openOptionSound()">

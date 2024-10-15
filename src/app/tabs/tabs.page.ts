@@ -2,13 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { musicTab } from '../views/play/play.page';
 import { SongsService } from 'src/app/services/songs.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Subscription } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { SuggestionsService } from '../services/suggestions.service';
 import { TopSongsService } from '../services/top-songs.service';
 import { LecteurService } from '../services/lecteur.service';
+import { TopAlbumsService } from '../services/top-albums.service';
+import { FavoriteService } from '../services/favorite.service';
+import { PlaylistService } from'src/app/services/playlist.service';
+
 
 @Component({
   selector: 'app-tabs',
@@ -33,9 +37,17 @@ export class TabsPage implements OnInit, OnDestroy {
   private timeSubscription: Subscription | undefined;
   private durationSubscription: Subscription | undefined;
 
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
   sourceArray: any;
+  topalbums:any[]=[];
+  favoris: any[] = [];
+
+
+  
+  indexCurrentSong: number = 0;
 
   constructor(
     private navCtrl: NavController,
@@ -46,7 +58,10 @@ export class TabsPage implements OnInit, OnDestroy {
     private router: Router,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    private musicPlayerService: LecteurService
+    private musicPlayerService: LecteurService,
+    private topAlbumsService:TopAlbumsService,
+    private favoriteService: FavoriteService,
+    private PlaylistService: PlaylistService,
   ) {}
 
   isUserLoggedIn(): boolean {
@@ -86,6 +101,22 @@ export class TabsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // je recuperer l'index du song en cours
+    let a = localStorage.getItem('index')
+    if (a) {
+      this.indexCurrentSong = JSON.parse(a)
+    }
+
+
+    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+      console.log(res);
+      this.favoris = res.data.data;
+    });
+    this.topAlbumsService.getTopAlbums().subscribe(
+      (response) => {
+        this.topalbums = response.top_albums;
+      }
+    );
     
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
@@ -232,26 +263,36 @@ export class TabsPage implements OnInit, OnDestroy {
 
   // Méthode pour jouer la prochaine chanson avec MusicService
   playNextSong() {
-    if (this.currentSongIndex + 1 < this.topSongs.length) {
-      this.currentSongIndex++;
-      this.playMusic(
-        this.topSongs[this.currentSongIndex],
-        this.currentSongIndex
-      );
-    } else {
-      console.log('Toutes les chansons ont été jouées.');
-    }
+    // if (this.currentSongIndex + 1 < this.topSongs.length) {
+    //   this.currentSongIndex++;
+    //   this.playMusic(
+    //     this.topSongs[this.currentSongIndex],
+    //     this.currentSongIndex
+    //   );
+    // } else {
+    //   console.log('Toutes les chansons ont été jouées.');
+    // }
+
+    
+
+    let song = this.PlaylistService.getnextsong()
+    this.playMusic(song, this.currentSongIndex) 
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
   playPreviousSong() {
-    if (this.currentSongIndex > 0) {
-      this.currentSongIndex--;
-      this.playMusic(
-        this.topSongs[this.currentSongIndex],
-        this.currentSongIndex
-      );
-    }
+    // if (this.currentSongIndex > 0) {
+    //   this.currentSongIndex--;
+    //   this.playMusic(
+    //     this.topSongs[this.currentSongIndex],
+    //     this.currentSongIndex
+    //   );
+    // }
+
+
+
+    let song = this.PlaylistService.getprevsong()
+    this.playMusic(song, this.currentSongIndex)
   }
 
   playMusic(song: any, index: number): void {

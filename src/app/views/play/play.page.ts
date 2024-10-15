@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SongsService } from 'src/app/services/songs.service';
 import { TopSongsService } from 'src/app/services/top-songs.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
+import { PlaylistService } from'src/app/services/playlist.service';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -62,9 +63,9 @@ export class PlayPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    
+    private PlaylistService: PlaylistService,
   ) {}
-
+ 
   ngOnInit() {
 
     // this.platform.ready().then(() => {
@@ -189,20 +190,25 @@ export class PlayPage implements OnInit, OnDestroy {
 
    // Méthode pour jouer la prochaine chanson avec MusicService
    playNextSong() {
-    if (this.currentSongIndex + 1 < this.topSongs.length) {
-      this.currentSongIndex++;
-      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
-    } else {
-      console.log('Toutes les chansons ont été jouées.');
-    }
+    
+    let song = this.PlaylistService.getnextsong()
+    this.playMusic(song, this.currentSongIndex) 
+    // if (this.currentSongIndex + 1 < this.topSongs.length) {
+    //   this.currentSongIndex++;
+    //   this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+    // } else {
+    //   console.log('Toutes les chansons ont été jouées.');
+    // }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
   playPreviousSong() {
-    if (this.currentSongIndex > 0) {
-      this.currentSongIndex--;
-      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
-    }
+    let song = this.PlaylistService.getprevsong()
+    this.playMusic(song, this.currentSongIndex)
+    // if (this.currentSongIndex > 0) {
+    //   this.currentSongIndex--;
+    //   this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+    // }
   }
 
   playMusic(song: any, index: number): void {

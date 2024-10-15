@@ -1,4 +1,4 @@
-<div class="container-scroll story">
+<div class="container-scroll story" *ngIf="isUserLoggedIn">
     <div class="scroll-box">
         <div class="movie" [routerLink]="['/addstory']">
             <div class="bg-img"
@@ -25,9 +25,17 @@
     </div>
 
     <div class="container-scroll">
-        <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
+        <!-- <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
             <div class="movie" *ngFor="let topSong of topSongs; let i = index">
                 <img class="img-intro" [src]="topSong.thumbnail" (click)="playMusicFromTopList(topSong, i)">
+                <p>
+                    <ion-label>{{topSong.title}}</ion-label>
+                </p>
+            </div>
+        </div> -->
+        <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
+            <div class="movie" *ngFor="let topSong of topSongs; let i = index">
+                <img class="img-intro" [src]="topSong.thumbnail" (click)="loadsong(topSongs, i)">
                 <p>
                     <ion-label>{{topSong.title}}</ion-label>
                 </p>
@@ -88,10 +96,16 @@
     </div>
 
     <div class="container-scroll">
-        <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
+        <!-- <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
             <div class="movie" *ngFor="let latest of latest; let i = index">
                 <img class="img-intro" [src]="latest.thumbnail" (click)="playMusicFromLatestList(latest, i)">
                 <p class="song-description">{{latest.title}}</p>
+            </div>
+        </div> -->
+        <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
+            <div class="movie" *ngFor="let l of latest; let i = index">
+                <img class="img-intro" [src]="l.thumbnail" (click)="loadsong(latest, i)">
+                <p class="song-description">{{l.title}}</p>
             </div>
         </div>
     </div>

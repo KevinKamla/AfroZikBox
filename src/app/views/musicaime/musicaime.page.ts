@@ -3,6 +3,8 @@ import { musicTab } from '../play/play.page';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { ModalController, NavController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-musicaime',
@@ -15,6 +17,8 @@ export class MusicaimePage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private PlaylistService: PlaylistService,
+    private musicService: LecteurService, // Injection du service de musique
     private userService:UserService
   ) { }
 
@@ -42,6 +46,13 @@ export class MusicaimePage implements OnInit {
       this.likes = response.data.data;
       console.log(this.likes,'likeeeeeeeeeeeees')
     });
+  }
+
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 
 }

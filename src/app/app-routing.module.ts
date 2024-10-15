@@ -236,6 +236,10 @@ const routes: Routes = [
     loadChildren: () => import('./components/playlistoption/playlistoption.module').then( m => m.PlaylistoptionPageModule)
   },
   {
+    path: 'playlist/:id',
+    loadChildren: () => import('./components/editeplaylist/editeplaylist.module').then( m => m.EditeplaylistPageModule)
+  },
+  {
     path: 'editeplaylist',
     loadChildren: () => import('./components/editeplaylist/editeplaylist.module').then( m => m.EditeplaylistPageModule)
   },
@@ -266,7 +270,8 @@ const routes: Routes = [
   {
     path: 'userinfo',
     loadChildren: () => import('./views/Account/userinfo/userinfo.module').then( m => m.UserinfoPageModule)
-  },  {
+  },
+  {
     path: 'addplaylist',
     loadChildren: () => import('./components/addplaylist/addplaylist.module').then( m => m.AddplaylistPageModule)
   },

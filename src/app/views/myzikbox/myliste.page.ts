@@ -5,6 +5,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { UserService } from 'src/app/services/user.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-myliste',
@@ -22,6 +23,7 @@ export class MylistePage implements OnInit {
     private navCtrl: NavController,
     public suggestionsService : SuggestionsService,
     private userService: UserService,
+    private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
 
 
@@ -60,5 +62,10 @@ export class MylistePage implements OnInit {
   playMusicFromSongs(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.recentP, index);
   }
-
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
+  }
 }

@@ -16,7 +16,8 @@
                 <p>{{genre.publisher.username}} | {{genre.duration}}</p>
             </div>
             <div class="block-btn">
-                <ion-button class="btn-play" (click)="playMusicFromSongs(genre, i)">
+                    <ion-button class="btn-play" (click)="loadsong(genres, i)">
+                    <!-- <ion-button class="btn-play" (click)="playMusicFromSongs(genre, i)"> -->
                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openOptionSound()">
