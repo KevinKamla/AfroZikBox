@@ -1,5 +1,6 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 
@@ -19,7 +20,8 @@ export class SettingsPage implements OnInit {
   constructor(
     private storage: Storage,
     private modal: ModalController,
-    private actionSheetController: ActionSheetController
+    private actionSheetController: ActionSheetController,
+    private router: Router,
 
   ) { }
 
@@ -68,5 +70,23 @@ export class SettingsPage implements OnInit {
     //   this.email = user.email;  // Assigner l'email stocké à la variable
     // }
   }
+  // ... code existant ...
+
+  async logout() {
+    // Vider les données de l'utilisateur du localStorage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('UserData');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    
+    // Afficher le contenu de localStorage dans la console
+    console.log('Contenu de localStorage après vidage :', localStorage);
+  
+    // Rediriger vers la page de connexion
+    this.router.navigate(['/login']);
+  }
+
+// ... code existant ...
 
 }

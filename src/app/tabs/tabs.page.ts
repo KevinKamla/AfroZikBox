@@ -276,7 +276,7 @@ export class TabsPage implements OnInit, OnDestroy {
     
 
     let song = this.PlaylistService.getnextsong()
-    this.playMusic(song, this.currentSongIndex)
+    this.playMusic(song, this.currentSongIndex) 
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
