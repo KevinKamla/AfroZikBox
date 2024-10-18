@@ -6,6 +6,8 @@ import { AlbumdetailPage } from '../../Albums/albumdetail/albumdetail.page';
 import { TopSongsService } from 'src/app/services/top-songs.service';
 import { TopAlbumsService } from 'src/app/services/top-albums.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-artistprofil',
@@ -27,7 +29,8 @@ export class ArtistprofilPage implements OnInit {
     private topsService: TopSongsService,
     private topAlbumsService: TopAlbumsService,
     private suggestionsService: SuggestionsService,
-
+    private PlaylistService: PlaylistService,
+    private musicService: LecteurService // Injection du service de musique
   ) { }
 
   goToRoute(route: string = '') {
@@ -125,6 +128,18 @@ export class ArtistprofilPage implements OnInit {
       }
     );
     
+  }
+
+  selectAlbum(album: any) {
+    localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    this.route.navigate(['albumdetail', album.id]);
+  }
+
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 
 }

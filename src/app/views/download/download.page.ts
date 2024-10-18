@@ -5,6 +5,9 @@ import { ModalController, NavController } from '@ionic/angular';
 import { DownloadService } from 'src/app/services/download.service';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
+import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
+
 @Component({
   selector: 'app-download',
   templateUrl: './download.page.html',
@@ -20,7 +23,9 @@ export class DownloadPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
-    private downloadService: DownloadService
+    private downloadService: DownloadService,
+    private PlaylistService: PlaylistService,
+    private musicService: LecteurService // Injection du service de musique
   ) {}
 
   async openOptionSound() {
@@ -68,5 +73,12 @@ export class DownloadPage implements OnInit {
       .toString()
       .padStart(2, '0');
     return `${minutes}:${remainingSeconds}`;
+  }
+
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 }

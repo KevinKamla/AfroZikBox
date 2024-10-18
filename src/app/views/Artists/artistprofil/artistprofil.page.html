@@ -35,11 +35,11 @@
             </div>
             <div class="container-scroll">
                 <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of filteredLatest">
-                        <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
-                        <p>Mon coeur avait raison</p>
+                    <div class="movie" *ngFor="let item of filteredLatest; let i = index">
+                        <img class="img-intro" [src]="item.thumbnail" (click)="loadsong(filteredLatest, i)">
+                        <p>{{item.title}}</p>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
 
@@ -51,10 +51,10 @@
 
             <div class="container-scroll">
                 <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of filteredTOPSongs">
-                        <img class="img-intro" src="assets/icon/gims.png" (click)="playMusic(item)">
+                    <div class="movie" *ngFor="let item of filteredTOPSongs; let i = index">
+                        <img class="img-intro" [src]="item.thumbnail" (click)="loadsong(filteredTOPSongs, i)">
                         <p>
-                            <ion-label>On my way - king saha (Lyrical video)</ion-label>
+                            <ion-label>{{item.title}}</ion-label>
                         </p>
                     </div>
                 </div>
@@ -79,12 +79,12 @@
             <div class="container-scroll">
                 <div class="scroll-box">
                     <div class="movie" *ngFor="let item of filteredTOPAlbums">
-                        <img class="img-intro" src="assets/icon/gims.png" (click)="openAlbumDetail(item[1])">
-                        <div class="p">Mon coeur avait raison</div>
-                        <ion-label>Maitre Gims</ion-label>
+                        <img class="img-intro" [src]="item.thumbnail" (click)="selectAlbum(item)">
+                        <div class="p">{{item.title}}</div>
+                        <ion-label>{{item.publisher.username}}</ion-label>
                         <div class="number_price">
-                            <div class="number_sons">13 chansons</div>
-                            <ion-badge color="danger" *ngIf="item[1] === 'buy'">$4.99</ion-badge>
+                            <div class="number_sons">{{item.count_songs}} chansons</div>
+                            <ion-badge color="danger" *ngIf="item[1] === 'buy'">$ {{item.price}}</ion-badge>
                         </div>
                     </div>
                 </div>
