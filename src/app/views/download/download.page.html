@@ -13,6 +13,8 @@
       <div class="ion-item" *ngFor="let song of downloadedMusic; let i = index">
         <img src="assets/icon/gims.png" />
         <!-- <img [src]="getImageSrc(song.imageFile)" /> -->
+      <div class="ion-item" *ngFor="let song of downloadedMusic">
+        <img [src]="''" />
         <div class="title">
           <h3>{{song.imageFile}}</h3>
           <p>admin | {{song.duration}}</p>

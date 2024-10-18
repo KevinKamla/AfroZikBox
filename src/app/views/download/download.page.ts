@@ -51,20 +51,20 @@ export class DownloadPage implements OnInit {
     this.downloadedMusic = await this.downloadService.getDownloadedMusic();
   }
 
-  // Retrieve the image file and convert it to a displayable format
-  async getImageSrc(imageFileName: string): Promise<string> {
-    try {
-      const result = await Filesystem.readFile({
-        path: imageFileName,
-        directory: Directory.Data,
-      });
+  // // Retrieve the image file and convert it to a displayable format
+  // async getImageSrc(imageFileName: string): Promise<string> {
+  //   try {
+  //     const result = await Filesystem.readFile({
+  //       path: imageFileName,
+  //       directory: Directory.Data,
+  //     });
 
-      return `data:image/jpeg;base64,${result.data}`;
-    } catch (error) {
-      console.error('Error retrieving image file:', error);
-      return ''; // Return empty string if image not found
-    }
-  }
+  //     return `data:image/jpeg;base64,${result.data}`;
+  //   } catch (error) {
+  //     console.error('Error retrieving image file:', error);
+  //     return ''; // Return empty string if image not found
+  //   }
+  // }
 
   // Format duration to mm:ss
   formatDuration(seconds: number): string {
