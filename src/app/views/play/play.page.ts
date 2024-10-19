@@ -1,6 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+  Platform,
+} from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { HttpClient } from '@angular/common/http';
 import { Media, MediaObject } from '@awesome-cordova-plugins/media/ngx';
@@ -10,7 +15,8 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SongsService } from 'src/app/services/songs.service';
 import { TopSongsService } from 'src/app/services/top-songs.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
-import { PlaylistService } from'src/app/services/playlist.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
+import { DownloadService } from 'src/app/services/download.service';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -35,7 +41,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
   isUserLoggedIn: boolean = false;
   musictabOption = musicTab;
- 
+
   sonsCategorieActuelle: any[] = [];
   indexSonActuel: number = 0;
   private currentTimeSubject = new BehaviorSubject<number>(0);
@@ -44,7 +50,7 @@ export class PlayPage implements OnInit, OnDestroy {
   private durationSubscription: Subscription | undefined;
   isShuffleEnabled = false;
   isRepeatOneEnabled = false;
-  
+
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
   sourceArray: any;
@@ -52,6 +58,7 @@ export class PlayPage implements OnInit, OnDestroy {
   latest: any;
 
   constructor(
+    private downloadService: DownloadService,
     private media: Media,
     private platform: Platform,
     private http: HttpClient,
@@ -63,16 +70,15 @@ export class PlayPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    private PlaylistService: PlaylistService,
+    private PlaylistService: PlaylistService
   ) {}
- 
-  ngOnInit() {
 
+  ngOnInit() {
     // this.platform.ready().then(() => {
     //   if (this.platform.is('cordova')) {
-        // this.initializeMusicControls();
-        // console.log(this.initializeMusicControls());
-        
+    // this.initializeMusicControls();
+    // console.log(this.initializeMusicControls());
+
     //   } else {
     //     console.log('Cordova n\'est pas disponible');
     //   }
@@ -86,7 +92,7 @@ export class PlayPage implements OnInit, OnDestroy {
       }
     });
     console.log(this.currentSong);
-    
+
     this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
       this.isUserLoggedIn = authenticated;
     });
@@ -96,7 +102,10 @@ export class PlayPage implements OnInit, OnDestroy {
         this.topSongs = response.data;
       },
       (error) => {
-        console.error('Erreur lors de la récupération des Meilleurs songs :', error);
+        console.error(
+          'Erreur lors de la récupération des Meilleurs songs :',
+          error
+        );
       }
     );
 
@@ -105,7 +114,10 @@ export class PlayPage implements OnInit, OnDestroy {
         this.latest = response.new_releases.data;
       },
       (error) => {
-        console.error('Erreur lors de la récupération des suggestions :', error);
+        console.error(
+          'Erreur lors de la récupération des suggestions :',
+          error
+        );
       }
     );
 
@@ -165,6 +177,10 @@ export class PlayPage implements OnInit, OnDestroy {
     this.musicPlayerService.skipForward();
   }
 
+  download() {
+    this.downloadService.downloadAndStoreMusic(this.currentSong );
+  }
+
   // Revenir en arrière de 10 secondes
   rewind() {
     this.musicPlayerService.rewind();
@@ -183,16 +199,15 @@ export class PlayPage implements OnInit, OnDestroy {
     const remainingSeconds: number = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   }
-  
+
   seekTo(event: any) {
     this.musicPlayerService.seekTo(event.detail.value);
   }
 
-   // Méthode pour jouer la prochaine chanson avec MusicService
-   playNextSong() {
-    
-    let song = this.PlaylistService.getnextsong()
-    this.playMusic(song, this.currentSongIndex) 
+  // Méthode pour jouer la prochaine chanson avec MusicService
+  playNextSong() {
+    let song = this.PlaylistService.getnextsong();
+    this.playMusic(song, this.currentSongIndex);
     // if (this.currentSongIndex + 1 < this.topSongs.length) {
     //   this.currentSongIndex++;
     //   this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
@@ -203,8 +218,8 @@ export class PlayPage implements OnInit, OnDestroy {
 
   // Méthode pour jouer la chanson précédente avec MusicService
   playPreviousSong() {
-    let song = this.PlaylistService.getprevsong()
-    this.playMusic(song, this.currentSongIndex)
+    let song = this.PlaylistService.getprevsong();
+    this.playMusic(song, this.currentSongIndex);
     // if (this.currentSongIndex > 0) {
     //   this.currentSongIndex--;
     //   this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
