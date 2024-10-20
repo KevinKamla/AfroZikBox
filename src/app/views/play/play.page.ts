@@ -191,7 +191,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
   download() {
     this.downloadService.downloadSongFromObject(this.currentSong);
-  }
+  }
 
   // Revenir en arrière de 10 secondes
   rewind() {
@@ -425,13 +425,6 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   toggleFavorite(trackId: number) {
-    this.favoriteService.toggleFavorite(trackId).subscribe({
-      next: (response) => {
-        if (response.status === 200) {
-          this.love = !this.love; // Toggle the liked status
-          console.log('Successfully toggled favorite:', response.mode);
-        } else {
-          console.error('Error toggling favorite:', response.error);
     this.favoriteService.toggleFavorite(trackId)
       .subscribe({
         next: (response) => {
@@ -446,12 +439,9 @@ export class PlayPage implements OnInit, OnDestroy {
         error: (err) => {
           console.error('Error toggling favorite:', err);
         }
-      },
-      error: (err) => {
-        console.error('Error toggling favorite:', err);
-      },
-    });
+      });
   }
+
   toggleComment(trackId: number) {
     this.commentService.toggleComment(trackId)
       .subscribe({
@@ -502,7 +492,7 @@ export class PlayPage implements OnInit, OnDestroy {
     console.log(res);
     this.favoris = res.data.data;
     const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
-    return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
+        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
   });
   }
 }
