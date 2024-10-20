@@ -1,9 +1,8 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType } from '@capacitor/camera';
-import { ActionSheetController, ModalController } from '@ionic/angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlbumsService } from 'src/app/services/albums.service'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { ModalController } from '@ionic/angular';
+import { AlbumsService } from 'src/app/services/albums.service';
 
 @Component({
   selector: 'app-createalbum',
@@ -11,101 +10,209 @@ import { AlbumsService } from 'src/app/services/albums.service'
   styleUrls: ['./createalbum.page.scss'],
 })
 export class CreatealbumPage implements OnInit {
-
-  album = {
-    title: '',
-    description: '',
-    genre: '',
-    price: '',
-    image: ''
-  };
+  // album = {
+  //   title: '',
+  //   description: '',
+  //   genre: '',
+  //   price: '',
+  //   image: '',
+  // };
 
   isGetImg = false;
   imgPath: string = '';
-  valueGenre = 'Genres'
-  valuePrice = 'Prix'
-  genreList = ['Afrozouk', 'Afrobeat', 'Afropop', 'Afrotrap', 'Amapiano', 'Ancestral Soul', 'Assiko',
-    'Azonto', ' Batuque', 'Bend-skin', 'Bikutsi', 'Bongo Flava', 'Coupé-décalé', 'Dancehall',
-    'Gqom', 'Highlife', 'Kizomba', 'Kwaito', 'Makossa', 'Maloya', 'Mapouka', 'Mbalax', 'Morna',
-    'Ndombolo', 'Rumba congolaise', 'Sega', 'Soukous', 'Swede Swede', 'Tribal House', 'Wassoulou',
-    'Zaïko', 'Ziglibithy', 'Zoblazo', 'Zouglou', 'Zouk']
-  priceList = ['1.99', '4.99', '8.99', '11.99', '16.99', '19.99',]
+  valueGenre = 'Genres';
+  valuePrice = 'Prix';
+  genreList: any[] = [];
+  priceList: any[] = []; // Price list now fetched from API
+  avatar: any; // Updated to use avatar for image file
+  albumImage: File | undefined;
+  selectedSongs: any[] = [];
+  price: any;
+  genre: any;
+  title: any;
+  description: any;
+  avatarFile: any;
 
-  constructor(private modal: ModalController,private albumService:AlbumsService) {
+  constructor(
+    private modal: ModalController,
+    private albumService: AlbumsService
+  ) {}
+
+  // Handle file selection
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.avatar = file; // Assign the file to avatar
+      this.imgPath = URL.createObjectURL(file);
+      this.isGetImg = true;
+    }
+    console.log('Selected avatar file:', this.avatar);
   }
 
-// Fonction pour soumettre le formulaire
-submitForm() {
-  if (this.album.title && this.album.description && this.album.genre && this.album.price) {
-    console.log('Données du formulaire :', this.album);
-    // Envoyer les données au serveur ou les traiter comme nécessaire
-  } else {
-    console.log('Données du formulaire :', this.album);
-    console.log('Veuillez remplir tous les champs.');
+  // Initialize component, fetch genres and prices
+  ngOnInit() {
+    this.fetchGenres();
+    this.fetchPrices(); // Fetch prices from the API on initialization
   }
-  this.albumService.getSubmitAlbum('', {
-    title: this.album.title,
-    description: this.album.description,
-    category_id: this.album.genre,
-    'album-price': this.album.price,
-    'album-thumbnail': this.album.image
-  }).subscribe((response) =>{
-    console.log(response);
-  })
-}
+
+  // Fetch genres from the API
+  fetchGenres() {
+    this.albumService.getGenres().subscribe(
+      (response) => {
+        this.genreList = response.data.map((item: any) => ({
+          id: item.id,
+          name: item.cateogry_name,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching genres:', error);
+      }
+    );
+  }
+
+  // Fetch prices from the API
+  fetchPrices() {
+    this.albumService.getPrices().subscribe(
+      (response) => {
+        this.priceList = response.data.map((item: any) => ({
+          id: item.id,
+          price: item.price,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching prices:', error);
+      }
+    );
+  }
+
+  // Handle genre selection
+  selectedGenre(genre: any) {
+    this.genre = genre.name;
+    this.valueGenre = genre.name;
+  }
+
+  // Handle price selection
+  selectedPrix(price: any) {
+    this.valuePrice = price.price;
+    this.price = price.price;
+  }
+
+  // Submit form data
+  submitForm() {
+    console.log(this.title,
+      this.description,
+      this.genre,
+      this.price,
+      this.avatarFile, // Vérifie si une image est sélectionnée
+      this.selectedSongs.length);
+    
+    if (
+      this.title &&
+      this.description &&
+      this.genre &&
+      this.price &&
+      this.avatarFile
+    ) {
+      // console.log('Form data:', this.album);
+
+      // Envoyer les données au serveur
+      this.albumService
+        .createAlbum(
+          this.title,
+          this.description,
+          this.avatarFile, // Miniature de l'album
+          +this.price, // Assurez-vous que le prix est un nombre
+          +this.genre // Assurez-vous que le genre est un nombre
+        )
+        .subscribe((response) => {
+          console.log(response);
+        });
+    } else {
+      console.log('Veuillez remplir tous les champs.');
+    }
+  }
+
+  dataURLtoFile(dataurl: string, filename: string): File {
+    const arr = dataurl.split(',');
+    const match = arr[0].match(/:(.*?);/); // Stockez le résultat de match()
+    let mime = 'application/octet-stream'; // Valeur par défaut
+
+    if (match) {
+      mime = match[1];
+    }
+
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  // Capture an image using the camera
   async camera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.Base64
-    });
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera, // Spécifiez CameraSource.Camera pour forcer la caméra
+      });
 
-    this.imgPath = 'data:image/png;base64,' + image.base64String
-    this.isGetImg = true
-    // console.log(this.imgPath)
-    this.album.image=this.imgPath
-    // console.log(this.album.image)
+      if (image) {
+        const base64Image = image.base64String;
+        this.imgPath = `data:image/jpeg;base64,${base64Image}`;
+        this.isGetImg = true;
+        this.avatarFile = this.dataURLtoFile(this.imgPath, 'image.jpg'); // Convertir en File
+      }
+    } catch (error) {
+      console.error('Erreur caméra :', error);
+      // Si la caméra échoue, proposer la sélection de fichier
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (event: any) => {
+        const file = event.target.files[0];
+        if (file) {
+          this.avatarFile = file;
+          this.imgPath = URL.createObjectURL(file);
+          this.isGetImg = true;
+        }
+      };
+      input.click();
+    }
   }
 
-  selectedGenre(item: string) {
-    this.valueGenre = item
-    // this.modal.dismiss()
-    return this.valueGenre
-  }
-  
-  selectedPrix(item: string) {
-    this.valuePrice = item
-    // this.modal.dismiss()
-    return this.valuePrice
+  // Convert base64 string to a Blob
+  base64ToBlob(base64: string, type: string) {
+    const binary = atob(base64.replace(/\s/g, ''));
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: type });
   }
 
-   // Fonction pour ouvrir la modale du genre
-   openGenreModal() {
+  // Open the genre modal
+  openGenreModal() {
     this.showGenreModal();
   }
 
-  // Fonction pour ouvrir la modale du prix
+  // Open the price modal
   openPriceModal() {
     this.showPriceModal();
   }
 
-  // Simule la modale pour sélectionner le genre
+  // Simulate genre modal selection
   async showGenreModal() {
-    const genre = await this.selectedGenre(this.valueGenre);
-    if (genre) {
-      this.album.genre = genre;
-    }
+    this.selectedGenre(this.valueGenre);
+    // Genre is already set in the album object inside selectedGenre()
   }
 
-  // Simule la modale pour sélectionner le prix
+  // Simulate price modal selection
   async showPriceModal() {
-    const price = await this.selectedPrix(this.valuePrice);
-    if (price) {
-      this.album.price = price;
-    }
+    this.selectedPrix(this.valuePrice);
+    // Price is already set in the album object inside selectedPrix()
   }
-
-  ngOnInit() {
-  }
-
 }

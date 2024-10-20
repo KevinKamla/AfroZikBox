@@ -35,8 +35,9 @@ export class AlbumsService {
   private accessToken = localStorage.getItem('accessToken');
   private update = `${environment.api}/update-album`;
   private purchase = `${environment.api}/user/purchase_album`;
-  private submit = `${environment.api}/submit-album`;
+  private submit = `${environment.api}/submit-album?server_key=d012ab7a1e170f66e8ed63176dcc4e7b?access_token=${this.accessToken}`;
   private accesstoken = localStorage.getItem('accessToken') || '';
+  private apiUrl = 'https://afrozikbox.com/endpoint/user/get-genres?server_key=d012ab7a1e170f66e8ed63176dcc4e7b';
   constructor(private http: HttpClient) {}
 
   getUpdateAlbum(
@@ -246,30 +247,43 @@ export class AlbumsService {
   }
 
 
-  createAlbum(title: string, description: string, albumThumbnail: File, songs: number[], albumPrice: number, categoryId?: number): Observable<any> {
+  createAlbum(title: string, description: string, albumThumbnail: File, albumPrice: number, categoryId?: number): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.accessToken}`,
     });
     // Création de l'objet FormData pour envoyer les fichiers et les autres données du formulaire
+    console.log(albumThumbnail);
+    
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('album-thumbnail', albumThumbnail, albumThumbnail.name);
     formData.append('album-price', albumPrice.toString());
     formData.append('server_key', this.serverKey);
-    formData.append('server_key', this.accesstoken);
+    formData.append('access_token', this.accesstoken);
 
     if (categoryId) {
       formData.append('category_id', categoryId.toString());
     }
-
+    
+    
     // Ajout des chansons sélectionnées
-    songs.forEach((songId, index) => {
-      formData.append(`songs[${index}]`, songId.toString());
+    // songs.forEach((songId, index) => {
+    //   formData.append(`songs[${index}]`, songId.toString());
+    // });
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
     });
-
     return this.http.post(this.submit, formData, { headers });
   }
  
+
+  getGenres(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  getPrices() {
+    return this.http.get<any>('https://afrozikbox.com/endpoint/common/get-prices?server_key=d012ab7a1e170f66e8ed63176dcc4e7b');
+  }
   
 }
