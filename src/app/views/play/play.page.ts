@@ -18,6 +18,8 @@ import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { DownloadService } from 'src/app/services/download.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
+import { CommentsModalPage } from '../../components/comments-modal/comments-modal.page';
+import { CommentService } from 'src/app/services/comment.service';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -59,6 +61,7 @@ export class PlayPage implements OnInit, OnDestroy {
   sourceArray: any;
   topSongs: any;
   latest: any;
+  comments = ['Bonjour', 'Nice']; // Exemple de commentaires
 
   constructor(
     private downloadService: DownloadService,
@@ -74,7 +77,9 @@ export class PlayPage implements OnInit, OnDestroy {
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
     private PlaylistService: PlaylistService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private modalController: ModalController,
+    private commentService:CommentService
   ) {}
 
   ngOnInit() {
@@ -425,6 +430,7 @@ export class PlayPage implements OnInit, OnDestroy {
           if (response.status === 200) {
             this.love = !this.love; // Toggle the liked status
             console.log('Successfully toggled favorite:', response.mode);
+            console.log('successs',response)
           } else {
             console.error('Error toggling favorite:', response.error);
           }
@@ -434,5 +440,29 @@ export class PlayPage implements OnInit, OnDestroy {
         }
       });
   }
+
+  toggleComment(trackId: number) {
+    this.commentService.toggleComment(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            console.log('Successfully toggled Comment:', response.mode);
+          } else {
+            console.error('Error toggling comment:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling comment:', err);
+        }
+      });
+  }
  
+  
+  async openCommentsModal() {
+    const modal = await this.modalController.create({
+      component: CommentsModalPage,
+      componentProps: { comments: this.comments },
+    });
+    return await modal.present();
+  }
 }

@@ -42,5 +42,21 @@ export class CommentService {
       .set('comment_description',text)
     return this.http.get<any>(this.registercomment, { params });
   }
-  
+
+  toggleComment(trackId: number): Observable<any> {
+    if (!this.accessToken) {
+      return new Observable((observer) => {
+        observer.error({ status: 400, error: 'You ain\'t logged in!' });
+      });
+    }
+    const params = new HttpParams()
+      .set('access_token', this.accessToken || '')
+      .set('id', trackId)
+      .set('limit',3)
+      .set('offset',5)
+      .set('server_key', this.serverKey);
+   
+
+    return this.http.post(`${environment.api}/getcomment`, params);
+  }
 }
