@@ -461,9 +461,14 @@ const routes: Routes = [
       import('./components/addplaylist/addplaylist.module').then(
         (m) => m.AddplaylistPageModule
       ),
-  },  {
+  },
+  {
     path: 'achatdetail',
     loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
+  },
+  {
+    path: 'comments-modal',
+    loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
   },
 
 ];

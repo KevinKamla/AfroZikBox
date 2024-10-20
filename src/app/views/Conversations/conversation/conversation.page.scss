@@ -1,37 +1,58 @@
-.container {
-    padding: 10px;
-}
-
-.ion-item {
+.chat-list-content {
+    background-color: #f8f9fa; /* Couleur de fond claire */
+  }
+  
+  .container {
+    padding: 10px; /* Padding autour de la liste */
+  }
+  
+  .chat-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-block: 1rem;
-    // padding-inline: 1rem;
-    width: 100%;
-    ion-avatar {
-        height: 50px;
-    }
-    p {
-        word-wrap: break-word;
-        white-space: nowrap;
-    }
-}
-
-.title {
-    overflow: hidden;
-    margin-left: 10px;
-    h3 {
-        font-weight: 700;
-        font-size: 18px;
-        margin-top: 0;
-    }
-    p {
-        color: gray;
-        word-wrap: break-word;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        width: 60%;
-    }
-}
+    align-items: center; /* Alignement vertical centré */
+    padding: 10px; /* Padding autour de chaque item */
+    border-bottom: 1px solid #e0e0e0; /* Ligne de séparation */
+    transition: background-color 0.2s; /* Effet au survol */
+  }
+  
+  .chat-item:hover {
+    background-color: #e9ecef; /* Couleur de fond au survol */
+  }
+  
+  ion-avatar {
+    height: 50px; /* Hauteur de l'avatar */
+    width: 50px; /* Largeur de l'avatar */
+    border-radius: 50%; /* Coins arrondis pour l'avatar */
+  }
+  
+  .chat-details {
+    flex: 1; /* Prend l'espace restant */
+    margin-left: 10px; /* Espacement à gauche de l'avatar */
+  }
+  
+  .chat-username {
+    font-weight: bold; /* Mettre en gras le nom de l'utilisateur */
+    font-size: 1.1em; /* Taille légèrement plus grande */
+    color: #343a40; /* Couleur du texte */
+    margin: 0; /* Pas de marges */
+  }
+  
+  .chat-message {
+    font-size: 0.9em; /* Taille de police pour le message */
+    color: #6c757d; /* Couleur pour le dernier message */
+    margin: 5px 0; /* Marges autour du message */
+  }
+  
+  .chat-image {
+    width: 40px; /* Ajustez la largeur de l'image */
+    height: 40px; /* Ajustez la hauteur de l'image */
+    border-radius: 10px; /* Coins arrondis */
+    object-fit: cover; /* Pour garder les proportions de l'image */
+  }
+  
+  .chat-time {
+    font-size: 0.8em; /* Plus petit pour le temps */
+    color: #adb5bd; /* Couleur pour le texte du temps */
+    white-space: nowrap; /* Pas de retour à la ligne */
+    margin-left: auto; /* Aligner à droite */
+  }
+  

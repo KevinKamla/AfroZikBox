@@ -17,6 +17,10 @@ import { TopSongsService } from 'src/app/services/top-songs.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { DownloadService } from 'src/app/services/download.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { CommentsModalPage } from '../../components/comments-modal/comments-modal.page';
+import { CommentService } from 'src/app/services/comment.service';
+import { Share } from '@capacitor/share';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -38,6 +42,8 @@ export class PlayPage implements OnInit, OnDestroy {
   intervalId: any;
   private songSubscription: Subscription | undefined;
   currentSong: any;
+  liked: boolean = false;
+  love: boolean = false;
 
   isUserLoggedIn: boolean = false;
   musictabOption = musicTab;
@@ -56,6 +62,7 @@ export class PlayPage implements OnInit, OnDestroy {
   sourceArray: any;
   topSongs: any;
   latest: any;
+  comments = ['Bonjour', 'Nice']; // Exemple de commentaires
 
   constructor(
     private downloadService: DownloadService,
@@ -70,7 +77,10 @@ export class PlayPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    private PlaylistService: PlaylistService
+    private PlaylistService: PlaylistService,
+    private favoriteService: FavoriteService,
+    private modalController: ModalController,
+    private commentService:CommentService
   ) {}
 
   ngOnInit() {
@@ -169,6 +179,8 @@ export class PlayPage implements OnInit, OnDestroy {
   // Activer/désactiver la répétition d'une seule chanson
   toggleRepeatOne() {
     this.isRepeatOneEnabled = !this.isRepeatOneEnabled;
+    console.log(234);
+
     this.musicPlayerService.toggleRepeatOne();
   }
 
@@ -178,8 +190,8 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   download() {
-    this.downloadService.downloadAndStoreMusic(this.currentSong );
-  }
+    this.downloadService.downloadSongFromObject(this.currentSong);
+  }
 
   // Revenir en arrière de 10 secondes
   rewind() {
@@ -232,6 +244,17 @@ export class PlayPage implements OnInit, OnDestroy {
     musicTab.musicIsPlay = true;
     this.currentSong = song;
     console.log(this.currentSong);
+  }
+
+  cleanDescription(description: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = description;
+    const cleanText = tempDiv.textContent || tempDiv.innerText || '';
+
+    // Retourner les 50 premiers caractères
+    return cleanText.length > 50
+      ? cleanText.substring(0, 50) + '...'
+      : cleanText;
   }
 
   fetchTopSongs() {
@@ -375,5 +398,101 @@ export class PlayPage implements OnInit, OnDestroy {
       mode: 'ios',
     });
     await modal.present();
+  }
+
+  likeSong(audioId: string) {
+    this.favoriteService.likeDislikeSong(audioId).subscribe({
+      next: (data) => {
+        this.liked = true;
+        console.log('Song liked:', data);
+      },
+      error: (err) => {
+        console.error('Error liking song:', err);
+      },
+    });
+  }
+
+  dislikeSong(audioId: string) {
+    this.favoriteService.dislikeTrack(audioId).subscribe({
+      next: (data) => {
+        console.log('Song disliked:', data);
+        this.liked = false;
+      },
+      error: (err) => {
+        console.error('Error disliking song:', err);
+      },
+    });
+  }
+
+  toggleFavorite(trackId: number) {
+    this.favoriteService.toggleFavorite(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.love = !this.love; // Toggle the liked status
+            console.log('Successfully toggled favorite:', response.mode);
+            console.log('successs',response)
+          } else {
+            console.error('Error toggling favorite:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling favorite:', err);
+        }
+      });
+  }
+
+  toggleComment(trackId: number) {
+    this.commentService.toggleComment(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            console.log('Successfully toggled Comment:', response.mode);
+          } else {
+            console.error('Error toggling comment:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling comment:', err);
+        }
+      });
+  }
+ 
+  
+  async openCommentsModal(currentSong:any) {
+    console.log('Chanson actuelle:', currentSong); // Vérifiez que les informations sont présentes
+    const modal = await this.modalController.create({
+      component: CommentsModalPage,
+      componentProps: { currentSong: this.currentSong },
+    });
+    return await modal.present();
+  }
+
+  async shareMusicLink(url: string) {
+    try {
+      await Share.share({
+        title: 'Écoutez cette musique !',
+        text: 'Découvrez cette chanson incroyable !',
+        url: this.currentSong.url,
+        dialogTitle: 'Partager la musique',
+      });
+    } catch (error) {
+      console.error('Erreur lors du partage:', error);
+    }
+  }
+  favoris: any[] = [];
+
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+    
+  isFavorite(url: string){
+  this.favoriteService
+  .getFavorites(this.userId, this.accessToken)
+  .subscribe((res) => {
+    console.log(res);
+    this.favoris = res.data.data;
+    const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
+        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
+  });
   }
 }

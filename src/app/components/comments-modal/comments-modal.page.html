@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-title>Commentaires</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="comments-container" style="min-height: 100vh;"> <!-- Ajout de style pour la hauteur minimale -->
+    <div *ngIf="comments.length === 0">Aucun commentaire disponible.</div>
+    <div *ngFor="let comment of comments" class="comment">
+      <ion-avatar slot="start">
+        <img [src]="comment.userData.avatar" alt="Avatar">
+      </ion-avatar>
+      <p>{{ comment.value }}</p>
+      <ion-button fill="clear" (click)="likeComment(comment)">❤ {{ comment.countLiked }}</ion-button>
+    </div>
+  </div>
+  <div class="input-container">
+    <ion-input placeholder="Votre commentaire..." [(ngModel)]="newComment" class="comment-input"></ion-input>
+    <ion-button (click)="sendComment()">
+      <ion-icon name="send"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

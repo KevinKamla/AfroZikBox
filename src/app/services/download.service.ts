@@ -1,121 +1,136 @@
+// src/app/services/download.service.ts
 import { Injectable } from '@angular/core';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { HttpClient } from '@angular/common/http';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
+
 @Injectable({
   providedIn: 'root',
 })
 export class DownloadService {
-  constructor() {}
-  // Function to download and store music, image, and metadata
-  async downloadAndStoreMusic(currentSong:any) {
+  downloadedSongs: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  // Method to download a song and its cover image
+  async downloadSongFromObject(songData: any) {
+    const { audio_location, title, artist, thumbnail, duration } = songData;
+
     try {
-            // this.currentSong.audio_location,
-            //   this.currentSong.title,
-            //   this.currentSong.thumbnail,
-            //   this.currentSong.title + '_img';
-      // Download and store the music file
-      const musicFile = await this.downloadAndStoreFile(
-        currentSong.audio_location,
-        currentSong.title,
-        'audio'
+      // Download and save song file
+      const songBlob = await this.downloadFile(audio_location);
+      const songFilePath = await this.saveFileToFilesystem(
+        `${title}.mp3`,
+        songBlob!
       );
 
-      // Download and store the image file
-      await this.downloadAndStoreFile(
-        currentSong.thumbnail,
-      currentSong.title + '_img',
-        'image'
+      // Download and save cover image
+      const coverBlob = await this.downloadFile(thumbnail);
+      const coverFilePath = await this.saveFileToFilesystem(
+        `${title}.jpg`,
+        coverBlob!
       );
 
-      // Extract metadata (duration) from the downloaded music file
-      const duration =  currentSong.duration
+      const newSong = {
+        title,
+        artist: artist || 'Unknown',
+        duration: duration || 'Unknown',
+        filePath: songFilePath,
+        coverArtPath: coverFilePath,
+      };
 
-      // Store the music, image, and metadata (duration) in Capacitor Storage
-      await this.addMusicAndImageToDownloads(
-        currentSong.title,
-        currentSong.title + '_img',
-        duration
-      );
-
-      console.log(
-        'Song, image, and metadata downloaded and stored successfully'
-      );
+      // Add song to local storage
+      await this.addSongToStorage(newSong);
+      this.downloadedSongs.push(newSong);
+      console.log('Song and metadata saved successfully:', newSong);
     } catch (error) {
-      console.error('Error downloading or storing music and image:', error);
+      console.error('Error downloading song or cover art:', error);
     }
   }
 
-  // Generalized function to download a file (either music or image) and store it securely
-  private async downloadAndStoreFile(
-    url: string,
+  // Helper method to download a file (song or cover art) as a blob
+  private downloadFile(url: string): Promise<Blob | undefined> {
+    return this.http.get(url, { responseType: 'blob' }).toPromise();
+  }
+
+  // Helper method to save a file to the filesystem
+  private async saveFileToFilesystem(
     fileName: string,
-    fileType: 'audio' | 'image'
-  ): Promise<Blob> {
-    try {
-      // Fetch the file from the URL
-      const response = await fetch(url);
-      const blob = await response.blob();
+    fileBlob: Blob
+  ): Promise<string> {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
 
-      // Convert Blob to base64 for storing
-      const base64Data = await this.blobToBase64(blob);
+    return new Promise((resolve, reject) => {
+      reader.onloadend = async () => {
+        const base64data = reader.result as string;
 
-      // Store the file in private storage
-      await Filesystem.writeFile({
-        path: fileName,
-        data: base64Data,
-        directory: Directory.Data, // Secure storage
-      });
+        try {
+          const result = await Filesystem.writeFile({
+            path: fileName,
+            data: base64data.split(',')[1], // Remove base64 header
+            directory: Directory.Data,
+          });
+          resolve(result.uri);
+        } catch (error) {
+          reject(error);
+        }
+      };
 
-      console.log(
-        `${fileType.charAt(0).toUpperCase() + fileType.slice(1)} file stored:`,
-        fileName
-      );
-      return blob;
-    } catch (error) {
-      console.error(`Error downloading or storing ${fileType} file:`, error);
-      throw error;
+      reader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  }
+
+  // Add song metadata to storage
+  private async addSongToStorage(song: any): Promise<void> {
+    this.downloadedSongs.push(song);
+
+    // Save to storage
+    await Storage.set({
+      key: 'downloadedSongs',
+      value: JSON.stringify(this.downloadedSongs),
+    });
+  }
+
+  // Load downloaded songs from storage
+  async loadDownloadedSongs(): Promise<void> {
+    const result = await Storage.get({ key: 'downloadedSongs' });
+    if (result.value) {
+      this.downloadedSongs = JSON.parse(result.value);
     }
   }
 
-  // Add music, image, and metadata to Capacitor Storage
-  private async addMusicAndImageToDownloads(
-    musicFileName: string,
-    imageFileName: string,
-    duration: number
-  ) {
-    const { value } = await Storage.get({ key: 'downloadedMusic' });
-    let downloadedMusic = value ? JSON.parse(value) : [];
+  // Check if a downloaded song file still exists
+  async checkSongAvailability(song: any): Promise<boolean> {
+    try {
+      const result = await Filesystem.stat({
+        path: song.filePath,
+        directory: Directory.Data,
+      });
+      return !!result;
+    } catch (error) {
+      console.error('File not found:', error);
+      return false;
+    }
+  }
 
-    // Add new song, image, and metadata to the list
-    downloadedMusic.push({
-      musicFile: musicFileName,
-      imageFile: imageFileName,
-      duration: duration, // Store duration
-    });
+  // Check availability of all downloaded songs
+  async checkAllSongsAvailability(): Promise<void> {
+    for (let song of this.downloadedSongs) {
+      song.isAvailable = await this.checkSongAvailability(song);
+    }
 
-    // Save the updated list back to storage
+    // Update storage
     await Storage.set({
-      key: 'downloadedMusic',
-      value: JSON.stringify(downloadedMusic),
+      key: 'downloadedSongs',
+      value: JSON.stringify(this.downloadedSongs),
     });
-
-    console.log('Music, image, and metadata saved in Capacitor Storage');
   }
 
-  // Retrieve the list of downloaded music, images, and metadata
-  async getDownloadedMusic(): Promise<
-    Array<{ musicFile: string; imageFile: string; duration: number }>
-  > {
-    const { value } = await Storage.get({ key: 'downloadedMusic' });
-    return value ? JSON.parse(value) : [];
-  }
-  // Convert Blob to base64
-  blobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
+  // Retrieve the list of downloaded songs
+  getDownloadedSongs() {
+    return this.downloadedSongs;
   }
 }

@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="music-player-content">
   <div class="container">
     <div class="bloc_header">
       <ion-buttons slot="start">
@@ -18,28 +18,31 @@
     </div>
 
     <div class="bg-img">
+      <div class="gradient-overlay"></div>
+      <img [src]="currentSong?.thumbnail" alt="Album cover" class="album-cover-bg"/>
+      
       <div class="img-details">
-        <img [src]="currentSong?.thumbnail" alt="" />
+        <img [src]="currentSong?.thumbnail" alt="Album cover" class="album-cover"/>
         <div class="tags">
-          <b [ngClass]="{'ative': musictabOption.musicIsPlay}"
-            >{{ currentSong.title }}</b
-          >
-          <p [innerText]="currentSong?.description"></p>
+          <b class="song-title">{{ currentSong?.title }}</b>
+          <p class="song-description">{{ cleanDescription(currentSong?.description) }}</p>
         </div>
       </div>
+    </div>
 
-      <div class="progress-bar">
-        <ion-range
-          min="0"
-          [max]="duration"
-          step="1"
-          [(ngModel)]="currentTime"
-          (ionChange)="seekTo($event)"
-        >
-          <ion-label slot="start">{{ formatTime(currentTime) }}</ion-label>
-          <ion-label slot="end">{{ formatTime(duration) }}</ion-label>
-        </ion-range>
-      </div>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <ion-range
+        min="0"
+        [max]="duration"
+        step="1"
+        [(ngModel)]="currentTime"
+        (ionChange)="seekTo($event)"
+      >
+        <ion-label slot="start">{{ formatTime(currentTime) }}</ion-label>
+        <ion-label slot="end">{{ formatTime(duration) }}</ion-label>
+      </ion-range>
+    </div>
 
       <div class="flex_box">
         <ion-button shape="round" fill="clear" (click)="toggleRepeatOne()">
@@ -88,22 +91,19 @@
       </div>
 
       <div class="flex_box2">
-        <ion-button shape="round" fill="clear">
+        <ion-button shape="round" fill="clear" (click)="shareMusicLink(currentSong.url)">
           <ion-icon slot="icon-only" name="paper-plane-outline"></ion-icon>
         </ion-button>
-        <ion-button shape="round" fill="clear">
-          <ion-icon
-            slot="icon-only"
-            name="chatbubble-ellipses-outline"
-          ></ion-icon>
+        <ion-button shape="round" fill="clear" (click)="openCommentsModal(currentSong)">
+          <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
         </ion-button>
-        <ion-button shape="round" fill="clear">
-          <ion-icon slot="icon-only" name="star-outline"></ion-icon>
+        <ion-button shape="round" fill="clear" (click)="toggleFavorite(currentSong.audio_id)">
+          <ion-icon slot="icon-only" [name]="love ? 'star' : 'star-outline'" [color]="love ? 'warning' : 'yellow'"></ion-icon>
         </ion-button>
-        <ion-button shape="round" fill="clear">
-          <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+        <ion-button shape="round" fill="clear" (click)="likeSong(currentSong.audio_id)" [disabled]="liked">
+          <ion-icon slot="icon-only" [name]="liked ? 'heart' : 'heart-outline'" [color]="liked ? 'danger' : 'medium'"></ion-icon>
         </ion-button>
-        <ion-button shape="round" fill="clear">
+        <ion-button shape="round" fill="clear" (click)="dislikeSong(currentSong.audio_id)" [disabled]="!liked">
           <ion-icon slot="icon-only" name="heart-dislike-outline"></ion-icon>
         </ion-button>
         <ion-button shape="round" fill="clear" (click)="download()">
@@ -114,5 +114,4 @@
         </ion-button>
       </div>
     </div>
-  </div>
 </ion-content>

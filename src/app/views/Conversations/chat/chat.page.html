@@ -1,73 +1,118 @@
 <ion-header [translucent]="true" class="ion-no-border">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-button (click)="goToRoute()">
-                <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-        <div class="d-f header-bloc">
-            <ion-avatar>
-                <img src="assets/icon/profil.png" />
-            </ion-avatar>
-            <ion-label>Usernane </ion-label>
-        </div>
-        <ion-buttons slot="end">
-            <ion-button id="popover-chat">
-                <ion-icon slot="icon-only" style="font-size: 17px;" name="ellipsis-vertical"></ion-icon>
-            </ion-button>
-        </ion-buttons>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goToRoute()">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <div class="d-f header-bloc">
+      <ion-avatar>
+        <img
+          [src]="chatUser.avatar || 'assets/icon/profil.png'"
+          alt="User avatar"
+        />
+      </ion-avatar>
+      <ion-label>{{ chatUser.name || 'Utilisateur' }} </ion-label><br />
+      <p>il y a {{ calculateTimeSince(chatUser.last_active) }}</p>
+    </div>
+    <ion-buttons slot="end">
+      <ion-button id="popover-chat">
+        <ion-icon
+          slot="icon-only"
+          style="font-size: 17px"
+          name="ellipsis-vertical"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <div class="container">
-        <div class="bloc-conversation">
-            <div class="bloc-contain">
-                <div *ngFor="let item of [1,1,1,1,1,1,1,1]">
-                    <div class="message-from">
-                        <div class="sms-container from">
-                            <span><p>{{"Bonjour propre gar nous somme poser\n C'est bien bro"}}</p></span>
-                            <span class="d-f-e"><h6>12:09</h6></span>
-                        </div>
-                    </div>
-                    <div class="message-to">
-                        <div class="sms-container to">
-                            <span><p>{{'Salut comment vous allez'}}</p></span>
-                            <span class="d-f-e"><h6>13:00</h6></span>
-                        </div>
-                    </div>
-                </div>
+  <div class="container">
+    <div class="bloc-conversation">
+      <div class="bloc-contain">
+        <!-- Iterate over chat messages -->
+        <div *ngFor="let message of chats">
+          <!-- Message from the other person (API_position: left) -->
+          <div *ngIf="message.API_position === 'left'" class="message-from">
+            <div class="sms-container from">
+              <!-- Check if the message is text -->
+              <span *ngIf="message.API_type === 'text'">
+                <p>{{ cleanDescription(message.text) }}</p>
+              </span>
+              <!-- Check if the message is an image -->
+              <span *ngIf="message.API_type === 'image'">
+                <a [href]="message.full_image" target="_blank">
+                  <img
+                    [src]="message.full_image"
+                    style="width: 300px; border-radius: 20px"
+                  />
+                </a>
+              </span>
+              <span class="d-f-e">
+                <h6>{{ calculateTimeSince(message.time) }}</h6>
+              </span>
             </div>
+          </div>
+
+          <!-- Message from the user (API_position: right) -->
+          <div *ngIf="message.API_position === 'right'" class="message-to">
+            <div class="sms-container to">
+              <!-- Check if the message is text -->
+              <span *ngIf="message.API_type === 'text'">
+                <p>{{ cleanDescription(message.text) }}</p>
+              </span>
+              <!-- Check if the message is an image -->
+              <span *ngIf="message.API_type === 'image'">
+                <a [href]="message.full_image" target="_blank">
+                  <img
+                    [src]="message.full_image"
+                    style="width: 300px; border-radius: 20px"
+                  />
+                </a>
+              </span>
+              <span class="d-f-e">
+                <h6>{{ calculateTimeSince(message.time) }}</h6>
+              </span>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </ion-content>
+
 <ion-footer>
-    <ion-toolbar>
-        <form>
-            <ion-button fill="clear" shape="round">
-                <ion-icon slot="icon-only" name="image"></ion-icon>
-            </ion-button>
-            <ion-textarea type="text" name="comment" placeholder="Enter your message"></ion-textarea>
-            <ion-buttons class="button-send" slot="end">
-                <ion-button shape="round" expand="bloc">
-                    <ion-icon slot="icon-only" name="send-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </form>
-    </ion-toolbar>
+  <ion-toolbar>
+    <form (submit)="sendMessage()">
+      <ion-button fill="clear" shape="round" (click)="captureAndSendMedia()">
+        <ion-icon slot="icon-only" name="image"></ion-icon>
+      </ion-button>
+      <ion-textarea
+        [(ngModel)]="newMessage"
+        name="comment"
+        placeholder="Enter your message"
+      ></ion-textarea>
+      <ion-buttons class="button-send" slot="end">
+        <ion-button shape="round" expand="bloc" type="submit">
+          <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </form>
+  </ion-toolbar>
 </ion-footer>
 
 <ion-popover trigger="popover-chat" [dismissOnSelect]="true">
-    <ng-template>
-        <ion-content>
-            <ion-item button>
-                <ion-label>Bloquer</ion-label>
-                <ion-icon name="ban"></ion-icon>
-            </ion-item>
-            <ion-item button>
-                <ion-label>Effacer le chat</ion-label>
-                <ion-icon name="trash" color="danger"></ion-icon>
-            </ion-item>
-        </ion-content>
-    </ng-template>
+  <ng-template>
+    <ion-content>
+      <ion-item button>
+        <ion-label>Bloquer</ion-label>
+        <ion-icon name="ban"></ion-icon>
+      </ion-item>
+      <ion-item button>
+        <ion-label>Effacer le chat</ion-label>
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </ion-item>
+    </ion-content>
+  </ng-template>
 </ion-popover>
