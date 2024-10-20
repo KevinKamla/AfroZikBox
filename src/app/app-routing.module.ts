@@ -461,6 +461,10 @@ const routes: Routes = [
         (m) => m.AddplaylistPageModule
       ),
   },
+  {
+    path: 'comments-modal',
+    loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
+  },
 ];
 @NgModule({
   imports: [

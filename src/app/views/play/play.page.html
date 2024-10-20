@@ -91,20 +91,17 @@
       </div>
 
       <div class="flex_box2">
-        <ion-button shape="round" fill="clear">
+        <ion-button shape="round" fill="clear" (click)="shareMusicLink(currentSong.url)">
           <ion-icon slot="icon-only" name="paper-plane-outline"></ion-icon>
         </ion-button>
-        <ion-button shape="round" fill="clear">
-          <ion-icon
-            slot="icon-only"
-            name="chatbubble-ellipses-outline"
-          ></ion-icon>
+        <ion-button shape="round" fill="clear" (click)="openCommentsModal(currentSong)">
+          <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
         </ion-button>
         <ion-button shape="round" fill="clear" (click)="toggleFavorite(currentSong.audio_id)">
-          <ion-icon slot="icon-only" [name]="love ? 'star' : 'star-outline'"></ion-icon>
+          <ion-icon slot="icon-only" [name]="love ? 'star' : 'star-outline'" [color]="love ? 'warning' : 'yellow'"></ion-icon>
         </ion-button>
         <ion-button shape="round" fill="clear" (click)="likeSong(currentSong.audio_id)" [disabled]="liked">
-          <ion-icon slot="icon-only" name="heart-outline"></ion-icon>
+          <ion-icon slot="icon-only" [name]="liked ? 'heart' : 'heart-outline'" [color]="liked ? 'danger' : 'medium'"></ion-icon>
         </ion-button>
         <ion-button shape="round" fill="clear" (click)="dislikeSong(currentSong.audio_id)" [disabled]="!liked">
           <ion-icon slot="icon-only" name="heart-dislike-outline"></ion-icon>

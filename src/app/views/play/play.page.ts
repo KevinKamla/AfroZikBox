@@ -18,6 +18,9 @@ import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { DownloadService } from 'src/app/services/download.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
+import { CommentsModalPage } from '../../components/comments-modal/comments-modal.page';
+import { CommentService } from 'src/app/services/comment.service';
+import { Share } from '@capacitor/share';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -59,6 +62,7 @@ export class PlayPage implements OnInit, OnDestroy {
   sourceArray: any;
   topSongs: any;
   latest: any;
+  comments = ['Bonjour', 'Nice']; // Exemple de commentaires
 
   constructor(
     private downloadService: DownloadService,
@@ -74,7 +78,9 @@ export class PlayPage implements OnInit, OnDestroy {
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
     private PlaylistService: PlaylistService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private modalController: ModalController,
+    private commentService:CommentService
   ) {}
 
   ngOnInit() {
@@ -426,11 +432,77 @@ export class PlayPage implements OnInit, OnDestroy {
           console.log('Successfully toggled favorite:', response.mode);
         } else {
           console.error('Error toggling favorite:', response.error);
+    this.favoriteService.toggleFavorite(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.love = !this.love; // Toggle the liked status
+            console.log('Successfully toggled favorite:', response.mode);
+            console.log('successs',response)
+          } else {
+            console.error('Error toggling favorite:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling favorite:', err);
         }
       },
       error: (err) => {
         console.error('Error toggling favorite:', err);
       },
     });
+  }
+  toggleComment(trackId: number) {
+    this.commentService.toggleComment(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            console.log('Successfully toggled Comment:', response.mode);
+          } else {
+            console.error('Error toggling comment:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling comment:', err);
+        }
+      });
+  }
+ 
+  
+  async openCommentsModal(currentSong:any) {
+    console.log('Chanson actuelle:', currentSong); // Vérifiez que les informations sont présentes
+    const modal = await this.modalController.create({
+      component: CommentsModalPage,
+      componentProps: { currentSong: this.currentSong },
+    });
+    return await modal.present();
+  }
+
+  async shareMusicLink(url: string) {
+    try {
+      await Share.share({
+        title: 'Écoutez cette musique !',
+        text: 'Découvrez cette chanson incroyable !',
+        url: this.currentSong.url,
+        dialogTitle: 'Partager la musique',
+      });
+    } catch (error) {
+      console.error('Erreur lors du partage:', error);
+    }
+  }
+  favoris: any[] = [];
+
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+    
+  isFavorite(url: string){
+  this.favoriteService
+  .getFavorites(this.userId, this.accessToken)
+  .subscribe((res) => {
+    console.log(res);
+    this.favoris = res.data.data;
+    const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
+        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
+  });
   }
 }
