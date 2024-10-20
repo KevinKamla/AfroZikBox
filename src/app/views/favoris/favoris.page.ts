@@ -25,7 +25,6 @@ export class FavorisPage implements OnInit {
   // userId!: number;
   constructor(
     private alertCtrl: AlertController,
-
     private router: Router,
     private modalCtrl: ModalController,
     private navCtrl: NavController,

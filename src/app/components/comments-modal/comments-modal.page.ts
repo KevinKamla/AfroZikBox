@@ -27,15 +27,17 @@ export class CommentsModalPage implements OnInit {
         console.error('Erreur lors de l\'envoi du commentaire:', error); // Log pour erreur
       }
     );
+    this.addComment(); // Ajoutez le commentaire localement
+
   }
   
   // ... code existant ...
 
   loadComments() {
-    const trackId = this.currentSong.audio_id; // Assurez-vous que l'ID de la chanson est disponible
+    const trackId = this.currentSong.id; // Assurez-vous que l'ID de la chanson est disponible
     this.commentService.toggleComment(trackId).subscribe(
       (comments: any) => {
-        this.comments = comments; // Stockez les commentaires récupérés
+        this.comments = comments.data.data; // Stockez les commentaires récupérés
         console.log('Commentaires récupérés:', this.comments);
       },
       (error: any) => {

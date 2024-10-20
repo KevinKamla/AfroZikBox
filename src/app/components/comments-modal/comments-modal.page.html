@@ -13,10 +13,10 @@
     <div *ngIf="comments.length === 0">Aucun commentaire disponible.</div>
     <div *ngFor="let comment of comments" class="comment">
       <ion-avatar slot="start">
-        <img src="https://png.pngtree.com/png-clipart/20230927/original/pngtree-man-avatar-image-for-profile-png-image_13001882.png" alt="Avatar">
+        <img [src]="comment.userData.avatar" alt="Avatar">
       </ion-avatar>
-      <p>{{ comment.text }}</p>
-      <ion-button fill="clear" (click)="likeComment(comment)">❤ {{ comment.likes }}</ion-button>
+      <p>{{ comment.value }}</p>
+      <ion-button fill="clear" (click)="likeComment(comment)">❤ {{ comment.countLiked }}</ion-button>
     </div>
   </div>
   <div class="input-container">

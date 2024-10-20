@@ -20,6 +20,7 @@ import { DownloadService } from 'src/app/services/download.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { CommentsModalPage } from '../../components/comments-modal/comments-modal.page';
 import { CommentService } from 'src/app/services/comment.service';
+import { Share } from '@capacitor/share';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -465,5 +466,33 @@ export class PlayPage implements OnInit, OnDestroy {
       componentProps: { currentSong: this.currentSong },
     });
     return await modal.present();
+  }
+
+  async shareMusicLink(url: string) {
+    try {
+      await Share.share({
+        title: 'Écoutez cette musique !',
+        text: 'Découvrez cette chanson incroyable !',
+        url: this.currentSong.url,
+        dialogTitle: 'Partager la musique',
+      });
+    } catch (error) {
+      console.error('Erreur lors du partage:', error);
+    }
+  }
+  favoris: any[] = [];
+
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+    
+  isFavorite(url: string){
+  this.favoriteService
+  .getFavorites(this.userId, this.accessToken)
+  .subscribe((res) => {
+    console.log(res);
+    this.favoris = res.data.data;
+    const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
+        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
+  });
   }
 }

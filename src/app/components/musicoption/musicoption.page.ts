@@ -5,6 +5,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { musicTab } from 'src/app/views/play/play.page';
 import { CreateplaylistPage } from '../createplaylist/createplaylist.page';
 import { AddplaylistPage } from '../addplaylist/addplaylist.page';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-musicoption',
@@ -51,8 +52,18 @@ export class MusicoptionPage implements OnInit {
       handler: () => { },
     },
   ];
-
-   
+  async shareMusicLink(url: string) {
+    try {
+      await Share.share({
+        title: 'Écoutez cette musique !',
+        text: 'Découvrez cette chanson incroyable !',
+        url: this.currentSong.url,
+        dialogTitle: 'Partager la musique',
+      });
+    } catch (error) {
+      console.error('Erreur lors du partage:', error);
+    }
+  }
 
   closeModal() {
     this.modalCtrl.dismiss();
