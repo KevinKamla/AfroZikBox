@@ -461,7 +461,11 @@ const routes: Routes = [
       import('./components/addplaylist/addplaylist.module').then(
         (m) => m.AddplaylistPageModule
       ),
+  },  {
+    path: 'achatdetail',
+    loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
   },
+
 ];
 @NgModule({
   imports: [

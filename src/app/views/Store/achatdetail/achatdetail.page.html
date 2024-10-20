@@ -1,0 +1,51 @@
+<ion-content [fullscreen]="true">
+  <div class="bg-header" [ngStyle]="{'background-image': 'url(assets/icon/son.png)'}">
+    <div class="back-boutton d-f-s">
+      <ion-buttons slot="start">
+        <ion-button (click)="goToRoute()">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start">
+        <ion-button id="IsAlertOpen">
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+  <div class="bloc-info">
+    <div class="img-detail d-f">
+      <ion-avatar>
+        <img [src]="['assets/icon/son.png']" />
+      </ion-avatar>
+      <div class="title">
+        <h3>Name</h3>
+        <p>{{'@'}}username</p>
+      </div>
+    </div>
+
+    <div class="block-btn-header ">
+      <ion-buttons slot="start">
+        <ion-button expand="bloc" shape="round" class="btn-Lecture">
+          <ion-icon slot="start" name="footsteps"></ion-icon>Participer</ion-button>
+        <ion-button shape="round" expand="bloc" class="btn-Lecture">
+          <ion-icon slot="start" name="ticket"></ion-icon>Acheter un ticket</ion-button>
+      </ion-buttons>
+    </div>
+
+    <div class="item d-f">
+      <ion-icon slot="start" name="ticket"></ion-icon>
+      <p style="color: purple;">98 Tickets disponibles</p>
+    </div>
+    <div class="item d-f">
+      <ion-icon slot="start" name="location"></ion-icon>
+      <p style="color: orange;">https//:afrozikbox.com/</p>
+    </div>
+    <div class="item d-f">
+      <ion-icon slot="start" name="calendar"></ion-icon>
+      <p >2024-09-25 21:52:07</p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-alert trigger="IsAlertOpen" header="Evénements" [buttons]="alertActionreeButtons"></ion-alert>
