@@ -14,11 +14,7 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./download.page.scss'],
 })
 export class DownloadPage implements OnInit {
-  downloadedMusic: Array<{
-    musicFile: string;
-    imageFile: string;
-    duration: number;
-  }> = [];
+  downloadedMusic: any[] = [];
 
   constructor(
     private modalCtrl: ModalController,
@@ -48,23 +44,13 @@ export class DownloadPage implements OnInit {
   }
 
   async loadDownloadedMusic() {
-    this.downloadedMusic = await this.downloadService.getDownloadedMusic();
+    // Load downloaded songs from storage
+    await this.downloadService.loadDownloadedSongs();
+    this.downloadedMusic = this.downloadService.getDownloadedSongs();
+
+    // Check if all songs are still available
+    await this.downloadService.checkAllSongsAvailability();
   }
-
-  // // Retrieve the image file and convert it to a displayable format
-  // async getImageSrc(imageFileName: string): Promise<string> {
-  //   try {
-  //     const result = await Filesystem.readFile({
-  //       path: imageFileName,
-  //       directory: Directory.Data,
-  //     });
-
-  //     return `data:image/jpeg;base64,${result.data}`;
-  //   } catch (error) {
-  //     console.error('Error retrieving image file:', error);
-  //     return ''; // Return empty string if image not found
-  //   }
-  // }
 
   // Format duration to mm:ss
   formatDuration(seconds: number): string {
@@ -75,10 +61,13 @@ export class DownloadPage implements OnInit {
     return `${minutes}:${remainingSeconds}`;
   }
 
-  loadsong(playlist:any, index:number){
-    // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
-    this.musicService.loadNewPlaylist(playlist, index);
+  // Method to handle playing a song
+  playSong(song: any) {
+    if (song.isAvailable) {
+      const audio = new Audio(song.filePath);
+      audio.play();
+    } else {
+      alert('The song file is no longer available on your device.');
+    }
   }
 }
