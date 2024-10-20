@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-import { AlbumdetailPageModule } from './views/Albums/albumdetail/albumdetail.module';
 import { AuthGuard } from './Gards/AuthGards';
 
 const routes: Routes = [
