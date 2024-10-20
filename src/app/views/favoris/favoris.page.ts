@@ -1,12 +1,17 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
 import { FavoriteService } from 'src/app/services/favorite.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favoris',
@@ -19,25 +24,25 @@ export class FavorisPage implements OnInit {
   favoris: any[] = [];
   // userId!: number;
   constructor(
+    private alertCtrl: AlertController,
+
+    private router: Router,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private favoriteService: FavoriteService,
     private authService: AuthService,
     private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
-
-
-  ) { }
-
+  ) {}
 
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-    })
-    
+      mode: 'ios',
+    });
+
     await modal.present();
   }
 
@@ -48,21 +53,21 @@ export class FavorisPage implements OnInit {
   }
 
   ngOnInit() {
-
-    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      console.log(res);
-      this.favoris = res.data.data;
-    });
+    this.favoriteService
+      .getFavorites(this.userId, this.accessToken)
+      .subscribe((res) => {
+        console.log(res);
+        this.favoris = res.data.data;
+      });
   }
 
   playMusicFromFavoris(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.favoris, index);
   }
-  loadsong(playlist:any, index:number){
+  loadsong(playlist: any, index: number) {
     // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
   }
-
 }
