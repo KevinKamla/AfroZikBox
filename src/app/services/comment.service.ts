@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class CommentService {
 
-  private getcomment = `${environment.api}/get-comment`;
+  private getcomment = `${environment.api}get-comment`;
   private registercomment = `${environment.api}/register-comment`;
   private unlikecomment = `${environment.api}/unlike-comment`;
 
@@ -57,6 +57,15 @@ export class CommentService {
       .set('server_key', this.serverKey);
    
 
-    return this.http.post(`${environment.api}/getcomment`, params);
+    return this.http.post(this.getcomment, params);
+  }
+  addComment(trackId: string, timePercentage: number, value: string): Observable<any> {
+    const params = new HttpParams()
+      .set('access_token', this.accessToken || '')
+      .set('id', trackId)
+      .set('timePercentage',timePercentage)
+      .set('value',value)
+      .set('server_key', this.serverKey);
+    return this.http.post(this.registercomment, params);
   }
 }

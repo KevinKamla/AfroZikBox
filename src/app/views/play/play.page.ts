@@ -458,10 +458,11 @@ export class PlayPage implements OnInit, OnDestroy {
   }
  
   
-  async openCommentsModal() {
+  async openCommentsModal(currentSong:any) {
+    console.log('Chanson actuelle:', currentSong); // Vérifiez que les informations sont présentes
     const modal = await this.modalController.create({
       component: CommentsModalPage,
-      componentProps: { comments: this.comments },
+      componentProps: { currentSong: this.currentSong },
     });
     return await modal.present();
   }

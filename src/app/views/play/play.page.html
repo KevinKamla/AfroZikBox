@@ -100,7 +100,7 @@
             name="chatbubble-ellipses-outline"
           ></ion-icon>
         </ion-button> -->
-        <ion-button shape="round" fill="clear" (click)="openCommentsModal()">
+        <ion-button shape="round" fill="clear" (click)="openCommentsModal(currentSong)">
           <ion-icon slot="icon-only" name="chatbubble-ellipses-outline"></ion-icon>
         </ion-button>
         <ion-button shape="round" fill="clear" (click)="toggleFavorite(currentSong.audio_id)">

@@ -1,0 +1,25 @@
+.comments-container {
+    background-color: #f9f9f9; /* Couleur de fond similaire à celle de la photo */
+    padding: 10px; /* Espacement autour des commentaires */
+    max-height: 400px; /* Limite la hauteur du conteneur des commentaires */
+    overflow-y: auto; /* Ajoute un défilement vertical si nécessaire */
+  }
+  .comment {
+    display: flex; /* Aligne l'avatar et le texte sur la même ligne */
+    align-items: center; /* Centre verticalement */
+    margin-bottom: 10px; /* Espacement entre les commentaires */
+    padding: 5px; /* Ajoute un peu d'espacement interne */
+    border-bottom: 1px solid #e0e0e0; /* Ligne de séparation entre les commentaires */
+  }
+  .input-container {
+    display: flex; /* Aligne l'input et le bouton sur la même ligne */
+    align-items: center; /* Centre verticalement */
+    background-color: #ffffff; /* Couleur de fond pour l'input */
+    padding: 10px; /* Espacement autour de l'input */
+    border-radius: 5px; /* Coins arrondis */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre légère */
+    position: fixed; /* Fixe le conteneur d'entrée en bas de l'écran */
+    bottom: 0; /* Positionne le conteneur d'entrée en bas */
+    left: 0; /* Aligne à gauche */
+    right: 0; /* Aligne à droite */
+  }
