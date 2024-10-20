@@ -1,106 +1,153 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>Télécharger un album</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Télécharger un album</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <p>
-        Créer et partager un album. Chaque album est créé et organiser sur mesure pour vous aider a découvrir le meilleur de la musique africaina selon vos préférences.
-    </p>
-    <ion-card button (click)="camera()" class="ion-no-box-shadow">
-        <ion-card-content class="image">
-            <img *ngIf="isGetImg" src="{{imgPath}}">
-            <div class="content" *ngIf="!isGetImg">
-                <ion-icon color="primary" slot="start" name="image"></ion-icon>
-                <h5>Sélectinner l'image à importer</h5>
-            </div>
-        </ion-card-content>
-    </ion-card>
-    <div class="input">
-        <div class="canView d-f-s">
-            <ion-icon name="pencil-outline"></ion-icon>
-            <ion-input type="text" placeholder="Titre de l'album" class="content" value=""  [(ngModel)]="album.title" name="title"></ion-input>
-        </div>
-        <div class=" canView d-f">
-            <ion-icon name="text-outline"></ion-icon>
-            <ion-textarea placeholder="Description" class="content"  [(ngModel)]="album.description" name="description"></ion-textarea>
-        </div>
-        <ion-item id="open-modal-genre" button="true" class="ion-no-border" name="genre" (click)="openGenreModal()" >
-            <div class="canView d-f">
-                <ion-icon name="layers-outline"></ion-icon>
-                <div class="contentBlock">{{album.genre || 'Choisir un genre'}}</div>
-            </div>
-        </ion-item>
-        <ion-item id="open-modal-prix" button="true" class="ion-no-border" name="prix" (click)="openPriceModal()">
-            <div class="canView d-f">
-                <ion-icon name="cash-outline"></ion-icon>
-                <div class="contentBlock">{{album.price || 'Choisir un prix'}}</div>
-            </div>
-        </ion-item>
+  <p>
+    Créer et partager un album. Chaque album est créé et organisé sur mesure
+    pour vous aider à découvrir le meilleur de la musique africaine selon vos
+    préférences.
+  </p>
 
-        <ion-button expand="block" shape="round" class="ion-margin" (click)="submitForm()">
-            Continuer
-        </ion-button>
+  <!-- Album Thumbnail -->
+  <ion-card button (click)="camera()" class="ion-no-box-shadow">
+    <ion-card-content class="image">
+      <img *ngIf="isGetImg" src="{{imgPath}}" />
+      <div class="content" *ngIf="!isGetImg">
+        <ion-icon color="primary" slot="start" name="image"></ion-icon>
+        <h5>Sélectionner l'image à importer</h5>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Album Title and Description -->
+  <div class="input">
+    <div class="canView d-f-s">
+      <ion-icon name="pencil-outline"></ion-icon>
+      <ion-input
+        type="text"
+        placeholder="Titre de l'album"
+        class="content"
+        [(ngModel)]="title"
+        name="title"
+      ></ion-input>
     </div>
+    <div class="canView d-f">
+      <ion-icon name="text-outline"></ion-icon>
+      <ion-textarea
+        placeholder="Description"
+        class="content"
+        [(ngModel)]="description"
+        name="description"
+      ></ion-textarea>
+    </div>
+
+    <!-- Album Genre -->
+    <ion-item
+      id="open-modal-genre"
+      button="true"
+      class="ion-no-border"
+      (click)="openGenreModal()"
+    >
+      <div class="canView d-f">
+        <ion-icon name="layers-outline"></ion-icon>
+        <div class="contentBlock">{{ valueGenre || 'Choisir un genre' }}</div>
+      </div>
+    </ion-item>
+
+    <!-- Album Price -->
+    <!-- Album Price -->
+    <ion-item
+      id="open-modal-prix"
+      button="true"
+      class="ion-no-border"
+      (click)="openPriceModal()"
+    >
+      <div class="canView d-f">
+        <ion-icon name="cash-outline"></ion-icon>
+        <div class="contentBlock">{{ valuePrice || 'Choisir un prix' }}</div>
+      </div>
+    </ion-item>
+
+    <!-- Multiple Music Files Upload -->
+    <!-- <ion-card class="ion-no-box-shadow">
+      <ion-card-content>
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          multiple
+          accept="audio/*"
+        />
+      </ion-card-content>
+    </ion-card> -->
+
+    <!-- Submit Button -->
+    <ion-button
+      expand="block"
+      shape="round"
+      class="ion-margin"
+      (click)="submitForm()"
+    >
+      Créer l'album
+    </ion-button>
+  </div>
 </ion-content>
 
-
+<!-- Genre Modal -->
 <ion-modal id="modal-title" trigger="open-modal-genre" #modale_genre handleBehavior="cycle">
     <ng-template>
-        <ion-header [translucent]="true" class="ion-no-border">
-            <ion-toolbar>
-                <ion-title>Choisir le genre</ion-title>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-            <div class="ion-margin-top">
-                <form action="" method="get">
-                    <div *ngFor="let item of genreList">
-                        <ion-item button (click)="selectedGenre(item); modale_genre.dismiss()" class="ion-no-border">
-                            <ion-label>{{item}}</ion-label>
-                        </ion-item>
-                    </div>
-                </form>
-            </div>
-        </ion-content>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modale_genre.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
+      <ion-header [translucent]="true" class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Choisir le genre</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="ion-margin-top">
+          <div *ngFor="let item of genreList">
+            <ion-item button (click)="selectedGenre(item); modale_genre.dismiss()" class="ion-no-border">
+              <ion-label>{{ item.name }}</ion-label>
+            </ion-item>
+          </div>
+        </div>
+      </ion-content>
+      <ion-footer>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="modale_genre.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
     </ng-template>
-</ion-modal>
-
-<ion-modal id="modal-title" trigger="open-modal-prix" #modale_prix handleBehavior="cycle">
+  </ion-modal>
+  
+  <!-- Price Modal -->
+  <ion-modal id="modal-title" trigger="open-modal-prix" #modale_prix handleBehavior="cycle">
     <ng-template>
-        <ion-header [translucent]="true" class="ion-no-border">
-            <ion-toolbar>
-                <ion-title>Choisir le genre</ion-title>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-            <div class="ion-margin-top">
-                <form action="" method="get">
-                    <div *ngFor="let item of priceList">
-                        <ion-item button (click)="selectedPrix(item); modale_prix.dismiss()" class="ion-no-border">
-                            <ion-label>{{item}}</ion-label>
-                        </ion-item>
-                    </div>
-                </form>
-            </div>
-        </ion-content>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modale_prix.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
+      <ion-header [translucent]="true" class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Choisir le prix</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="ion-margin-top">
+          <div *ngFor="let item of priceList">
+            <ion-item button (click)="selectedPrix(item); modale_prix.dismiss()" class="ion-no-border">
+              <ion-label>{{ item.price }}</ion-label>
+            </ion-item>
+          </div>
+        </div>
+      </ion-content>
+      <ion-footer>
+        <ion-toolbar>
+          <ion-buttons slot="end">
+            <ion-button (click)="modale_prix.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-footer>
     </ng-template>
-</ion-modal>
+  </ion-modal>

@@ -17,6 +17,7 @@ import { TopSongsService } from 'src/app/services/top-songs.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { DownloadService } from 'src/app/services/download.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
 
 export let musicTab = {
   musicIsPlay: false,
@@ -38,6 +39,8 @@ export class PlayPage implements OnInit, OnDestroy {
   intervalId: any;
   private songSubscription: Subscription | undefined;
   currentSong: any;
+  liked: boolean = false;
+  love: boolean = false;
 
   isUserLoggedIn: boolean = false;
   musictabOption = musicTab;
@@ -70,7 +73,8 @@ export class PlayPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
-    private PlaylistService: PlaylistService
+    private PlaylistService: PlaylistService,
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit() {
@@ -169,6 +173,8 @@ export class PlayPage implements OnInit, OnDestroy {
   // Activer/désactiver la répétition d'une seule chanson
   toggleRepeatOne() {
     this.isRepeatOneEnabled = !this.isRepeatOneEnabled;
+    console.log(234);
+
     this.musicPlayerService.toggleRepeatOne();
   }
 
@@ -178,7 +184,7 @@ export class PlayPage implements OnInit, OnDestroy {
   }
 
   download() {
-    this.downloadService.downloadAndStoreMusic(this.currentSong );
+    this.downloadService.downloadAndStoreMusic(this.currentSong);
   }
 
   // Revenir en arrière de 10 secondes
@@ -232,6 +238,17 @@ export class PlayPage implements OnInit, OnDestroy {
     musicTab.musicIsPlay = true;
     this.currentSong = song;
     console.log(this.currentSong);
+  }
+
+  cleanDescription(description: string): string {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = description;
+    const cleanText = tempDiv.textContent || tempDiv.innerText || '';
+
+    // Retourner les 50 premiers caractères
+    return cleanText.length > 50
+      ? cleanText.substring(0, 50) + '...'
+      : cleanText;
   }
 
   fetchTopSongs() {
@@ -376,4 +393,46 @@ export class PlayPage implements OnInit, OnDestroy {
     });
     await modal.present();
   }
+
+  likeSong(audioId: string) {
+    this.favoriteService.likeDislikeSong(audioId).subscribe({
+      next: (data) => {
+        this.liked = true;
+        console.log('Song liked:', data);
+      },
+      error: (err) => {
+        console.error('Error liking song:', err);
+      },
+    });
+  }
+
+  dislikeSong(audioId: string) {
+    this.favoriteService.dislikeTrack(audioId).subscribe({
+      next: (data) => {
+        console.log('Song disliked:', data);
+        this.liked = false;
+      },
+      error: (err) => {
+        console.error('Error disliking song:', err);
+      },
+    });
+  }
+
+  toggleFavorite(trackId: number) {
+    this.favoriteService.toggleFavorite(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.love = !this.love; // Toggle the liked status
+            console.log('Successfully toggled favorite:', response.mode);
+          } else {
+            console.error('Error toggling favorite:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling favorite:', err);
+        }
+      });
+  }
+ 
 }
