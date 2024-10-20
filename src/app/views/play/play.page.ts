@@ -492,7 +492,7 @@ export class PlayPage implements OnInit, OnDestroy {
     console.log(res);
     this.favoris = res.data.data;
     const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
-        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
+    return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
   });
   }
 }
