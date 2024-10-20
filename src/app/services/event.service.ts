@@ -25,6 +25,6 @@ export class EventService {
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString()); 
     return this.http.get<any>(this.baseUrl, { params });
-  }
+  } 
   
 }
