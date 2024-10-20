@@ -10,17 +10,16 @@
 <ion-content [fullscreen]="true">
   <div class="container">
     <div class="list_chansons">
-      <div class="ion-item" *ngFor="let song of downloadedMusic; let i = index">
-        <img src="assets/icon/gims.png" />
+
         <!-- <img [src]="getImageSrc(song.imageFile)" /> -->
         <div class="ion-item" *ngFor="let song of downloadedMusic">
-          <img src="assets/icon/gims.png" />
+          <img [src]="song.coverArtPath" />
           <div class="title">
-            <h3>{{song.imageFile}}</h3>
-            <p>admin | {{song.duration}}</p>
+            <h3>{{song.title}}</h3>
+            <p>{{song.duration}}</p>
           </div>
           <div class="block-btn">
-            <ion-button class="btn-play" (click)="loadsong(downloadedMusic, i)">
+            <ion-button class="btn-play">
               <ion-icon
                 color="primary"
                 slot="icon-only"
@@ -36,7 +35,7 @@
             </ion-button>
           </div>
         </div>
-      </div>
+
     </div>
   </div>
 </ion-content>
