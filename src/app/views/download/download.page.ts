@@ -47,7 +47,7 @@ export class DownloadPage implements OnInit {
     // Load downloaded songs from storage
     await this.downloadService.loadDownloadedSongs();
     this.downloadedMusic = this.downloadService.getDownloadedSongs();
-
+     console.log(this.downloadedMusic,'download')
     // Check if all songs are still available
     await this.downloadService.checkAllSongsAvailability();
   }
