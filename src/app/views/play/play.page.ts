@@ -76,7 +76,6 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService
   ) {}
-
   ngOnInit() {
     // this.platform.ready().then(() => {
     //   if (this.platform.is('cordova')) {
@@ -91,6 +90,7 @@ export class PlayPage implements OnInit, OnDestroy {
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
         this.currentSong = song;
+        this.favoriteService.favoriteSong(song.id);
         this.sourceArray = song.sourceArray;
         localStorage.setItem('currentSong', JSON.stringify(song));
       }
