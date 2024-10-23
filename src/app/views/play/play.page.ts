@@ -80,20 +80,11 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService,
     private modalController: ModalController,
-    private commentService:CommentService
+    private commentService: CommentService
   ) {}
   ngOnInit() {
-    // this.platform.ready().then(() => {
-    //   if (this.platform.is('cordova')) {
-    // this.initializeMusicControls();
-    // console.log(this.initializeMusicControls());
-
-    //   } else {
-    //     console.log('Cordova n\'est pas disponible');
-    //   }
-    // });
-
     this.songService.currentSong$.subscribe((song) => {
+      console.log('tegt', song);
       if (song) {
         this.currentSong = song;
         this.favoriteService.favoriteSong(song.id);
@@ -134,6 +125,9 @@ export class PlayPage implements OnInit, OnDestroy {
     const music = localStorage.getItem('music');
     if (music) {
       this.currentSong = JSON.parse(music);
+      console.log(this.currentSong);
+      console.log('tez');
+      this.isFavorite();
     }
 
     // this.songSubscription = this.songService.currentSong$.subscribe((song) => {
@@ -432,44 +426,26 @@ export class PlayPage implements OnInit, OnDestroy {
           console.log('Successfully toggled favorite:', response.mode);
         } else {
           console.error('Error toggling favorite:', response.error);
-    this.favoriteService.toggleFavorite(trackId)
-      .subscribe({
-        next: (response) => {
-          if (response.status === 200) {
-            this.love = !this.love; // Toggle the liked status
-            console.log('Successfully toggled favorite:', response.mode);
-            console.log('successs',response)
-          } else {
-            console.error('Error toggling favorite:', response.error);
-          }
-        },
-        error: (err) => {
-          console.error('Error toggling favorite:', err);
         }
-      },
-      error: (err) => {
-        console.error('Error toggling favorite:', err);
       },
     });
   }
   toggleComment(trackId: number) {
-    this.commentService.toggleComment(trackId)
-      .subscribe({
-        next: (response) => {
-          if (response.status === 200) {
-            console.log('Successfully toggled Comment:', response.mode);
-          } else {
-            console.error('Error toggling comment:', response.error);
-          }
-        },
-        error: (err) => {
-          console.error('Error toggling comment:', err);
+    this.commentService.toggleComment(trackId).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          console.log('Successfully toggled Comment:', response.mode);
+        } else {
+          console.error('Error toggling comment:', response.error);
         }
-      });
+      },
+      error: (err) => {
+        console.error('Error toggling comment:', err);
+      },
+    });
   }
- 
-  
-  async openCommentsModal(currentSong:any) {
+
+  async openCommentsModal(currentSong: any) {
     console.log('Chanson actuelle:', currentSong); // Vérifiez que les informations sont présentes
     const modal = await this.modalController.create({
       component: CommentsModalPage,
@@ -494,15 +470,19 @@ export class PlayPage implements OnInit, OnDestroy {
 
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
-    
-  isFavorite(url: string){
-  this.favoriteService
-  .getFavorites(this.userId, this.accessToken)
-  .subscribe((res) => {
-    console.log(res);
-    this.favoris = res.data.data;
-    const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
-        return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
-  });
+
+  isFavorite() {
+    this.favoriteService
+      .getFavorites(this.userId, this.accessToken)
+      .subscribe((res) => {
+        this.favoris = res.data.data;
+        console.log(this.favoris);
+        console.log('ba', this.currentSong);
+
+        const isFavorite = this.favoris.find(
+          (favorite) => favorite.id === this.currentSong.id
+        );
+        this.love = isFavorite;
+      });
   }
 }
