@@ -84,6 +84,7 @@ export class PlayPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isFavorite;
     // this.platform.ready().then(() => {
     //   if (this.platform.is('cordova')) {
     // this.initializeMusicControls();
@@ -486,13 +487,11 @@ export class PlayPage implements OnInit, OnDestroy {
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
     
   isFavorite(url: string){
-  this.favoriteService
-  .getFavorites(this.userId, this.accessToken)
-  .subscribe((res) => {
+  this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
     console.log(res);
     this.favoris = res.data.data;
     const isFavorite = this.favoris.some(favorite => favorite.url === this.currentSong.url);
         return isFavorite ? 'oui' : 'non'; // Retourner 'oui' ou 'non'
-  });
+    });
   }
 }
