@@ -29,15 +29,15 @@
         <!-- <h4>Aucune chanson achetée trouvée</h4> -->
 
         <ion-list>
-            <div *ngFor="let item of article">
-                <ion-card button (click)="selectArticle(item)">
+            <div *ngFor="let item of purchases">
+                <ion-card button>
                     <div class="badge"><ion-badge color="danger" mode="ios">Evénement</ion-badge></div>
-                    <img [src]="item.thumbnail" style="width: 100%;" />
+                    <img [src]="item.event.image" style="width: 100%;" />
                     <div class="footer">
                         <div class="info">
-                            <p>Nom</p>
+                            <p>{{item.title}}</p>
                         </div>
-                        <p>Prix: $5.000 - Date: 2024-09-25 21:52:07</p>
+                        <p>Prix: ${{item.final_price}} - Date: {{item.timestamp}}</p>
                     </div>
                 </ion-card>
                 <ng-template #ionSkeletonArticle>
