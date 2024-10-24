@@ -9,9 +9,9 @@
 
 <ion-content [fullscreen]="true">
     <div class="container">
-        <div class="list_chansons">
+        <!-- <div class="list_chansons">
             <div class="ion-item" *ngFor="let song of purchases">
-                <img [src]="song.event.image" />
+                <img [src]="song.event.image" />erhgte
                 <div class="title">
                     <h3>{{song.title}}</h3>
                     <p>Prix: ${{song.price}} | Date: {{song.timestamp}}</p>
@@ -25,7 +25,37 @@
                     </ion-button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- <h4>Aucune chanson achetée trouvée</h4> -->
+
+        <ion-list>
+            <div *ngFor="let item of article">
+                <ion-card button (click)="selectArticle(item)">
+                    <div class="badge"><ion-badge color="danger" mode="ios">Evénement</ion-badge></div>
+                    <img [src]="item.thumbnail" style="width: 100%;" />
+                    <div class="footer">
+                        <div class="info">
+                            <p>Nom</p>
+                        </div>
+                        <p>Prix: $5.000 - Date: 2024-09-25 21:52:07</p>
+                    </div>
+                </ion-card>
+                <ng-template #ionSkeletonArticle>
+                    <ion-card *ngFor="let article of [1,1,1,1]">
+                        <ion-thumbnail>
+                            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                        </ion-thumbnail>
+                        <div class="footer">
+                            <div class="info d-f-s">
+                                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                            </div>
+                            <p class="song-description"><ion-skeleton-text animated
+                                    style="width: 100%"></ion-skeleton-text></p>
+                        </div>
+                    </ion-card>
+                </ng-template>
+            </div>
+        </ion-list>
     </div>
 </ion-content>

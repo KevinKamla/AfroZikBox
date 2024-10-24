@@ -54,7 +54,7 @@
                 <div class="list_chansons">
                     <div *ngIf="chansons.length > 0; else ionSkeletonSon">
                         <div class="ion-item d-f-s" *ngFor="let play of chansons; let i = index">
-                            <img class="" [src]="play.thumbnail" >
+                            <img class="" [src]="play.thumbnail">
                             <div class="title">
                                 <h3>{{play.title}}</h3>
                             </div>
@@ -82,7 +82,8 @@
                             <div class="bg-album" (click)="selectAlbum(album)">
                                 <img class="background-image" [src]="album.thumbnail" />
                                 <div class="orange-disc"></div>
-                                <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
+                                <ion-icon class="play-icon" color="primary" slot="icon-only"
+                                    name="play-circle"></ion-icon>
                             </div>
                             <div class="details">
                                 <div class="title">
@@ -138,7 +139,7 @@
                                 <h3>{{play.title}}</h3>
                             </div>
                             <div class="block-btn">
-                                <ion-button class="btn-play" (click)="loadsong(favoris, i)"> 
+                                <ion-button class="btn-play" (click)="loadsong(favoris, i)">
                                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                                 </ion-button>
                                 <ion-button (click)="openOptionSound()">
@@ -163,15 +164,19 @@
             </ng-template>
 
             <ng-template ngSwitchCase="evénements">
-                <div *ngIf="events.length > 0; else ionplaylist">
-                    <div class="img-detail d-f-s" *ngFor="let event of events">
-                        <div class="d-f-c" (click)="selectEvent(event)">
-                            <img [src]="event.image">
-                            <div class="title">
-                                <h3>{{event.name}}</h3>
-                                <p>{{event.joined_count}} Chansons</p>
+                <div *ngIf="1 > 0; else ionplaylist" class="envénement">
+                    <div *ngFor="let item of [0,1,5,0,2]">
+                        <ion-card button (click)="selectArticle(item)">
+                            <div class="badge"><ion-badge color="danger" mode="ios">Evénement</ion-badge></div>
+                            <img [src]="['assets/icon/son.png']" style="width: 100%;" />
+                            <div class="footer">
+                                <div class="info">
+                                    <p>Leonel Fleur Froid</p>
+                                </div>
+                                <p>Tayc concert</p>
+                                <p> <ion-icon slot="start" name="calendar"></ion-icon> 2024-09-25</p>
                             </div>
-                        </div>
+                        </ion-card>
                     </div>
                 </div>
                 <ng-template #ionplaylist>

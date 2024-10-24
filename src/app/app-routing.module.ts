@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { AlbumdetailPageModule } from './views/Albums/albumdetail/albumdetail.module';
 import { AuthGuard } from './Gards/AuthGards';
 
 const routes: Routes = [
@@ -462,9 +463,14 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'achatdetail',
+    loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
+  },
+  {
     path: 'comments-modal',
     loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
   },
+
 ];
 @NgModule({
   imports: [

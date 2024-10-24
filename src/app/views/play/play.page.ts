@@ -185,7 +185,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
   download() {
     this.downloadService.downloadSongFromObject(this.currentSong);
-  }
+  }
 
   // Revenir en arrière de 10 secondes
   rewind() {
@@ -429,7 +429,23 @@ export class PlayPage implements OnInit, OnDestroy {
         }
       },
     });
+    this.favoriteService.toggleFavorite(trackId)
+      .subscribe({
+        next: (response) => {
+          if (response.status === 200) {
+            this.love = !this.love; // Toggle the liked status
+            console.log('Successfully toggled favorite:', response.mode);
+            console.log('successs',response)
+          } else {
+            console.error('Error toggling favorite:', response.error);
+          }
+        },
+        error: (err) => {
+          console.error('Error toggling favorite:', err);
+        }
+      });
   }
+
   toggleComment(trackId: number) {
     this.commentService.toggleComment(trackId).subscribe({
       next: (response) => {
