@@ -64,7 +64,7 @@ export class TendancePage implements OnInit {
   }
 
   selectAlbum(publicPlaylist: any) {
-    localStorage.setItem('playlist', JSON.stringify(publicPlaylist));
+
     this.router.navigate(['playlistdetail', publicPlaylist.id]);
   }
 }
