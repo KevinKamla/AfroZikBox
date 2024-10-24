@@ -21,7 +21,7 @@ import { PlaylistService } from'src/app/services/playlist.service';
 })
 export class TabsPage implements OnInit, OnDestroy {
   canAccessPrivateTab!: boolean;
-  // isUserLoggedIn: boolean = false;
+  isUserLogged: boolean = false;
   musictabOption = musicTab;
   currentSong: any;
   topSongs: any[] = [];
@@ -84,21 +84,21 @@ export class TabsPage implements OnInit, OnDestroy {
 
     await alert.present();
   }
-  async goToProfile() {
-    await this.verifierConnexion('profile');
-  }
+  // async goToProfile() {
+  //   await this.verifierConnexion('profile');
+  // }
 
-  async goToZikbox() {
-    await this.verifierConnexion('zikbox');
-  }
+  // async goToZikbox() {
+  //   await this.verifierConnexion('zikbox');
+  // }
 
-  async goToZikstore() {
-    await this.verifierConnexion('zikstore');
-  }
+  // async goToZikstore() {
+  //   await this.verifierConnexion('zikstore');
+  // }
 
-  async goToFavourites() {
-    await this.verifierConnexion('favoris');
-  }
+  // async goToFavourites() {
+  //   await this.verifierConnexion('favoris');
+  // }
 
   ngOnInit() {
     // je recuperer l'index du song en cours
@@ -109,7 +109,6 @@ export class TabsPage implements OnInit, OnDestroy {
 
 
     this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      console.log(res);
       this.favoris = res.data.data;
     });
     this.topAlbumsService.getTopAlbums().subscribe(

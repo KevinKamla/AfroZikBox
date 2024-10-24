@@ -469,7 +469,11 @@ const routes: Routes = [
   {
     path: 'comments-modal',
     loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
+  },  {
+    path: 'albummodal',
+    loadChildren: () => import('./components/albummodal/albummodal.module').then( m => m.AlbummodalPageModule)
   },
+
 
 ];
 @NgModule({

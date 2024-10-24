@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
 import { MenuactionhomePage } from '../components/menuactionhome/menuactionhome.page';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -12,12 +13,14 @@ import { MenuactionhomePage } from '../components/menuactionhome/menuactionhome.
 export class HomePage implements OnInit {
 
   selectedSegment = 'suggestions';
+  isUserLogged: boolean = false;
   constructor(
     public route: Router,
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private activeroute: ActivatedRoute,
     private navCtlr: NavController,
+    private authService: AuthService,
 
   ) { }
 
@@ -77,6 +80,7 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
+    this.isUserLogged = this.authService.isUserLoggedIn();
     // this.route.paramMap.subscribe((params:any) => {
     //   this.selectedSegment = params.get('segment') || 'defaultSegment';
     // });

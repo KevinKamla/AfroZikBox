@@ -112,6 +112,8 @@ export class PlaylistdetailPage implements OnInit {
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.plays = JSON.parse(storedAlbum);
+      console.log(this.plays);
+      
       this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
       if (this.selectedPlaylist) {
           console.log('Playlist sélectionnée:', this.selectedPlaylist);
