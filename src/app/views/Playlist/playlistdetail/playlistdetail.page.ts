@@ -105,7 +105,7 @@ export class PlaylistdetailPage implements OnInit {
     
     // const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
 
-    const storedAlbum = localStorage.getItem('playlist');
+    const storedAlbum = localStorage.getItem('publicPlaylist');
     const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
     
     console.log(storedAlbum,'loacal storage playlist')

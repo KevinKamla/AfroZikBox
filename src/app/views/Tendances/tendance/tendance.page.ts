@@ -42,6 +42,7 @@ export class TendancePage implements OnInit {
         console.log(response);
         this.publicPlaylist = response.success.playlists;
         console.log(this.publicPlaylist);
+        localStorage.setItem('publicPlaylist', JSON.stringify(this.publicPlaylist));
       },
       error: (error) => {
         console.error(error);
