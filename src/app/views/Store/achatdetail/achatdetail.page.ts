@@ -51,7 +51,7 @@ export class AchatdetailPage implements OnInit {
       // Convertir la chaîne JSON en un objet
       this.achats = JSON.parse(storedAlbum);
       console.log(this.achats, 'achatttt');
-      this.cover =this.achats.image;
+      this.cover =this.achats.event.image;
       this.url = this.achats.url;
     } else {
       console.log('Aucun album n\'est stocké dans le localStorage');

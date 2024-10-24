@@ -30,7 +30,7 @@
 
         <ion-list>
             <div *ngFor="let item of purchases">
-                <ion-card button>
+                <ion-card button (click)="selectArticle(item)">
                     <div class="badge"><ion-badge color="danger" mode="ios">Evénement</ion-badge></div>
                     <img [src]="item.event.image" style="width: 100%;" />
                     <div class="footer">

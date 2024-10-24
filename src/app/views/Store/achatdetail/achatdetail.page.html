@@ -4,7 +4,7 @@
       <ion-buttons slot="start" style="color:white">
         <ion-button (click)="goToRoute()">
           <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
-          <h3>{{achats.name}}</h3>
+          <h3>{{achats.title}}</h3>
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="start" style="color:white">
@@ -17,11 +17,11 @@
   <div class="bloc-info">
     <div class="img-detail d-f">
       <ion-avatar>
-        <img [src]="achats.user_data.avatar" />
+        <img [src]="achats.event.user_data.cover" />
       </ion-avatar>
       <div class="title">
-        <h3>{{achats.name}}</h3>
-        <p>{{achats.user_data.username}}</p>
+        <h3>{{achats.title}}</h3>
+        <p>{{achats.event.user_data.username}}</p>
       </div>
     </div>
 
@@ -36,17 +36,17 @@
 
     <div class="item d-f">
       <ion-icon slot="start" name="ticket"></ion-icon>
-      <p style="color: purple;">{{achats.available_tickets}} Tickets disponibles</p>
+      <p style="color: purple;">{{achats.event.available_tickets}} Tickets disponibles</p>
     </div>
     <div class="item d-f">
       <ion-icon slot="start" name="location"></ion-icon>
-      <p style="color: orange;"></p>
+      <p style="color: orange;">{{achats.event.url}}</p>
     </div>
     <div class="item d-f">
       <ion-icon slot="start" name="calendar"></ion-icon>
-      <p >{{achats.end_date}} {{achats.end_time}}</p>
+      <p >{{achats.event.end_date}} {{achats.event.end_time}}</p>
     </div>
-    <p style="color:gray">{{achats.desc}}</p>
+    <p style="color:gray">{{achats.event.desc}}</p>
   </div>
 </ion-content>
 
