@@ -1,31 +1,41 @@
-<div class="container-scroll story" *ngIf="isUserLoggedIn">
-    <div class="scroll-box">
-        <div class="movie" [routerLink]="['/addstory']">
-            <div class="bg-img"
-                [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc),  url(' + avatar + ')'}" (click)="handleStoryClick()">
-                <ion-avatar><img [src]="[avatar]" style="height: auto; width: 100%;" /></ion-avatar>
-                <p>Créer une story</p>
-            </div>
-        </div>
-        <ng-container *ngFor="let item of [true,false]">
-            <div class="movie" (click)="item? openActut() : openPopup()">
-                <div class="bg-img"
-                    [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc ),url(assets/icon/gims.png)'}" (click)="handleStoryClick()">
-                    <ion-avatar><img [src]="[avatar]" style="height: auto;width: 100%;" /></ion-avatar>
-                    <p>Kvnkamla</p>
-                </div>
-            </div>
-        </ng-container>
+<div class="container-scroll story" *ngIf="!isUserLoggedIn" >
+  <div class="scroll-box">
+    <div class="movie" [routerLink]="['/addstory']">
+      <div
+        class="bg-img"
+        [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc),  url(' + avatar + ')'}"
+        (click)="handleStoryClick()"
+      >
+        <ion-avatar
+          ><img [src]="[avatar]" style="height: auto; width: 100%"
+        /></ion-avatar>
+        <p>Créer une story</p>
+      </div>
     </div>
+    <ng-container *ngFor="let item of [true,false]">
+      <div class="movie" (click)="item? openActut() : openPopup()">
+        <div
+          class="bg-img"
+          [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc ),url(assets/icon/gims.png)'}"
+          (click)="handleStoryClick()"
+        >
+          <ion-avatar
+            ><img [src]="[avatar]" style="height: auto; width: 100%"
+          /></ion-avatar>
+          <p>Kvnkamla</p>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>
 <div class="best">
-    <div class="box-title">
-        <h3>Meilleures chansons</h3>
-        <p (click)="goToSegment('bestSongs')">Voir plus</p>
-    </div>
+  <div class="box-title">
+    <h3>Meilleures chansons</h3>
+    <p (click)="goToSegment('bestSongs')">Voir plus</p>
+  </div>
 
-    <div class="container-scroll">
-        <!-- <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
+  <div class="container-scroll">
+    <!-- <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
             <div class="movie" *ngFor="let topSong of topSongs; let i = index">
                 <img class="img-intro" [src]="topSong.thumbnail" (click)="playMusicFromTopList(topSong, i)">
                 <p>
@@ -33,172 +43,226 @@
                 </p>
             </div>
         </div> -->
-        <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
-            <div class="movie" *ngFor="let topSong of topSongs; let i = index">
-                <img class="img-intro" [src]="topSong.thumbnail" (click)="loadsong(topSongs, i)">
-                <p>
-                    <ion-label>{{topSong.title}}</ion-label>
-                </p>
-            </div>
-        </div>
+    <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
+      <div class="movie" *ngFor="let topSong of topSongs; let i = index">
+        <img
+          class="img-intro"
+          [src]="topSong.thumbnail"
+          (click)="loadsong(topSongs, i)"
+        />
+        <p>
+          <ion-label>{{topSong.title}}</ion-label>
+        </p>
+      </div>
     </div>
-    <ng-template #ionSkeletonBest>
-        <div class="container-scroll">
-            <div class="scroll-box">
-                <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-                    <ion-thumbnail slot="start">
-                        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-                    </ion-thumbnail>
-                    <p>
-                        <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
-                    </p>
-                </div>
-            </div>
+  </div>
+  <ng-template #ionSkeletonBest>
+    <div class="container-scroll">
+      <div class="scroll-box">
+        <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100px"
+            ></ion-skeleton-text>
+          </p>
         </div>
-    </ng-template>
+      </div>
+    </div>
+  </ng-template>
 </div>
 
 <div class="Genre">
-    <div class="box-title">
-        <h3>Genres</h3>
-    </div>
+  <div class="box-title">
+    <h3>Genres</h3>
+  </div>
 
-    <div class="container-scroll">
-        <div class="scroll-box" *ngIf="genres.length > 0; else ionSkeletonGenre">
-            <div class="movie" *ngFor="let genre of genres">
-                <img class="img-intro" [src]="genre.background_thumb" [routerLink]="['/musicbygenre',genre.id]">
-                <p>{{genre.cateogry_name}}</p>
-            </div>
+  <div class="container-scroll">
+    <div class="scroll-box" *ngIf="genres.length > 0; else ionSkeletonGenre">
+      <div class="movie" *ngFor="let genre of genres">
+        <div class="cd-container">
+          <img
+            class="cd-image"
+            [src]="genre.background_thumb"
+            [routerLink]="['/musicbygenre', genre.id]"
+          />
+          <div class="cd-transparent-circle"></div>
+          <!-- Cercle transparent -->
+          <div class="cd-hole"></div>
+          <!-- Creux -->
         </div>
+        <p>{{ genre.cateogry_name }}</p>
+      </div>
     </div>
 
     <ng-template #ionSkeletonGenre>
-        <div class="container-scroll">
-            <div class="scroll-box">
-                <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-                    <ion-thumbnail slot="start">
-                        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-                    </ion-thumbnail>
-                    <p>
-                        <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
-                    </p>
-                </div>
-            </div>
+      <div class="container-scroll">
+        <div class="scroll-box">
+          <div class="cd-container" *ngFor="let item of [1,2,3,4,5,6,7]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <div class="cd-transparent-circle"></div>
+            <!-- Cercle transparent -->
+            <div class="cd-hole"></div>
+            <!-- Creux -->
+            <p>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 100px"
+              ></ion-skeleton-text>
+            </p>
+          </div>
         </div>
+      </div>
     </ng-template>
-</div>
+  </div>
 
-<div class="recente">
-    <div class="box-title"> 
-
-        <h3>Chansons récentes</h3>
-        <p (click)="goToSegment('recently')">Voir plus</p>
+  <div class="recente">
+    <div class="box-title">
+      <h3>Chansons récentes</h3>
+      <p (click)="goToSegment('recently')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
-        <!-- <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
+      <!-- <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
             <div class="movie" *ngFor="let latest of latest; let i = index">
                 <img class="img-intro" [src]="latest.thumbnail" (click)="playMusicFromLatestList(latest, i)">
                 <p class="song-description">{{latest.title}}</p>
             </div>
         </div> -->
-        <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
-            <div class="movie" *ngFor="let l of latest; let i = index">
-                <img class="img-intro" [src]="l.thumbnail" (click)="loadsong(latest, i)">
-                <p class="song-description">{{l.title}}</p>
-            </div>
+      <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
+        <div class="movie" *ngFor="let l of latest; let i = index">
+          <img
+            class="img-intro"
+            [src]="l.thumbnail"
+            (click)="loadsong(latest, i)"
+          />
+          <p class="song-description">{{ truncateTitle(l.title, 15) }}</p>
         </div>
+      </div>
     </div>
     <ng-template #ionSkeletonRecent>
-        <div class="container-scroll">
-            <div class="scroll-box">
-                <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-                    <ion-thumbnail slot="start">
-                        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-                    </ion-thumbnail>
-                    <p>
-                        <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
-                    </p>
-                </div>
-            </div>
+      <div class="container-scroll">
+        <div class="scroll-box">
+          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <p>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 100px"
+              ></ion-skeleton-text>
+            </p>
+          </div>
         </div>
+      </div>
     </ng-template>
-</div>
+  </div>
 
-
-<div class="album">
+  <div class="album">
     <div class="box-title">
-        <h3>Meilleurs albums</h3>
-        <p (click)="goToSegment('album')">Voir plus</p>
+      <h3>Meilleurs albums</h3>
+      <p (click)="goToSegment('album')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
-        <div class="scroll-box" *ngIf="topalbums.length > 0; else ionSkeletonAlbum">
-            <div class="movie" *ngFor="let album of topalbums" (click)="selectAlbum(album)">
-                <img class="img-intro" [src]="album.thumbnail">
-                <div class="song-description">{{album.title}}</div>
-                <ion-label>{{album.publisher.username}}</ion-label>
-                <div class="number_price">
-                    <div class="number_sons">{{album.count_songs}} Chansons</div>
-                    <ion-badge color="danger">$ {{album.price}}</ion-badge>
-                </div>
-            </div>
+      <div
+        class="scroll-box"
+        *ngIf="topalbums.length > 0; else ionSkeletonAlbum"
+      >
+        <div
+          class="movie"
+          *ngFor="let album of topalbums"
+          (click)="selectAlbum(album)"
+        >
+          <img class="img-intro" [src]="album.thumbnail" />
+          <div class="song-description">{{album.title}}</div>
+          <ion-label>{{album.publisher.username}}</ion-label>
+          <div class="number_price">
+            <div class="number_sons">{{album.count_songs}} Chansons</div>
+            <ion-badge color="danger">$ {{album.price}}</ion-badge>
+          </div>
         </div>
+      </div>
 
-        <ng-template #ionSkeletonAlbum>
-            <div class="container-scroll">
-                <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-                        <ion-thumbnail slot="start">
-                            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-                        </ion-thumbnail>
-                        <p>
-                            <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
-                        </p>
-                    </div>
-                </div>
+      <ng-template #ionSkeletonAlbum>
+        <div class="container-scroll">
+          <div class="scroll-box">
+            <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+              <ion-thumbnail slot="start">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-thumbnail>
+              <p>
+                <ion-skeleton-text
+                  [animated]="true"
+                  style="width: 100px"
+                ></ion-skeleton-text>
+              </p>
             </div>
-        </ng-template>
+          </div>
+        </div>
+      </ng-template>
     </div>
-</div>
+  </div>
 
-
-
-<div class="artiste">
+  <div class="artiste">
     <div class="box-title">
-
-        <h3>Artistes</h3>
-        <p (click)="goToSegment('artist')">Voir plus</p>
+      <h3>Artistes</h3>
+      <p (click)="goToSegment('artist')">Voir plus</p>
     </div>
 
     <div class="container-scroll">
-        <div class="scroll-box" *ngIf="artists.length > 0; else ionSkeletonArtiste">
-            <div class="movie" *ngFor="let artist of artists">
-                <img class="img-intro" [src]="artist.avatar" (click)="artistDetail(artist)">
-                <p>{{ artist.name }}</p>
-            </div>
+      <div
+        class="scroll-box"
+        *ngIf="artists.length > 0; else ionSkeletonArtiste"
+      >
+        <div class="movie" *ngFor="let artist of artists">
+          <img
+            class="img-intro"
+            [src]="artist.avatar"
+            (click)="artistDetail(artist)"
+          />
+          <p>{{ artist.name }}</p>
         </div>
+      </div>
     </div>
 
     <ng-template #ionSkeletonArtiste>
-        <div class="container-scroll">
-            <div class="scroll-box">
-                <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-                    <ion-thumbnail slot="start">
-                        <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-                    </ion-thumbnail>
-                    <p>
-                        <ion-skeleton-text [animated]="true" style="width: 100px"></ion-skeleton-text>
-                    </p>
-                </div>
-            </div>
+      <div class="container-scroll">
+        <div class="scroll-box">
+          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <p>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 100px"
+              ></ion-skeleton-text>
+            </p>
+          </div>
         </div>
+      </div>
     </ng-template>
-</div>
+  </div>
 
-<ion-alert [isOpen]="isOpenmodalAchat" header="Achat requits"
-    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter" [buttons]="[{ text: 'Fermer', role: 'cancel',}]"
-    [backdropDismiss]="false"></ion-alert>
-<ion-alert [isOpen]="walletIsOpen" header="Wallet"
+  <ion-alert
+    [isOpen]="isOpenmodalAchat"
+    header="Achat requits"
+    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter"
+    [buttons]="[{ text: 'Fermer', role: 'cancel',}]"
+    [backdropDismiss]="false"
+  ></ion-alert>
+  <ion-alert
+    [isOpen]="walletIsOpen"
+    header="Wallet"
     subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie"
-    [buttons]="walletButtons" [backdropDismiss]="false"></ion-alert>
+    [buttons]="walletButtons"
+    [backdropDismiss]="false"
+  ></ion-alert>
+</div>

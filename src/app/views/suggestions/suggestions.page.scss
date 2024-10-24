@@ -1,120 +1,172 @@
 .box-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 10px 5px 5px 5px;
-    h3 {
-        font-weight: 600;
-        font-size: 16px;
-    }
-    p {
-        font-weight: 600;
-        font-size: 16px;
-        color: var(--ion-color-primary);
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 5px 5px 5px;
+  h3 {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  p {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ion-color-primary);
+  }
 }
 
 .scroll-box {
-    display: flex;
-    overflow: scroll;
-    gap: 7px
+  display: flex;
+  overflow: scroll;
+  gap: 7px;
 }
 
 .movie {
-    margin-right: 5px;
-    p {
-        font-weight: 600;
-        font-size: 16px;
+  margin-right: 5px;
+  p {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  ion-label {
+    margin-block: 5px;
+  }
+  .number_price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .number_sons {
+      padding: 5px;
+      background-color: grey;
+      border-radius: 15px;
+      color: white;
+      font-size: 13px;
+      text-wrap: nowrap;
+      overflow: hidden;
+      word-wrap: break-word;
+      text-overflow: ellipsis;
     }
-    ion-label {
-        margin-block: 5px;
-    }
-    .number_price {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .number_sons {
-            padding: 5px;
-            background-color: grey;
-            border-radius: 15px;
-            color: white;
-            font-size: 13px;
-            text-wrap: nowrap;
-            overflow: hidden;
-            word-wrap: break-word;
-            text-overflow: ellipsis;
-        }
-    }
-    .bg-img {
-        position: relative;
-        height: 100%;
-        width: 120px;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        border-radius: 15px;
-        height: 154px;
-        text-align: center;
-        ion-avatar {
-            position: absolute;
-            bottom: 0;
-            transform: translate(125%, 0);
-            width: 35px;
-        }
-        p {
-            font-size: 12px;
-            color: white;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-        }
-    }
-}
-
-.bg-img {
+  }
+  .bg-img {
+    position: relative;
+    height: 100%;
+    width: 120px;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     border-radius: 15px;
     height: 154px;
-    width: 110px;
     text-align: center;
+    ion-avatar {
+      position: absolute;
+      bottom: 0;
+      transform: translate(125%, 0);
+      width: 35px;
+    }
+    p {
+      font-size: 12px;
+      color: white;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+}
+
+.bg-img {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 15px;
+  height: 154px;
+  width: 110px;
+  text-align: center;
 }
 
 .movie img {
-    height: 130px;
-    max-width: none;
-    border-radius: 30px
+  height: 130px;
+  max-width: none;
+  border-radius: 30px;
 }
 
-.scroll-box ion-skeleton-text {    
-    background-color: #ffffff14;
+.scroll-box ion-skeleton-text {
+  background-color: #ffffff14;
 }
-.scroll-box ion-thumbnail{    
-    height: 150px;
-    width: 120px;
-    border-radius: 20px;
+.scroll-box ion-thumbnail {
+  height: 150px;
+  width: 120px;
+  border-radius: 20px;
 }
 
 .movieCharge {
-    height: 100%;
-    min-width: 100px;
-    margin-left: 5px;
+  height: 100%;
+  min-width: 100px;
+  margin-left: 5px;
 }
 
 .best {
-    .movie {
-        ion-label {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 130px;
-            display: block;
-        }
+  .movie {
+    ion-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 130px;
+      display: block;
     }
+  }
 }
 .song-description {
-    white-space: nowrap;        
-    overflow: hidden;          
-    text-overflow: ellipsis;   
-  }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.container-scroll {
+  overflow-x: auto;
+}
+
+.scroll-box {
+  display: flex;
+  gap: 20px; /* Espacement entre les éléments */
+}
+
+.movie {
+  text-align: center; /* Centrer le texte sous le CD */
+}
+
+.cd-container {
+  position: relative;
+  width: 100px; /* Ajustez la taille selon vos besoins */
+  height: 100px; /* Ajustez la taille selon vos besoins */
+  border-radius: 50%; /* Créer un cercle */
+  overflow: hidden; /* Cacher le débordement pour le creux */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre pour effet 3D */
+}
+
+.cd-image {
+  width: 100%;
+  height: auto;
+  border-radius: 50%; /* Assurer que l'image est ronde */
+}
+
+.cd-transparent-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px; /* Ajustez la taille du cercle transparent selon vos besoins */
+  height: 30px; /* Ajustez la taille du cercle transparent selon vos besoins */
+  background-color: rgba(255, 255, 255, 0.5); /* Couleur blanche transparente */
+  border-radius: 50%; /* Créer un cercle */
+  transform: translate(-50%, -50%); /* Centrer le cercle transparent */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Ombre pour le cercle transparent */
+}
+
+.cd-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px; /* Ajustez la taille du creux selon vos besoins */
+  height: 20px; /* Ajustez la taille du creux selon vos besoins */
+  background-color: white; /* Couleur de fond du creux */
+  border-radius: 50%; /* Créer un cercle pour le creux */
+  transform: translate(-50%, -50%); /* Centrer le creux */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Ombre pour le creux */
+}

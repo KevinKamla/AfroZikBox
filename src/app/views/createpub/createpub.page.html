@@ -1,147 +1,244 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>Créer une annonce</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Créer une annonce</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <div class="input">
-        <ion-item id="open-modal-type" button="true" class="ion-no-border">
-            <div class="canView d-f-s">
-                <div class="contentBlock">{{valueAnnoceType}}</div>
-            </div>
-        </ion-item>
+  <div class="input">
+    <ion-item id="open-modal-type" button="true" class="ion-no-border">
+      <div class="canView d-f-s">
+        <div class="contentBlock">{{valueAnnoceTypes}}</div>
+      </div>
+    </ion-item>
+  </div>
+  <ion-card button (click)="camera()" class="ion-no-box-shadow">
+    <ion-card-content class="image">
+      <img *ngIf="isGetImg" src="{{imgPath}}" />
+      <div class="content" *ngIf="!isGetImg">
+        <ion-icon slot="start" name="add"></ion-icon>
+        <h5>Choisir un fichier</h5>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <div class="input">
+    <div class="canView d-f-s">
+      <ion-input
+        type="text"
+        [(ngModel)]="adData.name"
+        placeholder="Nom"
+        class="content"
+      ></ion-input>
     </div>
-    <ion-card button (click)="camera()" class="ion-no-box-shadow">
-        <ion-card-content class="image">
-            <img *ngIf="isGetImg" src="{{imgPath}}">
-            <div class="content" *ngIf="!isGetImg">
-                <ion-icon slot="start" name="add"></ion-icon>
-                <h5>Choisir un fichier</h5>
-            </div>
-        </ion-card-content>
-    </ion-card>
-    <div class="input">
-        <div class="canView d-f-s">
-            <ion-input type="text" placeholder="Nom" class="content"></ion-input>
-        </div>
-        <div class="canView d-f-s">
-            <ion-input type="text" placeholder="Titre" class="content"></ion-input>
-        </div>
-        <div class="canView d-f-s">
-            <ion-input type="text" placeholder="URL" class="content"></ion-input>
-        </div>
-        <div class=" canView d-f">
-            <ion-textarea placeholder="Description" class="content"></ion-textarea>
-        </div>
-        <ion-item id="open-modal-public-cible" button="true" class="ion-no-border">
-            <div class="canView d-f-s">
-                <div class="contentBlock">{{valuePubliCible}}</div>
-            </div>
-        </ion-item>
-        <ion-item id="open-modal-placement" button="true" class="ion-no-border">
-            <div class="canView d-f-s">
-                <div class="contentBlock">{{valuePlacement}}</div>
-            </div>
-        </ion-item>
-        <ion-item id="open-modal-tarifs" button="true" class="ion-no-border">
-            <div class="canView d-f-s">
-                <div class="contentBlock">{{valueTarifs}}</div>
-            </div>
-        </ion-item>
-        <div class="canView d-f-s">
-            <ion-input type="text" placeholder="Limite de dépense par jour" class="content"></ion-input>
-        </div>
+    <div class="canView d-f-s">
+      <ion-input
+        type="text"
+        [(ngModel)]="adData.title"
+        placeholder="Titre"
+        class="content"
+      ></ion-input>
+    </div>
+    <div class="canView d-f-s">
+      <ion-input
+        type="text"
+        [(ngModel)]="adData.url"
+        placeholder="URL"
+        class="content"
+      ></ion-input>
+    </div>
+    <div class="canView d-f">
+      <ion-textarea
+        [(ngModel)]="adData.description"
+        placeholder="Description"
+        class="content"
+      ></ion-textarea>
+    </div>
+    <ion-item id="open-modal-public-cible" button="true" class="ion-no-border">
+      <div class="canView d-f-s">
+        <div class="contentBlock">{{valuePubliCible}}</div>
+      </div>
+    </ion-item>
+    <ion-item id="open-modal-placement" button="true" class="ion-no-border">
+      <div class="canView d-f-s">
+        <div class="contentBlock">{{valuePlacements}}</div>
+      </div>
+    </ion-item>
+    <ion-item id="open-modal-tarifs" button="true" class="ion-no-border">
+      <div class="canView d-f-s">
+        <div class="contentBlock">{{valueTarif}}</div>
+      </div>
+    </ion-item>
+    <div class="canView d-f-s">
+      <ion-input
+        type="text"
+        [(ngModel)]="adData.dailyLimit"
+        placeholder="Limite de dépense par jour"
+        class="content"
+      ></ion-input>
+    </div>
 
-        <ion-button expand="block" shape="round" class="ion-margin">
-            Créer
-        </ion-button>
-    </div>
+    <ion-button
+      expand="block"
+      shape="round"
+      (click)="submitForm()"
+      class="ion-margin"
+    >
+      Créer
+    </ion-button>
+  </div>
 </ion-content>
 
 <ion-modal id="modal-type-id" #modal_type_id trigger="open-modal-type">
-    <ng-template>
-        <h3>Type d'annonce</h3>
-        <ion-list class="ion-padding">
-            <ion-item button (click)="selectedAnnoceType('Bannières publicitaires')" class="ion-no-border">
-                <ion-label>Bannières publicitaires</ion-label>
-            </ion-item>
-            <ion-item button (click)="selectedAnnoceType('Publicité audio')" class="ion-no-border">
-                <ion-label>Publicité audio </ion-label>
-            </ion-item>
-        </ion-list>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modal_type_id.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
-    </ng-template>
+  <ng-template>
+    <h3>Type d'annonce</h3>
+    <ion-list class="ion-padding">
+      <ion-item
+        button
+        (click)="selectedAnnoceType('Bannières publicitaires')"
+        class="ion-no-border"
+      >
+        <ion-label>Bannières publicitaires</ion-label>
+      </ion-item>
+      <ion-item
+        button
+        (click)="selectedAnnoceType('Publicité audio')"
+        class="ion-no-border"
+      >
+        <ion-label>Publicité audio </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="modal_type_id.dismiss()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            >Fermer</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
 </ion-modal>
 
-<ion-modal id="modal-public-cible" #modal_type_public_cible trigger="open-modal-public-cible">
-    <ng-template>
-        <h3 style="text-align: center;" style="text-align: center;">Public Cible</h3>
-        <form action="" method="post">
-            <ion-list class="ion-padding">
-                <ion-item *ngFor="let item of pays">
-                    <ion-label>{{item}}</ion-label>
-                    <ion-checkbox slot="start"></ion-checkbox>
-                </ion-item>
-            </ion-list>
-        </form>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modal_type_public_cible.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
-    </ng-template>
+<ion-modal
+  id="modal-public-cible"
+  #modal_type_public_cible
+  trigger="open-modal-public-cible"
+>
+  <ng-template>
+    <h3 style="text-align: center">Public Cible</h3>
+    <ion-item>
+      <ion-checkbox
+        slot="start"
+        (click)="toggleAllCountries()"
+        [checked]="areAllCountriesSelected()"
+      >
+      </ion-checkbox>
+      <ion-label>
+        {{ areAllCountriesSelected() ? 'Tout décocher ' : 'Tout cocher' }}
+      </ion-label>
+    </ion-item>
+
+    <form>
+      <ion-list class="scrollable-list ion-padding">
+        <ion-item *ngFor="let item of pays">
+          <ion-label>{{ item.text }}</ion-label>
+          <ion-checkbox
+            slot="start"
+            (ionChange)="toggleCountrySelection(item.value, $event)"
+            [checked]="isCountrySelected(item.value)"
+          ></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </form>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="modal_type_public_cible.dismiss()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            >Fermer</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
 </ion-modal>
 
 <ion-modal id="modal-placement" #modal_placement trigger="open-modal-placement">
-    <ng-template>
-        <h3 style="text-align: center;">Placement</h3>
-        <ion-list class="ion-padding">
-            <ion-item button (click)="selectedPlacement('Uniquement sur les pages de piste')" class="ion-no-border">
-                <ion-label>Uniquement sur les pages de piste</ion-label>
-            </ion-item>
-            <ion-item button (click)="selectedPlacement('Sur toutes les pages')" class="ion-no-border">
-                <ion-label>Sur toutes les pages</ion-label>
-            </ion-item>
-        </ion-list>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modal_placement.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
-    </ng-template>
+  <ng-template>
+    <h3 style="text-align: center">Placement</h3>
+    <ion-list class="ion-padding">
+      <ion-item
+        button
+        (click)="selectedPlacement('Uniquement sur les pages de piste')"
+        class="ion-no-border"
+      >
+        <ion-label>Uniquement sur les pages de piste</ion-label>
+      </ion-item>
+      <ion-item
+        button
+        (click)="selectedPlacement('Sur toutes les pages')"
+        class="ion-no-border"
+      >
+        <ion-label>Sur toutes les pages</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="modal_placement.dismiss()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            >Fermer</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
 </ion-modal>
 
 <ion-modal id="modal-tarifs" #modal_tarifs trigger="open-modal-tarifs">
-    <ng-template>
-        <h3 style="text-align: center;">Tarifs</h3>
-        <ion-list class="ion-padding">
-            <ion-item button (click)="selectedTarifs('Prix par clique($0.5) ($0.5)')" class="ion-no-border">
-                <ion-label>Prix par clique ($0.5) ($0.5)</ion-label>
-            </ion-item>
-            <ion-item button (click)="selectedTarifs('Prix par impression ($0.1) ($0.1)')" class="ion-no-border">
-                <ion-label>Prix par impression ($0.1) ($0.1)</ion-label>
-            </ion-item>
-        </ion-list>
-        <ion-footer>
-            <ion-toolbar>
-                <ion-buttons slot="end">
-                    <ion-button (click)="modal_tarifs.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-footer>
-    </ng-template>
+  <ng-template>
+    <h3 style="text-align: center">Tarifs</h3>
+    <ion-list class="ion-padding">
+      <ion-item
+        button
+        (click)="selectedTarifs('Prix par clique($0.5) ($0.5)')"
+        class="ion-no-border"
+      >
+        <ion-label>Prix par clique ($0.5)</ion-label>
+      </ion-item>
+      <ion-item
+        button
+        (click)="selectedTarifs('Prix par impression ($0.1) ($0.1)')"
+        class="ion-no-border"
+      >
+        <ion-label>Prix par impression ($0.1)</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="modal_tarifs.dismiss()"
+            expand="block"
+            fill="clear"
+            shape="round"
+            >Fermer</ion-button
+          >
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
 </ion-modal>
