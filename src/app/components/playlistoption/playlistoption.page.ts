@@ -9,10 +9,11 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./playlistoption.page.scss'],
 })
 export class PlaylistoptionPage implements OnInit {
-
-  
   @Input() playlistId: any | undefined;
-  @Output() playlistDeleted = new EventEmitter<{ id: number, success: boolean }>();;
+  @Output() playlistDeleted = new EventEmitter<{
+    id: number;
+    success: boolean;
+  }>();
   playlistIdToDelete: any | null = null;
   constructor(
     private modalCtrl: ModalController,
@@ -62,12 +63,12 @@ export class PlaylistoptionPage implements OnInit {
   }
 
   deletePlaylist() {
-    if (!this.playlistId || !this.playlistId.id) {
+    if (!this.playlistId) {
       this.presentAlert('Erreur', 'ID de playlist manquant');
       return;
     }
 
-    this.playlistService.deletePlaylist(this.playlistId.id).subscribe({
+    this.playlistService.deletePlaylist(this.playlistId).subscribe({
       next: (response) => this.handleResponse(response),
       error: (err) => this.handleError(err),
     });
@@ -79,13 +80,17 @@ export class PlaylistoptionPage implements OnInit {
       this.playlistDeleted.emit({ id: this.playlistId, success: true });
       await this.modalCtrl.dismiss({ deleted: true }); // Fermeture du modal après émission de l'événement
     } else {
-      const message = response.sessionError || response.error || 'Erreur inconnue';
+      const message =
+        response.sessionError || response.error || 'Erreur inconnue';
       this.presentAlert('Erreur', message);
     }
   }
 
   private handleError(err: any) {
-    this.presentAlert('Erreur', 'Une erreur s\'est produite lors de la suppression.');
+    this.presentAlert(
+      'Erreur',
+      "Une erreur s'est produite lors de la suppression."
+    );
     console.error('Erreur lors de la suppression:', err);
   }
 
@@ -104,7 +109,7 @@ export class PlaylistoptionPage implements OnInit {
   selectedPlaylist: any;
   playlistIds!: any;
   playlistData: any;
-  playlist:any[]=[];
+  playlist: any[] = [];
   ngOnInit() {
     this.playlistService.getPublicPlayList().subscribe(
       (response) => {
@@ -119,7 +124,6 @@ export class PlaylistoptionPage implements OnInit {
 
           console.log('Playlists récupérées et filtrées:', this.playlist);
           localStorage.setItem('playlist', JSON.stringify(this.playlist));
-
         }
       },
       (error) => {
@@ -128,15 +132,17 @@ export class PlaylistoptionPage implements OnInit {
     );
     this.playlistIds = this.navParams.get('playlistId');
     // console.log('Playlist ID:', this.playlistIds);
-    const selectedPlaylist = this.playlist.find(playlist => playlist.id === this.playlistIds); // Recherche de l'élément
+    const selectedPlaylist = this.playlist.find(
+      (playlist) => playlist.id === this.playlistIds
+    ); // Recherche de l'élément
     console.log('Playlistsssss:', this.selectedPlaylist);
 
     if (selectedPlaylist) {
       console.log('Playlist sélectionnée:', selectedPlaylist); // Afficher la playlist trouvée
     } else {
-      console.log('Aucune playlist trouvée avec l\'ID:', this.playlistIds);
+      console.log("Aucune playlist trouvée avec l'ID:", this.playlistIds);
     }
     this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
-    // console.log(this.selectedPlaylist); 
+    // console.log(this.selectedPlaylist);
   }
 }

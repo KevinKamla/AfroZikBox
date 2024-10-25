@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { CreateplaylistPage } from 'src/app/components/createplaylist/createplaylist.page';
@@ -10,9 +10,8 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   templateUrl: './myplaylist.page.html',
   styleUrls: ['./myplaylist.page.scss'],
 })
-export class MyplaylistPage implements OnInit {
-
-  playlist : any []=[];
+export class MyplaylistPage implements OnInit, OnDestroy {
+  playlist: any[] = [];
   playlistSubscription: any;
   message: string | undefined;
   playlists: any;
@@ -20,18 +19,16 @@ export class MyplaylistPage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     public route: Router,
-    public playlistService : PlaylistService,
-  ) { }
+    public playlistService: PlaylistService
+  ) {}
 
-  
   async openCreatePlaylist() {
     const modale = await this.modalCtrl.create({
       component: CreateplaylistPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-
-    })
+      mode: 'ios',
+    });
     await modale.present();
   }
 
@@ -54,7 +51,7 @@ export class MyplaylistPage implements OnInit {
   //   await modale.present();
   // }
 
-  selectedPlaylist:any
+  selectedPlaylist: any;
 
   ngOnInit() {
     this.playlistService.getPublicPlayList().subscribe(
@@ -70,7 +67,6 @@ export class MyplaylistPage implements OnInit {
 
           console.log('Playlists récupérées et filtrées:', this.playlist);
           localStorage.setItem('playlist', JSON.stringify(this.playlist));
-
         }
       },
       (error) => {
@@ -86,7 +82,9 @@ export class MyplaylistPage implements OnInit {
   async openOptionPlaylist(playlistId: any) {
     const selectedPlaylistId = playlistId.id;
 
-    const playlistData = this.playlist.find(playlist => playlist.id === selectedPlaylistId); // Modification pour charger les données
+    const playlistData = this.playlist.find(
+      (playlist) => playlist.id === selectedPlaylistId
+    ); // Modification pour charger les données
     const modal = await this.modalCtrl.create({
       component: PlaylistoptionPage,
       componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist
@@ -104,7 +102,7 @@ export class MyplaylistPage implements OnInit {
 
   onPlaylistDeleted(playlistId: number) {
     this.playlists = this.playlists.filter(
-      (playlist: { id: number; }) => playlist.id !== playlistId
+      (playlist: { id: number }) => playlist.id !== playlistId
     );
     this.message = 'Playlist supprimée avec succès !';
     setTimeout(() => (this.message = ''), 3000);

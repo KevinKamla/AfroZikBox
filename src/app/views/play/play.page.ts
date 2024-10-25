@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -65,6 +66,7 @@ export class PlayPage implements OnInit, OnDestroy {
   comments = ['Bonjour', 'Nice']; // Exemple de commentaires
 
   constructor(
+    private userService: UserService,
     private downloadService: DownloadService,
     private media: Media,
     private platform: Platform,
@@ -128,6 +130,7 @@ export class PlayPage implements OnInit, OnDestroy {
       console.log(this.currentSong);
       console.log('tez');
       this.isFavorite();
+      this.isLiked();
     }
 
     // this.songSubscription = this.songService.currentSong$.subscribe((song) => {
@@ -484,5 +487,17 @@ export class PlayPage implements OnInit, OnDestroy {
         );
         this.love = isFavorite;
       });
+  }
+
+  isLiked() {
+    this.userService.getLikeds(this.userId).subscribe((res) => {
+      this.favoris = res.data.data;
+      console.log(this.favoris);
+
+      const isLiked = this.favoris.find(
+        (favorite) => favorite.id === this.currentSong.id
+      );
+      this.liked = isLiked;
+    });
   }
 }
