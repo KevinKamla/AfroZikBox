@@ -223,4 +223,10 @@ export class ProfilPage implements OnInit {
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
   }
+
+  
+  selectArticle(article: any) {
+    localStorage.setItem('selectedArticle', JSON.stringify(article));
+    this.route.navigate(['achatdetail']);
+  }
 }

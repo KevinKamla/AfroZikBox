@@ -10,7 +10,9 @@ import { ArticlesService } from 'src/app/services/articles.service';
 export class ListtendancePage implements OnInit {
   article: any[] = [];
 
-  constructor(private articleService: ArticlesService, private route: Router) { }
+  constructor(
+    private articleService: ArticlesService, 
+    private route: Router) { }
 
   ngOnInit() {
     this.articleService.getArticles().subscribe(

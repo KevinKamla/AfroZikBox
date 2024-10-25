@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Media } from '@awesome-cordova-plugins/media/ngx';
 import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
+import { File } from '@ionic-native/file/ngx'; // Ajoutez cette ligne
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +27,7 @@ import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FileChooser,MusicControls,
-    Media
+    Media,File,AndroidPermissions
   ],
   bootstrap: [AppComponent],
 })
