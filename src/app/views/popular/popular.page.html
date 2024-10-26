@@ -10,14 +10,14 @@
 <div class="list_chansons">
 
     <div *ngIf="mostPopular.length > 0; else ionSkeletonPopular">
-        <div class="ion-item d-f-s" *ngFor="let popular of mostPopular">
+        <div class="ion-item d-f-s" *ngFor="let popular of mostPopular;let i =index">
             <img [src]="popular.thumbnail" />
             <div class="title">
                 <h3>{{popular.title}}</h3>
                 <p>{{ popular.description}} | {{ popular.duration}}</p>
             </div>
             <div class="block-btn">
-                <ion-button class="btn-play" (click)="goToPlay()">
+                <ion-button class="btn-play" (click)="loadsong(mostPopular, i)">
                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openOptionSound()">

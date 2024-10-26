@@ -163,7 +163,7 @@
                 <p class="p d-f-c">Rien à acfficher pour l'instant</p>
             </ng-template>
 
-            <ng-template ngSwitchCase="evénements">
+            <ng-template ngSwitchCase="evénements"> 
                 <div *ngIf="1 > 0; else ionplaylist" class="envénement">
                     <div *ngFor="let item of events">
                         <ion-card button (click)="selectArticle(item)">

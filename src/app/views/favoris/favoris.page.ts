@@ -69,4 +69,9 @@ export class FavorisPage implements OnInit {
     this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
   }
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicService.loadNewPlaylistAleatoire(playlist);
+  }
 }

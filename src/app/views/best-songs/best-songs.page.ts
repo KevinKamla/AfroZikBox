@@ -4,6 +4,9 @@ import { IonPopover, ModalController, NavController, PopoverController } from '@
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
+import { PlaylistService } from'src/app/services/playlist.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
+
 @Component({
   selector: 'app-best-songs',
   templateUrl: './best-songs.page.html',
@@ -16,6 +19,9 @@ export class BestSongsPage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private topsService: TopSongsService,
+    private PlaylistService: PlaylistService,
+    private musicService: LecteurService // Injection du service de musique
+
   ) { }
 
 
@@ -52,6 +58,12 @@ export class BestSongsPage implements OnInit {
         console.error('Erreur lors de la récupération des Meilleur songs :', error);
       }
     );
+  }
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 
 }

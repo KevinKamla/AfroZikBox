@@ -301,6 +301,10 @@ export class PlaylistService {
     localStorage.setItem('playlist', JSON.stringify(playlist))
     localStorage.setItem('indexsong', JSON.stringify(index))
   }
+  loadplaylistAleatoire(playlist: any){
+    // console.log('load playlist' + index)
+    localStorage.setItem('playlist', JSON.stringify(playlist))
+  }
 
   updateindex(index: number){
     localStorage.setItem('indexsong', JSON.stringify(index))

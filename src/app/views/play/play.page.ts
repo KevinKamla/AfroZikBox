@@ -82,7 +82,8 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService,
     private modalController: ModalController,
-    private commentService: CommentService
+    private commentService: CommentService,
+
   ) {}
   ngOnInit() {
     this.songService.currentSong$.subscribe((song) => {
@@ -516,5 +517,11 @@ export class PlayPage implements OnInit, OnDestroy {
       this.liked = isLiked;
     });
   }
+
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicPlayerService.loadNewPlaylistAleatoire(playlist);
+  }
 }
-}
+

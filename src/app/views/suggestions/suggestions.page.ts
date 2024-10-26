@@ -283,5 +283,5 @@ export class SuggestionsPage implements OnInit {
     this.PlaylistService.updateindex(index)
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
-  }
+  } 
 }

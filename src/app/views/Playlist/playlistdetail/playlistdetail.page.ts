@@ -168,15 +168,14 @@ export class PlaylistdetailPage implements OnInit {
     this.musicService.loadNewPlaylist(this.playlists, index);
   }
   loadsong(playlist:any, index:number){
-    // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
-    this.musicService.loadNewPlaylist(playlist, index);
-  }
-  loadsongAleatoire(playlist:any, index:number){
     console.log('Playlist chargement...',index,playlist)
     this.PlaylistService.updateindex(index)
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
+  }
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicService.loadNewPlaylistAleatoire(playlist);
   }
 }
