@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { musicTab } from 'src/app/views/play/play.page';
 import { CreateplaylistPage } from '../createplaylist/createplaylist.page';
 import { AddplaylistPage } from '../addplaylist/addplaylist.page';
@@ -10,6 +10,7 @@ import { PlaylistService } from 'src/app/services/playlist.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { File } from '@ionic-native/file/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { FavoriteService } from 'src/app/services/favorite.service';
 
 @Component({
   selector: 'app-musicoption',
@@ -17,12 +18,16 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
   styleUrls: ['./musicoption.page.scss'],
 })
 export class MusicoptionPage implements OnInit {
-
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  favoris: any[] = [];
   addStory = false;
   currentSong:any;
   constructor(    private PlaylistService: PlaylistService,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
+    private favoriteService: FavoriteService,
+    private navParams: NavParams,
     public route: Router,
     private musicPlayerService: LecteurService,
     private file: File, private androidPermissions: AndroidPermissions
@@ -116,24 +121,51 @@ goToRoute(route: string = '') {
   }
 }
 cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
+playlistIds!: any;
+selectedPlaylist: any;
+
   ngOnInit() {
-    const storedSong = localStorage.getItem('currentSong');
-    console.log('werrrrrrrrr',storedSong)
-    if (storedSong) {
-      this.currentSong = JSON.parse(storedSong);
-      console.log('sonngggggg', this.currentSong)
-      // Utiliser this.currentSong comme nécessaire
-    }
-    const content = this.currentSong.description;
+    this.playlistIds = this.navParams.get('playlistId');
+    this.selectedPlaylist = this.navParams.get('playlistData');
+    console.log('Playlist data:', this.selectedPlaylist);
+    // this.favoriteService
+    //   .getFavorites(this.userId, this.accessToken)
+    //   .subscribe((res) => {
+    //     console.log(res);
+    //     this.favoris = res.data.data;
+    //   });
+    // const storedSong = localStorage.getItem('currentSong');
+    // console.log('werrrrrrrrr',storedSong)
+    // if (storedSong) {
+    //   this.currentSong = JSON.parse(storedSong);
+    //   console.log('sonngggggg', this.currentSong)
+    //   // Utiliser this.currentSong comme nécessaire
+    // }
+    const content = this.selectedPlaylist.description;
     const parser = new DOMParser();
     const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
     // console.log(decodedContent);
     
     if (decodedContent) {
       this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
+      console.log(this.cleanText)
     } else {
       console.log('Le contenu décodé est null ou undefined');
     }
+    // this.playlistIds = this.navParams.get('playlistId');
+    // this.selectedPlaylist = this.navParams.get('playlistData');
+    // console.log('Playlist data:', this.selectedPlaylist);
+    // const selectedPlaylist = this.favoris.find(
+    //   (favoris) => favoris.id === this.playlistIds
+    // ); // Recherche de l'élément
+    // console.log('Playlistsssss:', this.selectedPlaylist);
+
+    // if (selectedPlaylist) {
+    //   console.log('Playlist sélectionnée:', selectedPlaylist); // Afficher la playlist trouvée
+    // } else {
+    //   console.log("Aucune playlist trouvée avec l'ID:", this.playlistIds);
+    // }
+    // this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
   } 
   
   setRingtone(audioFileName: string) {

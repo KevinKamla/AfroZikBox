@@ -84,7 +84,7 @@ export class MyplaylistPage implements OnInit, OnDestroy {
 
     const playlistData = this.playlist.find(
       (playlist) => playlist.id === selectedPlaylistId
-    ); // Modification pour charger les données
+    ); // Modification pour charger les données 
     const modal = await this.modalCtrl.create({
       component: PlaylistoptionPage,
       componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist

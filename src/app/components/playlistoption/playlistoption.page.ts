@@ -6,7 +6,7 @@ import { PlaylistService } from 'src/app/services/playlist.service';
 @Component({
   selector: 'app-playlistoption',
   templateUrl: './playlistoption.page.html',
-  styleUrls: ['./playlistoption.page.scss'],
+  styleUrls: ['./playlistoption.page.scss'], 
 })
 export class PlaylistoptionPage implements OnInit {
   @Input() playlistId: any | undefined;
