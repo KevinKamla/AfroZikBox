@@ -91,3 +91,9 @@ ion-modal#modal-tarifs {
 ion-modal#modal-type-id .wrapper {
     margin-bottom: 10px;
 }
+
+.scrollable-list {
+    max-height: 50vh; 
+    overflow-y: auto; 
+  }
+  

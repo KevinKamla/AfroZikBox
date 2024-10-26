@@ -105,13 +105,15 @@ export class PlaylistdetailPage implements OnInit {
     
     // const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
 
-    const storedAlbum = localStorage.getItem('playlist');
+    const storedAlbum = localStorage.getItem('publicPlaylist');
     const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
     
     console.log(storedAlbum,'loacal storage playlist')
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.plays = JSON.parse(storedAlbum);
+      console.log(this.plays);
+      
       this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
       if (this.selectedPlaylist) {
           console.log('Playlist sélectionnée:', this.selectedPlaylist);

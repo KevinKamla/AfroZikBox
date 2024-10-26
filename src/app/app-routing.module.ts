@@ -463,6 +463,10 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'achatdetail/:id',
+    loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
+  },
+  {
     path: 'achatdetail',
     loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
   },
@@ -470,6 +474,11 @@ const routes: Routes = [
     path: 'comments-modal',
     loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
   },
+  {
+    path: 'albummodal',
+    loadChildren: () => import('./components/albummodal/albummodal.module').then( m => m.AlbummodalPageModule)
+  },
+
 
 ];
 @NgModule({

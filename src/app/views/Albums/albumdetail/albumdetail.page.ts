@@ -119,7 +119,7 @@ export class AlbumdetailPage implements OnInit {
       (error) => {
         console.error('Erreur lors de la récupération des détails de l\'artiste :', error);
       }
-    );
+    ); 
   }
 
   // playMusicFromSongs(song: any, index: number) {

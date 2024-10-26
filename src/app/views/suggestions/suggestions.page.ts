@@ -266,7 +266,9 @@ export class SuggestionsPage implements OnInit {
   }
 
 
-
+  truncateTitle(title: string, limit: number): string {
+    return title.length > limit ? title.slice(0, limit) + '...' : title;
+  }
 
 
 

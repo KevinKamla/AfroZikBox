@@ -1,5 +1,5 @@
 <ion-content class="ion-padding">
-    <ion-item button (click)="closeModal()" [routerLink]="['/createsound']">
+    <ion-item button (click)="albumModal()">
         <ion-icon slot="start" color="primary" name="cloud-download"></ion-icon>
         <ion-label>Télécharger une seule chanson</ion-label>
     </ion-item>
@@ -7,7 +7,7 @@
         <ion-icon slot="start" color="secondary" name="cloud-upload"></ion-icon>
         <ion-label>Importer une chanson</ion-label>
     </ion-item>
-    <ion-item button (click)="closeModal()" [routerLink]="['/createalbum']">
+    <ion-item button (click)="albumModal()">
         <ion-icon slot="start" color="success" name="albums"></ion-icon>
         <ion-label>Créer un album</ion-label>
     </ion-item>

@@ -517,3 +517,4 @@ export class PlayPage implements OnInit, OnDestroy {
     });
   }
 }
+}
