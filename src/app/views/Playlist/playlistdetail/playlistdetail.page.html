@@ -32,7 +32,7 @@
             <ion-buttons slot="start">
                 <ion-button expand="bloc" shape="round">
                     <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
-                <ion-button shape="round" expand="bloc" class="btn-Lecture">
+                <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="loadsongAleatoire(playlists, firstId)">
                     <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
             </ion-buttons>
         </div>
