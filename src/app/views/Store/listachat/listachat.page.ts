@@ -46,7 +46,7 @@ export class ListachatPage implements OnInit {
 
   selectArticle(article: any) {
     localStorage.setItem('selectedArticle', JSON.stringify(article));
-    this.route.navigate(['achatdetail']);
+    this.route.navigate(['achatdetail',article.id]);
   }
 
 

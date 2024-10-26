@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { NavController } from '@ionic/angular';
@@ -10,7 +10,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage implements OnInit {
+export class ChatPage implements OnInit, OnDestroy {
   chats: any[] = [];
   userID: any | null = null;
   userName: string = '';
@@ -21,12 +21,13 @@ export class ChatPage implements OnInit {
   avatarFile: any;
   imgPath: string | undefined;
   isGetImg: boolean | undefined;
+  i: any = null;
   constructor(
     private navCtrl: NavController,
     public route: Router,
     private chatService: ChatService,
     private router: ActivatedRoute,
-    private fileChooser: FileChooser, 
+    private fileChooser: FileChooser
   ) {}
 
   goToRoute(route: string = '') {
@@ -39,11 +40,15 @@ export class ChatPage implements OnInit {
 
   ngOnInit() {
     this.chatUser = JSON.parse(localStorage.getItem('ChatUserData') || '{}');
-    this.userID = +this.router.snapshot.paramMap.get('idUser')!; 
+    this.userID = +this.router.snapshot.paramMap.get('idUser')!;
     this.fetchChatMessages();
-    setInterval(() => {
+    this.i = setInterval(() => {
       this.fetchChatMessages();
     }, 5000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.i);
   }
 
   fetchChatMessages() {
@@ -98,7 +103,6 @@ export class ChatPage implements OnInit {
     }
   }
 
-
   sendMessage() {
     if (this.newMessage.trim().length === 0) {
       console.error('Message is empty');
@@ -135,22 +139,22 @@ export class ChatPage implements OnInit {
     const arr = dataurl.split(',');
     const match = arr[0].match(/:(.*?);/); // Extraction du mime-type
     let mime = 'application/octet-stream'; // Valeur par défaut si mime-type non trouvé
-  
+
     if (match) {
       mime = match[1]; // Récupération du mime-type
     }
-  
+
     const bstr = atob(arr[1]); // Décodage de la base64
     let n = bstr.length;
     const u8arr = new Uint8Array(n);
-  
+
     while (n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
-  
-    return new  File([u8arr], filename, { type: mime });
+
+    return new File([u8arr], filename, { type: mime });
   }
-  
+
   async camera() {
     try {
       // Capture une image en utilisant la caméra
@@ -160,24 +164,24 @@ export class ChatPage implements OnInit {
         resultType: CameraResultType.Base64, // On récupère l'image en base64
         source: CameraSource.Camera, // Spécifie que la source est la caméra
       });
-  
+
       if (image && image.base64String) {
         const base64Image = image.base64String;
         this.imgPath = `data:image/jpeg;base64,${base64Image}`;
         this.isGetImg = true;
-  
+
         // Conversion en fichier utilisable
         this.avatarFile = this.dataURLtoFile(this.imgPath, 'image.jpg');
         console.log('Fichier image généré depuis la caméra :', this.avatarFile);
       }
     } catch (error) {
       console.error('Erreur lors de l’utilisation de la caméra :', error);
-      
+
       // Si la caméra échoue, on propose à l’utilisateur de sélectionner un fichier
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
-      
+
       input.onchange = (event: any) => {
         const file = event.target.files[0];
         if (file) {
@@ -187,11 +191,11 @@ export class ChatPage implements OnInit {
           console.log('Fichier sélectionné :', this.avatarFile);
         }
       };
-      
+
       input.click();
     }
   }
-  
+
   // Convertit une chaîne base64 en Blob
   base64ToBlob(base64: string, type: string) {
     const binary = atob(base64.replace(/\s/g, ''));
@@ -201,8 +205,6 @@ export class ChatPage implements OnInit {
     }
     return new Blob([new Uint8Array(array)], { type: type });
   }
-  
-  
 
   // Méthode pour supprimer une discussion
   deleteChat() {
@@ -216,18 +218,20 @@ export class ChatPage implements OnInit {
     );
   }
 
-
   async captureAndSendMedia() {
     try {
       // Capture l'image ou sélectionne le fichier via la méthode camera()
       await this.camera();
-      
+
       // Une fois l'image capturée/choisie et convertie en fichier, on l'envoie
       if (this.avatarFile) {
         this.sendMedia(); // Appelle la méthode sendMedia pour l'envoyer
       }
     } catch (error) {
-      console.error('Erreur lors de la capture ou de la sélection du média :', error);
+      console.error(
+        'Erreur lors de la capture ou de la sélection du média :',
+        error
+      );
     }
   }
 }

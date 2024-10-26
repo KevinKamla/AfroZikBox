@@ -99,9 +99,8 @@ export class AlbumdetailPage implements OnInit {
 
     this.songs = [];
     this.loadAlbumSongs();
-    console.log(this.songs, this.album);
     const storedAlbum = localStorage.getItem('selectedAlbum');
-
+    console.log(storedAlbum,'albbbbbbbbbb');
     // Vérifier si l'album existe dans le localStorage
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
@@ -133,5 +132,10 @@ export class AlbumdetailPage implements OnInit {
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
     musicTab.musicIsPlay = true;
+  }
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicService.loadNewPlaylistAleatoire(playlist);
   }
 }

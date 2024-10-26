@@ -14,9 +14,9 @@
 <ion-content class="">
     <div class="block-btn-header ">
         <ion-buttons slot="start">
-            <ion-button expand="bloc" shape="round">
+            <ion-button expand="bloc" shape="round" (click)="loadsongAleatoire(favoris)">
                 <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
-            <ion-button shape="round" expand="bloc" class="btn-conference">
+            <ion-button shape="round" expand="bloc" class="btn-conference" (click)="loadsong(favoris, 0)">
                 <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
         </ion-buttons>
     </div>
@@ -39,7 +39,7 @@
                         <ion-button class="btn-play" (click)="loadsong(favoris, i)">
                             <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                         </ion-button>
-                        <ion-button (click)="openOptionSound()">
+                        <ion-button (click)="openOptionSound(song.id)">
                             <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
                         </ion-button>
                     </div>

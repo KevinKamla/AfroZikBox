@@ -1,10 +1,10 @@
 <ion-content [fullscreen]="true">
     <div class="sound">
         <div class="ion-item">
-            <img [src]="currentSong?.thumbnail" />
+            <img [src]="selectedPlaylist?.thumbnail" />
             <div class="title">
-                <h3>{{ currentSong?.title }}</h3>
-                <p>{{ cleanText }} | {{ currentSong.duration }}</p>
+                <h3>{{ selectedPlaylist?.title }}</h3>
+                <p>{{ selectedPlaylist?.description }} | {{ selectedPlaylist?.duration }}</p>
             </div>
             <div class="block-btn">
                 <ion-button fill="clear">

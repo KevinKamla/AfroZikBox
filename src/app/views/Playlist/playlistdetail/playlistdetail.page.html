@@ -30,9 +30,9 @@
 
         <div class="block-btn-header ">
             <ion-buttons slot="start">
-                <ion-button expand="bloc" shape="round">
+                <ion-button expand="bloc" shape="round" (click)="loadsongAleatoire(playlists)">
                     <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
-                <ion-button shape="round" expand="bloc" class="btn-Lecture">
+                <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="loadsong(playlists, 0)">
                     <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
             </ion-buttons>
         </div>

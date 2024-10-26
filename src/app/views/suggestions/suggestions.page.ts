@@ -137,7 +137,7 @@ export class SuggestionsPage implements OnInit {
   }
 
   selectAlbum(album: any) {
-    // localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    localStorage.setItem('selectedAlbum', JSON.stringify(album));
     this.route.navigate(['albumdetail', album.id]);
   }
 
@@ -283,5 +283,5 @@ export class SuggestionsPage implements OnInit {
     this.PlaylistService.updateindex(index)
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
-  }
+  } 
 }

@@ -123,7 +123,7 @@ export class TabsPage implements OnInit, OnDestroy {
         this.sourceArray = song.sourceArray;
       }
     });
-    console.log(this.currentSong);
+    console.log(this.currentSong,'curennnttttt');
 
     this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
       // this.isUserLoggedIn = authenticated;
@@ -166,6 +166,7 @@ export class TabsPage implements OnInit, OnDestroy {
     this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
       (song) => {
         this.currentSong = song;
+        console.log(this.currentSong,'curennnttttt');
         if (this.currentSong) {
           this.musicPlayerService.getAudioElement().onended = () => {
             this.playNextSong();

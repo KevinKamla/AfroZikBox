@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtistService } from '../../../services/artist.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-artist',
   templateUrl: './artist.page.html',
@@ -9,7 +10,8 @@ export class ArtistPage implements OnInit {
 
   artists: any[] = [];
 
-  constructor(private artistService: ArtistService) { }
+  constructor(private artistService: ArtistService,    public route: Router,
+  ) { }
 
   ngOnInit() {
     this.artistService.getArtists().subscribe(
@@ -22,5 +24,9 @@ export class ArtistPage implements OnInit {
       }
     );
   }
-
+  artistDetail = (item: any) => {
+    console.log(item);
+    localStorage.setItem('artist', JSON.stringify(item));
+    this.route.navigate(['/artistprofil', item.id]);
+  };
 }

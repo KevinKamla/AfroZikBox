@@ -4,7 +4,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
 import { SuggestionsService } from '../../services/suggestions.service';
-
+import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from'src/app/services/playlist.service';
 @Component({
   selector: 'app-popular',
   templateUrl: './popular.page.html',
@@ -18,7 +19,8 @@ export class PopularPage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private suggestionsService: SuggestionsService,
-
+    private musicService: LecteurService, // Injection du service de musique
+    private PlaylistService: PlaylistService,
   ) { }
 
   
@@ -57,6 +59,12 @@ export class PopularPage implements OnInit {
         console.error('Erreur lors de la récupération des suggestions :', error);
       }
     );
+  }
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 
 }

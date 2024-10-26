@@ -100,6 +100,7 @@ export class PlaylistdetailPage implements OnInit {
   plays: any;
   songs: any[] = [];
   selectedPlaylist:any
+  firstId:any;
   ngOnInit() {
     // this.playlist = this.actvroute.snapshot.params['playlist'];
     
@@ -108,11 +109,11 @@ export class PlaylistdetailPage implements OnInit {
     const storedAlbum = localStorage.getItem('publicPlaylist');
     const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
     
-    console.log(storedAlbum,'loacal storage playlist')
+    // console.log(storedAlbum,'loacal storage playlist')
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.plays = JSON.parse(storedAlbum);
-      console.log(this.plays);
+      // console.log(this.plays);
       
       this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
       if (this.selectedPlaylist) {
@@ -121,7 +122,7 @@ export class PlaylistdetailPage implements OnInit {
           console.log('Aucune playlist trouvée avec cet ID');
       }
       this.songs = this.plays.songs
-      console.log(this.plays,'playyyyyys');
+      // console.log(this.plays,'playyyyyys');
     } else {
       console.log('Aucune playlist n\'est stocké dans le localStorage');
     }
@@ -142,7 +143,8 @@ export class PlaylistdetailPage implements OnInit {
                   (response) => {
                       if (response.success) {
                           this.playlists = response.success.songs;
-                          console.log(this.playlists);
+                          this.firstId = this.playlists[0].id
+                          // console.log(this.playlists);
                           
                       } else if (response.sessionError) {
                           console.error('Session error:', response.sessionError);
@@ -166,10 +168,14 @@ export class PlaylistdetailPage implements OnInit {
     this.musicService.loadNewPlaylist(this.playlists, index);
   }
   loadsong(playlist:any, index:number){
-    // console.log('Playlist chargement...')
+    console.log('Playlist chargement...',index,playlist)
     this.PlaylistService.updateindex(index)
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
   }
-  
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicService.loadNewPlaylistAleatoire(playlist);
+  }
 }

@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SuggestionsService } from '../../services/suggestions.service';
 import { UserService } from 'src/app/services/user.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
+import { PlaylistService } from'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-recently',
@@ -23,7 +24,9 @@ export class RecentlyPage implements OnInit {
     public navCtrl: NavController,
     private suggestionsService: SuggestionsService,
     private userService: UserService,
-    private musicService: LecteurService // Injection du service de musique
+    private musicService: LecteurService, // Injection du service de musique
+    private PlaylistService: PlaylistService,
+    // private musicService: LecteurService // Injection du service de musique
 
   ) { }
 
@@ -45,7 +48,7 @@ export class RecentlyPage implements OnInit {
   }
 
 
-  recently:any[]=[];
+  recentlys:any[]=[];
   numberOfRecently: number = 0;
 
   ngOnInit() {
@@ -54,7 +57,7 @@ export class RecentlyPage implements OnInit {
         console.log('suggestions récupérés :', response);
         // this.recently = response.recently_played;
         // console.log(this.recently);
-        const numberOfRecentlys = this.recently.length;
+        const numberOfRecentlys = this.recentlys.length;
         // console.log('Nombre de recently :', numberOfRecentlys);
 
         // this.numberOfRecently = numberOfRecentlys;
@@ -65,14 +68,20 @@ export class RecentlyPage implements OnInit {
     );
     this.userService.getRecentPlayed(this.userId).subscribe((response) =>{
       console.log(response, 'response');
-      this.recently = response.data.data;
-      this.numberOfRecently = response.data;
-      console.log('Nombre de recently :', this.numberOfRecently);
+      this.recentlys = response.data.data;
+      this.numberOfRecently = response.data.data.length;
+      console.log('Nombre de recently :', this.recentlys);
 
     })
   }
 
   playMusicFromSongs(song: any, index: number) {
-    this.musicService.loadNewPlaylist(this.recently, index);
+    this.musicService.loadNewPlaylist(this.recentlys, index);
+  }
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 }

@@ -4,6 +4,8 @@ import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
 import { SuggestionsService } from '../../services/suggestions.service';
+import { PlaylistService } from'src/app/services/playlist.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 
 @Component({
   selector: 'app-news',
@@ -16,6 +18,8 @@ export class NewsPage implements OnInit {
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private suggestionsService: SuggestionsService,
+    private PlaylistService: PlaylistService,
+    private musicService: LecteurService // Injection du service de musique
 
   ) { }
 
@@ -37,16 +41,16 @@ export class NewsPage implements OnInit {
     this.navCtrl.navigateForward('play');
   }
 
-  new:any[]=[];
+  news:any[]=[];
   numberOfTopSongs: number = 0;
 
   ngOnInit() {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         console.log('suggestions récupérés :', response);
-        this.new = response.new_releases.data;
-        console.log(this.new,'new sonfs');
-        const numberOfSongs = this.new.length;
+        this.news = response.new_releases.data;
+        console.log(this.news,'new sonfs');
+        const numberOfSongs = this.news.length;
         console.log('Nombre de new songs :', numberOfSongs);
 
         this.numberOfTopSongs = numberOfSongs;
@@ -55,6 +59,12 @@ export class NewsPage implements OnInit {
         console.error('Erreur lors de la récupération des suggestions :', error);
       }
     );
+  }
+  loadsong(playlist:any, index:number){
+    // console.log('Playlist chargement...')
+    this.PlaylistService.updateindex(index)
+    this.PlaylistService.loadplaylist(playlist, index)
+    this.musicService.loadNewPlaylist(playlist, index);
   }
 
 }

@@ -6,15 +6,15 @@
 
 <div class="list_chansons">
 
-    <div *ngIf="recently.length > 0; else ionSkeletonRecent">
-        <div class="ion-item d-f-s" *ngFor="let recently of recently; let i = index">
+    <div *ngIf="recentlys.length > 0; else ionSkeletonRecent">
+        <div class="ion-item d-f-s" *ngFor="let recently of recentlys; let i = index">
             <img [src]="recently.thumbnail" />
             <div class="title">
                 <h3>{{recently.title}}</h3>
-                <p>{{ recently.description}} | {{ recently.duration}}</p>
+                <p>{{ recently.publisher.username}} | {{ recently.duration}}</p>
             </div>
             <div class="block-btn">
-                <ion-button class="btn-play" (click)="playMusicFromSongs(recently, i)">
+                <ion-button class="btn-play" (click)="loadsong(recentlys, i)">
                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openOptionSound()">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlbumdetailPage } from '../albumdetail/albumdetail.page';
 import { ModalController, NavController } from '@ionic/angular';
 import { TopAlbumsService } from '../../../services/top-albums.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-album',
@@ -15,6 +16,7 @@ export class AlbumPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private topAlbumsService:TopAlbumsService,
+    public route: Router,
   ) { }
 
   numberOfTopSongs: number = 0;
@@ -35,5 +37,9 @@ export class AlbumPage implements OnInit {
       }
     );
   }
-
+  selectAlbum(album: any) {
+    localStorage.setItem('selectedAlbum', JSON.stringify(album));
+    console.log('locallll',album)
+    // this.route.navigate(['albumdetail', album.id]);
+  }
 }

@@ -34,9 +34,16 @@ export class FavorisPage implements OnInit {
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
-  async openOptionSound() {
+  async openOptionSound(playlistId: any) {
+    const selectedPlaylistId = playlistId;
+    const playlistData = this.favoris.find(
+      (playlist) => playlist.id === selectedPlaylistId
+    ); 
+    // console.log(playlistData,'playyyyyyyyyyyyyy')
+
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
+      componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios',
@@ -68,5 +75,10 @@ export class FavorisPage implements OnInit {
     this.PlaylistService.updateindex(index);
     this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
+  }
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicService.loadNewPlaylistAleatoire(playlist);
   }
 }

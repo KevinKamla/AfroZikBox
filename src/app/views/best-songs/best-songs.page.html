@@ -6,14 +6,14 @@
 
 <div class="list_chansons">
     <div *ngIf="topSongs.length > 0; else ionSkeletonBestSon">
-        <div class="ion-item d-f-s" *ngFor="let topSong of topSongs">
+        <div class="ion-item d-f-s" *ngFor="let topSong of topSongs; let i = index">
             <img [src]="topSong.thumbnail" alt="">
             <div class="title">
                 <h3>{{ topSong.title }}</h3>
                 <p class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
             </div>
             <div class="block-btn">
-                <ion-button class="btn-play" (click)="goToPlay()">
+                <ion-button class="btn-play" (click)="loadsong(topSongs, i)">
                     <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openOptionSound()">

@@ -131,6 +131,33 @@ export class LecteurService {
     }
   }
 
+  playMusicAleatoire(song: any): void {
+    try {
+      if (this.audio.src !== song.audio_location) {
+        this.stopCurrentMusic();
+        this.audio.src = song.audio_location;
+        this.audio.load();
+      }
+      this.audio
+        .play()
+        .then(() => {
+          this.isPlayingSubject.next(true);
+          this.currentSongSubject.next(song);
+          // this.currentSongIndex = index;
+
+          this.initializeMusicControls();
+          this.saveToLocalStorageAleatoire(song, this.audio.currentTime);
+        })
+        .catch((error) => {
+          this.audioErrorSubject.next('Impossible de lire la musique');
+        });
+
+      musicTab.isClose = false;
+      musicTab.musicIsPlay = true;
+    } catch (error) {
+      this.audioErrorSubject.next("Une erreur s'est produite");
+    }
+  }
   // Charger une nouvelle liste de chansons
   loadNewPlaylist(songs: any[], startIndex: number = 0): void {
     if (songs.length > 0) {
@@ -138,6 +165,18 @@ export class LecteurService {
       this.songList = songs; // Définir la nouvelle liste
       this.currentSongIndex = startIndex; // Commencer à l'index spécifié
       this.playMusic(songs[startIndex], startIndex); // Jouer la première musique de la nouvelle liste
+    } else {
+      console.error('La liste de chansons est vide.');
+    }
+  }
+  // Charger une nouvelle liste de chansons aleatoire
+  loadNewPlaylistAleatoire(songs: any[]): void {
+    if (songs.length > 0) {
+      this.stopCurrentMusic(); // Arrêter la musique actuelle
+      this.songList = songs; // Définir la nouvelle liste
+       const randomIndex = Math.floor(Math.random() * songs.length); // Choisir un index aléatoire
+      this.currentSongIndex = randomIndex; // Commencer à l'index aléatoire
+      this.playMusicAleatoire(songs[randomIndex]); // Jouer la musique à l'index aléatoire
     } else {
       console.error('La liste de chansons est vide.');
     }
@@ -311,6 +350,17 @@ export class LecteurService {
     localStorage.setItem('currentSongState', JSON.stringify(songState));
   }
 
+  private saveToLocalStorageAleatoire(
+    song: any,
+    currentTime: number
+  ): void {
+    const songState = {
+      song,
+      currentTime,
+      isPlaying: this.isPlayingSubject.value,
+    };
+    localStorage.setItem('currentSongState', JSON.stringify(songState));
+  }
   // Charger l'état de lecture à partir de localStorage
   private loadFromLocalStorage(): void {
     const savedState = localStorage.getItem('currentSongState');

@@ -1,7 +1,7 @@
 <div>
     <div *ngIf="artists.length > 0; else ionSkeletonArtist">
         <div class="d-f-s item" *ngFor="let artist of artists">
-            <div class="d-f-s logo-title" [routerLink]="['/artist-profil', artist.id]">
+            <div class="d-f-s logo-title" (click)="artistDetail(artist)">
                 <ion-avatar slot="start">
                     <img [src]="artist.avatar" />
                 </ion-avatar>

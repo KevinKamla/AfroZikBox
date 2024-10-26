@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -65,6 +66,7 @@ export class PlayPage implements OnInit, OnDestroy {
   comments = ['Bonjour', 'Nice']; // Exemple de commentaires
 
   constructor(
+    private userService: UserService,
     private downloadService: DownloadService,
     private media: Media,
     private platform: Platform,
@@ -80,7 +82,8 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService,
     private modalController: ModalController,
-    private commentService: CommentService
+    private commentService: CommentService,
+
   ) {}
   ngOnInit() {
     this.songService.currentSong$.subscribe((song) => {
@@ -128,6 +131,7 @@ export class PlayPage implements OnInit, OnDestroy {
       console.log(this.currentSong);
       console.log('tez');
       this.isFavorite();
+      this.isLiked();
     }
 
     // this.songSubscription = this.songService.currentSong$.subscribe((song) => {
@@ -384,9 +388,12 @@ export class PlayPage implements OnInit, OnDestroy {
     }
   }
 
-  async openOptionSound() {
+  async openOptionSound(playlistId:any) {
+    // const selectedPlaylistId = playlistId;
+    const playlistData = this.currentSong;
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
+      componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios',
@@ -501,4 +508,23 @@ export class PlayPage implements OnInit, OnDestroy {
         this.love = isFavorite;
       });
   }
+
+  isLiked() {
+    this.userService.getLikeds(this.userId).subscribe((res) => {
+      this.favoris = res.data.data;
+      console.log(this.favoris);
+
+      const isLiked = this.favoris.find(
+        (favorite) => favorite.id === this.currentSong.id
+      );
+      this.liked = isLiked;
+    });
+  }
+
+  loadsongAleatoire(playlist:any){
+    console.log('Playlist chargement aleatoire...',playlist)
+    this.PlaylistService.loadplaylistAleatoire(playlist)
+    this.musicPlayerService.loadNewPlaylistAleatoire(playlist);
+  }
 }
+
