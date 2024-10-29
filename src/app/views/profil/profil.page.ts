@@ -82,10 +82,10 @@ export class ProfilPage implements OnInit {
     });
   }
 
-  editEvent(item: any) {
-    // Implémentez votre logique pour éditer l'événement
-    console.log('Éditer l\'événement', item);
-    // Par exemple, naviguer vers un formulaire d'édition
+  goToEditEvent(event: any) {
+    this.navCtrl.navigateForward(['/createevenement'], {
+      queryParams: { event: JSON.stringify(event) },
+    });
   }
 
   selectEvent(event: any) {
