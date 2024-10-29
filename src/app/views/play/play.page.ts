@@ -82,8 +82,7 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService,
     private modalController: ModalController,
-    private commentService: CommentService,
-
+    private commentService: CommentService
   ) {}
   ngOnInit() {
     this.songService.currentSong$.subscribe((song) => {
@@ -189,7 +188,7 @@ export class PlayPage implements OnInit, OnDestroy {
 
   download() {
     this.downloadService.downloadSongFromObject(this.currentSong);
-  }
+  }
 
   // Revenir en arrière de 10 secondes
   rewind() {
@@ -388,7 +387,7 @@ export class PlayPage implements OnInit, OnDestroy {
     }
   }
 
-  async openOptionSound(playlistId:any) {
+  async openOptionSound(playlistId: any) {
     // const selectedPlaylistId = playlistId;
     const playlistData = this.currentSong;
     const modal = await this.modalCtrl.create({
@@ -436,21 +435,20 @@ export class PlayPage implements OnInit, OnDestroy {
         }
       },
     });
-    this.favoriteService.toggleFavorite(trackId)
-      .subscribe({
-        next: (response) => {
-          if (response.status === 200) {
-            this.love = !this.love; // Toggle the liked status
-            console.log('Successfully toggled favorite:', response.mode);
-            console.log('successs',response)
-          } else {
-            console.error('Error toggling favorite:', response.error);
-          }
-        },
-        error: (err) => {
-          console.error('Error toggling favorite:', err);
+    this.favoriteService.toggleFavorite(trackId).subscribe({
+      next: (response) => {
+        if (response.status === 200) {
+          this.love = !this.love; // Toggle the liked status
+          console.log('Successfully toggled favorite:', response.mode);
+          console.log('successs', response);
+        } else {
+          console.error('Error toggling favorite:', response.error);
         }
-      });
+      },
+      error: (err) => {
+        console.error('Error toggling favorite:', err);
+      },
+    });
   }
 
   toggleComment(trackId: number) {
@@ -521,10 +519,9 @@ export class PlayPage implements OnInit, OnDestroy {
     });
   }
 
-  loadsongAleatoire(playlist:any){
-    console.log('Playlist chargement aleatoire...',playlist)
-    this.PlaylistService.loadplaylistAleatoire(playlist)
+  loadsongAleatoire(playlist: any) {
+    console.log('Playlist chargement aleatoire...', playlist);
+    this.PlaylistService.loadplaylistAleatoire(playlist);
     this.musicPlayerService.loadNewPlaylistAleatoire(playlist);
   }
 }
-
