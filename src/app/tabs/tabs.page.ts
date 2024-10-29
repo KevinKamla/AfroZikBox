@@ -109,7 +109,7 @@ export class TabsPage implements OnInit, OnDestroy {
         this.sourceArray = song.sourceArray;
       }
     });
-    console.log(this.currentSong,'curennnttttt');
+    console.log(this.currentSong, 'curennnttttt');
 
     this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
       // this.isUserLoggedIn = authenticated;
@@ -152,22 +152,19 @@ export class TabsPage implements OnInit, OnDestroy {
     this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
       (song) => {
         this.currentSong = song;
-<<<<<<< Updated upstream
-        console.log(this.currentSong,'curennnttttt');
+
+        console.log(this.currentSong, 'curennnttttt');
         if (this.currentSong) {
           this.musicPlayerService.getAudioElement().onended = () => {
-=======
-        this.musicPlayerService.getAudioElement().onended = () => {
-          console.log('La chanson actuelle est terminée.', '2');
-          if (this.musicPlayerService.getIsRepeatOne()) {
-            this.musicPlayerService.getAudioElement().currentTime = 0;
-            this.musicPlayerService.getAudioElement().play();
-          } else {
-
->>>>>>> Stashed changes
-            this.playNextSong();
-          }
-        };
+            console.log('La chanson actuelle est terminée.', '2');
+            if (this.musicPlayerService.getIsRepeatOne()) {
+              this.musicPlayerService.getAudioElement().currentTime = 0;
+              this.musicPlayerService.getAudioElement().play();
+            } else {
+              this.playNextSong();
+            }
+          };
+        }
       }
     );
 
@@ -268,12 +265,12 @@ export class TabsPage implements OnInit, OnDestroy {
     // } else {
     //   console.log('Toutes les chansons ont été jouées.');
     // }
-            if (this.waitingList.length > 0) {
-          this.musicPlayerService.playFromWaitingList();
-        } else {
-    let song = this.PlaylistService.getnextsong();
-    this.playMusic(song, this.currentSongIndex);
-        }
+    if (this.waitingList.length > 0) {
+      this.musicPlayerService.playFromWaitingList();
+    } else {
+      let song = this.PlaylistService.getnextsong();
+      this.playMusic(song, this.currentSongIndex);
+    }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService

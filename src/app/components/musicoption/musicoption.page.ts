@@ -18,12 +18,10 @@ import { FavoriteService } from 'src/app/services/favorite.service';
   styleUrls: ['./musicoption.page.scss'],
 })
 export class MusicoptionPage implements OnInit {
-<<<<<<< Updated upstream
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   favoris: any[] = [];
-=======
->>>>>>> Stashed changes
+
   addStory = false;
   currentSong: any;
   @Input() song: any | undefined;
@@ -61,6 +59,7 @@ export class MusicoptionPage implements OnInit {
   ];
 
   public addToWaitingList() {
+    console.log('Ajouter à la liste d attente');
     this.musicPlayerService.addTowaitingList(this.song);
   }
   public btnSignale = [
@@ -130,32 +129,9 @@ export class MusicoptionPage implements OnInit {
       this.navCtrl.back();
     }
   }
-<<<<<<< Updated upstream
-}
-cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
-playlistIds!: any;
-selectedPlaylist: any;
-
-  ngOnInit() {
-    this.playlistIds = this.navParams.get('playlistId');
-    this.selectedPlaylist = this.navParams.get('playlistData');
-    console.log('Playlist data:', this.selectedPlaylist);
-    // this.favoriteService
-    //   .getFavorites(this.userId, this.accessToken)
-    //   .subscribe((res) => {
-    //     console.log(res);
-    //     this.favoris = res.data.data;
-    //   });
-    // const storedSong = localStorage.getItem('currentSong');
-    // console.log('werrrrrrrrr',storedSong)
-    // if (storedSong) {
-    //   this.currentSong = JSON.parse(storedSong);
-    //   console.log('sonngggggg', this.currentSong)
-    //   // Utiliser this.currentSong comme nécessaire
-    // }
-    const content = this.selectedPlaylist.description;
-=======
   cleanText: string = ''; // Nouvelle propriété pour stocker le texte nettoyé
+  playlistIds!: any;
+  selectedPlaylist: any;
   ngOnInit() {
     const storedSong = localStorage.getItem('currentSong');
     console.log('werrrrrrrrr', storedSong);
@@ -165,7 +141,7 @@ selectedPlaylist: any;
       // Utiliser this.currentSong comme nécessaire
     }
     const content = this.currentSong.description;
->>>>>>> Stashed changes
+
     const parser = new DOMParser();
     const decodedContent = parser.parseFromString(content, 'text/html').body
       .textContent;
@@ -173,11 +149,11 @@ selectedPlaylist: any;
 
     if (decodedContent) {
       this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
-      console.log(this.cleanText)
+      console.log(this.cleanText);
     } else {
       console.log('Le contenu décodé est null ou undefined');
     }
-<<<<<<< Updated upstream
+
     // this.playlistIds = this.navParams.get('playlistId');
     // this.selectedPlaylist = this.navParams.get('playlistData');
     // console.log('Playlist data:', this.selectedPlaylist);
@@ -192,12 +168,8 @@ selectedPlaylist: any;
     //   console.log("Aucune playlist trouvée avec l'ID:", this.playlistIds);
     // }
     // this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
-  } 
-  
-=======
   }
 
->>>>>>> Stashed changes
   setRingtone(audioFileName: string) {
     console.log('urlllll', audioFileName);
     // Demander les permissions d'écriture

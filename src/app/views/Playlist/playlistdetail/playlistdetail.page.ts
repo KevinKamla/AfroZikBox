@@ -14,10 +14,9 @@ import { LecteurService } from 'src/app/services/lecteur.service';
   styleUrls: ['./playlistdetail.page.scss'],
 })
 export class PlaylistdetailPage implements OnInit {
-
-  pauseIcon: string = "play-circle";
+  pauseIcon: string = 'play-circle';
   currentRoute = '';
-  playlists: any[]=[];
+  playlists: any[] = [];
   playlist = '';
   publicPlaylist: any[] = [];
   playlistId: number | undefined;
@@ -32,8 +31,7 @@ export class PlaylistdetailPage implements OnInit {
     private publicPlaylistService: PlaylistService,
     private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
-
-  ) { }
+  ) {}
   buttonAvert = [
     {
       text: 'Annuler',
@@ -43,13 +41,13 @@ export class PlaylistdetailPage implements OnInit {
       handler: () => {
         this.goToRoute('abonnement');
       },
-    }
-  ]
+    },
+  ];
 
-  async openOptionSound(song:any) {
+  async openOptionSound(song: any) {
     const modale = await this.modalCtrl.create({
       component: MusicoptionPage,
-      componentProps: {song }, // Passer l'ID et les données de la playlist
+      componentProps: { song }, // Passer l'ID et les données de la playlist
 
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
@@ -65,12 +63,10 @@ export class PlaylistdetailPage implements OnInit {
       componentProps: { selectedPlaylist: this.selectedPlaylist }, // Passer selectedPlaylist à la modal
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-
-    })
+      mode: 'ios',
+    });
     await modale.present();
   }
-
 
   goToRoute(route: string = '') {
     if (route) {
@@ -80,20 +76,17 @@ export class PlaylistdetailPage implements OnInit {
     }
   }
 
-
   play() {
-    if (this.pauseIcon == "pause") {
-      this.pauseIcon = "play-circle";
+    if (this.pauseIcon == 'pause') {
+      this.pauseIcon = 'play-circle';
       musicTab.isClose = false;
       musicTab.musicIsPlay = false;
-
     } else {
-      this.pauseIcon = "play-circle";
+      this.pauseIcon = 'play-circle';
       musicTab.isClose = false;
       musicTab.musicIsPlay = true;
     }
   }
-
 
   closeModal() {
     this.modalCtrl.dismiss();
@@ -101,8 +94,8 @@ export class PlaylistdetailPage implements OnInit {
 
   plays: any;
   songs: any[] = [];
-  selectedPlaylist:any
-  firstId:any;
+  selectedPlaylist: any;
+  firstId: any;
   ngOnInit() {
     // this.playlist = this.actvroute.snapshot.params['playlist'];
 
@@ -110,93 +103,77 @@ export class PlaylistdetailPage implements OnInit {
 
     const storedAlbum = localStorage.getItem('publicPlaylist');
     const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
-<<<<<<< Updated upstream
-    
-    // console.log(storedAlbum,'loacal storage playlist')
-    if (storedAlbum) {
-      // Convertir la chaîne JSON en un objet
-      this.plays = JSON.parse(storedAlbum);
-      // console.log(this.plays);
-      
-=======
 
-    console.log(storedAlbum,'loacal storage playlist')
+    console.log(storedAlbum, 'loacal storage playlist');
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.plays = JSON.parse(storedAlbum);
       console.log(this.plays);
 
->>>>>>> Stashed changes
-      this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
+      this.selectedPlaylist = this.plays.find(
+        (playlist: { id: number }) =>
+          playlist.id === parseInt(playlistId || '0', 10)
+      );
       if (this.selectedPlaylist) {
-          console.log('Playlist sélectionnée:', this.selectedPlaylist);
+        console.log('Playlist sélectionnée:', this.selectedPlaylist);
       } else {
-          console.log('Aucune playlist trouvée avec cet ID');
+        console.log('Aucune playlist trouvée avec cet ID');
       }
-      this.songs = this.plays.songs
+      this.songs = this.plays.songs;
       // console.log(this.plays,'playyyyyys');
     } else {
-      console.log('Aucune playlist n\'est stocké dans le localStorage');
+      console.log("Aucune playlist n'est stocké dans le localStorage");
     }
-
-
 
     this.activatedRoute.queryParams.subscribe((params) => {
       const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
 
       if (playlistId) {
-          // Fetch playlist songs using the API service
-          this.publicPlaylistService
-              .getPlayListSongs(
-                  parseInt(playlistId, 10), // Assurez-vous que playlistId est bien un nombre
-                  localStorage.getItem('accessToken') || ''
-              )
-              .subscribe(
-                  (response) => {
-                      if (response.success) {
-                          this.playlists = response.success.songs;
-<<<<<<< Updated upstream
-                          this.firstId = this.playlists[0].id
-                          // console.log(this.playlists);
-                          
-=======
-                          console.log(this.playlists);
+        // Fetch playlist songs using the API service
+        this.publicPlaylistService
+          .getPlayListSongs(
+            parseInt(playlistId, 10), // Assurez-vous que playlistId est bien un nombre
+            localStorage.getItem('accessToken') || ''
+          )
+          .subscribe(
+            (response) => {
+              if (response.success) {
+                this.playlists = response.success.songs;
 
->>>>>>> Stashed changes
-                      } else if (response.sessionError) {
-                          console.error('Session error:', response.sessionError);
-                      } else {
-                          // Handle other errors
-                          console.error('Error fetching playlist songs:', response.error);
-                      }
-                  },
-                  (error) => {
-                      console.error('Error fetching playlist songs:', error);
-                  }
-              );
+                this.firstId = this.playlists[0].id;
+                // console.log(this.playlists);
+              } else if (response.sessionError) {
+                console.error('Session error:', response.sessionError);
+              } else {
+                // Handle other errors
+                console.error('Error fetching playlist songs:', response.error);
+              }
+            },
+            (error) => {
+              console.error('Error fetching playlist songs:', error);
+            }
+          );
       } else {
-          console.error('Playlist ID is undefined. Unable to fetch playlist songs.');
+        console.error(
+          'Playlist ID is undefined. Unable to fetch playlist songs.'
+        );
       }
-  });
-
+    });
   }
 
   playMusicFromSongs(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.playlists, index);
   }
-  loadsong(playlist:any, index:number){
-    console.log('Playlist chargement...',index,playlist)
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+  loadsong(playlist: any, index: number) {
+    console.log('Playlist chargement...', index, playlist);
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
   }
-<<<<<<< Updated upstream
-  loadsongAleatoire(playlist:any){
-    console.log('Playlist chargement aleatoire...',playlist)
-    this.PlaylistService.loadplaylistAleatoire(playlist)
+
+  loadsongAleatoire(playlist: any) {
+    console.log('Playlist chargement aleatoire...', playlist);
+    this.PlaylistService.loadplaylistAleatoire(playlist);
     this.musicService.loadNewPlaylistAleatoire(playlist);
   }
-=======
-
->>>>>>> Stashed changes
 }

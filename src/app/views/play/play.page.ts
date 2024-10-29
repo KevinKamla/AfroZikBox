@@ -82,8 +82,7 @@ export class PlayPage implements OnInit, OnDestroy {
     private PlaylistService: PlaylistService,
     private favoriteService: FavoriteService,
     private modalController: ModalController,
-    private commentService: CommentService,
-
+    private commentService: CommentService
   ) {}
   ngOnInit() {
     this.songService.currentSong$.subscribe((song) => {
@@ -388,7 +387,7 @@ export class PlayPage implements OnInit, OnDestroy {
     }
   }
 
-  async openOptionSound(playlistId:any) {
+  async openOptionSound(playlistId: any) {
     // const selectedPlaylistId = playlistId;
     const playlistData = this.currentSong;
     const modal = await this.modalCtrl.create({
@@ -520,13 +519,9 @@ export class PlayPage implements OnInit, OnDestroy {
     });
   }
 
-  loadsongAleatoire(playlist:any){
-    console.log('Playlist chargement aleatoire...',playlist)
-    this.PlaylistService.loadplaylistAleatoire(playlist)
+  loadsongAleatoire(playlist: any) {
+    console.log('Playlist chargement aleatoire...', playlist);
+    this.PlaylistService.loadplaylistAleatoire(playlist);
     this.musicPlayerService.loadNewPlaylistAleatoire(playlist);
   }
 }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes

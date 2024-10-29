@@ -7,54 +7,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-<<<<<<< Updated upstream
-
-    <div class="container">
-        <div class="img-detail d-f">
-            <img [src]="selectedPlaylist.thumbnail_ready" />
-            <div class="title">
-                <h3>{{selectedPlaylist.name}}</h3>
-                <p>{{selectedPlaylist.songs}} Chansons</p>
-                <ion-buttons slot="start">
-                    <ion-button id="modal-avertissement">
-                        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
-                    </ion-button>
-                    <ion-button>
-                        <ion-icon slot="icon-only" name="share-social"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="openOptionPlaylist()">
-                        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-                    </ion-button>
-                </ion-buttons>
-            </div>
-        </div>
-
-        <div class="block-btn-header ">
-            <ion-buttons slot="start">
-                <ion-button expand="bloc" shape="round" (click)="loadsongAleatoire(playlists)">
-                    <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button>
-                <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="loadsong(playlists, 0)">
-                    <ion-icon slot="start" name="play-circle"></ion-icon>Lecture</ion-button>
-            </ion-buttons>
-        </div>
-        <div class="list_chansons">
-            <div class="ion-item" *ngFor="let item of playlists; let i = index">
-                <img [src]="item.thumbnail" />
-                <div class="title">
-                    <h3>{{ item.title }}</h3>
-                    <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
-                </div>
-                <div class="block-btn">
-                    <ion-button class="btn-play" (click)="loadsong(playlists, i)">
-                        <ion-icon color="primary" slot="icon-only" name="{{pauseIcon}}"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="openOptionSound()">
-                        <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
-                    </ion-button>
-                </div>
-            </div>
-        </div>
-=======
   <div class="container">
     <div class="img-detail d-f">
       <img [src]="selectedPlaylist.thumbnail_ready" />
@@ -73,15 +25,23 @@
           </ion-button>
         </ion-buttons>
       </div>
->>>>>>> Stashed changes
     </div>
 
     <div class="block-btn-header">
       <ion-buttons slot="start">
-        <ion-button expand="bloc" shape="round">
+        <ion-button
+          expand="bloc"
+          shape="round"
+          (click)="loadsongAleatoire(playlists)"
+        >
           <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button
         >
-        <ion-button shape="round" expand="bloc" class="btn-Lecture">
+        <ion-button
+          shape="round"
+          expand="bloc"
+          class="btn-Lecture"
+          (click)="loadsong(playlists, 0)"
+        >
           <ion-icon slot="start" name="play-circle"></ion-icon
           >Lecture</ion-button
         >
@@ -112,11 +72,70 @@
         </div>
       </div>
     </div>
-  </div>
-</ion-content>
-<ion-alert
-  trigger="modal-avertissement"
-  header="Avertissement"
-  message="Pour ce service, votre compte doit être mis à niveau"
-  [buttons]="buttonAvert"
-></ion-alert>
+
+    <div class="container">
+      <div class="img-detail d-f">
+        <img [src]="selectedPlaylist.thumbnail_ready" />
+        <div class="title">
+          <h3>{{selectedPlaylist.name}}</h3>
+          <p>{{selectedPlaylist.songs}} Chansons</p>
+          <ion-buttons slot="start">
+            <ion-button id="modal-avertissement">
+              <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+            </ion-button>
+            <ion-button>
+              <ion-icon slot="icon-only" name="share-social"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openOptionPlaylist()">
+              <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </div>
+
+      <div class="block-btn-header">
+        <ion-buttons slot="start">
+          <ion-button expand="bloc" shape="round">
+            <ion-icon slot="start" name="shuffle"></ion-icon
+            >Aléatoire</ion-button
+          >
+          <ion-button shape="round" expand="bloc" class="btn-Lecture">
+            <ion-icon slot="start" name="play-circle"></ion-icon
+            >Lecture</ion-button
+          >
+        </ion-buttons>
+      </div>
+      <div class="list_chansons">
+        <div class="ion-item" *ngFor="let item of playlists; let i = index">
+          <img [src]="item.thumbnail" />
+          <div class="title">
+            <h3>{{ item.title }}</h3>
+            <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
+          </div>
+          <div class="block-btn">
+            <ion-button class="btn-play" (click)="loadsong(playlists, i)">
+              <ion-icon
+                color="primary"
+                slot="icon-only"
+                name="{{pauseIcon}}"
+              ></ion-icon>
+            </ion-button>
+            <ion-button (click)="openOptionSound(item)">
+              <ion-icon
+                slot="icon-only"
+                color="primary"
+                name="ellipsis-vertical-outline"
+              ></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ion-alert
+      trigger="modal-avertissement"
+      header="Avertissement"
+      message="Pour ce service, votre compte doit être mis à niveau"
+      [buttons]="buttonAvert"
+    ></ion-alert></div
+></ion-content>
