@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
 
@@ -24,7 +25,8 @@ export class CreateevenementPage implements OnInit {
   };
   imageFile: File | null = null;
   videoFile: File | null = null;
-  constructor(private yourService: EventService) { }
+  constructor(private yourService: EventService,    private alertController: AlertController
+  ) { }
 
   ngOnInit() {
   }
@@ -47,11 +49,20 @@ export class CreateevenementPage implements OnInit {
       this.yourService.createEvent(this.eventData, this.imageFile, this.videoFile).subscribe({
         next: (response) => {
           console.log("Événement créé avec succès", response);
+          this.showAlert('Succès', 'Événement créé avec succès');
         },
         error: (error) => {
         console.error("Erreur lors de la création de l'événement", error);
       }
       });
     }
+  }
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }
