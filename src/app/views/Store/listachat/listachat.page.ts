@@ -5,6 +5,7 @@ import { ModalController, NavController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { Router } from '@angular/router';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-listachat',
@@ -16,16 +17,34 @@ export class ListachatPage implements OnInit {
   accessToken: string = localStorage.getItem('accessToken') || '';
   purchases: any[] = [];
   article: any[] = [];
-  
+  eventId!: number;
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
     private userService: UserService,
     private articleService: ArticlesService, 
-    private route: Router
-
+    private route: Router,
+    private yourService: EventService
   ) { }
 
+  deleteEvent(eventId: number) {
+    this.yourService.deleteEvent(eventId).subscribe({
+      next: (response) => {
+        console.log('Événement supprimé avec succès', response);
+        // Mettez à jour la liste après suppression
+        this.purchases = this.purchases.filter(item => item.id !== eventId);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression de l\'événement', error);
+      }
+    });
+  }
+
+  editEvent(item: any) {
+    // Implémentez votre logique pour éditer l'événement
+    console.log('Éditer l\'événement', item);
+    // Par exemple, naviguer vers un formulaire d'édition
+  }
 
   async openOptionSound() {
     const modal = await this.modalCtrl.create({

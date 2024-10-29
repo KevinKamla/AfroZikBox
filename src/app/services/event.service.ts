@@ -66,7 +66,7 @@ export class EventService {
       })
     );
   }
-
+ 
   // Fonction pour rejoindre ou quitter un événement
   joinEvent(eventId: number, type: 'join' | 'unjoin'): Observable<any> {
     const params = new HttpParams()

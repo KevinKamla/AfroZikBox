@@ -2,7 +2,7 @@ import { UserData } from './../../models/user-info';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
@@ -61,9 +61,32 @@ export class ProfilPage implements OnInit {
     private userService : UserService,
     private eventService : EventService,
     private PlaylistService: PlaylistService,
-    private musicService: LecteurService // Injection du service de musique
+    private musicService: LecteurService, // Injection du service de musique
+    private yourService: EventService,
+    private alertController: AlertController // Ajout de l'AlertController
 
   ) { }
+
+  deleteEvent(eventId: number) {
+    this.yourService.deleteEvent(eventId).subscribe({
+      next: (response) => {
+        console.log('Événement supprimé avec succès', response);
+        this.showAlert('Succès', `${JSON.stringify(response.error)}`); // Correction de la popup de succès
+
+        // Mettez à jour la liste après suppression
+        this.events = this.events.filter(item => item.id !== eventId);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la suppression de l\'événement', error);
+      }
+    });
+  }
+
+  editEvent(item: any) {
+    // Implémentez votre logique pour éditer l'événement
+    console.log('Éditer l\'événement', item);
+    // Par exemple, naviguer vers un formulaire d'édition
+  }
 
   selectEvent(event: any) {
     localStorage.setItem('selectedEvent', JSON.stringify(event));
@@ -227,6 +250,14 @@ export class ProfilPage implements OnInit {
   
   selectArticle(article: any) {
     localStorage.setItem('selectedArticle', JSON.stringify(article));
-    this.route.navigate(['achatdetail',article.id]);
+    // this.route.navigate(['achatdetail',article.id]);
+  }
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

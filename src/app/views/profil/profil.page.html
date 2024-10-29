@@ -176,6 +176,14 @@
                                 <p>{{item.desc}}</p>
                                 <p> <ion-icon slot="start" name="calendar"></ion-icon>{{item.start_date}}</p>
                             </div>
+                            <div class="action-buttons">
+                                <ion-button color="secondary" (click)="editEvent(item)">
+                                    Éditer
+                                </ion-button>
+                                <ion-button color="danger" (click)="deleteEvent(item.id)">
+                                    Supprimer
+                                </ion-button>
+                            </div>
                         </ion-card>
                     </div>
                 </div>

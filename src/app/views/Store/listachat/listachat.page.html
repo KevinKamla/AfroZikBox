@@ -9,52 +9,33 @@
 
 <ion-content [fullscreen]="true">
     <div class="container">
-        <!-- <div class="list_chansons">
-            <div class="ion-item" *ngFor="let song of purchases">
-                <img [src]="song.event.image" />erhgte
-                <div class="title">
-                    <h3>{{song.title}}</h3>
-                    <p>Prix: ${{song.price}} | Date: {{song.timestamp}}</p>
-                </div>
-                <div class="block-btn">
-                    <ion-button class="btn-play" >
-                        <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
-                    </ion-button>
-                    <ion-button (click)="openOptionSound()">
-                        <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
-                    </ion-button>
-                </div>
-            </div>
-        </div> -->
-        <!-- <h4>Aucune chanson achetée trouvée</h4> -->
-
         <ion-list>
             <div *ngFor="let item of purchases">
-                <ion-card button (click)="selectArticle(item)">
-                    <div class="badge"><ion-badge color="danger" mode="ios">Evénement</ion-badge></div>
-                    <img [src]="item.event.image" style="width: 100%;" />
-                    <div class="footer">
-                        <div class="info">
-                            <p>{{item.title}}</p>
-                        </div>
-                        <p>Prix: ${{item.final_price}} - Date: {{item.timestamp}}</p>
-                    </div>
-                </ion-card>
-                <ng-template #ionSkeletonArticle>
-                    <ion-card *ngFor="let article of [1,1,1,1]">
-                        <ion-thumbnail>
-                            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-                        </ion-thumbnail>
-                        <div class="footer">
-                            <div class="info d-f-s">
-                                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-                                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+                <ion-item-sliding>
+                    <ion-item button (click)="selectArticle(item)">
+                        <ion-card>
+                            <div class="badge">
+                                <ion-badge color="danger" mode="ios">Événement</ion-badge>
                             </div>
-                            <p class="song-description"><ion-skeleton-text animated
-                                    style="width: 100%"></ion-skeleton-text></p>
-                        </div>
-                    </ion-card>
-                </ng-template>
+                            <img [src]="item.event.image" style="width: 100%;" />
+                            <div class="footer">
+                                <div class="info">
+                                    <p>{{item.title}}</p>
+                                </div>
+                                <p>Prix: ${{item.final_price}} - Date: {{item.timestamp}}</p>
+                            </div>
+                        </ion-card>
+                    </ion-item>
+
+                    <ion-item-options side="end">
+                        <ion-item-option color="danger" (click)="deleteEvent(item.id)">
+                            Supprimer
+                        </ion-item-option>
+                        <ion-item-option color="secondary" (click)="editEvent(item)">
+                            Éditer
+                        </ion-item-option>
+                    </ion-item-options>
+                </ion-item-sliding>
             </div>
         </ion-list>
     </div>
