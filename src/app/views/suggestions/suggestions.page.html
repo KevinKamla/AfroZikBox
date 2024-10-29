@@ -87,7 +87,7 @@
           <img
             class="cd-image"
             [src]="genre.background_thumb"
-            [routerLink]="['/musicbygenre', genre.id]"
+            (click)="onGenreClick(genre)"
           />
           <div class="cd-transparent-circle"></div>
           <!-- Cercle transparent -->

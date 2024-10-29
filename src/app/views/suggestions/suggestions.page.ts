@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, NavController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, NavController, Platform, ToastController } from '@ionic/angular';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
 import { SuggestionsService } from '../../services/suggestions.service';
@@ -25,6 +25,7 @@ export class SuggestionsPage implements OnInit {
   // Déclaration des propriétés
   isUserLoggedIn: boolean = false;
 
+  selectedgenre: any[]=[];
   topalbums: any[] = [];
   genres: any[] = [];
   latest: any[] = [];
@@ -54,6 +55,8 @@ export class SuggestionsPage implements OnInit {
     private PlaylistService: PlaylistService,
     private albumsService: AlbumsService,
     private alertController: AlertController,
+    private genreService: GenresService,
+    private toastController: ToastController,
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
@@ -125,6 +128,46 @@ export class SuggestionsPage implements OnInit {
       backdropDismiss: false,
     });
     await modal.present();
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    await toast.present();
+  }
+
+  onGenreClick(genre: any) {
+    this.genreService.getGenre(genre.id).subscribe(
+      (response) => {
+        // Assuming response.data contains the required genres
+        const selectedGenreDetails = response.data.find((g: { id: any; }) => g.id === genre.id);
+        
+        if (selectedGenreDetails) {
+          // Now check if the genre is valid for navigation
+          this.genreService.getTrackGenre(genre.id, '').subscribe((trackResponse) => {
+            const tracks = trackResponse.tracks.data;
+            
+            // Check if tracks exist for the selected genre
+            if (tracks && tracks.length > 0) {
+              // Navigate to the genre page if valid
+              this.route.navigate(['/musicbygenre', genre.id]);
+            } else {
+              // Handle the invalid case, e.g., show a message
+              // alert('No tracks available for this genre.');
+              this.presentToast('Pas de music pour ce genre.');
+            }
+          });
+        } else {
+          this.presentToast('Genre not valid for navigation');
+        }
+      },
+      (error) => {
+        this.presentToast('Pas de music pour ce genre.');
+      }
+    );
   }
 
   openPopup() {
