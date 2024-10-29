@@ -259,5 +259,5 @@ export class ProfilPage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
-  }
+  } 
 }

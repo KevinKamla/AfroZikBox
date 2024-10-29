@@ -1,5 +1,5 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { musicTab } from 'src/app/views/play/play.page';
@@ -21,17 +21,21 @@ export class MusicoptionPage implements OnInit {
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   favoris: any[] = [];
+
   addStory = false;
-  currentSong:any;
-  constructor(    private PlaylistService: PlaylistService,
+  currentSong: any;
+  @Input() song: any | undefined;
+  constructor(
+    private PlaylistService: PlaylistService,
     public navCtrl: NavController,
     private modalCtrl: ModalController,
     private favoriteService: FavoriteService,
     private navParams: NavParams,
     public route: Router,
     private musicPlayerService: LecteurService,
-    private file: File, private androidPermissions: AndroidPermissions
-  ) { }
+    private file: File,
+    private androidPermissions: AndroidPermissions
+  ) {}
 
   public inputInformation = [
     {
@@ -44,14 +48,20 @@ export class MusicoptionPage implements OnInit {
   public btnAddPlaylist = [
     {
       text: 'Créer',
-      handler: async() => { await this.addToPlaylist()},
+      handler: async () => {
+        await this.addToPlaylist();
+      },
     },
     {
       text: 'Fait',
-      handler: () => { },
+      handler: () => {},
     },
   ];
 
+  public addToWaitingList() {
+    console.log('Ajouter à la liste d attente');
+    this.musicPlayerService.addTowaitingList(this.song);
+  }
   public btnSignale = [
     {
       text: 'Annuler',
@@ -59,7 +69,7 @@ export class MusicoptionPage implements OnInit {
     },
     {
       text: 'Soumettre',
-      handler: () => { },
+      handler: () => {},
     },
   ];
   async shareMusicLink(url: string) {
@@ -101,57 +111,49 @@ export class MusicoptionPage implements OnInit {
     // localStorage.setItem('artist', JSON.stringify(item));
     this.route.navigate(['/artistprofil', item]);
   };
-  
+
   async addToPlaylist() {
     const modal = await this.modalCtrl.create({
       component: AddplaylistPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-
-    })
+      mode: 'ios',
+    });
     this.closeModal();
     await modal.present();
   }
-goToRoute(route: string = '') {
-  if (route) {
-    this.route.navigate([route]);
-  } else {
-    this.navCtrl.back();
+  goToRoute(route: string = '') {
+    if (route) {
+      this.route.navigate([route]);
+    } else {
+      this.navCtrl.back();
+    }
   }
-}
-cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
-playlistIds!: any;
-selectedPlaylist: any;
-
+  cleanText: string = ''; // Nouvelle propriété pour stocker le texte nettoyé
+  playlistIds!: any;
+  selectedPlaylist: any;
   ngOnInit() {
-    this.playlistIds = this.navParams.get('playlistId');
-    this.selectedPlaylist = this.navParams.get('playlistData');
-    console.log('Playlist data:', this.selectedPlaylist);
-    // this.favoriteService
-    //   .getFavorites(this.userId, this.accessToken)
-    //   .subscribe((res) => {
-    //     console.log(res);
-    //     this.favoris = res.data.data;
-    //   });
-    // const storedSong = localStorage.getItem('currentSong');
-    // console.log('werrrrrrrrr',storedSong)
-    // if (storedSong) {
-    //   this.currentSong = JSON.parse(storedSong);
-    //   console.log('sonngggggg', this.currentSong)
-    //   // Utiliser this.currentSong comme nécessaire
-    // }
-    const content = this.selectedPlaylist.description;
+    const storedSong = localStorage.getItem('currentSong');
+    console.log('werrrrrrrrr', storedSong);
+    if (storedSong) {
+      this.currentSong = JSON.parse(storedSong);
+      console.log('sonngggggg', this.currentSong);
+      // Utiliser this.currentSong comme nécessaire
+    }
+    const content = this.currentSong.description;
+
     const parser = new DOMParser();
-    const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
+    const decodedContent = parser.parseFromString(content, 'text/html').body
+      .textContent;
     // console.log(decodedContent);
-    
+
     if (decodedContent) {
       this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
-      console.log(this.cleanText)
+      console.log(this.cleanText);
     } else {
       console.log('Le contenu décodé est null ou undefined');
     }
+
     // this.playlistIds = this.navParams.get('playlistId');
     // this.selectedPlaylist = this.navParams.get('playlistData');
     // console.log('Playlist data:', this.selectedPlaylist);
@@ -166,26 +168,35 @@ selectedPlaylist: any;
     //   console.log("Aucune playlist trouvée avec l'ID:", this.playlistIds);
     // }
     // this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
-  } 
-  
+  }
+
   setRingtone(audioFileName: string) {
-    console.log('urlllll',audioFileName)
+    console.log('urlllll', audioFileName);
     // Demander les permissions d'écriture
-    this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE).then(() => {
-      // Définir le chemin source et le chemin cible (répertoire des sonneries)
-      const sourcePath = this.file.externalDataDirectory + audioFileName; // Chemin du fichier audio dans ton app
-      const targetPath = this.file.externalRootDirectory + "Ringtones/"; // Répertoire des sonneries sur Android
-  
-      // Copier le fichier dans le répertoire des sonneries
-      this.file.copyFile(sourcePath, audioFileName, targetPath, audioFileName).then(() => {
-        console.log('Fichier audio copié avec succès dans le dossier des sonneries');
-        
-        // Maintenant, définir ce fichier comme sonnerie
-        this.setAsRingtone(targetPath + audioFileName);
-      }).catch(err => {
-        console.log('Erreur lors de la copie du fichier', err);
+    this.androidPermissions
+      .requestPermission(
+        this.androidPermissions.PERMISSION.WRITE_EXTERNAL_STORAGE
+      )
+      .then(() => {
+        // Définir le chemin source et le chemin cible (répertoire des sonneries)
+        const sourcePath = this.file.externalDataDirectory + audioFileName; // Chemin du fichier audio dans ton app
+        const targetPath = this.file.externalRootDirectory + 'Ringtones/'; // Répertoire des sonneries sur Android
+
+        // Copier le fichier dans le répertoire des sonneries
+        this.file
+          .copyFile(sourcePath, audioFileName, targetPath, audioFileName)
+          .then(() => {
+            console.log(
+              'Fichier audio copié avec succès dans le dossier des sonneries'
+            );
+
+            // Maintenant, définir ce fichier comme sonnerie
+            this.setAsRingtone(targetPath + audioFileName);
+          })
+          .catch((err) => {
+            console.log('Erreur lors de la copie du fichier', err);
+          });
       });
-    });
   }
   setAsRingtone(filePath: string) {
     // Utiliser une méthode Java pour définir le fichier comme sonnerie
