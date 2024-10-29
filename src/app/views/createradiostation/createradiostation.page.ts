@@ -30,6 +30,17 @@ savedStations: { id: number, name: string, url: string, logo: string, genre: str
   ngOnInit() {
     this.filteredStations = this.savedStations;
   }
+  onLogoSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) { // Vérification ajoutée
+      const file = target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.stationLogo = reader.result as string; // Met à jour l'URL du logo avec la donnée du fichier
+      };
+      reader.readAsDataURL(file); // Lit le fichier comme une URL de données
+    }
+  }
   filterStations() {
     const keyword = this.searchKeyword.toLowerCase();
     if (keyword) {

@@ -248,6 +248,7 @@ export class SuggestionsPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         this.latest = response.new_releases.data;
+        console.log(this.latest)
         this.loadSongsForTopAlbums();
       },
       (error) => {
