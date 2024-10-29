@@ -477,7 +477,11 @@ const routes: Routes = [
   {
     path: 'albummodal',
     loadChildren: () => import('./components/albummodal/albummodal.module').then( m => m.AlbummodalPageModule)
+  },  {
+    path: 'createevenement',
+    loadChildren: () => import('./views/createevenement/createevenement.module').then( m => m.CreateevenementPageModule)
   },
+
 
 
 ];

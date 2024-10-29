@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -112,10 +112,10 @@ export class EventService {
       .set('user_id', id.toString());
     return this.http.get<any>(this.baseUrl, { params });
   }
-
+  
   createEvent(eventData: any, image: File, video?: File): Observable<any> {
     const formData: FormData = new FormData();
-
+  
     // Ajouter les champs obligatoires
     formData.append('name', eventData.name);
     formData.append('desc', eventData.desc);
@@ -125,28 +125,50 @@ export class EventService {
     formData.append('end_time', eventData.end_time);
     formData.append('server_key', this.serverKey);
     formData.append('access_token', this.accessToken || '');
-
+  
     if (eventData.location === 'online') {
       formData.append('online_url', eventData.online_url);
     } else if (eventData.location === 'real') {
       formData.append('real_address', eventData.real_address);
     }
-
+  
     if (eventData.sell_tickets === 'yes') {
       formData.append('available_tickets', eventData.available_tickets);
       formData.append('ticket_price', eventData.ticket_price);
     }
-
+  
     if (image) {
       formData.append('image', image, image.name);
     }
     if (video) {
       formData.append('video', video, video.name);
     }
-
-    return this.http.post(this.create, formData);
+  
+    // Spécifiez le type de réponse
+    return this.http.post(this.create, formData, { responseType: 'text' }).pipe(
+      map(response => {
+        // Vérifiez si la réponse commence par "string"
+        if (response.startsWith("string")) {
+          console.error("Réponse inattendue du serveur :", response);
+          throw new Error("Réponse du serveur n'est pas un JSON valide.");
+        }
+    
+        // Essayez de parser la réponse JSON
+        try {
+          return JSON.parse(response);
+        } catch (error) {
+          console.error('Erreur lors de l\'analyse de la réponse:', error);
+          throw error; // Propagation de l'erreur
+        }
+      }),
+      catchError((error) => {
+        console.error("Erreur lors de la création de l'événement", error);
+        return throwError(error);
+      })
+    );
+    
   }
-
+  
   // Validation du ticket
   validateTicket(qrCode: string): Observable<any> {
     const params = { qr: qrCode };
