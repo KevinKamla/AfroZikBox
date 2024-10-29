@@ -1,33 +1,54 @@
 <ion-header [translucent]="true" class="ion-no-border">
-    <ion-toolbar>
-        <div class="d-f-s">
-            <ion-buttons slot="start">
-                <ion-button (click)="goToRoute()">
-                    <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-            <ion-buttons slot="start">
-                <div class="bloc_search">
-                    <ion-searchbar placeholder="Recherche"></ion-searchbar>
-                    <ion-button (click)="openActionFilter()">
-                        <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
-                    </ion-button>
-                </div>
-            </ion-buttons>
+  <ion-toolbar>
+    <div class="d-f-s">
+      <ion-buttons slot="start">
+        <ion-button (click)="goToRoute()">
+          <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start">
+        <div class="bloc_search">
+          <ion-searchbar
+            placeholder="Recherche"
+            [(ngModel)]="keyword"
+            (ionInput)="performSearch()"
+          ></ion-searchbar>
+          <ion-button (click)="openActionFilter()">
+            <ion-icon slot="icon-only" name="filter-outline"></ion-icon>
+          </ion-button>
         </div>
-    </ion-toolbar>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
 </ion-header>
+
 <ion-content [fullscreen]="true">
+  <ion-segment
+    scrollable
+    scrollHide
+    [(ngModel)]="selectedSegment"
+    (ionChange)="performSearch()"
+  >
+    <ion-segment-button value="songs">Chansons</ion-segment-button>
+    <ion-segment-button value="albums">Albums</ion-segment-button>
+    <ion-segment-button value="playlists">Playlists</ion-segment-button>
+    <ion-segment-button value="artists">Artistes</ion-segment-button>
+    <ion-segment-button value="events">Evénements</ion-segment-button>
+    <ion-segment-button value="products">Produits</ion-segment-button>
+  </ion-segment>
 
-    <ion-segment scrollable scrollHide [(ngModel)]="selectedSegment">
-        <ion-segment-button value="suggestions">Chansons</ion-segment-button>
-        <ion-segment-button value="bestSongs">Albums</ion-segment-button>
-        <ion-segment-button value="news">Playlists</ion-segment-button>
-        <ion-segment-button value="recently">Artistes</ion-segment-button>
-        <ion-segment-button value="album">Evénements </ion-segment-button>
-        <ion-segment-button value="popular">Produits</ion-segment-button>
-    </ion-segment>
+  <ion-loading
+    message="Loading..."
+    [duration]="3000"
+    spinner="circles"
+    *ngIf="loading"
+  ></ion-loading>
 
-
-    <ion-loading message="Loading..." [duration]="3000" spinner="circles"></ion-loading>
+  <div *ngIf="results && results[selectedSegment]">
+    <div *ngFor="let item of results[selectedSegment]">
+      <ion-card>
+        <ion-card-content> {{ item.title || item.name }} </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
 </ion-content>
