@@ -27,7 +27,7 @@ export class PlaylistdetailPage implements OnInit {
     public route: Router,
     public activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
-    private actvroute: ActivatedRoute, 
+    private actvroute: ActivatedRoute,
     private playlistService: PlaylistService,
     private publicPlaylistService: PlaylistService,
     private PlaylistService: PlaylistService,
@@ -46,13 +46,15 @@ export class PlaylistdetailPage implements OnInit {
     }
   ]
 
-  async openOptionSound() {
+  async openOptionSound(song:any) {
     const modale = await this.modalCtrl.create({
       component: MusicoptionPage,
+      componentProps: {song }, // Passer l'ID et les données de la playlist
+
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-    })
+      mode: 'ios',
+    });
 
     await modale.present();
   }
@@ -60,7 +62,7 @@ export class PlaylistdetailPage implements OnInit {
   async openOptionPlaylist() {
     const modale = await this.modalCtrl.create({
       component: PlaylistoptionPage,
-      componentProps: { selectedPlaylist: this.selectedPlaylist }, // Passer selectedPlaylist à la modal 
+      componentProps: { selectedPlaylist: this.selectedPlaylist }, // Passer selectedPlaylist à la modal
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios'
@@ -103,11 +105,12 @@ export class PlaylistdetailPage implements OnInit {
   firstId:any;
   ngOnInit() {
     // this.playlist = this.actvroute.snapshot.params['playlist'];
-    
+
     // const playlistid = this.activatedRoute.snapshot.paramMap.get('id');
 
     const storedAlbum = localStorage.getItem('publicPlaylist');
     const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
+<<<<<<< Updated upstream
     
     // console.log(storedAlbum,'loacal storage playlist')
     if (storedAlbum) {
@@ -115,6 +118,15 @@ export class PlaylistdetailPage implements OnInit {
       this.plays = JSON.parse(storedAlbum);
       // console.log(this.plays);
       
+=======
+
+    console.log(storedAlbum,'loacal storage playlist')
+    if (storedAlbum) {
+      // Convertir la chaîne JSON en un objet
+      this.plays = JSON.parse(storedAlbum);
+      console.log(this.plays);
+
+>>>>>>> Stashed changes
       this.selectedPlaylist = this.plays.find((playlist: { id: number; }) => playlist.id === parseInt(playlistId || '0', 10));
       if (this.selectedPlaylist) {
           console.log('Playlist sélectionnée:', this.selectedPlaylist);
@@ -127,11 +139,11 @@ export class PlaylistdetailPage implements OnInit {
       console.log('Aucune playlist n\'est stocké dans le localStorage');
     }
 
-    
-   
+
+
     this.activatedRoute.queryParams.subscribe((params) => {
       const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
-  
+
       if (playlistId) {
           // Fetch playlist songs using the API service
           this.publicPlaylistService
@@ -143,9 +155,14 @@ export class PlaylistdetailPage implements OnInit {
                   (response) => {
                       if (response.success) {
                           this.playlists = response.success.songs;
+<<<<<<< Updated upstream
                           this.firstId = this.playlists[0].id
                           // console.log(this.playlists);
                           
+=======
+                          console.log(this.playlists);
+
+>>>>>>> Stashed changes
                       } else if (response.sessionError) {
                           console.error('Session error:', response.sessionError);
                       } else {
@@ -173,9 +190,13 @@ export class PlaylistdetailPage implements OnInit {
     this.PlaylistService.loadplaylist(playlist, index)
     this.musicService.loadNewPlaylist(playlist, index);
   }
+<<<<<<< Updated upstream
   loadsongAleatoire(playlist:any){
     console.log('Playlist chargement aleatoire...',playlist)
     this.PlaylistService.loadplaylistAleatoire(playlist)
     this.musicService.loadNewPlaylistAleatoire(playlist);
   }
+=======
+
+>>>>>>> Stashed changes
 }

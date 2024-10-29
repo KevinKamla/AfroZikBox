@@ -11,8 +11,7 @@ import { TopSongsService } from '../services/top-songs.service';
 import { LecteurService } from '../services/lecteur.service';
 import { TopAlbumsService } from '../services/top-albums.service';
 import { FavoriteService } from '../services/favorite.service';
-import { PlaylistService } from'src/app/services/playlist.service';
-
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
   selector: 'app-tabs',
@@ -36,17 +35,16 @@ export class TabsPage implements OnInit, OnDestroy {
   private playSubscription: Subscription | undefined;
   private timeSubscription: Subscription | undefined;
   private durationSubscription: Subscription | undefined;
+  private waitingList: any[] = [];
 
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
   sourceArray: any;
-  topalbums:any[]=[];
+  topalbums: any[] = [];
   favoris: any[] = [];
 
-
-  
   indexCurrentSong: number = 0;
 
   constructor(
@@ -59,13 +57,17 @@ export class TabsPage implements OnInit, OnDestroy {
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
     private musicPlayerService: LecteurService,
-    private topAlbumsService:TopAlbumsService,
+    private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
-    private PlaylistService: PlaylistService,
+    private PlaylistService: PlaylistService
   ) {}
 
   isUserLoggedIn(): boolean {
     return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
+  }
+
+  public addTowaintingList(song: any) {
+    this.waitingList.push(song);
   }
 
   async showLoginPopup() {
@@ -77,46 +79,30 @@ export class TabsPage implements OnInit, OnDestroy {
           text: 'Se connecter',
           handler: () => {
             this.router.navigate(['/login']); // Redirige vers la page de connexion
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
-  // async goToProfile() {
-  //   await this.verifierConnexion('profile');
-  // }
-
-  // async goToZikbox() {
-  //   await this.verifierConnexion('zikbox');
-  // }
-
-  // async goToZikstore() {
-  //   await this.verifierConnexion('zikstore');
-  // }
-
-  // async goToFavourites() {
-  //   await this.verifierConnexion('favoris');
-  // }
 
   ngOnInit() {
     // je recuperer l'index du song en cours
-    let a = localStorage.getItem('index')
+    let a = localStorage.getItem('index');
     if (a) {
-      this.indexCurrentSong = JSON.parse(a)
+      this.indexCurrentSong = JSON.parse(a);
     }
 
-
-    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      this.favoris = res.data.data;
+    this.favoriteService
+      .getFavorites(this.userId, this.accessToken)
+      .subscribe((res) => {
+        this.favoris = res.data.data;
+      });
+    this.topAlbumsService.getTopAlbums().subscribe((response) => {
+      this.topalbums = response.top_albums;
     });
-    this.topAlbumsService.getTopAlbums().subscribe(
-      (response) => {
-        this.topalbums = response.top_albums;
-      }
-    );
-    
+
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
         this.currentSong = song;
@@ -166,12 +152,22 @@ export class TabsPage implements OnInit, OnDestroy {
     this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
       (song) => {
         this.currentSong = song;
+<<<<<<< Updated upstream
         console.log(this.currentSong,'curennnttttt');
         if (this.currentSong) {
           this.musicPlayerService.getAudioElement().onended = () => {
+=======
+        this.musicPlayerService.getAudioElement().onended = () => {
+          console.log('La chanson actuelle est terminée.', '2');
+          if (this.musicPlayerService.getIsRepeatOne()) {
+            this.musicPlayerService.getAudioElement().currentTime = 0;
+            this.musicPlayerService.getAudioElement().play();
+          } else {
+
+>>>>>>> Stashed changes
             this.playNextSong();
-          };
-        }
+          }
+        };
       }
     );
 
@@ -272,11 +268,12 @@ export class TabsPage implements OnInit, OnDestroy {
     // } else {
     //   console.log('Toutes les chansons ont été jouées.');
     // }
-
-    
-
-    let song = this.PlaylistService.getnextsong()
-    this.playMusic(song, this.currentSongIndex) 
+            if (this.waitingList.length > 0) {
+          this.musicPlayerService.playFromWaitingList();
+        } else {
+    let song = this.PlaylistService.getnextsong();
+    this.playMusic(song, this.currentSongIndex);
+        }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
@@ -289,10 +286,8 @@ export class TabsPage implements OnInit, OnDestroy {
     //   );
     // }
 
-
-
-    let song = this.PlaylistService.getprevsong()
-    this.playMusic(song, this.currentSongIndex)
+    let song = this.PlaylistService.getprevsong();
+    this.playMusic(song, this.currentSongIndex);
   }
 
   playMusic(song: any, index: number): void {

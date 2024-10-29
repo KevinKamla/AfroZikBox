@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';import { AlertController, NavController, Platform } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AlertController, NavController, Platform } from '@ionic/angular';
 import { register } from 'swiper/element/bundle';
 import { SongsService } from './services/songs.service';
 import { AuthService } from './services/auth.service';
@@ -8,7 +9,7 @@ import { SuggestionsService } from './services/suggestions.service';
 import { LecteurService } from './services/lecteur.service';
 import { TopAlbumsService } from './services/top-albums.service';
 import { FavoriteService } from './services/favorite.service';
-import { PlaylistService } from'src/app/services/playlist.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
 import { musicTab } from './views/play/play.page';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -42,10 +43,11 @@ export class AppComponent implements OnInit, OnDestroy {
   audio: HTMLAudioElement = new Audio();
   currentSongIndex: number = 0;
   sourceArray: any;
-  topalbums:any[]=[];
+  topalbums: any[] = [];
   favoris: any[] = [];
   indexCurrentSong: number = 0;
-  constructor(private navCtrl: NavController,
+  constructor(
+    private navCtrl: NavController,
     private songService: SongsService,
     private platform: Platform,
     private authService: AuthService,
@@ -54,112 +56,118 @@ export class AppComponent implements OnInit, OnDestroy {
     private topsService: TopSongsService,
     private suggestionsService: SuggestionsService,
     private musicPlayerService: LecteurService,
-    private topAlbumsService:TopAlbumsService,
+    private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
-    private PlaylistService: PlaylistService,) {}
+    private PlaylistService: PlaylistService
+  ) {}
 
-    isUserLoggedIn(): boolean {
-      return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
+  isUserLoggedIn(): boolean {
+    return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
+  }
+  ngOnInit() {
+    // je recuperer l'index du song en cours
+    let a = localStorage.getItem('index');
+    if (a) {
+      this.indexCurrentSong = JSON.parse(a);
     }
-    ngOnInit() {
-      // je recuperer l'index du song en cours
-      let a = localStorage.getItem('index')
-      if (a) {
-        this.indexCurrentSong = JSON.parse(a)
-      }
-  
-      this.isUserLogged = this.isUserLoggedIn()
-      console.log(this.isUserLogged);
-      
-      // this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      //   console.log(res);
-      //   this.favoris = res.data.data;
-      // });
-      // this.topAlbumsService.getTopAlbums().subscribe(
-      //   (response) => {
-      //     this.topalbums = response.top_albums;
-      //   }
-      // );
-      
-      this.songService.currentSong$.subscribe((song) => {
-        if (song) {
-          this.currentSong = song;
-          this.sourceArray = song.sourceArray;
-        }
-      });
-  
-      this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
-        // this.isUserLoggedIn = authenticated;
-      });
-  
-      // this.topsService.getTopSongs().subscribe(
-      //   (response) => {
-      //     this.topSongs = response.data;
-      //   },
-      //   (error) => {
-      //     console.error(
-      //       'Erreur lors de la récupération des Meilleurs songs :',
-      //       error
-      //     );
-      //   }
-      // );
-  
-      // this.suggestionsService.getSuggestions().subscribe(
-      //   (response) => {
-      //     this.latest = response.new_releases.data;
-      //   },
-      //   (error) => {
-      //     console.error(
-      //       'Erreur lors de la récupération des suggestions :',
-      //       error
-      //     );
-      //   }
-      // );
-  
-      const music = localStorage.getItem('music');
-      if (music) {
-        this.currentSong = JSON.parse(music);
-      }
-  
-      this.songSubscription = this.songService.currentSong$.subscribe((song) => {
+
+    this.isUserLogged = this.isUserLoggedIn();
+    console.log(this.isUserLogged);
+
+    // this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+    //   console.log(res);
+    //   this.favoris = res.data.data;
+    // });
+    // this.topAlbumsService.getTopAlbums().subscribe(
+    //   (response) => {
+    //     this.topalbums = response.top_albums;
+    //   }
+    // );
+
+    this.songService.currentSong$.subscribe((song) => {
+      if (song) {
         this.currentSong = song;
-      });
-  
-      // Souscrire au flux du service pour la chanson actuelle
-      this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
-        (song) => {
-          this.currentSong = song;
-          if (this.currentSong) {
-            this.musicPlayerService.getAudioElement().onended = () => {
-              this.playNextSong();
-            };
-          }
-        }
-      );
-  
-      // Souscrire à l'état de lecture (playing ou pause)
-      this.playSubscription = this.musicPlayerService.isPlaying$.subscribe(
-        (isPlaying) => {
-          this.isPlaying = isPlaying;
-        }
-      );
-  
-      // Souscrire à la mise à jour du temps actuel
-      this.timeSubscription = this.musicPlayerService.currentTime$.subscribe(
-        (time) => {
-          this.currentTime = time;
-        }
-      );
-  
-      // Souscrire à la mise à jour de la durée
-      this.durationSubscription = this.musicPlayerService.duration$.subscribe(
-        (duration) => {
-          this.duration = duration;
-        }
-      );
-      console.log(this.currentSong);
+        this.sourceArray = song.sourceArray;
+      }
+    });
+
+    this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
+      // this.isUserLoggedIn = authenticated;
+    });
+
+    // this.topsService.getTopSongs().subscribe(
+    //   (response) => {
+    //     this.topSongs = response.data;
+    //   },
+    //   (error) => {
+    //     console.error(
+    //       'Erreur lors de la récupération des Meilleurs songs :',
+    //       error
+    //     );
+    //   }
+    // );
+
+    // this.suggestionsService.getSuggestions().subscribe(
+    //   (response) => {
+    //     this.latest = response.new_releases.data;
+    //   },
+    //   (error) => {
+    //     console.error(
+    //       'Erreur lors de la récupération des suggestions :',
+    //       error
+    //     );
+    //   }
+    // );
+
+    const music = localStorage.getItem('music');
+    if (music) {
+      this.currentSong = JSON.parse(music);
     }
 
+    this.songSubscription = this.songService.currentSong$.subscribe((song) => {
+      this.currentSong = song;
+    });
+
+    // Souscrire au flux du service pour la chanson actuelle
+    this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
+      (song) => {
+        this.currentSong = song;
+        if (this.currentSong) {
+          this.musicPlayerService.getAudioElement().onended = () => {
+            console.log('La chanson actuelle est terminée.', '1');
+            if (this.musicPlayerService.getIsRepeatOne()) {
+              this.musicPlayerService.getAudioElement().currentTime = 0;
+              this.musicPlayerService.getAudioElement().play();
+            } else {
+              this.playNextSong();
+            }
+          };
+        }
+      }
+    );
+
+    // Souscrire à l'état de lecture (playing ou pause)
+    this.playSubscription = this.musicPlayerService.isPlaying$.subscribe(
+      (isPlaying) => {
+        this.isPlaying = isPlaying;
+      }
+    );
+
+    // Souscrire à la mise à jour du temps actuel
+    this.timeSubscription = this.musicPlayerService.currentTime$.subscribe(
+      (time) => {
+        this.currentTime = time;
+      }
+    );
+
+    // Souscrire à la mise à jour de la durée
+    this.durationSubscription = this.musicPlayerService.duration$.subscribe(
+      (duration) => {
+        this.duration = duration;
+      }
+    );
+    console.log(this.currentSong);
+  }
 
   goToPlay() {
     if (this.currentSong) {
@@ -199,11 +207,12 @@ export class AppComponent implements OnInit, OnDestroy {
     // } else {
     //   console.log('Toutes les chansons ont été jouées.');
     // }
-
-    
-
-    let song = this.PlaylistService.getnextsong()
-    this.playMusic(song, this.currentSongIndex) 
+          if (this.musicPlayerService.waitingList.length > 0) {
+          this.musicPlayerService.playFromWaitingList();
+        } else {
+    let song = this.PlaylistService.getnextsong();
+    this.playMusic(song, this.currentSongIndex);
+        }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
@@ -216,10 +225,8 @@ export class AppComponent implements OnInit, OnDestroy {
     //   );
     // }
 
-
-
-    let song = this.PlaylistService.getprevsong()
-    this.playMusic(song, this.currentSongIndex)
+    let song = this.PlaylistService.getprevsong();
+    this.playMusic(song, this.currentSongIndex);
   }
 
   playMusic(song: any, index: number): void {
