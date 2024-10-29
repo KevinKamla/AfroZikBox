@@ -13,9 +13,10 @@ export class StatutPage implements OnInit {
   currentStory: any;
   audioFile: string | Blob | undefined;
   imageFile: string | Blob | undefined;
+
   constructor(
     private modalController: ModalController,
-    private storyService: StoryService
+    private storyService: StoryService,
   ) {}
 
   closeModal() {
@@ -25,7 +26,6 @@ export class StatutPage implements OnInit {
   createStory() {
     const formData = new FormData();
 
-    // Vérifier si l'image est définie avant de l'ajouter
     if (this.imageFile) {
       formData.append('image', this.imageFile);
     } else {
@@ -33,12 +33,11 @@ export class StatutPage implements OnInit {
       return;
     }
 
-    // Vérifier si l'audio est défini avant de l'ajouter
     if (this.audioFile) {
       formData.append('audio', this.audioFile);
     } else {
       console.error('Aucun fichier audio sélectionné');
-      return; // Arrêter l'exécution si aucun fichier audio
+      return;
     }
 
     formData.append('who', 'followers'); // Exemple de donnée fixe
@@ -66,45 +65,38 @@ export class StatutPage implements OnInit {
     this.storyService.startStory(user_id, story_id).subscribe((response) => {
       if (response.status === 200) {
         this.currentStory = response.data;
+        // Optionnel : réinitialiser le cookie lorsque la story commence
+        this.storyService.setNextStoryCookie(user_id, story_id);
       }
     });
   }
 
   // Aller à la story suivante
-  nextStory(
-    user_id: number,
-    story_id: number,
-    next_user_id: number,
-    next_story_id: number
-  ) {
-    this.storyService
-      .nextStory(user_id, story_id, next_user_id, next_story_id)
-      .subscribe((response) => {
-        if (response.status === 200) {
-          this.currentStory = response.data;
-        }
-      });
+  nextStory(user_id: number, story_id: number, next_user_id: number, next_story_id: number) {
+    this.storyService.nextStory(user_id, story_id, next_user_id, next_story_id).subscribe((response) => {
+      if (response.status === 200) {
+        this.currentStory = response.data;
+        // Enregistrer les identifiants de la prochaine story dans le cookie
+        this.storyService.setNextStoryCookie(next_user_id, next_story_id);
+      }
+    });
   }
 
   // Aller à la story précédente
-  previousStory(
-    user_id: number,
-    story_id: number,
-    pre_user_id: number,
-    pre_story_id: number
-  ) {
-    this.storyService
-      .previousStory(user_id, story_id, pre_user_id, pre_story_id)
-      .subscribe((response) => {
-        if (response.status === 200) {
-          this.currentStory = response.data;
-        }
-      });
+  previousStory(user_id: number, story_id: number, pre_user_id: number, pre_story_id: number) {
+    this.storyService.previousStory(user_id, story_id, pre_user_id, pre_story_id).subscribe((response) => {
+      if (response.status === 200) {
+        this.currentStory = response.data;
+        // Optionnel : enregistrer l'ancienne story dans le cookie
+        this.storyService.setNextStoryCookie(pre_user_id, pre_story_id);
+      }
+    });
   }
 
   rangeChange(e: any) {
     e++;
   }
+
   ngOnInit() {
     this.loadStories();
   }

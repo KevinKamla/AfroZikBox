@@ -87,4 +87,20 @@ export class StoryService {
       limit
     });
   }
+
+  setNextStoryCookie(nextUserId: number, nextStoryId: number) {
+    localStorage.setItem('next_user_id', nextUserId.toString());
+    localStorage.setItem('next_story_id', nextStoryId.toString());
+  }
+
+  getNextStoryCookie() {
+    const nextUserId = localStorage.getItem('next_user_id');
+    const nextStoryId = localStorage.getItem('next_story_id');
+    return { nextUserId, nextStoryId };
+  }
+
+  clearNextStoryCookie() {
+    localStorage.removeItem('next_user_id');
+    localStorage.removeItem('next_story_id');
+  }
 }
