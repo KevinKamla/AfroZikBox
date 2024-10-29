@@ -11,6 +11,7 @@ import {
 
 import { environment } from '../../environments/environment';
 import { Song } from '../models/song';
+import { LecteurService } from './lecteur.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -25,7 +26,8 @@ export class PlaylistService {
   playlists$ = this.playlistsSubject.asObservable().pipe(shareReplay(1));
   avatarFile: any;
 
-  constructor(private http: HttpClient) {}
+    
+    constructor(private http: HttpClient, private musicPlayerService: LecteurService) {}
 
   // getPlaylists(): Observable<any> {
   //   return this.http.get<any>(this.baseUrl);
@@ -310,47 +312,120 @@ export class PlaylistService {
     localStorage.setItem('indexsong', JSON.stringify(index));
   }
 
+  // getnextsong(): any {
+  //   let a = localStorage.getItem('indexsong');
+  //   let data = localStorage.getItem('playlist');
+  //   if (data && a) {
+  //     let playlist = JSON.parse(data);
+  //     let index = parseInt(a);
+  //     // console.log('play index :' + index +' sur ' + playlist.length)
+  //     if (index + 1 < playlist.length) {
+  //       // console.log('next song ' + playlist[index + 1])
+  //       this.updateindex(index + 1); // Mise à jour de l'index ici
+  //       return playlist[index + 1];
+  //     } else {
+  //       // Il n'y a pas de chanson suivante
+  //       // tu peux aussi ajouter une verification sur l'etat du mode de lecture et retourner le meme song ou la 1ere chanson de la playlist
+  //       this.updateindex(0);
+  //       return playlist[0]; // j'ai decider de recommencer la playlist
+  //     }
+  //   }
+  //   // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
+  //   return null;
+  // }
+
   getnextsong(): any {
-    let a = localStorage.getItem('indexsong');
-    let data = localStorage.getItem('playlist');
-    if (data && a) {
-      let playlist = JSON.parse(data);
-      let index = parseInt(a);
-      // console.log('play index :' + index +' sur ' + playlist.length)
-      if (index + 1 < playlist.length) {
-        // console.log('next song ' + playlist[index + 1])
-        this.updateindex(index + 1); // Mise à jour de l'index ici
-        return playlist[index + 1];
-      } else {
-        // Il n'y a pas de chanson suivante
-        // tu peux aussi ajouter une verification sur l'etat du mode de lecture et retourner le meme song ou la 1ere chanson de la playlist
-        this.updateindex(0);
-        return playlist[0]; // j'ai decider de recommencer la playlist
-      }
+    const isShuffleEnabled = this.musicPlayerService.getIsshuffle();
+    const savedIndex = localStorage.getItem('indexsong');
+    const savedPlaylist = localStorage.getItem('playlist');
+
+    if (savedPlaylist && savedIndex) {
+        const playlist = JSON.parse(savedPlaylist);
+        const currentIndex = parseInt(savedIndex, 10);
+
+        if (isShuffleEnabled) {
+            // Mode aléatoire activé, choisir une chanson aléatoire
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * playlist.length);
+            } while (randomIndex === currentIndex && playlist.length > 1); // Assurez-vous qu'une autre chanson est choisie, si possible
+
+            this.updateindex(randomIndex); // Mise à jour de l'index
+            return playlist[randomIndex];
+        } else {
+            // Mode séquentiel
+            if (currentIndex + 1 < playlist.length) {
+                // Passer à la chanson suivante
+                this.updateindex(currentIndex + 1);
+                return playlist[currentIndex + 1];
+            } else {
+                // Redémarrer la playlist depuis le début
+                this.updateindex(0);
+                return playlist[0];
+            }
+        }
     }
+
     // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
     return null;
   }
 
-  getprevsong(): any {
-    let a = localStorage.getItem('indexsong');
-    let data = localStorage.getItem('playlist');
-    if (data && a) {
-      let playlist = JSON.parse(data);
-      let index = parseInt(a);
-      // console.log('play index :' + index +' sur ' + playlist.length)
-      if (index - 1 >= 0) {
-        // console.log('next song ' + playlist[index - 1])
-        this.updateindex(index - 1); // Mise à jour de l'index ici
-        return playlist[index - 1];
-      } else {
-        // Il n'y a pas de chanson suivante
-        // tu peux aussi ajouter une verification sur l'etat du mode de lecture et retourner le meme song ou la 1ere chanson de la playlist
-        this.updateindex(playlist.length);
-        return playlist[playlist.length - 1]; // j'ai decider de passer le dernier song de la playlist
-      }
+  // getprevsong(): any {
+  //   let a = localStorage.getItem('indexsong');
+  //   let data = localStorage.getItem('playlist');
+  //   if (data && a) {
+  //     let playlist = JSON.parse(data);
+  //     let index = parseInt(a);
+  //     // console.log('play index :' + index +' sur ' + playlist.length)
+  //     if (index - 1 >= 0) {
+  //       // console.log('next song ' + playlist[index - 1])
+  //       this.updateindex(index - 1); // Mise à jour de l'index ici
+  //       return playlist[index - 1];
+  //     } else {
+  //       // Il n'y a pas de chanson suivante
+  //       // tu peux aussi ajouter une verification sur l'etat du mode de lecture et retourner le meme song ou la 1ere chanson de la playlist
+  //       this.updateindex(playlist.length);
+  //       return playlist[playlist.length - 1]; // j'ai decider de passer le dernier song de la playlist
+  //     }
+  //   }
+  //   // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
+  //   return null;
+  // }
+
+  getprevsong(): any {    
+    const isShuffleEnabled = this.musicPlayerService.getIsshuffle();
+    const savedIndex = localStorage.getItem('indexsong');
+    const savedPlaylist = localStorage.getItem('playlist');
+
+    if (savedPlaylist && savedIndex) {
+        const playlist = JSON.parse(savedPlaylist);
+        const currentIndex = parseInt(savedIndex, 10);
+
+        if (isShuffleEnabled) {
+            // Mode aléatoire activé, choisir une chanson aléatoire
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * playlist.length);
+            } while (randomIndex === currentIndex && playlist.length > 1); // Évite de sélectionner la même chanson si possible
+
+            this.updateindex(randomIndex); // Mise à jour de l'index
+            return playlist[randomIndex];
+        } else {
+            // Mode séquentiel
+            if (currentIndex - 1 >= 0) {
+                // Passer à la chanson précédente
+                this.updateindex(currentIndex - 1);
+                return playlist[currentIndex - 1];
+            } else {
+                // Passer à la dernière chanson si on est au début de la playlist
+                this.updateindex(playlist.length - 1);
+                return playlist[playlist.length - 1];
+            }
+        }
     }
+
     // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
     return null;
-  }
+}
+
 }

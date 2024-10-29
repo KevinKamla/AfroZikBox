@@ -293,51 +293,99 @@ export class LecteurService {
     this.seekTo(this.audio.currentTime - 10);
   }
 
-  // Jouer la chanson suivante
   playNext(songs: any[]): void {
     try {
-      if (songs.length === 0) {
-        console.error('Aucune chanson disponible dans la liste');
-        this.audioErrorSubject.next('Aucune chanson disponible');
-        return;
-      }
+        if (songs.length === 0) {
+            console.error('Aucune chanson disponible dans la liste');
+            this.audioErrorSubject.next('Aucune chanson disponible');
+            return;
+        }
 
-      let nextIndex;
-      if (this.isShuffleSubject.value) {
-        // Sélection aléatoire de l'index suivant
-        nextIndex = Math.floor(Math.random() * songs.length);
-      } else {
-        // Calculer l'index de la prochaine chanson
-        nextIndex = this.currentSongIndex + 1;
-      }
+        let nextIndex;
+        if (this.isShuffleSubject.value) {
+          console.log("lecture aleatoire suivant")
+            // Si le mode aléatoire est activé, sélectionner une chanson aléatoire différente de l'actuelle
+            do {
+                nextIndex = Math.floor(Math.random() * songs.length);
+            } while (nextIndex === this.currentSongIndex && songs.length > 1); // Évite de sélectionner la même chanson si plus d'une chanson est disponible
+        } else {
+            // Sinon, passer à la prochaine chanson dans l'ordre
+            nextIndex = this.currentSongIndex + 1;
+        }
 
-      // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
-      if (nextIndex >= songs.length) {
-        console.log('Fin de la playlist');
-        this.stopCurrentMusic();
-        return;
-      }
+        // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
+        if (nextIndex >= songs.length) {
+            console.log('Fin de la playlist');
+            this.stopCurrentMusic();
+            return;
+        }
 
-      const nextSong = songs[nextIndex];
+        const nextSong = songs[nextIndex];
 
-      // Vérifier si la prochaine chanson a une localisation audio valide
-      if (nextSong && nextSong.audio_location) {
-        // Mettre à jour l'index actuel et jouer la chanson suivante
-        this.playMusic(nextSong, nextIndex);
-      } else {
-        console.error(
-          "La chanson suivante ne contient pas de 'audio_location'",
-          nextSong
-        );
-        this.audioErrorSubject.next('La chanson suivante ne peut pas être lue');
-      }
+        // Vérifier si la prochaine chanson a une localisation audio valide
+        if (nextSong && nextSong.audio_location) {
+            // Mettre à jour l'index actuel et jouer la chanson suivante
+            this.playMusic(nextSong, nextIndex);
+        } else {
+            console.error(
+                "La chanson suivante ne contient pas de 'audio_location'",
+                nextSong
+            );
+            this.audioErrorSubject.next('La chanson suivante ne peut pas être lue');
+        }
     } catch (error) {
-      this.audioErrorSubject.next(
-        'Erreur lors de la lecture de la chanson suivante'
-      );
-      console.error('Erreur lors de la lecture suivante : ', error);
+        this.audioErrorSubject.next(
+            'Erreur lors de la lecture de la chanson suivante'
+        );
+        console.error('Erreur lors de la lecture suivante : ', error);
     }
-  }
+}
+
+  // // Jouer la chanson suivante
+  // playNext(songs: any[]): void {
+  //   try {
+  //     if (songs.length === 0) {
+  //       console.error('Aucune chanson disponible dans la liste');
+  //       this.audioErrorSubject.next('Aucune chanson disponible');
+  //       return;
+  //     }
+
+  //     let nextIndex;
+  //     if (this.isShuffleSubject.value) {
+  //       // Sélection aléatoire de l'index suivant
+  //       nextIndex = Math.floor(Math.random() * songs.length);
+  //     } else {
+  //       // Calculer l'index de la prochaine chanson
+  //       nextIndex = this.currentSongIndex + 1;
+  //     }
+
+  //     // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
+  //     if (nextIndex >= songs.length) {
+  //       console.log('Fin de la playlist');
+  //       this.stopCurrentMusic();
+  //       return;
+  //     }
+
+  //     const nextSong = songs[nextIndex];
+
+  //     // Vérifier si la prochaine chanson a une localisation audio valide
+  //     if (nextSong && nextSong.audio_location) {
+  //       // Mettre à jour l'index actuel et jouer la chanson suivante
+  //       this.playMusic(nextSong, nextIndex);
+  //     } else {
+  //       console.error(
+  //         "La chanson suivante ne contient pas de 'audio_location'",
+  //         nextSong
+  //       );
+  //       this.audioErrorSubject.next('La chanson suivante ne peut pas être lue');
+  //     }
+  //   } catch (error) {
+  //     this.audioErrorSubject.next(
+  //       'Erreur lors de la lecture de la chanson suivante'
+  //     );
+  //     console.error('Erreur lors de la lecture suivante : ', error);
+  //   }
+  // }
 
   // Jouer la chanson précédente
   playPrevious(songs: any[]): void {
@@ -363,6 +411,10 @@ export class LecteurService {
   // Activer/désactiver le mode aléatoire
   toggleShuffle(): void {
     this.isShuffleSubject.next(!this.isShuffleSubject.value);
+  }
+
+  getIsshuffle(): boolean{
+    return this.isShuffleSubject.value;
   }
 
   // Fermer le lecteur de musique
