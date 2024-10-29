@@ -19,16 +19,18 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    IonicStorageModule.forRoot(),  // Ajoutez cette ligne
-    HttpClientModule ,
-
+    IonicStorageModule.forRoot(), // Ajoutez cette ligne
+    HttpClientModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FileChooser,MusicControls,
-    Media,File,AndroidPermissions
+    FileChooser,
+    MusicControls,
+    Media,
+    File,
+    AndroidPermissions,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

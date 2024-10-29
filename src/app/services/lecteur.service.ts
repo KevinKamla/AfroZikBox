@@ -30,10 +30,14 @@ export class LecteurService {
   public isRepeatOne$ = this.isRepeatOneSubject.asObservable();
   public isShuffle$ = this.isShuffleSubject.asObservable();
 
+  public waitingList: any[] = [];
   private currentSongIndex: number = 0;
   public topSongs: any[] = [];
   private songList: any[] = [];
 
+  public getIsRepeatOne(): boolean {
+    return this.isRepeatOneSubject.value;
+  }
   constructor(private musicControls: MusicControls) {
     // Charger l'état initial de la chanson
     this.loadFromLocalStorage();
@@ -48,16 +52,25 @@ export class LecteurService {
       this.isPlayingSubject.next(false);
     };
     this.audio.onended = () => {
+      console.log('La chanson est terminée', this.isRepeatOneSubject.value);
       if (this.isRepeatOneSubject.value) {
         this.audio.currentTime = 0;
         this.audio.play();
       } else {
-        this.playNext(this.topSongs);
+        if (this.waitingList.length > 0) {
+          this.playFromWaitingList();
+        } else {
+          this.playNext(this.topSongs);
+        }
       }
     };
 
     // Initialiser les contrôles
     this.initializeMusicControls();
+  }
+
+  addTowaitingList(song: any) {
+    this.waitingList.push(song);
   }
 
   // Méthode pour initialiser et gérer les MusicControls
@@ -100,6 +113,29 @@ export class LecteurService {
           break;
       }
     });
+  }
+
+  playFromWaitingList() {
+    try {
+      const song = this.waitingList.shift();
+      if (this.audio.src !== song.audio_location) {
+        this.stopCurrentMusic();
+        this.audio.src = song.audio_location;
+        this.audio.load();
+      }
+      this.audio
+        .play()
+        .then(() => {
+          this.isPlayingSubject.next(true);
+          this.currentSongSubject.next(song);
+          this.initializeMusicControls();
+        })
+        .catch((error) => {
+          this.audioErrorSubject.next('Impossible de lire la musique');
+        });
+    } catch (error) {
+      this.audioErrorSubject.next("Une erreur s'est produite");
+    }
   }
 
   // Méthodes pour jouer, mettre en pause, arrêter, etc.
@@ -320,6 +356,7 @@ export class LecteurService {
 
   // Activer/désactiver la répétition de la chanson actuelle
   toggleRepeatOne(): void {
+    console.log('toggleRepeatOne ', this.isRepeatOneSubject.value);
     this.isRepeatOneSubject.next(!this.isRepeatOneSubject.value);
   }
 

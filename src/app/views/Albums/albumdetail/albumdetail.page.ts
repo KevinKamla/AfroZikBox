@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController,} from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../../play/play.page';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,10 +14,9 @@ import { PlaylistService } from '../../../services/playlist.service';
   styleUrls: ['./albumdetail.page.scss'],
 })
 export class AlbumdetailPage implements OnInit {
-
-  pauseIcon: string = "play-circle";
+  pauseIcon: string = 'play-circle';
   state = 'modal';
-  topAlbums:any;
+  topAlbums: any;
   albumId: any;
   albumSongs: any[] = [];
   constructor(
@@ -26,12 +25,11 @@ export class AlbumdetailPage implements OnInit {
     public route: Router,
     private aroute: ActivatedRoute,
     private routes: ActivatedRoute,
-    private topAlbumsService:TopAlbumsService,
+    private topAlbumsService: TopAlbumsService,
     private albumsService: AlbumsService,
     private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
-
-  ) { }
+  ) {}
 
   album: any;
   songs: any[] = [];
@@ -41,8 +39,8 @@ export class AlbumdetailPage implements OnInit {
       component: MusicoptionPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-    })
+      mode: 'ios',
+    });
 
     await modal.present();
   }
@@ -56,13 +54,12 @@ export class AlbumdetailPage implements OnInit {
   }
 
   play() {
-    if (this.pauseIcon == "pause") {
-      this.pauseIcon = "play-circle";
+    if (this.pauseIcon == 'pause') {
+      this.pauseIcon = 'play-circle';
       musicTab.isClose = false;
       musicTab.musicIsPlay = false;
-
     } else {
-      this.pauseIcon = "play-circle";
+      this.pauseIcon = 'play-circle';
       musicTab.isClose = false;
       musicTab.musicIsPlay = true;
     }
@@ -75,7 +72,9 @@ export class AlbumdetailPage implements OnInit {
   convertSecondsToMinutes(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}m ${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}s`;  
+    return `${minutes}m ${
+      remainingSeconds < 10 ? '0' : ''
+    }${remainingSeconds}s`;
   }
 
   loadAlbumSongs() {
@@ -83,15 +82,18 @@ export class AlbumdetailPage implements OnInit {
       (response) => {
         console.log(response);
         this.albumSongs = response.songs;
-        console.log(`Chansons pour l'album ${this.albumId} :`, this.albumSongs);  
+        console.log(`Chansons pour l'album ${this.albumId} :`, this.albumSongs);
       },
       (error) => {
-        console.error(`Erreur lors de la récupération des chansons pour l'album ${this.albumId} :`, error);
+        console.error(
+          `Erreur lors de la récupération des chansons pour l'album ${this.albumId} :`,
+          error
+        );
       }
     );
   }
 
-  places :any;
+  places: any;
   ngOnInit() {
     this.state = this.aroute.snapshot.params['state'];
     const albumId1 = this.routes.snapshot.paramMap.get('id');
@@ -105,20 +107,23 @@ export class AlbumdetailPage implements OnInit {
     if (storedAlbum) {
       // Convertir la chaîne JSON en un objet
       this.album = JSON.parse(storedAlbum);
-      this.songs = this.album.songs
+      this.songs = this.album.songs;
       console.log(this.songs, this.album);
     } else {
-      console.log('Aucun album n\'est stocké dans le localStorage');
+      console.log("Aucun album n'est stocké dans le localStorage");
     }
     this.topAlbumsService.getTopAlbums(albumId1).subscribe(
       (response) => {
         this.topAlbums = response.top_albums;
-        console.log('Détails de l\'albums récupérés :', this.topAlbums);
+        console.log("Détails de l'albums récupérés :", this.topAlbums);
       },
       (error) => {
-        console.error('Erreur lors de la récupération des détails de l\'artiste :', error);
+        console.error(
+          "Erreur lors de la récupération des détails de l'artiste :",
+          error
+        );
       }
-    ); 
+    );
   }
 
   // playMusicFromSongs(song: any, index: number) {
@@ -126,10 +131,10 @@ export class AlbumdetailPage implements OnInit {
   //   this.goToRoute('tabs'); // Ajout de la navigation vers les onglets
   // }
 
-  loadsong(playlist:any, index:number){
+  loadsong(playlist: any, index: number) {
     // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
     musicTab.musicIsPlay = true;
   }
