@@ -119,7 +119,7 @@ export class ProfilPage implements OnInit {
       this.like = response.data.count;
       // console.log(this.like,"likeeeeeeeeee")
     });
-    this.eventService.getMyEvents(this.userId,'').subscribe((res) => {
+    this.eventService.getMyEvents(this.userId).subscribe((res) => {
       console.log('eventtttttttttttt',res);
       this.events = res.data;
     });
