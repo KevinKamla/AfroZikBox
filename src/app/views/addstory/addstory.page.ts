@@ -85,20 +85,20 @@ export class AddstoryPage {
     return new File([blob], 'image.png', { type: 'image/png' });
   }
 
-  async pickAudioFile() {
-    try {
-      const result = await this.fileChooser.open();
-      if (result) {
-        const fileUri = result;
-        const file = await this.convertUriToFile(fileUri);
-        this.audioFile = file;
-        this.imgMucic = 'assets/icon/son.png'; // Audio file placeholder
-      }
-    } catch (error) {
-      console.error('Error selecting audio file:', error);
-    }
+  pickAudioFile() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'audio/*';
+    fileInput.onchange = (event: any) => {
+        const file = event.target.files[0];
+        if (file) {
+            this.audioFile = file; // Stockez le fichier audio pour l'envoi dans le formulaire
+            this.imgMucic = URL.createObjectURL(file); // Créez une URL de prévisualisation
+        }
+    };
+    fileInput.click();
   }
-
+  
   async convertUriToFile(fileUri: string): Promise<File> {
     const fileData = await Filesystem.readFile({ path: fileUri });
     const byteArray = this.base64ToUint8Array(fileData.data);

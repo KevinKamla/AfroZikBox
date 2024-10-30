@@ -21,14 +21,18 @@
         </ion-card>
   
         <ion-card button (click)="pickAudioFile()" class="ion-no-box-shadow">
-          <ion-card-content class="image">
-            <img *ngIf="imgMucic" src="{{imgMucic}}" alt="Icône musique">
-            <div class="content" *ngIf="!imgMucic">
-              <ion-icon slot="start" name="musical-notes"></ion-icon>
-              <h5>Sélectionner la chanson à importer</h5>
-            </div>
-          </ion-card-content>
+            <ion-card-content class="image">
+              <img *ngIf="imgMucic" [src]="imgMucic" alt="Icône musique">
+              <div class="content" *ngIf="!imgMucic">
+                <ion-icon slot="start" name="musical-notes"></ion-icon>
+                <h5>Sélectionner la chanson à importer</h5>
+              </div>
+            </ion-card-content>
         </ion-card>
+        <ion-item>
+            <ion-label position="floating">Chanson sélectionnée</ion-label>
+            <ion-input formControlName="audio" [value]="imgMucic" readonly></ion-input>
+          </ion-item>
       </div>
   
       <ion-item>
@@ -50,8 +54,7 @@
           <ion-icon name="link-outline"></ion-icon>
           <ion-input type="text" class="content" placeholder="Url"></ion-input>
         </div>
-  
-        <ion-button expand="block" shape="round" class="ion-margin" type="submit" [disabled]="storyForm.invalid">
+        <ion-button expand="block" shape="round" class="ion-margin" type="submit" [disabled]="storyForm.invalid || !imgMucic">
           Publier
         </ion-button>
       </div>
