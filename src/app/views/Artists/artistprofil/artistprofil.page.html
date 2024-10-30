@@ -24,7 +24,9 @@
         </div>
         <div class="block-btn-header ">
             <ion-buttons slot="start">
-                <ion-button expand="bloc" shape="round" (click)="Following()">{{suivre}}</ion-button>
+                <ion-button shape="round" expand="bloc" (click)="toggleFollow(artist.id)">
+                    {{ isFollowing ? 'Se désabonner' : 'Suivre' }}
+                  </ion-button>
                 <ion-button shape="round" expand="bloc" [routerLink]="['/chat',5]">Message</ion-button>
             </ion-buttons>
         </div>
