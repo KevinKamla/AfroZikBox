@@ -285,6 +285,7 @@ export class SuggestionsPage implements OnInit {
     this.artistService.getArtist('').subscribe(
       (response) => {
         this.artists = response.data.data;
+        console.log(this.artists);
       },
       (error) => {
         console.error('Erreur lors de la récupération des artistes :', error);
