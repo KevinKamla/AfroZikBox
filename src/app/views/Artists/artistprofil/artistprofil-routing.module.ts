@@ -9,7 +9,7 @@ const routes: Routes = [
     component: ArtistprofilPage
   },
   {
-    path: 'mymusic/:type',
+    path: 'mymusic/:type/:idArtist',
     loadChildren: () => import('../../../views/Artists/mymusic/mymusic.module').then( m => m.MymusicPageModule)
   },
 ];
