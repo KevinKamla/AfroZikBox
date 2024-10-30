@@ -16,7 +16,7 @@
         <div class="best">
             <div class="box-title">
                 <h3>Joué récement</h3>
-                <p [routerLink]="['all']">Voir plus</p>
+                <p (click)="goToSegment('recently')">Voir plus</p>
             </div>
 
             <div class="container-scroll" *ngIf="10 > 1; else ionSkeletonRecent">

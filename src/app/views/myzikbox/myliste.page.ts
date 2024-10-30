@@ -6,6 +6,7 @@ import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { UserService } from 'src/app/services/user.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-myliste',
@@ -24,12 +25,15 @@ export class MylistePage implements OnInit {
     public suggestionsService : SuggestionsService,
     private userService: UserService,
     private PlaylistService: PlaylistService,
+    private route: Router,
     private musicService: LecteurService // Injection du service de musique
 
 
   ) { }
 
-
+  goToSegment(segment: string) {
+    this.route.navigate([segment]);
+  }
   goToPlay = (item: any) => {
     console.log(item);
     localStorage.setItem('latest', JSON.stringify(item));
