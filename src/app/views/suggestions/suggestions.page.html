@@ -224,7 +224,7 @@
         <div class="movie" *ngFor="let artist of artists">
           <img
             class="img-intro"
-            [src]="artist.avatar"
+            [src]="artist.avatar ? artist.avatar : artist.cover" alt="Artist Image"
             (click)="artistDetail(artist)"
           />
           <p>{{ artist.name }}</p>
