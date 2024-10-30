@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private baseUrl2 = `${environment.api}/user/get-follower`;
@@ -17,90 +17,142 @@ export class UserService {
   private purchases = `${environment.api}/event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
   private profile = `${environment.api}/user/get-profile`;
+  private block = `${environment.api}/block-user/block`;
+  private unblock = `${environment.api}/block-user/unblock`;
   private serverKey = environment.server_key;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getRecentPlayed(id:number){
+  getRecentPlayed(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
-      .set('offset',5)
-      .set('limit',3);
+      .set('offset', 5)
+      .set('limit', 3);
     return this.http.get<any>(this.recent, { params });
   }
   getFollowers(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('id', id.toString())
+      .set('id', id.toString());
     return this.http.get<any>(this.baseUrl2, { params });
   }
-  getLikeds(id : number): Observable<any> {
+  getLikeds(id: number): Observable<any> {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
-      .set('offset',5)
-      .set('limit',3);
+      .set('offset', 5)
+      .set('limit', 3);
     return this.http.get<any>(this.baseUrl3, { params });
   }
   getFollowing(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('id', id.toString())
+      .set('id', id.toString());
     return this.http.get<any>(this.baseUrl4, { params });
   }
-  getProfile(id:number) {
+  getProfile(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('fetch','all')
-      .set('limit',3);
+      .set('fetch', 'all')
+      .set('limit', 3);
     return this.http.get<any>(this.profile, { params });
   }
-  getBlocks(id:number) {
+  getBlocks(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset',5)
-      .set('limit',3);
+      .set('offset', 5)
+      .set('limit', 3);
     return this.http.get<any>(this.userBlock, { params });
   }
-  getRecommanded(id:number) {
+  getRecommanded(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset',5)
-      .set('limit',3);
+      .set('offset', 5)
+      .set('limit', 3);
     return this.http.get<any>(this.recommanded, { params });
   }
-  getMembership(id:number) {
+  getMembership(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset',5)
-      .set('limit',3);
+      .set('offset', 5)
+      .set('limit', 3);
     return this.http.get<any>(this.membership, { params });
   }
-  getPurchases(id:number) {
+  getPurchases(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
-      .set('limit',3);
+      .set('limit', 3);
     return this.http.get<any>(this.purchases1, { params });
   }
-  getPurchases1(id:number) {
+  getPurchases1(id: number) {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('user_id', id.toString())
+      .set('user_id', id.toString());
     return this.http.get<any>(this.purchases, { params });
+  }
+
+  blockUser(id: number): Observable<any> {
+    console.log(id);
+
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', id.toString());
+
+    return this.http
+      .post(this.block, params)
+      .pipe(catchError(this.handleError));
+  }
+
+  unBlockUser(id: number): Observable<any> {
+    console.log(id);
+
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', id.toString());
+
+    return this.http
+      .post(this.unblock, params)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    return throwError(() => errorMessage);
+  }
+
+  getBlockedUsers(id: number) {
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', id.toString());
+
+    return this.http.post(
+      'https://afrozikbox.com/endpoint/user/get-blocks',
+      params
+    );
   }
 }
