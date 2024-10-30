@@ -7,6 +7,7 @@ import { GenresService } from '../../services/genres.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { musicTab } from '../play/play.page';
 import { PlaylistService }  from '../../services/playlist.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-musicbygenre',
@@ -17,6 +18,7 @@ export class MusicbygenrePage implements OnInit {
 
   genre = '';
   genres: any[]=[];
+  loading: boolean = true;
   genreName = ''; // Ajout d'une propriété pour le nom du genre
 
   constructor(    
@@ -47,25 +49,25 @@ export class MusicbygenrePage implements OnInit {
 
   ngOnInit() {    
     this.genre = this.actvroute.snapshot.params['genre'];
-    
     const genreId = this.route.snapshot.paramMap.get('id');
 
-    this.genreService.getGenre(genreId).subscribe(
-      (response) => {
-        this.genres = response.data;
-        const genre = this.genres.find(g => g.id === Number(this.genre));
-        this.genreName = genre ? genre.cateogry_name : '';
-        console.log('Détails du genre correspondant à l\'ID :', genre); 
+    // Use forkJoin to ensure both requests complete before proceeding
+    forkJoin({
+      genreDetails: this.genreService.getGenre(genreId),
+      trackDetails: this.genreService.getTrackGenre(Number(this.genre), '')
+    }).subscribe(
+      ({ genreDetails, trackDetails }) => {
+        this.genres = trackDetails.tracks.data;
+        const genre = genreDetails.data.find((g :any) => g.id === Number(this.genre));
+        this.genreName = genre ? genre.category_name : '';
+        console.log('Détails du genre récupérés:', this.genres);
+        this.loading = false; // Set loading to false once data is ready
       },
       (error) => {
         console.error('Erreur lors de la récupération des détails du genre :', error);
+        this.loading = false;  // Set loading to false in case of error
       }
     );
-
-    this.genreService.getTrackGenre(Number(this.genre), '').subscribe((response) => {
-      this.genres = response.tracks.data;
-      console.log('Détails du genre récupérés :', this.genres);
-    });
   }
 
   // playMusicFromSongs(song: any, index: number) {

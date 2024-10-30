@@ -8,7 +8,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <div class="list_chansons">
+    <!-- Display a loading indicator while loading is true -->
+    <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+
+    <div *ngIf="!loading" class="list_chansons">
         <div class="ion-item" *ngFor="let genre of genres; let i = index">
             <img [src]="genre.thumbnail" />
             <div class="title">
