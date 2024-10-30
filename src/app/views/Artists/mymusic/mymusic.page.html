@@ -11,11 +11,11 @@
 
 <ion-content [fullscreen]="true">
     <div class="list_chansons" *ngIf="type === 'Rencents'">
-        <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1,1,1,1,1]">
-            <img src="assets/icon/gims.png" />
+        <div class="ion-item" *ngFor="let song of filtered">
+            <img [src]="song.thumbnail"/>
             <div class="title">
-                <h3>Mon coeur avait raison</h3>
-                <p>admin | 3.59</p>
+                <h3>{{song.title}}</h3>
+                <p>{{song.publisher.username}} | {{song.duration}}</p>
             </div>
             <div class="block-btn">
                 <ion-button class="btn-play" (click)="goToPlay()">
@@ -28,11 +28,11 @@
         </div>
     </div>
     <div class="list_chansons" *ngIf="type === 'Meilleurs'">
-        <div class="ion-item" *ngFor="let song of [1,1,1,1,1,1]">
-            <img src="assets/icon/gims.png" />
+        <div class="ion-item" *ngFor="let song of filtered">
+            <img [src]="song.thumbnail" />
             <div class="title">
-                <h3>Mon coeur avait raison</h3>
-                <p>admin | 3.59</p>
+                <h3>{{song.title}}</h3>
+                <p>{{song.publisher.username}} | {{song.duration}}</p>
             </div>
             <div class="block-btn">
                 <ion-button class="btn-play" (click)="goToPlay()">
@@ -47,27 +47,27 @@
 
 
     <div class="list_albums" *ngIf="type === 'Albums'">
-        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of [[1,'buy'],[1,'free'],[1,'free'],[1,'buy']]">
+        <ion-item class="img-detail d-f-s ion-no-border" *ngFor="let album of filtered">
             <div class="bg-album" [routerLink]="['../../../albumdetail','page']">
-                <img class="background-image" src="assets/icon/gims.png" />
+                <img class="background-image" [src]="album.thumbnail" />
                 <div class="orange-disc"></div>
                 <ion-icon class="play-icon" color="primary" slot="icon-only" name="play-circle"></ion-icon>
             </div>
             <div class="details">
                 <div class="title">
-                    <h3>Mon coeur avait raison</h3>
-                    <p>Maitre Gims</p>
+                    <h3>{{album.title}}</h3>
+                    <p>{{album.publisher.username}}</p>
                 </div>
                 <div class="info ">
                     <ion-badge color="primary" shape="round">
-                        Ceinture Rouge
+                        {{album.count_songs}} Chansons
                     </ion-badge>
-                    <ion-badge color="medium" shape="round">
-                        26 Chansons
+                    <ion-badge color="danger" shape="round">
+                        $ {{album.price}}
                     </ion-badge>
-                    <ion-badge color="danger" shape="round" *ngIf="album[1] === 'buy'">
-                        $4.99
-                    </ion-badge>
+                    <!-- <ion-badge color="danger" shape="round" *ngIf="album[1] === 'buy'">
+                        $ {{album.price}}
+                    </ion-badge> -->
                 </div>
             </div>
         </ion-item>
