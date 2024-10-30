@@ -73,6 +73,13 @@
     --ion-color-light-tint: #f5f6f9;
 }
 
+:root[theme='dark'] {
+    --ion-color-primary: #222428;
+    --ion-background-color: #121212;
+    --ion-text-color: #ffffff;
+    /* Ajoutez d'autres variables si nécessaire */
+}
+
 @media (prefers-color-scheme: dark) {
     /*
      * Dark Colors

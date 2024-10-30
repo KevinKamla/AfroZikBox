@@ -63,7 +63,7 @@ export class UserService {
       .set('limit', 3);
     return this.http.get<any>(this.profile, { params });
   }
-  getBlocks(id: number) {
+  getBlocks(id: number) {  
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
@@ -110,8 +110,8 @@ export class UserService {
     console.log(id);
 
     const params = new HttpParams()
-      .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
+      .set('server_key', this.serverKey)
       .set('id', id.toString());
 
     return this.http

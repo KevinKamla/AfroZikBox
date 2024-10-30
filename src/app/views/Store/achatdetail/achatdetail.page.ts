@@ -21,20 +21,6 @@ export class AchatdetailPage implements OnInit {
 
   ) { }
  
-  public alertActionreeButtons = [
-    {
-      text: 'Partager',
-      role: 'confirm',
-      handler: () => { 
-        this.shareMusicLink();
-      },
-    },
-    {
-      text: 'Copier',
-      role: 'cancel',
-      handler: () => { },
-    },
-  ];
 
   goToRoute(route: string = '') {
     if (route) {
@@ -64,6 +50,31 @@ export class AchatdetailPage implements OnInit {
     } else {
       console.log('Aucun album n\'est stocké dans le localStorage');
     }
+  }
+  public alertActionreeButtons = [
+    {
+      text: 'Partager',
+      role: 'confirm',
+      handler: () => { 
+        this.shareMusicLink();
+      },
+    },
+    {
+      text: 'Copier',
+      role: 'cancel',
+      handler: () => {
+        this.copyLinkAndRedirect(this.achats.event.url);
+      },
+    },
+  ];
+  copyLinkAndRedirect(url:any) {
+    const artistLink = this.achats.url; // Remplacez par l'URL appropriée
+    navigator.clipboard.writeText(url).then(() => {
+      console.log('Lien copié :', url);
+      // window.open(url, '_blank'); // Ouvre le lien dans un nouvel onglet
+    }).catch(err => {
+      console.error('Erreur lors de la copie du lien :', err);
+    });
   }
 
   joinEvent() {
