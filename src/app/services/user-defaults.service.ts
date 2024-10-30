@@ -11,7 +11,7 @@ export class StorageService {
 
   async init() {
     await this.storage.create();
-  }
+  } 
 
   // Set Device ID
   async setDeviceId(value: string, key: string) {
