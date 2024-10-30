@@ -24,7 +24,7 @@ export class RechercheService {
     body.set('keyword', keyword);
     body.set('genres', genres);
     body.set('price', price);
-    body.set('fetch', fetch.join(','));
+    body.set('fetch', 'songs,albums,artist,playlist,events,products',);
     body.set('limit', limit.toString());
     body.set('offset', offset.toString());
     body.set('server_key', this.serverKey);

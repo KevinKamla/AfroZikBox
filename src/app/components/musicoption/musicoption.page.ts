@@ -154,9 +154,9 @@ export class MusicoptionPage implements OnInit {
       console.log('Le contenu décodé est null ou undefined');
     }
 
-    // this.playlistIds = this.navParams.get('playlistId');
-    // this.selectedPlaylist = this.navParams.get('playlistData');
-    // console.log('Playlist data:', this.selectedPlaylist);
+    this.playlistIds = this.navParams.get('playlistId');
+    this.selectedPlaylist = this.navParams.get('playlistData');
+    console.log('Playlist data:', this.selectedPlaylist);
     // const selectedPlaylist = this.favoris.find(
     //   (favoris) => favoris.id === this.playlistIds
     // ); // Recherche de l'élément

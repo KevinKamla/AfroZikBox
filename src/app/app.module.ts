@@ -12,6 +12,7 @@ import { Media } from '@awesome-cordova-plugins/media/ngx';
 import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
 import { File } from '@ionic-native/file/ngx'; // Ajoutez cette ligne
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez ceci
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +20,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    ReactiveFormsModule, // Ajoutez ceci ici aussi
     IonicStorageModule.forRoot(), // Ajoutez cette ligne
     HttpClientModule,
   ],

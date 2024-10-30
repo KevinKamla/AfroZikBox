@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { EventService } from 'src/app/services/event.service';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-createevenement',
@@ -23,12 +25,50 @@ export class CreateevenementPage implements OnInit {
     available_tickets: 0,
     ticket_price: 0,
   };
+  eventForm = this.fb.group({
+    name: ['', Validators.required],
+    desc: [''],
+    start_date: [''],
+    start_time: [''],
+    end_date: [''],
+    end_time: [''],
+    location: [''],
+    online_url: [''],
+    real_address: [''],
+    sell_tickets: [''],
+    available_tickets: [''],
+    ticket_price: ['']
+  });
+  
   imageFile: File | null = null;
   videoFile: File | null = null;
-  constructor(private yourService: EventService,    private alertController: AlertController
-  ) { }
+  selectedEvent: any;
+
+  constructor(private yourService: EventService,private route: ActivatedRoute,private alertController: AlertController, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['event']) {
+        this.selectedEvent = JSON.parse(params['event']);
+        this.preFillForm(this.selectedEvent);
+      }
+    });
+  }
+  preFillForm(eventData: any) {
+    this.eventForm.patchValue({
+      name: eventData.name,
+      desc: eventData.desc,
+      start_date: eventData.start_date,
+      start_time: eventData.start_time,
+      end_date: eventData.end_date,
+      end_time: eventData.end_time,
+      location: eventData.location,
+      online_url: eventData.online_url || '',
+      real_address: eventData.real_address || '',
+      sell_tickets: eventData.sell_tickets,
+      available_tickets: eventData.available_tickets || '',
+      ticket_price: eventData.ticket_price || ''
+    });
   }
 
   onImageFileSelected(event: Event) {

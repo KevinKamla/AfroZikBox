@@ -15,7 +15,6 @@ import { PlaylistService } from 'src/app/services/playlist.service';
   styleUrls: ['./artistprofil.page.scss'],
 })
 export class ArtistprofilPage implements OnInit {
-
   suivre = 'Suivre';
   isFollowers = false;
   username = 'Bolingo';
@@ -31,7 +30,7 @@ export class ArtistprofilPage implements OnInit {
     private suggestionsService: SuggestionsService,
     private PlaylistService: PlaylistService,
     private musicService: LecteurService // Injection du service de musique
-  ) { }
+  ) {}
 
   goToRoute(route: string = '') {
     if (route) {
@@ -44,90 +43,103 @@ export class ArtistprofilPage implements OnInit {
   playMusic = (item: any) => {
     musicTab.isClose = false;
     musicTab.musicIsPlay = true;
-  }
-
+  };
 
   async openAlbumDetail(props: any) {
     const modal = await this.modal.create({
       component: AlbumdetailPage,
       showBackdrop: true,
       backdropDismiss: false,
-    })
+    });
     await modal.present();
   }
 
-
   Following() {
-    this.suivre === 'Suivre' ? this.suivre = 'Following' : this.suivre = 'Suivre';
-    this.suivre === 'Suivre' ? this.isFollowers = false : this.isFollowers = true;
+    this.suivre === 'Suivre'
+      ? (this.suivre = 'Following')
+      : (this.suivre = 'Suivre');
+    this.suivre === 'Suivre'
+      ? (this.isFollowers = false)
+      : (this.isFollowers = true);
   }
 
-  
   public alertCashfreeButtons = [
     {
       text: 'Copier le lien vers le profil',
       role: 'confirm',
-      handler: () => { },
+      handler: () => {},
     },
     {
       text: 'Bloquer',
       role: 'cancel',
-      handler: () => { },
+      handler: () => {},
     },
   ];
 
   topSongs: any[] = [];
-  artist_ids :any;
-  idArtist:any;
-  filteredTOPSongs:any[]=[];
-  filteredTOPAlbums:any[]=[];
-  filteredLatest:any[]=[];
-  topalbums:any[]=[];
-  latest:any[]=[];
+  artist_ids: any;
+  idArtist: any;
+  filteredTOPSongs: any[] = [];
+  filteredTOPAlbums: any[] = [];
+  filteredLatest: any[] = [];
+  topalbums: any[] = [];
+  latest: any[] = [];
   ngOnInit() {
     const artist = this.routes.snapshot.paramMap.get('id');
     const artists = localStorage.getItem('artist');
-    console.log(artists);
     if (artists) {
       this.artist = JSON.parse(artists);
-      this.idArtist = this.artist.artist;
-      console.log('idArtist',this.idArtist);
+      this.idArtist = this.artist.id;
+      console.log('idArtist', this.idArtist);
     }
+
     this.topsService.getTopSongs().subscribe(
       (response) => {
-        this.topSongs = response.data; 
-        this.filteredTOPSongs = this.topSongs.filter(song => song.user_id === this.idArtist);
-        console.log(this.filteredTOPSongs,'filteredSongs'); 
-        // this.loadSongsForTopAlbums();
-        console.log(this.topSongs);
+        this.topSongs = response.data;
+        this.filteredTOPSongs = this.topSongs.filter(
+          (song) => song.user_id == this.idArtist
+        ); // Correction ici
+        console.log(this.filteredTOPSongs, 'filteredSongs');
       },
       (error) => {
-        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+        console.error(
+          'Erreur lors de la récupération des Meilleur songs :',
+          error
+        );
       }
     );
+
     this.topAlbumsService.getTopAlbums().subscribe(
       (response) => {
         this.topalbums = response.top_albums;
-        console.log(this.topalbums);
-        this.filteredTOPAlbums = this.topalbums.filter(album => album.user_id === this.idArtist);
-        console.log(this.filteredTOPAlbums,'filteredTOPAlbums'); 
+        this.filteredTOPAlbums = this.topalbums.filter(
+          (album) => album.user_id == this.idArtist
+        ); // Correction ici
+        console.log(this.filteredTOPAlbums, 'filteredTOPAlbums');
       },
       (error) => {
-        console.error('Erreur lors de la récupération des meilleurs albums :', error);
+        console.error(
+          'Erreur lors de la récupération des meilleurs albums :',
+          error
+        );
       }
     );
+
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         this.latest = response.new_releases.data;
-        console.log(this.latest);
-        this.filteredLatest = this.latest.filter(latest => latest.user_id === this.idArtist);
-        console.log(this.filteredLatest,'filteredLatest');
+        this.filteredLatest = this.latest.filter(
+          (latest) => latest.user_id == this.idArtist
+        ); // Correction ici
+        console.log(this.filteredLatest, 'filteredLatest');
       },
       (error) => {
-        console.error('Erreur lors de la récupération des suggestions :', error);
+        console.error(
+          'Erreur lors de la récupération des suggestions :',
+          error
+        );
       }
     );
-    
   }
 
   selectAlbum(album: any) {
@@ -135,11 +147,10 @@ export class ArtistprofilPage implements OnInit {
     this.route.navigate(['albumdetail', album.id]);
   }
 
-  loadsong(playlist:any, index:number){
+  loadsong(playlist: any, index: number) {
     // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
   }
-
 }

@@ -15,6 +15,7 @@ import { StatutPage } from '../statut/statut.page';
 import { LecteurService } from 'src/app/services/lecteur.service'; // Import du service de musique
 import { AuthService } from 'src/app/services/auth.service';
 import { PlaylistService } from'src/app/services/playlist.service';
+import { StoryService } from 'src/app/services/story.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -57,6 +58,7 @@ export class SuggestionsPage implements OnInit {
     private alertController: AlertController,
     private genreService: GenresService,
     private toastController: ToastController,
+    private yourService: StoryService,
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
@@ -249,6 +251,7 @@ export class SuggestionsPage implements OnInit {
   avatar: any;
 
   ngOnInit() {
+    this.loadStories();
     this.isUserLoggedIn = this.authService.isLoggedIn();
 
     const u = localStorage.getItem("UserData");
@@ -282,6 +285,7 @@ export class SuggestionsPage implements OnInit {
     this.artistService.getArtist('').subscribe(
       (response) => {
         this.artists = response.data.data;
+        console.log(this.artists);
       },
       (error) => {
         console.error('Erreur lors de la récupération des artistes :', error);
@@ -314,8 +318,19 @@ export class SuggestionsPage implements OnInit {
     return title.length > limit ? title.slice(0, limit) + '...' : title;
   }
 
+  stories: any[] = []; // Array to hold story data
 
-
+  loadStories() {
+    this.yourService.getStories().subscribe({
+      next: (response) => {
+        this.stories = response; // Assuming response contains an array of stories
+        console.log(this.stories)
+      },
+      error: (error) => {
+        console.error('Error loading stories', error);
+      }
+    });
+  }
 
 
 

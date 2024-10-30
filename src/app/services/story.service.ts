@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -21,22 +21,29 @@ export class StoryService {
 
   // Headers pour le multipart/form-data
   private getHttpOptions() {
-    const headers = new HttpHeaders({
-      'Content-Type': 'multipart/form-data',
-      Authorization: this.accessToken || '',
-    });
-    return { headers };
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+    return { params };
   }
 
   // Créer une histoire
   createStory(formData: FormData): Observable<any> {
     const url = this.create;
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      
     return this.http.post(url, formData, this.getHttpOptions());
   }
 
   // Payer pour publier une histoire
   payStory(storyId: number): Observable<any> {
-    return this.http.post(this.pay, { id: storyId }, this.getHttpOptions());
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', storyId.toString());
+    return this.http.post(this.pay, params, this.getHttpOptions());
   }
 
   // Supprimer une histoire
