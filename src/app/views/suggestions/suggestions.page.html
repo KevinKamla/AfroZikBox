@@ -4,7 +4,7 @@
       <div
         class="bg-img"
         [ngStyle]="{ 'background-image': 'linear-gradient(#97919100, #615e5e5c, #000000fc),  url(' + avatar + ')'}"
-        (click)="handleStoryClick()"
+        
       >
         <ion-avatar
           ><img [src]="[avatar]" style="height: auto; width: 100%"
@@ -12,7 +12,7 @@
         <p>Créer une story</p>  
       </div>
     </div>
-    <ng-container *ngFor="let item of [true,false]">
+    <!-- <ng-container *ngFor="let item of [true,false]">
       <div class="movie" (click)="item? openActut() : openPopup()">
         <div
           class="bg-img"
@@ -25,7 +25,7 @@
           <p>Kvnkamla</p>
         </div>
       </div>
-    </ng-container>
+    </ng-container> -->
   </div>
 </div>
 <div class="best">

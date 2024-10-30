@@ -18,7 +18,7 @@
             />
             <div class="title d-f-c">
                 <h3>{{artist.name}}</h3>
-                <ion-icon color="success" name="checkmark-circle"></ion-icon>
+                <ion-icon *ngIf="artist.admin === 1" color="success" name="checkmark-circle"></ion-icon>
             </div>
             <p>Aucune information</p>
         </div>
