@@ -1,32 +1,31 @@
-/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
-import { Camera, CameraResultType } from '@capacitor/camera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { ActionSheetController } from '@ionic/angular';
-import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Filesystem } from '@capacitor/filesystem';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { StoryService } from 'src/app/services/story.service';
-
 
 @Component({
   selector: 'app-addstory',
   templateUrl: './addstory.page.html',
   styleUrls: ['./addstory.page.scss'],
 })
-export class AddstoryPage implements OnInit {
-
-
+export class AddstoryPage {
   isGetImg = false;
   imgPath: string = '';
   imgMucic: string = '';
-  canview = 'Qui peut voir'
+  canview = 'Qui peut voir';
   storyForm: FormGroup;
+  imageFile: any; // Holds the captured image file
+  audioFile: any; // Holds the selected audio file
 
   constructor(
     private actionSheetCtrl: ActionSheetController,
     private fileChooser: FileChooser,
-    private yourService: StoryService, private fb: FormBuilder
-  ) { 
+    private storyService: StoryService,
+    private fb: FormBuilder
+  ) {
     this.storyForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -34,49 +33,77 @@ export class AddstoryPage implements OnInit {
     });
   }
 
-  // async pickAudioFile() {
-  //   const result = await this.fileChooser.open({
-  //     mime: 'audio/mp3',      
-  //   });
-  
-  //   if (result && result.length > 0) {
-  //     const fileObject = result[0];
-  //     // const filePath = fileObject.nativeURL;
-      
-  //   }
-  //   this.imgMucic = 'assets/icon/son.png';
-  // }
+  async camera() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Uri, // Using URI to convert into a file
+        source: CameraSource.Camera, // Force the use of camera
+      });
+
+      if (image && image.webPath) {
+        const imageFile = await this.convertImageToFile(image.webPath);
+        this.imageFile = imageFile; // Store the image file for submission
+        this.imgPath = image.webPath; // Display the image preview
+        this.isGetImg = true;
+      } else {
+        console.error('Failed to capture image or image path is undefined');
+      }
+    } catch (error) {
+      console.error('Camera error:', error);
+      // If camera fails, fallback to file input
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = (event: any) => {
+        const file = event.target.files[0];
+        if (file) {
+          this.imageFile = file;
+          this.imgPath = URL.createObjectURL(file); // Preview the image
+          this.isGetImg = true;
+        }
+      };
+      input.click();
+    }
+  }
+
+  base64ToUint8Array(base64: any): Uint8Array {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
+  }
+
+  async convertImageToFile(imageUri: string): Promise<File> {
+    const fileData = await Filesystem.readFile({ path: imageUri });
+    const byteArray = this.base64ToUint8Array(fileData.data);
+    const blob = new Blob([byteArray], { type: 'image/png' });
+    return new File([blob], 'image.png', { type: 'image/png' });
+  }
+
   async pickAudioFile() {
     try {
-      // Open the file chooser for audio files
       const result = await this.fileChooser.open();
-  
-      // Verify file selection and retrieve file path
       if (result) {
-        const fileUri = result; // The file path or URI selected
-  
-        // Set the image or icon as feedback for selection
-        this.imgMucic = 'assets/icon/son.png';
-  
-        console.log('Selected audio file:', fileUri);
-      } else {
-        console.log('No file selected');
+        const fileUri = result;
+        const file = await this.convertUriToFile(fileUri);
+        this.audioFile = file;
+        this.imgMucic = 'assets/icon/son.png'; // Audio file placeholder
       }
     } catch (error) {
       console.error('Error selecting audio file:', error);
     }
   }
-  
 
-  async camera() {
-    const image = await Camera.getPhoto({
-      quality: 100,
-      allowEditing: false,
-      resultType: CameraResultType.Base64
-    });
-
-    this.imgPath = 'data:image/png;base64,' + image.base64String
-    this.isGetImg = true
+  async convertUriToFile(fileUri: string): Promise<File> {
+    const fileData = await Filesystem.readFile({ path: fileUri });
+    const byteArray = this.base64ToUint8Array(fileData.data);
+    const blob = new Blob([byteArray], { type: 'audio/mp3' });
+    return new File([blob], 'audio.mp3', { type: 'audio/mp3' });
   }
 
   async openCanViewModal() {
@@ -86,58 +113,56 @@ export class AddstoryPage implements OnInit {
         {
           text: 'Mes abonnés',
           handler: () => {
-            this.canview = "Mes abonnés"
-            console.log(this.canview);
-
-          }
+            this.canview = 'followers';
+          },
         },
         {
-          text: 'Tout le monde(Promotion)',
+          text: 'Tout le monde (Promotion)',
           handler: () => {
-            this.canview = 'Tout le monde(Promotion)'
-            console.log(this.canview);
-
-          }
-        }
-      ]
-    })
+            this.canview = 'all';
+          },
+        },
+      ],
+    });
 
     await actionSheet.present();
   }
 
-  ngOnInit() {
-  }
-  onImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.storyForm.patchValue({ image: input.files[0] });
-    }
-  }
-
-  // Méthode pour soumettre le formulaire
   onSubmit() {
     if (this.storyForm.valid) {
       const formData = new FormData();
       formData.append('title', this.storyForm.get('title')?.value);
       formData.append('description', this.storyForm.get('description')?.value);
-
-      // Ajouter l'image au formData si elle est présente
-      const image = this.storyForm.get('image')?.value;
-      if (image) {
-        formData.append('image', image);
+  
+      // Add the image file to the form data if it exists
+      if (this.imageFile) {
+        formData.append('image', this.imageFile);
       }
-
-      // Appel au service pour créer la story
-      this.yourService.createStory(formData).subscribe({
+  
+      // Add the audio file to the form data if it exists
+      if (this.audioFile) {
+        formData.append('audio', this.audioFile);
+      }
+  
+      // Add the visibility option to the form data
+      if (this.canview) {
+        formData.append('who', this.canview);
+      } else {
+        console.error('No visibility option selected');
+        return;
+      }
+  
+      // Submit the form to the backend
+      this.storyService.createStory(formData).subscribe({
         next: (response) => {
-          console.log('Story créée avec succès', response);
-          // Gérer le succès (ex: message de confirmation ou réinitialisation du formulaire)
+          console.log('Story created successfully', response);
         },
         error: (error) => {
-          console.error('Erreur lors de la création de la story', error);
-          // Gérer l'erreur (ex: message d'erreur)
+          console.error('Error creating story', error);
         },
       });
     }
   }
+  
+ 
 }
