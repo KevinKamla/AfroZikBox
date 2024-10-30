@@ -8,6 +8,7 @@ import { TopAlbumsService } from 'src/app/services/top-albums.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { FollowService } from 'src/app/services/follow.service';
 
 @Component({
   selector: 'app-artistprofil',
@@ -19,6 +20,7 @@ export class ArtistprofilPage implements OnInit {
   isFollowers = false;
   username = 'Bolingo';
   artist: any;
+  isFollowing: boolean = false; // Suivre l'état de suivi
 
   constructor(
     private navCtrl: NavController,
@@ -29,6 +31,7 @@ export class ArtistprofilPage implements OnInit {
     private topAlbumsService: TopAlbumsService,
     private suggestionsService: SuggestionsService,
     private PlaylistService: PlaylistService,
+    private followService:FollowService,
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
@@ -54,20 +57,36 @@ export class ArtistprofilPage implements OnInit {
     await modal.present();
   }
 
-  Following() {
-    this.suivre === 'Suivre'
-      ? (this.suivre = 'Following')
-      : (this.suivre = 'Suivre');
-    this.suivre === 'Suivre'
-      ? (this.isFollowers = false)
-      : (this.isFollowers = true);
+  toggleFollow(userId: number) {
+    if (this.isFollowing) {
+      this.followService.unfollowUser(userId).subscribe({
+        next: () => {
+          this.isFollowing = false; // Mise à jour de l'état
+          console.log('Désabonné avec succès');
+        },
+        error: (error) => {
+          console.error('Erreur lors du désabonnement', error);
+        }
+      });
+    } else {
+      this.followService.followUser(userId).subscribe({
+        next: () => {
+          this.isFollowing = true; // Mise à jour de l'état
+          console.log('Abonné avec succès');
+        },
+        error: (error) => {
+          console.error('Erreur lors de l\'abonnement', error);
+        }
+      });
+    }
   }
-
   public alertCashfreeButtons = [
     {
       text: 'Copier le lien vers le profil',
       role: 'confirm',
-      handler: () => {},
+      handler: () => {
+        this.copyLinkAndRedirect(); // Appel de la méthode pour copier le lien
+      },
     },
     {
       text: 'Bloquer',
@@ -76,6 +95,15 @@ export class ArtistprofilPage implements OnInit {
     },
   ];
 
+  copyLinkAndRedirect() {
+    const artistLink = this.artist.url; // Remplacez par l'URL appropriée
+    navigator.clipboard.writeText(artistLink).then(() => {
+      console.log('Lien copié :', artistLink);
+      window.open(artistLink, '_blank'); // Ouvre le lien dans un nouvel onglet
+    }).catch(err => {
+      console.error('Erreur lors de la copie du lien :', err);
+    });
+  }
   topSongs: any[] = [];
   artist_ids: any;
   idArtist: any;
@@ -90,7 +118,7 @@ export class ArtistprofilPage implements OnInit {
     if (artists) {
       this.artist = JSON.parse(artists);
       this.idArtist = this.artist.id;
-      console.log('idArtist', this.idArtist);
+      console.log('artist', this.artist);
     }
 
     this.topsService.getTopSongs().subscribe(
