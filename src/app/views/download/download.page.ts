@@ -24,6 +24,12 @@ export class DownloadPage implements OnInit {
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
+  async getFileUri(path: string) {
+    return await Filesystem.getUri({
+      path,
+      directory: Directory.Data,
+    });
+  }
   async openOptionSound() {
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
@@ -47,7 +53,7 @@ export class DownloadPage implements OnInit {
     // Load downloaded songs from storage
     await this.downloadService.loadDownloadedSongs();
     this.downloadedMusic = this.downloadService.getDownloadedSongs();
-     console.log(this.downloadedMusic,'download')
+    console.log(this.downloadedMusic, 'download');
     // Check if all songs are still available
     await this.downloadService.checkAllSongsAvailability();
   }
