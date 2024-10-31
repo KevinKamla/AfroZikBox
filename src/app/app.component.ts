@@ -12,6 +12,7 @@ import { FavoriteService } from './services/favorite.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { musicTab } from './views/play/play.page';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { DownloadService } from './services/download.service';
 
 register();
 
@@ -58,13 +59,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService,
     private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
-    private PlaylistService: PlaylistService
+    private PlaylistService: PlaylistService,
+    private downloadService: DownloadService
   ) {}
 
   isUserLoggedIn(): boolean {
     return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
   }
   ngOnInit() {
+    this.downloadService.loadDownloadedSongs();
     // je recuperer l'index du song en cours
     let a = localStorage.getItem('index');
     if (a) {
@@ -207,12 +210,12 @@ export class AppComponent implements OnInit, OnDestroy {
     // } else {
     //   console.log('Toutes les chansons ont été jouées.');
     // }
-          if (this.musicPlayerService.waitingList.length > 0) {
-          this.musicPlayerService.playFromWaitingList();
-        } else {
-    let song = this.PlaylistService.getnextsong();
-    this.playMusic(song, this.currentSongIndex);
-        }
+    if (this.musicPlayerService.waitingList.length > 0) {
+      this.musicPlayerService.playFromWaitingList();
+    } else {
+      let song = this.PlaylistService.getnextsong();
+      this.playMusic(song, this.currentSongIndex);
+    }
   }
 
   // Méthode pour jouer la chanson précédente avec MusicService
