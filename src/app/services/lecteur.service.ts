@@ -205,18 +205,40 @@ export class LecteurService {
       console.error('La liste de chansons est vide.');
     }
   }
-  // Charger une nouvelle liste de chansons aleatoire
+ // Charger une nouvelle liste de chansons aléatoire
+// Déclarer un tableau pour stocker les indices des chansons déjà jouées
+  private playedSongsIndices: number[] = [];
+
+  // Charger une nouvelle liste de chansons avec lecture aléatoire continue
   loadNewPlaylistAleatoire(songs: any[]): void {
     if (songs.length > 0) {
       this.stopCurrentMusic(); // Arrêter la musique actuelle
       this.songList = songs; // Définir la nouvelle liste
-       const randomIndex = Math.floor(Math.random() * songs.length); // Choisir un index aléatoire
-      this.currentSongIndex = randomIndex; // Commencer à l'index aléatoire
-      this.playMusicAleatoire(songs[randomIndex]); // Jouer la musique à l'index aléatoire
+      this.playedSongsIndices = []; // Réinitialiser la liste des indices joués
+
+      // Jouer la première chanson de manière aléatoire
+      this.playRandomSong();
     } else {
       console.error('La liste de chansons est vide.');
     }
   }
+
+  // Fonction pour jouer une chanson aléatoire
+  playRandomSong(): void {
+    if (this.playedSongsIndices.length === this.songList.length) {
+      this.playedSongsIndices = []; // Réinitialiser lorsque toutes les chansons ont été jouées
+    }
+
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * this.songList.length);
+    } while (this.playedSongsIndices.includes(randomIndex));
+
+    this.playedSongsIndices.push(randomIndex); // Ajouter l'index à la liste des chansons jouées
+    this.currentSongIndex = randomIndex;
+    this.playMusicAleatoire(this.songList[randomIndex]); // Jouer la chanson
+  }
+
 
   // Mettre la chanson en pause
   pauseMusic(): void {
