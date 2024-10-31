@@ -147,5 +147,6 @@ export class AlbumdetailPage implements OnInit {
     console.log('Playlist chargement aleatoire...',playlist)
     this.PlaylistService.loadplaylistAleatoire(playlist)
     this.musicService.loadNewPlaylistAleatoire(playlist);
+    this.musicService.toggleShuffle();
   }
 }
