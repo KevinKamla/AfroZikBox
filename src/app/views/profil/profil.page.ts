@@ -105,7 +105,7 @@ export class ProfilPage implements OnInit {
   public btnoptionProfil = [
     {
       text: 'Changer la photo de couverture',
-      handler: () => { },
+      handler: () => { this.goToRoute('usercover')  },
     },
     {
       text: 'Paramètre',
@@ -134,6 +134,7 @@ export class ProfilPage implements OnInit {
       this.isAdmin = this.email === 'admin' ? true : false;
       this.avatar = UserData.avatar;
       this.cover = UserData.cover;
+      console.log('cover',this.cover)
       this.url = UserData.url;
       // this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user
@@ -146,6 +147,7 @@ export class ProfilPage implements OnInit {
     });
     this.userService.getProfile(this.userId).subscribe((response) => {
       this.profile = response.details;
+      console.log(this.profile)
     });
     this.userService.getLikeds(this.userId).subscribe((response) =>{
       // console.log(response);

@@ -16,7 +16,7 @@ export class UserService {
   private purchases1 = `${environment.api}/user/my-purchases`;
   private purchases = `${environment.api}/event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
-  private profile = `${environment.api}/user/get-profile`;
+  private profile = `https://afrozikbox.com/endpoint/user/get-profile`;
   private block = `${environment.api}/block-user/block`;
   private unblock = `${environment.api}/block-user/unblock`;
   private serverKey = environment.server_key;
@@ -105,7 +105,6 @@ export class UserService {
       .set('user_id', id.toString());
     return this.http.get<any>(this.purchases, { params });
   }
-
   blockUser(id: number): Observable<any> {
     console.log(id);
 
@@ -155,7 +154,6 @@ export class UserService {
       params
     );
   }
-
   // Obtenir les chansons recommandées
   getRecommendedSongs(id: number): Observable<any> {
     if (!id || id <= 0) {
@@ -287,14 +285,18 @@ export class UserService {
       return throwError('Veuillez vérifier vos informations');
     }
 
-    const body = {
-      c_pass: currentPassword,
-      server_key: this.serverKey,
-      access_token: this.accessToken,
-    };
+    // const body = {
+    //   c_pass: currentPassword,
+    //   server_key: this.serverKey,
+    //   access_token: this.accessToken,
+    // };
+    const params = new HttpParams()
+      .set('access_token', this.accessToken || '')
+      .set('c_pass', currentPassword)
+      .set('server_key', this.serverKey);
 
     return this.http
-      .post(`https://afrozikbox.com/endpoint/user/delete-account`, body)
+      .post(`https://afrozikbox.com/endpoint/user/delete-account`, params)
       .pipe(
         catchError((error) =>
           throwError(
