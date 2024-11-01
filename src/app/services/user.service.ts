@@ -6,19 +6,19 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl2 = `${environment.api}/user/get-follower`;
-  private baseUrl4 = `${environment.api}/user/get-following`;
-  private recent = `${environment.api}/user/get-recently-played`;
-  private baseUrl3 = `${environment.api}/user/get-liked`;
-  private userBlock = `${environment.api}/user/get-blocks`;
-  private recommanded = `${environment.api}/user/get-recommended`;
-  private membership = `${environment.api}/user/upgrade-membership`;
-  private purchases1 = `${environment.api}/user/my-purchases`;
-  private purchases = `${environment.api}/event/get_my_events`;
+  private baseUrl2 = `${environment.api}user/get-follower`;
+  private baseUrl4 = `${environment.api}user/get-following`;
+  private recent = `${environment.api}user/get-recently-played`;
+  private baseUrl3 = `${environment.api}user/get-liked`;
+  private userBlock = `${environment.api}user/get-blocks`;
+  private recommanded = `${environment.api}user/get-recommended`;
+  private membership = `${environment.api}user/upgrade-membership`;
+  private purchases1 = `${environment.api}user/my-purchases`;
+  private purchases = `${environment.api}event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
-  private profile = `${environment.api}/user/get-profile`;
-  private block = `${environment.api}/block-user/block`;
-  private unblock = `${environment.api}/block-user/unblock`;
+  private profile = `${environment.api}user/get-profile`;
+  private block = `${environment.api}block-user/block`;
+  private unblock = `${environment.api}block-user/unblock`;
   private serverKey = environment.server_key;
   constructor(private http: HttpClient) {}
 
@@ -287,14 +287,18 @@ export class UserService {
       return throwError('Veuillez vérifier vos informations');
     }
 
-    const body = {
-      c_pass: currentPassword,
-      server_key: this.serverKey,
-      access_token: this.accessToken,
-    };
+    // const body = {
+    //   c_pass: currentPassword,
+    //   server_key: this.serverKey,
+    //   access_token: this.accessToken,
+    // };
+    const params = new HttpParams()
+      .set('access_token', this.accessToken || '')
+      .set('c_pass', currentPassword)
+      .set('server_key', this.serverKey);
 
     return this.http
-      .post(`https://afrozikbox.com/endpoint/user/delete-account`, body)
+      .post(`https://afrozikbox.com/endpoint/user/delete-account`, params)
       .pipe(
         catchError((error) =>
           throwError(
