@@ -131,7 +131,7 @@ export class PlaylistoptionPage implements OnInit {
       }
     );
     this.playlistIds = this.navParams.get('playlistId');
-    // console.log('Playlist ID:', this.playlistIds);
+    console.log('Playlist ID:', this.playlistIds);
     const selectedPlaylist = this.playlist.find(
       (playlist) => playlist.id === this.playlistIds
     ); // Recherche de l'élément
