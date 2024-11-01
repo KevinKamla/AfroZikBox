@@ -17,9 +17,6 @@ export class UserService {
   private purchases = `${environment.api}event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
   private profile = `https://afrozikbox.com/endpoint/user/get-profile`;
-  private block = `${environment.api}/block-user/block`;
-  private unblock = `${environment.api}/block-user/unblock`;
-  private profile = `${environment.api}user/get-profile`;
   private block = `${environment.api}block-user/block`;
   private unblock = `${environment.api}block-user/unblock`;
   private serverKey = environment.server_key;
