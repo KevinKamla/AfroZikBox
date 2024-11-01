@@ -6,19 +6,22 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl2 = `${environment.api}/user/get-follower`;
-  private baseUrl4 = `${environment.api}/user/get-following`;
-  private recent = `${environment.api}/user/get-recently-played`;
-  private baseUrl3 = `${environment.api}/user/get-liked`;
-  private userBlock = `${environment.api}/user/get-blocks`;
-  private recommanded = `${environment.api}/user/get-recommended`;
-  private membership = `${environment.api}/user/upgrade-membership`;
-  private purchases1 = `${environment.api}/user/my-purchases`;
-  private purchases = `${environment.api}/event/get_my_events`;
+  private baseUrl2 = `${environment.api}user/get-follower`;
+  private baseUrl4 = `${environment.api}user/get-following`;
+  private recent = `${environment.api}user/get-recently-played`;
+  private baseUrl3 = `${environment.api}user/get-liked`;
+  private userBlock = `${environment.api}user/get-blocks`;
+  private recommanded = `${environment.api}user/get-recommended`;
+  private membership = `${environment.api}user/upgrade-membership`;
+  private purchases1 = `${environment.api}user/my-purchases`;
+  private purchases = `${environment.api}event/get_my_events`;
   private accessToken = localStorage.getItem('accessToken');
   private profile = `https://afrozikbox.com/endpoint/user/get-profile`;
   private block = `${environment.api}/block-user/block`;
   private unblock = `${environment.api}/block-user/unblock`;
+  private profile = `${environment.api}user/get-profile`;
+  private block = `${environment.api}block-user/block`;
+  private unblock = `${environment.api}block-user/unblock`;
   private serverKey = environment.server_key;
   constructor(private http: HttpClient) {}
 
