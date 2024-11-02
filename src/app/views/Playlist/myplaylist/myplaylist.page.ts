@@ -66,7 +66,7 @@ export class MyplaylistPage implements OnInit, OnDestroy {
           );
 
           console.log('Playlists récupérées et filtrées:', this.playlist);
-          localStorage.setItem('playlist', JSON.stringify(this.playlist));
+          localStorage.setItem('publicPlaylist', JSON.stringify(this.playlist));
         }
       },
       (error) => {
@@ -75,7 +75,7 @@ export class MyplaylistPage implements OnInit, OnDestroy {
     );
   }
   playlistDetail(playlist: any) {
-    localStorage.setItem('playlist', JSON.stringify(playlist));
+    localStorage.setItem('publicPlaylist', JSON.stringify(playlist));
     this.route.navigate(['playlistdetail', playlist.id]);
   }
 
