@@ -34,9 +34,14 @@ export class AlbumdetailPage implements OnInit {
   album: any;
   songs: any[] = [];
 
-  async openOptionSound() {
+  async openOptionSound(playlistId: any) {
+    const selectedPlaylistId = playlistId;
+    const playlistData = this.albumSongs.find(
+      (playlist) => playlist.id === selectedPlaylistId
+    ); 
     const modal = await this.modalCtrl.create({
       component: MusicoptionPage,
+      componentProps: { playlistId, playlistData }, // Passer l'ID et les données de la playlist
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios',

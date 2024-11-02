@@ -40,6 +40,6 @@ export class AlbumPage implements OnInit {
   selectAlbum(album: any) {
     localStorage.setItem('selectedAlbum', JSON.stringify(album));
     console.log('locallll',album)
-    // this.route.navigate(['albumdetail', album.id]);
+    this.route.navigate(['albumdetail', album.id]);
   }
 }

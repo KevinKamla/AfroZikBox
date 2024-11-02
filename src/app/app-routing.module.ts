@@ -481,6 +481,10 @@ const routes: Routes = [
     path: 'createevenement',
     loadChildren: () => import('./views/createevenement/createevenement.module').then( m => m.CreateevenementPageModule)
   },
+  {
+    path: 'usercover',
+    loadChildren: () => import('./views/Account/usercover/usercover.module').then( m => m.UsercoverPageModule)
+  },
 
 
 
