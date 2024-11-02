@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { EditeplaylistPage } from '../editeplaylist/editeplaylist.page';
 import { PlaylistService } from 'src/app/services/playlist.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-playlistoption',
@@ -19,6 +20,7 @@ export class PlaylistoptionPage implements OnInit {
     private modalCtrl: ModalController,
     public playlistService: PlaylistService,
     private navParams: NavParams,
+    private router: Router,
     private alertController: AlertController // Ajoutez AlertController
   ) {}
 
@@ -69,7 +71,11 @@ export class PlaylistoptionPage implements OnInit {
     }
 
     this.playlistService.deletePlaylist(this.playlistId).subscribe({
-      next: (response) => this.handleResponse(response),
+      next: (response) => {
+        this.handleResponse(response);
+        // Rediriger l'utilisateur vers la page des playlists
+        this.router.navigate(['/myplaylist']);
+      },
       error: (err) => this.handleError(err),
     });
   }
@@ -111,38 +117,21 @@ export class PlaylistoptionPage implements OnInit {
   playlistData: any;
   playlist: any[] = [];
   ngOnInit() {
-    this.playlistService.getPublicPlayList().subscribe(
-      (response) => {
-        console.log(response);
-        const u = localStorage.getItem('UserData');
-        if (u) {
-          const UserData = JSON.parse(u);
-          const userId = UserData.id;
-          this.playlist = response.success.playlists.filter(
-            (playlist: any) => playlist.publisher.id === userId
-          );
-
-          console.log('Playlists récupérées et filtrées:', this.playlist);
-          localStorage.setItem('playlist', JSON.stringify(this.playlist));
-        }
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des playlists :', error);
-      }
-    );
+    // Récupération des données de playlist stockées localement
+    this.playlistData = JSON.parse(localStorage.getItem('publicPlaylist') || 'null');
+    
+    // Récupération de l'ID de la playlist depuis les paramètres
     this.playlistIds = this.navParams.get('playlistId');
     console.log('Playlist ID:', this.playlistIds);
-    const selectedPlaylist = this.playlist.find(
-      (playlist) => playlist.id === this.playlistIds
-    ); // Recherche de l'élément
-    console.log('Playlistsssss:', this.selectedPlaylist);
-
-    if (selectedPlaylist) {
-      console.log('Playlist sélectionnée:', selectedPlaylist); // Afficher la playlist trouvée
+  
+    // Recherche de la playlist sélectionnée si `playlistData` et `playlistIds` sont définis
+    if (this.playlistData && this.playlistIds) {
+      this.selectedPlaylist = this.playlistData.find(
+        (playlist: { id: number }) => playlist.id === parseInt(this.playlistIds)
+      );
+      console.log('Playlist sélectionnée:', this.selectedPlaylist);
     } else {
-      console.log("Aucune playlist trouvée avec l'ID:", this.playlistIds);
+      console.warn('Playlist data ou Playlist ID manquant');
     }
-    this.selectedPlaylist = this.navParams.get('selectedPlaylist'); // Récupérer les componentProps
-    // console.log(this.selectedPlaylist);
-  }
+  }  
 }
