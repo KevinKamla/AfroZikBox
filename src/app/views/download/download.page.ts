@@ -27,7 +27,7 @@ export class DownloadPage implements OnInit {
   async getFileUri(path: string) {
     return await Filesystem.getUri({
       path,
-      directory: Directory.Data,
+      directory: Directory.Documents,
     });
   }
   async openOptionSound() {

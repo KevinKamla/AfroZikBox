@@ -2,7 +2,11 @@ import { UserData } from './../../models/user-info';
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  NavController,
+} from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
@@ -23,10 +27,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./profil.page.scss'],
 })
 export class ProfilPage implements OnInit {
-
-
   selectedSegment: string = 'Chansons';
-  UserData : any
+  UserData: any;
   email: string = '';
   avatar: any;
   cover: any;
@@ -44,7 +46,7 @@ export class ProfilPage implements OnInit {
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   favoris: any[] = [];
   events: any[] = [];
-  profile : any[]=[];
+  profile: any[] = [];
   isAdmin: boolean = false; // Déclaration de la propriété isAdmin
 
   constructor(
@@ -58,14 +60,13 @@ export class ProfilPage implements OnInit {
     private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
     private articlesService: ArticlesService,
-    private userService : UserService,
-    private eventService : EventService,
+    private userService: UserService,
+    private eventService: EventService,
     private PlaylistService: PlaylistService,
     private musicService: LecteurService, // Injection du service de musique
     private yourService: EventService,
     private alertController: AlertController // Ajout de l'AlertController
-
-  ) { }
+  ) {}
 
   deleteEvent(eventId: number) {
     this.yourService.deleteEvent(eventId).subscribe({
@@ -74,16 +75,16 @@ export class ProfilPage implements OnInit {
         this.showAlert('Succès', `${JSON.stringify(response.error)}`); // Correction de la popup de succès
 
         // Mettez à jour la liste après suppression
-        this.events = this.events.filter(item => item.id !== eventId);
+        this.events = this.events.filter((item) => item.id !== eventId);
       },
       error: (error) => {
-        console.error('Erreur lors de la suppression de l\'événement', error);
-      }
+        console.error("Erreur lors de la suppression de l'événement", error);
+      },
     });
   }
 
   goToEditEvent(event: any) {
-    this.navCtrl.navigateForward(['/createevenement'], {
+    this.navCtrl.navigateForward(['/update-event'], {
       queryParams: { event: JSON.stringify(event) },
     });
   }
@@ -92,64 +93,68 @@ export class ProfilPage implements OnInit {
     localStorage.setItem('selectedEvent', JSON.stringify(event));
     this.route.navigate(['eventdetail', event.id]);
   }
-    
+
   public btnoptionProfil = [
     {
       text: 'Changer la photo de couverture',
-      handler: () => { },
+      handler: () => {},
     },
     {
       text: 'Paramètre',
-      handler: () => { this.goToRoute('settings') },
+      handler: () => {
+        this.goToRoute('settings');
+      },
     },
     {
       text: 'Copier le lien vers le profil',
-      handler: () => { },
+      handler: () => {},
     },
   ];
   async ngOnInit() {
     // await this.storage.create();
-    const userdata =localStorage.getItem("UserData")
+    const userdata = localStorage.getItem('UserData');
     if (userdata) {
-      this.UserData = JSON.parse(userdata).data
-      // const userId = this.UserData; 
+      this.UserData = JSON.parse(userdata).data;
+      // const userId = this.UserData;
       // console.log("userdata.id :", this.UserData)
     }
     await this.storage.create();
 
-    const u = localStorage.getItem("UserData")
+    const u = localStorage.getItem('UserData');
     if (u) {
-      const UserData = JSON.parse(u)
-      console.log("userdata :", UserData )
+      const UserData = JSON.parse(u);
+      console.log('userdata :', UserData);
       this.email = UserData.username;
       this.isAdmin = this.email === 'admin' ? true : false;
       this.avatar = UserData.avatar;
-      this.cover = UserData.cover
+      this.cover = UserData.cover;
       // this.like = UserData.email_on_follow_user
-      this.email_on_follow_user = UserData.email_on_follow_user
+      this.email_on_follow_user = UserData.email_on_follow_user;
     }
-    this.userService.getFollowers(this.userId).subscribe((response)=>{
+    this.userService.getFollowers(this.userId).subscribe((response) => {
       this.follower = response.data.count;
     });
-    this.userService.getFollowing(this.userId).subscribe((response)=>{
+    this.userService.getFollowing(this.userId).subscribe((response) => {
       this.following = response.data.count;
     });
     this.userService.getProfile(this.userId).subscribe((response) => {
       this.profile = response.details;
     });
-    this.userService.getLikeds(this.userId).subscribe((response) =>{
+    this.userService.getLikeds(this.userId).subscribe((response) => {
       // console.log(response);
       this.like = response.data.count;
       // console.log(this.like,"likeeeeeeeeee")
     });
     this.eventService.getMyEvents(this.userId).subscribe((res) => {
-      console.log('eventtttttttttttt',res);
+      console.log('eventtttttttttttt', res);
       this.events = res.data;
     });
-    this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-      // console.log(res);
-      this.favoris = res.data.data;
-    });
+    this.favoriteService
+      .getFavorites(this.userId, this.accessToken)
+      .subscribe((res) => {
+        // console.log(res);
+        this.favoris = res.data.data;
+      });
     this.playlistService.getPlaylists().subscribe(
       (response) => {
         this.playlist = response.playlists;
@@ -166,7 +171,10 @@ export class ProfilPage implements OnInit {
         this.loadSongsForTopAlbums();
       },
       (error) => {
-        console.error('Erreur lors de la récupération des meilleurs albums :', error);
+        console.error(
+          'Erreur lors de la récupération des meilleurs albums :',
+          error
+        );
       }
     );
     this.chansonService.getChansons().subscribe(
@@ -181,7 +189,7 @@ export class ProfilPage implements OnInit {
   }
 
   loadSongsForTopAlbums() {
-    this.topalbums.forEach(album => {
+    this.topalbums.forEach((album) => {
       this.albumsService.getAlbumsr(album.id, '').subscribe(
         (response) => {
           // console.log(response, 'response');
@@ -189,7 +197,10 @@ export class ProfilPage implements OnInit {
           console.log(`Chansons pour l'album ${album.id} :`, response.songs);
         },
         (error) => {
-          console.error(`Erreur lors de la récupération des chansons pour l'album ${album.id} :`, error);
+          console.error(
+            `Erreur lors de la récupération des chansons pour l'album ${album.id} :`,
+            error
+          );
         }
       );
     });
@@ -204,8 +215,8 @@ export class ProfilPage implements OnInit {
       component: MusicoptionPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-    })
+      mode: 'ios',
+    });
 
     await modal.present();
   }
@@ -215,9 +226,8 @@ export class ProfilPage implements OnInit {
       component: PlaylistoptionPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
-      mode: 'ios'
-
-    })
+      mode: 'ios',
+    });
     await modale.present();
   }
 
@@ -240,14 +250,13 @@ export class ProfilPage implements OnInit {
   playMusicFromFavoris(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.favoris, index);
   }
-  loadsong(playlist:any, index:number){
+  loadsong(playlist: any, index: number) {
     // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
   }
 
-  
   selectArticle(article: any) {
     localStorage.setItem('selectedArticle', JSON.stringify(article));
     // this.route.navigate(['achatdetail',article.id]);
@@ -256,8 +265,8 @@ export class ProfilPage implements OnInit {
     const alert = await this.alertController.create({
       header: header,
       message: message,
-      buttons: ['OK']
+      buttons: ['OK'],
     });
     await alert.present();
-  } 
+  }
 }

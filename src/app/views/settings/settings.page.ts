@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { ThemesService } from 'src/app/services/themes.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,20 +11,18 @@ import { Storage } from '@ionic/storage-angular';
   styleUrls: ['./settings.page.scss'],
 })
 export class SettingsPage implements OnInit {
-
-  themeList = ["Light", "Dark"];
-  email: string = '';  
+  themeList = ['Light', 'Dark'];
+  email: string = '';
   avatar: any;
-  name = ''
-  
+  name = '';
 
   constructor(
     private storage: Storage,
     private modal: ModalController,
     private actionSheetController: ActionSheetController,
     private router: Router,
-
-  ) { }
+    private themesService: ThemesService
+  ) {}
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -35,34 +34,36 @@ export class SettingsPage implements OnInit {
           cssClass: 'btn-white',
           handler: () => {
             console.log('Delete clicked');
-          }
+          },
         },
         {
           text: 'Oui',
           cssClass: 'btn-primary',
           handler: () => {
             console.log('Share clicked');
-          }
-
-        }]
+          },
+        },
+      ],
     });
 
     await actionSheet.present();
   }
 
   selectedTheme(theme: string) {
+    console.log('Selected theme:', theme);
+    this.themesService.setTheme(theme === 'Dark');
     this.modal.dismiss();
   }
   async ngOnInit() {
-    const u = localStorage.getItem("UserData")
+    const u = localStorage.getItem('UserData');
     if (u) {
-      const UserData = JSON.parse(u)
-      console.log("userdata :", UserData )
-      this.email = UserData.email
-      this.avatar = UserData.avatar
-      this.name = UserData.name
+      const UserData = JSON.parse(u);
+      console.log('userdata :', UserData);
+      this.email = UserData.email;
+      this.avatar = UserData.avatar;
+      this.name = UserData.name;
     }
-    // await this.storage.create(); 
+    // await this.storage.create();
 
     // Récupérer les informations utilisateur stockées
     // const user = await this.storage.get('user');
@@ -79,14 +80,13 @@ export class SettingsPage implements OnInit {
     localStorage.removeItem('UserData');
     localStorage.removeItem('username');
     localStorage.removeItem('password');
-    
+
     // Afficher le contenu de localStorage dans la console
     console.log('Contenu de localStorage après vidage :', localStorage);
-  
+
     // Rediriger vers la page de connexion
     this.router.navigate(['/login']);
   }
 
-// ... code existant ...
-
+  // ... code existant ...
 }
