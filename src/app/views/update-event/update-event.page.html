@@ -1,0 +1,148 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mettre à jour un évenement</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="onSubmitCreateEvent()" #createEventForm="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nom de l'événement</ion-label>
+        <ion-input
+          [(ngModel)]="eventData.name"
+          name="name"
+          required
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Description</ion-label>
+        <ion-textarea
+          [(ngModel)]="eventData.desc"
+          name="desc"
+          required
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Date de début</ion-label>
+        <ion-datetime
+          displayFormat="YYYY-MM-DD"
+          [(ngModel)]="eventData.start_date"
+          name="start_date"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Heure de début</ion-label>
+        <ion-datetime
+          displayFormat="HH:mm"
+          [(ngModel)]="eventData.start_time"
+          name="start_time"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Date de fin</ion-label>
+        <ion-datetime
+          displayFormat="YYYY-MM-DD"
+          [(ngModel)]="eventData.end_date"
+          name="end_date"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Heure de fin</ion-label>
+        <ion-datetime
+          displayFormat="HH:mm"
+          [(ngModel)]="eventData.end_time"
+          name="end_time"
+          required
+        ></ion-datetime>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Lieu</ion-label>
+        <ion-select [(ngModel)]="eventData.location" name="location" required>
+          <ion-select-option value="online">En ligne</ion-select-option>
+          <ion-select-option value="real">Physique</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="eventData.location === 'online'">
+        <ion-label position="stacked">URL de l'événement en ligne</ion-label>
+        <ion-input
+          [(ngModel)]="eventData.online_url"
+          name="online_url"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="eventData.location === 'real'">
+        <ion-label position="stacked">Adresse de l'événement</ion-label>
+        <ion-input
+          [(ngModel)]="eventData.real_address"
+          name="real_address"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Vendre des billets</ion-label>
+        <ion-select
+          [(ngModel)]="eventData.sell_tickets"
+          name="sell_tickets"
+          required
+        >
+          <ion-select-option value="yes">Oui</ion-select-option>
+          <ion-select-option value="no">Non</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="eventData.sell_tickets === 'yes'">
+        <ion-label position="stacked">Nombre de billets disponibles</ion-label>
+        <ion-input
+          [(ngModel)]="eventData.available_tickets"
+          name="available_tickets"
+          type="number"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item *ngIf="eventData.sell_tickets === 'yes'">
+        <ion-label position="stacked">Prix du billet</ion-label>
+        <ion-input
+          [(ngModel)]="eventData.ticket_price"
+          name="ticket_price"
+          type="number"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Image de l'événement</ion-label>
+        <input
+          type="file"
+          (change)="onImageFileSelected($event)"
+          accept="image/*"
+        />
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Vidéo de l'événement</ion-label>
+        <input
+          type="file"
+          (change)="onVideoFileSelected($event)"
+          accept="video/*"
+        />
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="full" type="submit" [disabled]="!createEventForm.valid"
+      >Créer l'Événement</ion-button
+    >
+  </form>
+</ion-content>

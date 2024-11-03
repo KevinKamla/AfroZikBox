@@ -481,6 +481,10 @@ const routes: Routes = [
     path: 'createevenement',
     loadChildren: () => import('./views/createevenement/createevenement.module').then( m => m.CreateevenementPageModule)
   },
+  {
+    path: 'update-event',
+    loadChildren: () => import('./views/update-event/update-event.module').then( m => m.UpdateEventPageModule)
+  },
 
 
 
