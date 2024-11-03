@@ -19,6 +19,8 @@ export class DownloadService {
 
     const notificationId = Math.floor(Math.random() * 100000);
     try {
+      await this.showDownloadProgressNotification(notificationId, title, 0);
+
       // Download and save song file
       const songBlob = await this.downloadFileWithProgress(
         audio_location,
