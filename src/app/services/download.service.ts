@@ -1,14 +1,15 @@
 // src/app/services/download.service.ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
-
+import { LocalNotifications } from '@capacitor/local-notifications';
 @Injectable({
   providedIn: 'root',
 })
 export class DownloadService {
   downloadedSongs: any[] = [];
+  downloadProgress: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private http: HttpClient) {}
 
@@ -16,9 +17,16 @@ export class DownloadService {
   async downloadSongFromObject(songData: any) {
     const { audio_location, title, artist, thumbnail, duration } = songData;
 
+    const notificationId = Math.floor(Math.random() * 100000);
     try {
+      await this.showDownloadProgressNotification(notificationId, title, 0);
+
       // Download and save song file
-      const songBlob = await this.downloadFile(audio_location);
+      const songBlob = await this.downloadFileWithProgress(
+        audio_location,
+        notificationId,
+        `${title}.mp3`
+      );
       const songFilePath = await this.saveFileToFilesystem(
         `${title}.mp3`,
         songBlob!
@@ -42,6 +50,11 @@ export class DownloadService {
       // Add song to local storage
       await this.addSongToStorage(newSong);
       this.downloadedSongs.push(newSong);
+
+      await LocalNotifications.cancel({
+        notifications: [{ id: notificationId }],
+      });
+      await this.showCompletedNotification(notificationId, title);
       console.log('Song and metadata saved successfully:', newSong);
     } catch (error) {
       console.error('Error downloading song or cover art:', error);
@@ -53,6 +66,40 @@ export class DownloadService {
     return this.http.get(url, { responseType: 'blob' }).toPromise();
   }
 
+  // Helper method to download a file (song or cover art) as a blob
+  private downloadFileWithProgress(
+    url: string,
+    notificationId: number,
+    title: string
+  ): Promise<Blob | undefined> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(url, {
+          responseType: 'blob',
+          observe: 'events',
+          reportProgress: true,
+        })
+        .subscribe({
+          next: async (event) => {
+            if (event.type === HttpEventType.DownloadProgress) {
+              const progress = event.total
+                ? Math.round((100 * event.loaded) / event.total)
+                : 0;
+              this.downloadProgress.emit(progress);
+              console.log(`Download progress: ${progress}%`);
+              await this.updateDownloadProgressNotification(
+                notificationId,
+                title,
+                progress
+              );
+            } else if (event instanceof HttpResponse) {
+              resolve(event.body as Blob);
+            }
+          },
+          error: (error) => reject(error),
+        });
+    });
+  }
   // Helper method to save a file to the filesystem
   private async saveFileToFilesystem(
     fileName: string,
@@ -69,7 +116,7 @@ export class DownloadService {
           const result = await Filesystem.writeFile({
             path: fileName,
             data: base64data.split(',')[1], // Remove base64 header
-            directory: Directory.Data,
+            directory: Directory.Documents,
           });
           resolve(result.uri);
         } catch (error) {
@@ -80,6 +127,61 @@ export class DownloadService {
       reader.onerror = (error) => {
         reject(error);
       };
+    });
+  }
+
+  // Show initial download notification
+  private async showDownloadProgressNotification(
+    notificationId: number,
+    title: string,
+    progress: number
+  ) {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          largeBody: '' + progress,
+          id: notificationId,
+          title: `Downloading ${title}`,
+          body: `${progress}% completed`,
+          ongoing: true,
+        },
+      ],
+    });
+  }
+
+  // Update progress in notification
+  private async updateDownloadProgressNotification(
+    notificationId: number,
+    title: string,
+    progress: number
+  ) {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: notificationId,
+          title: `Downloading ${title}`,
+          body: `${progress}% completed`,
+          ongoing: true,
+          largeBody: '' + progress,
+        },
+      ],
+    });
+  }
+
+  // Show completed notification
+  private async showCompletedNotification(
+    notificationId: number,
+    title: string
+  ) {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          id: notificationId,
+          title: `Download Complete`,
+          body: `${title} has been downloaded.`,
+          ongoing: false,
+        },
+      ],
     });
   }
 
