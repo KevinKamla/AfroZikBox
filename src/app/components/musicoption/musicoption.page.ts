@@ -104,7 +104,7 @@ export class MusicoptionPage implements OnInit {
     this.musicPlayerService.playMusic(song, index);
     musicTab.musicIsPlay = true;
     this.currentSong = song;
-    console.log(this.currentSong);
+    console.log(this.currentSong); 
   }
   artistDetail = (item: any) => {
     console.log(item);

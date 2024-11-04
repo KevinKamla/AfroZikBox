@@ -477,13 +477,16 @@ const routes: Routes = [
   {
     path: 'albummodal',
     loadChildren: () => import('./components/albummodal/albummodal.module').then( m => m.AlbummodalPageModule)
-  },  {
+  },
+  {
     path: 'createevenement',
     loadChildren: () => import('./views/createevenement/createevenement.module').then( m => m.CreateevenementPageModule)
   },
   {
     path: 'update-event',
     loadChildren: () => import('./views/update-event/update-event.module').then( m => m.UpdateEventPageModule)
+    path: 'usercover',
+    loadChildren: () => import('./views/Account/usercover/usercover.module').then( m => m.UsercoverPageModule)
   },
 
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { PlaylistService } from 'src/app/services/playlist.service';
 
 @Component({
@@ -25,7 +25,8 @@ export class EditeplaylistPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private playlistService: PlaylistService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navParams: NavParams,
   ) { }
 
 
@@ -60,18 +61,18 @@ export class EditeplaylistPage implements OnInit {
     return new File([u8arr], filename, { type: mime });
 }
 
-  selectedConfid(item:string) {
-    this.valueConfid = item;
-    this.closeModal();
-  }
-
+selectedConfid(item: string) {
+  this.valueConfid = item;
+  this.privacy = item === 'Publique' ? 1 : 0;
+  this.closeModal();
+}
   closeModal() {
     this.modalCtrl.dismiss();
   }
   
   ngOnInit() {
     console.log(this.playlistId,'playlist id')
-    this.id = this.route.snapshot.paramMap.get('id'); // Récupération de l'ID
+    // this.id = this.route.snapshot.paramMap.get('id'); // Récupération de l'ID
 
     if (this.playlistId && this.playlistId.thumbnail_ready) {
       this.imgPath = this.playlistId.thumbnail_ready;
@@ -81,41 +82,11 @@ export class EditeplaylistPage implements OnInit {
     }
   }
 
-  // updatePlaylist() {
-  //   console.log(this.avatarFile);
-    
-  //   if (!this.playlistId || !this.playlistName || !this.avatarFile) {
-  //     console.error('Veuillez vérifier vos informations');
-  //     return;
-  //   }
-
-  //   this.playlistService.updatePlaylist(this.playlistId, this.playlistName, this.privacy, this.avatarFile).subscribe(
-  //     (response) => {
-  //       if (response.status === 200) {
-  //         this.closeModal();
-  //         console.log('Playlist mise à jour avec succès', response);
-  //       } else {
-  //         console.error('Erreur lors de la mise à jour de la playlist', response);
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Erreur :', error);
-  //     }
-  //   );
-  // }
   updatePlaylist() {
-    this.playlistid = this.route.snapshot.paramMap.get('id'); // Récupération de l'ID
-    console.log(this.id,'playlist id')
 
-    if (!this.id) {
-      console.error('playlistid est undefined');
-      return; // Sortir de la méthode si playlistid n'est pas défini
-    }
-
-    const playlistIdString = this.id.toString();
-
-    this.playlistService.updatePlaylist(playlistIdString, this.playlistName, this.privacy, this.avatarFile)
+    this.playlistService.updatePlaylist(this.playlistId, this.playlistName, this.privacy, this.avatarFile)
       .subscribe(response => {
+        console.log(response,'response')
         if (response.status === 200) {
           console.log('Playlist mise à jour avec succès');
         } else {

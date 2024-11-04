@@ -12,10 +12,11 @@
     <h3> {{count}} utilisateurs bloqués pour l'instant </h3>
         <ion-item *ngFor="let block of blocks">
             <ion-avatar slot="start">
-                <img [src]="block.user.avatar" alt="Avatar">
+                <img [src]="block.cover" alt="Avatar">
             </ion-avatar>
             <ion-label>
-                <h2>{{block.user.name}}</h2>
+                <h2>{{block.name}}</h2>
+                <p>{{block.gender_text}}</p>
             </ion-label>
         </ion-item>
 </ion-content>

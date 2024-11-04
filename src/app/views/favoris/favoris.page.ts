@@ -37,7 +37,7 @@ export class FavorisPage implements OnInit {
   async openOptionSound(playlistId: any) {
     const selectedPlaylistId = playlistId;
     const playlistData = this.favoris.find(
-      (playlist) => playlist.id === selectedPlaylistId
+      (playlist) => playlist.id === selectedPlaylistId 
     ); 
     // console.log(playlistData,'playyyyyyyyyyyyyy')
 

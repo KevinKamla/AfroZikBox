@@ -48,7 +48,7 @@ export class ProfilPage implements OnInit {
   events: any[] = [];
   profile: any[] = [];
   isAdmin: boolean = false; // Déclaration de la propriété isAdmin
-
+  url:any;
   constructor(
     private storage: Storage,
     private playlistService: PlaylistService,
@@ -68,6 +68,15 @@ export class ProfilPage implements OnInit {
     private alertController: AlertController // Ajout de l'AlertController
   ) {}
 
+  copyLinkAndRedirect() {
+    const artistLink = this.url; // Remplacez par l'URL appropriée
+    navigator.clipboard.writeText(artistLink).then(() => {
+      console.log('Lien copié :', artistLink);
+      window.open(artistLink, '_blank'); // Ouvre le lien dans un nouvel onglet
+    }).catch(err => {
+      console.error('Erreur lors de la copie du lien :', err);
+    });
+  }
   deleteEvent(eventId: number) {
     this.yourService.deleteEvent(eventId).subscribe({
       next: (response) => {
@@ -98,6 +107,7 @@ export class ProfilPage implements OnInit {
     {
       text: 'Changer la photo de couverture',
       handler: () => {},
+      handler: () => { this.goToRoute('usercover')  },
     },
     {
       text: 'Paramètre',
@@ -108,6 +118,8 @@ export class ProfilPage implements OnInit {
     {
       text: 'Copier le lien vers le profil',
       handler: () => {},
+
+      handler: () => { this.copyLinkAndRedirect() },
     },
   ];
   async ngOnInit() {
@@ -128,6 +140,8 @@ export class ProfilPage implements OnInit {
       this.isAdmin = this.email === 'admin' ? true : false;
       this.avatar = UserData.avatar;
       this.cover = UserData.cover;
+      console.log('cover',this.cover)
+      this.url = UserData.url;
       // this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user;
     }
@@ -139,6 +153,7 @@ export class ProfilPage implements OnInit {
     });
     this.userService.getProfile(this.userId).subscribe((response) => {
       this.profile = response.details;
+      console.log(this.profile)
     });
     this.userService.getLikeds(this.userId).subscribe((response) => {
       // console.log(response);

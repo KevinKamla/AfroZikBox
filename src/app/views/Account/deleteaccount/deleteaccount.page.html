@@ -1,28 +1,29 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>Supprimer le compte</ion-title>
+      <ion-title>Supprimer le compte</ion-title>
     </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-    <h4>Entrer votre mot de passe pour supprimer </h4>
+  </ion-header>
+  
+  <ion-content [fullscreen]="true">
     <div class="input">
-        <div class="canView d-f-s">
-            <ion-icon name="lock-closed"></ion-icon>
-            <ion-input type="text" labelPlacement="floating" label="Mot de passe" class="content"></ion-input>
-        </div>
-        <div class="d-f-c div-check" style="gap: 10px;">
-            <ion-checkbox slot="start">
-            </ion-checkbox>
-            <p>Oui, je veux supprimer "username" en permanance d'AfroZikBox</p>
-        </div>
-    </div>
-
-    <ion-button shape="round" expand="block">
-        <ion-icon slot="start" name="delete"></ion-icon>
+      <ion-item>
+        <ion-label position="stacked">Mot de passe actuel</ion-label>
+        <ion-input
+          type="password"
+          [(ngModel)]="currentPassword"
+          placeholder="Entrez votre mot de passe pour confirmer"
+        ></ion-input>
+      </ion-item>
+  
+      <ion-button
+        expand="block"
+        shape="round"
+        class="ion-margin"
+        color="danger"
+        (click)="confirmDeleteAccount()"
+      >
         Supprimer le compte
-    </ion-button>
-</ion-content>
+      </ion-button>
+    </div>
+  </ion-content>
+  

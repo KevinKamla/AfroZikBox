@@ -18,7 +18,7 @@
             />
             <div class="title d-f-c">
                 <h3>{{artist.name}}</h3>
-                <ion-icon color="success" name="checkmark-circle"></ion-icon>
+                <ion-icon *ngIf="artist.admin === 1" color="success" name="checkmark-circle"></ion-icon>
             </div>
             <p>Aucune information</p>
         </div>
@@ -34,7 +34,7 @@
         <div class="recente">
             <div class="box-title d-f-s">
                 <h3>Chansons récentes</h3>
-                <p [routerLink]="['mymusic','Rencents']" button>Voir plus</p>
+                <p [routerLink]="['mymusic','Rencents', idArtist]" button>Voir plus</p>
             </div>
             <div class="container-scroll">
                 <div class="scroll-box">
@@ -49,7 +49,7 @@
         <div class="best">
             <div class="box-title d-f-s">
                 <h3>Meilleurs Chansons</h3>
-                <p [routerLink]="['mymusic','Meilleurs']">Voir plus</p>
+                <p [routerLink]="['mymusic','Meilleurs', idArtist]">Voir plus</p>
             </div>
 
             <div class="container-scroll">
@@ -76,7 +76,7 @@
         <div class="album">
             <div class="box-title d-f-s">
                 <h3>Meilleurs albums</h3>
-                <p [routerLink]="['mymusic','Albums']">Voir plus</p>
+                <p [routerLink]="['mymusic','Albums', idArtist]">Voir plus</p>
             </div>
 
             <div class="container-scroll">

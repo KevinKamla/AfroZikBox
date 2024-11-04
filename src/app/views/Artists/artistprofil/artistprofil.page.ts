@@ -9,6 +9,7 @@ import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { FollowService } from 'src/app/services/follow.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-artistprofil',
@@ -21,6 +22,8 @@ export class ArtistprofilPage implements OnInit {
   username = 'Bolingo';
   artist: any;
   isFollowing: boolean = false; // Suivre l'état de suivi
+  idArtis: any;
+  user_id: any;
 
   constructor(
     private navCtrl: NavController,
@@ -31,8 +34,9 @@ export class ArtistprofilPage implements OnInit {
     private topAlbumsService: TopAlbumsService,
     private suggestionsService: SuggestionsService,
     private PlaylistService: PlaylistService,
-    private followService:FollowService,
-    private musicService: LecteurService // Injection du service de musique
+    private followService: FollowService,
+    private musicService: LecteurService,
+    private userservice: UserService
   ) {}
 
   goToRoute(route: string = '') {
@@ -66,7 +70,7 @@ export class ArtistprofilPage implements OnInit {
         },
         error: (error) => {
           console.error('Erreur lors du désabonnement', error);
-        }
+        },
       });
     } else {
       this.followService.followUser(userId).subscribe({
@@ -75,34 +79,98 @@ export class ArtistprofilPage implements OnInit {
           console.log('Abonné avec succès');
         },
         error: (error) => {
-          console.error('Erreur lors de l\'abonnement', error);
-        }
+          console.error("Erreur lors de l'abonnement", error);
+        },
       });
     }
+  }
+
+  blockUser(userId: number) {
+    console.log(userId);
+
+    this.userservice.blockUser(userId).subscribe(
+      (response) => {
+        console.log('User blocked successfully', response);
+      },
+      (error) => {
+        console.error('Error blocking user', error);
+      }
+    );
+  }
+
+  unBlockUser(userId: number) {
+    console.log(userId);
+
+    this.userservice.unBlockUser(userId).subscribe(
+      (response) => {
+        console.log('User unblocked successfully', response);
+      },
+      (error) => {
+        console.error('Error unblocking user', error);
+      }
+    );
   }
   public alertCashfreeButtons = [
     {
       text: 'Copier le lien vers le profil',
       role: 'confirm',
       handler: () => {
-        this.copyLinkAndRedirect(); // Appel de la méthode pour copier le lien
+        this.copyLinkAndRedirect();
       },
     },
     {
-      text: 'Bloquer',
+      text: '',
       role: 'cancel',
-      handler: () => {},
+      handler: () => {
+        const artists = localStorage.getItem('artist');
+        if (artists) {
+          this.artist = JSON.parse(artists);
+          this.idArtist = this.artist.id;
+          const u = localStorage.getItem('UserData');
+          if (u) {
+            const UserData = JSON.parse(u);
+            this.user_id = UserData.id;
+          }
+          this.checkIfUserBlocked(this.user_id).then((isBlocked) => {
+            if (isBlocked) {
+              this.unBlockUser(this.idArtist);
+            } else {
+              this.blockUser(this.idArtist);
+            }
+          });
+        }
+      },
     },
   ];
+  checkIfUserBlocked(userId: number): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.userservice.getBlockedUsers(userId).subscribe(
+        (response: any) => {
+          const blockedUsers = response.data?.data || [];
+          const isBlocked = blockedUsers.some(
+            (blockedUser: any) => blockedUser.id === userId
+          );
+          resolve(isBlocked);
+        },
+        (error) => {
+          console.error('Error fetching blocked users', error);
+          reject(false);
+        }
+      );
+    });
+  }
 
   copyLinkAndRedirect() {
     const artistLink = this.artist.url; // Remplacez par l'URL appropriée
-    navigator.clipboard.writeText(artistLink).then(() => {
-      console.log('Lien copié :', artistLink);
-      window.open(artistLink, '_blank'); // Ouvre le lien dans un nouvel onglet
-    }).catch(err => {
-      console.error('Erreur lors de la copie du lien :', err);
-    });
+    navigator.clipboard
+      .writeText(artistLink)
+      .then(() => {
+        console.log('Lien copié :', artistLink);
+        window.open(artistLink, '_blank'); // Ouvre le lien dans un nouvel onglet
+      })
+      .catch((err) => {
+        console.error('Erreur lors de la copie du lien :', err);
+      });
   }
   topSongs: any[] = [];
   artist_ids: any;
@@ -118,9 +186,17 @@ export class ArtistprofilPage implements OnInit {
     if (artists) {
       this.artist = JSON.parse(artists);
       this.idArtist = this.artist.id;
-      console.log('artist', this.artist);
+      console.log('artist', this.idArtist);
     }
-
+    const u = localStorage.getItem('UserData');
+    if (u) {
+      const UserData = JSON.parse(u);
+      this.user_id = UserData.id;
+    }
+    this.checkIfUserBlocked(this.user_id).then((isBlocked) => {
+      this.alertCashfreeButtons[1].text = isBlocked ? 'Débloquer' : 'Bloquer';
+      console.log(this.alertCashfreeButtons[1].text);
+    });
     this.topsService.getTopSongs().subscribe(
       (response) => {
         this.topSongs = response.data;
