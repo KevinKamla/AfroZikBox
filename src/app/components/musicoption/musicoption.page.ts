@@ -75,11 +75,12 @@ export class MusicoptionPage implements OnInit {
     },
   ];
   async shareMusicLink(url: string) {
+    console.log(url)
     try {
       await Share.share({
         title: 'Écoutez cette musique !',
         text: 'Découvrez cette chanson incroyable !',
-        url: this.currentSong.url,
+        url: url,
         dialogTitle: 'Partager la musique',
       });
     } catch (error) {
