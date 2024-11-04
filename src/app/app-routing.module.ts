@@ -485,9 +485,11 @@ const routes: Routes = [
   {
     path: 'update-event',
     loadChildren: () => import('./views/update-event/update-event.module').then( m => m.UpdateEventPageModule)
+  },
+  {
     path: 'usercover',
     loadChildren: () => import('./views/Account/usercover/usercover.module').then( m => m.UsercoverPageModule)
-  },
+  }
 
 
 

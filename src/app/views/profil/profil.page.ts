@@ -106,7 +106,6 @@ export class ProfilPage implements OnInit {
   public btnoptionProfil = [
     {
       text: 'Changer la photo de couverture',
-      handler: () => {},
       handler: () => { this.goToRoute('usercover')  },
     },
     {
@@ -117,8 +116,6 @@ export class ProfilPage implements OnInit {
     },
     {
       text: 'Copier le lien vers le profil',
-      handler: () => {},
-
       handler: () => { this.copyLinkAndRedirect() },
     },
   ];
