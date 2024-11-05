@@ -1,27 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController, NavController, Platform } from '@ionic/angular';
-import { register } from 'swiper/element/bundle';
-import { SongsService } from './services/songs.service';
-import { AuthService } from './services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TopSongsService } from './services/top-songs.service';
-import { SuggestionsService } from './services/suggestions.service';
-import { LecteurService } from './services/lecteur.service';
-import { TopAlbumsService } from './services/top-albums.service';
-import { FavoriteService } from './services/favorite.service';
+import { AlertController, NavController, Platform } from '@ionic/angular';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { FavoriteService } from 'src/app/services/favorite.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
+import { SongsService } from 'src/app/services/songs.service';
+import { SuggestionsService } from 'src/app/services/suggestions.service';
+import { TopAlbumsService } from 'src/app/services/top-albums.service';
+import { TopSongsService } from 'src/app/services/top-songs.service';
+import { musicTab } from 'src/app/views/play/play.page';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { musicTab } from './views/play/play.page';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { DownloadService } from './services/download.service';
-
-register();
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+  selector: 'app-music-player',
+  templateUrl: './music-player.component.html',
+  styleUrls: ['./music-player.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class MusicPlayerComponent  implements OnInit {
+
   canAccessPrivateTab!: boolean;
   isUserLogged: boolean = false;
   musictabOption = musicTab;
@@ -38,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private playSubscription: Subscription | undefined;
   private timeSubscription: Subscription | undefined;
   private durationSubscription: Subscription | undefined;
-  isMusicPlaying: boolean = false;
+  private waitingList: any[] = [];
 
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
@@ -47,7 +44,10 @@ export class AppComponent implements OnInit, OnDestroy {
   sourceArray: any;
   topalbums: any[] = [];
   favoris: any[] = [];
+  isMusicPlaying: boolean = false;
+
   indexCurrentSong: number = 0;
+
   constructor(
     private navCtrl: NavController,
     private songService: SongsService,
@@ -60,39 +60,52 @@ export class AppComponent implements OnInit, OnDestroy {
     private musicPlayerService: LecteurService,
     private topAlbumsService: TopAlbumsService,
     private favoriteService: FavoriteService,
-    private PlaylistService: PlaylistService,
-    private downloadService: DownloadService
-  ) {
-    this.musicPlayerService.isPlaying$.subscribe((isPlaying) => {
-      this.isMusicPlaying = isPlaying;
-      console.log(this.isMusicPlaying);
-      
-    });
-  }
+    private PlaylistService: PlaylistService
+  ) {}
 
   isUserLoggedIn(): boolean {
     return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
   }
+
+  public addTowaintingList(song: any) {
+    this.waitingList.push(song);
+  }
+
+  async showLoginPopup() {
+    const alert = await this.alertController.create({
+      header: 'Connexion requise',
+      message: 'Veuillez vous connecter pour accéder à cette fonctionnalité.',
+      buttons: [
+        {
+          text: 'Se connecter',
+          handler: () => {
+            this.router.navigate(['/login']); // Redirige vers la page de connexion
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
   ngOnInit() {
-    this.downloadService.loadDownloadedSongs();
+    this.musicPlayerService.isPlaying$.subscribe((isPlaying: boolean) => {
+      this.isMusicPlaying = isPlaying;
+    });
     // je recuperer l'index du song en cours
     let a = localStorage.getItem('index');
     if (a) {
       this.indexCurrentSong = JSON.parse(a);
     }
 
-    this.isUserLogged = this.isUserLoggedIn();
-    console.log(this.isUserLogged);
-
-    // this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
-    //   console.log(res);
-    //   this.favoris = res.data.data;
-    // });
-    // this.topAlbumsService.getTopAlbums().subscribe(
-    //   (response) => {
-    //     this.topalbums = response.top_albums;
-    //   }
-    // );
+    this.favoriteService
+      .getFavorites(this.userId, this.accessToken)
+      .subscribe((res) => {
+        this.favoris = res.data.data;
+      });
+    this.topAlbumsService.getTopAlbums().subscribe((response) => {
+      this.topalbums = response.top_albums;
+    });
 
     this.songService.currentSong$.subscribe((song) => {
       if (song) {
@@ -100,34 +113,35 @@ export class AppComponent implements OnInit, OnDestroy {
         this.sourceArray = song.sourceArray;
       }
     });
+    console.log(this.currentSong, 'curennnttttt');
 
     this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
       // this.isUserLoggedIn = authenticated;
     });
 
-    // this.topsService.getTopSongs().subscribe(
-    //   (response) => {
-    //     this.topSongs = response.data;
-    //   },
-    //   (error) => {
-    //     console.error(
-    //       'Erreur lors de la récupération des Meilleurs songs :',
-    //       error
-    //     );
-    //   }
-    // );
+    this.topsService.getTopSongs().subscribe(
+      (response) => {
+        this.topSongs = response.data;
+      },
+      (error) => {
+        console.error(
+          'Erreur lors de la récupération des Meilleurs songs :',
+          error
+        );
+      }
+    );
 
-    // this.suggestionsService.getSuggestions().subscribe(
-    //   (response) => {
-    //     this.latest = response.new_releases.data;
-    //   },
-    //   (error) => {
-    //     console.error(
-    //       'Erreur lors de la récupération des suggestions :',
-    //       error
-    //     );
-    //   }
-    // );
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        this.latest = response.new_releases.data;
+      },
+      (error) => {
+        console.error(
+          'Erreur lors de la récupération des suggestions :',
+          error
+        );
+      }
+    );
 
     const music = localStorage.getItem('music');
     if (music) {
@@ -142,9 +156,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
       (song) => {
         this.currentSong = song;
+
+        console.log(this.currentSong, 'curennnttttt');
         if (this.currentSong) {
           this.musicPlayerService.getAudioElement().onended = () => {
-            console.log('La chanson actuelle est terminée.', '1');
+            console.log('La chanson actuelle est terminée.', '2');
             if (this.musicPlayerService.getIsRepeatOne()) {
               this.musicPlayerService.getAudioElement().currentTime = 0;
               this.musicPlayerService.getAudioElement().play();
@@ -191,6 +207,30 @@ export class AppComponent implements OnInit, OnDestroy {
     this.musicPlayerService.seekTo(event.detail.value);
   }
 
+  async verifierConnexion(onglet: string) {
+    if (this.authService.isUserLoggedIn()) {
+      this.router.navigate([`/tabs/${onglet}`]);
+    } else {
+      if (onglet === 'home' || onglet === 'tendance') {
+        this.router.navigate([`/tabs/${onglet}`]); // Accès à l'onglet accueil et tendance
+      } else {
+        const alert = await this.alertController.create({
+          header: 'Accès refusé',
+          message: 'Vous devez être connecté pour accéder à cette page.',
+          buttons: [
+            {
+              text: 'se connecter',
+              handler: () => {
+                this.router.navigate(['/login']); // Redirige vers l'onglet accueil
+              },
+            },
+          ],
+        });
+        await alert.present();
+      }
+    }
+  }
+
   goToPlay() {
     if (this.currentSong) {
       localStorage.setItem('music', JSON.stringify(this.currentSong));
@@ -229,7 +269,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // } else {
     //   console.log('Toutes les chansons ont été jouées.');
     // }
-    if (this.musicPlayerService.waitingList.length > 0) {
+    if (this.waitingList.length > 0) {
       this.musicPlayerService.playFromWaitingList();
     } else {
       let song = this.PlaylistService.getnextsong();
@@ -276,4 +316,5 @@ export class AppComponent implements OnInit, OnDestroy {
     this.currentSong = null;
     musicTab.isClose = true;
   }
+
 }

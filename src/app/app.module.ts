@@ -13,9 +13,10 @@ import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
 import { File } from '@ionic-native/file/ngx'; // Ajoutez cette ligne
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez ceci
+import { MusicPlayerComponent } from './components/music-player/music-player.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, MusicPlayerComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
