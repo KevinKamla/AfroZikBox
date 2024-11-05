@@ -84,7 +84,30 @@ export class CreateevenementPage implements OnInit {
       this.videoFile = input.files[0];
     }
   }
+  // onSubmitCreateEvent() {
+  //   if (this.imageFile && this.videoFile) {
+  //     this.yourService.createEvent(this.eventData, this.imageFile, this.videoFile).subscribe({
+  //       next: (response) => {
+  //         console.log("Événement créé avec succès", response);
+  //         this.showAlert('Succès', 'Événement créé avec succès');
+  //       },
+  //       error: (error) => {
+  //       console.error("Erreur lors de la création de l'événement", error);
+  //     }
+  //     });
+  //   }
+  // }
+
   onSubmitCreateEvent() {
+    if (this.eventForm.invalid) {
+      this.showAlert('Erreur', 'Veuillez remplir tous les champs requis.');
+      return;
+    }
+  
+    // Mise à jour de `eventData` avec les données du formulaire réactif
+    // this.eventData = { ...this.eventData, ...this.eventForm.value };
+  
+    // Vérifie si les fichiers d'image et de vidéo sont présents
     if (this.imageFile && this.videoFile) {
       this.yourService.createEvent(this.eventData, this.imageFile, this.videoFile).subscribe({
         next: (response) => {
@@ -92,11 +115,15 @@ export class CreateevenementPage implements OnInit {
           this.showAlert('Succès', 'Événement créé avec succès');
         },
         error: (error) => {
-        console.error("Erreur lors de la création de l'événement", error);
-      }
+          console.error("Erreur lors de la création de l'événement", error);
+          this.showAlert('Erreur', "Une erreur s'est produite lors de la création de l'événement");
+        }
       });
+    } else {
+      this.showAlert('Erreur', 'Veuillez télécharger une image et une vidéo pour cet événement.');
     }
   }
+  
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,

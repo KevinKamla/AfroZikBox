@@ -17,10 +17,18 @@ export class EventService {
   private buy = `${environment.api}/event/buy`;
   private accessToken = localStorage.getItem('accessToken');
   private serverKey = environment.server_key;
+  private republier = `${environment.api}/re_post`;
   apiUrl = `${environment.api}/event/validate_ticket`;
 
   constructor(private http: HttpClient) {}
 
+  getReblier(id:number){
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', id.toString());
+    return this.http.get<any>(this.republier, { params });
+  }
   // Fonction pour supprimer un événement par ID
   deleteEvent(eventId: number): Observable<any> {
     const params = new HttpParams()

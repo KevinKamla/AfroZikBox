@@ -11,6 +11,7 @@ import { LecteurService } from 'src/app/services/lecteur.service';
 import { File } from '@ionic-native/file/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { FavoriteService } from 'src/app/services/favorite.service';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-musicoption',
@@ -34,7 +35,8 @@ export class MusicoptionPage implements OnInit {
     public route: Router,
     private musicPlayerService: LecteurService,
     private file: File,
-    private androidPermissions: AndroidPermissions
+    private androidPermissions: AndroidPermissions,
+    private eventService: EventService
   ) {}
 
   public inputInformation = [
@@ -73,11 +75,12 @@ export class MusicoptionPage implements OnInit {
     },
   ];
   async shareMusicLink(url: string) {
+    console.log(url)
     try {
       await Share.share({
         title: 'Écoutez cette musique !',
         text: 'Découvrez cette chanson incroyable !',
-        url: this.currentSong.url,
+        url: url,
         dialogTitle: 'Partager la musique',
       });
     } catch (error) {
@@ -106,12 +109,22 @@ export class MusicoptionPage implements OnInit {
     this.currentSong = song;
     console.log(this.currentSong); 
   }
-  artistDetail = (item: any) => {
+  artistDetail = (item: any) => { 
     console.log(item);
     // localStorage.setItem('artist', JSON.stringify(item));
     this.route.navigate(['/artistprofil', item]);
   };
 
+  republier(id :any){
+    this.eventService.getReblier(id).subscribe((response) => {
+      alert(response.data);
+      console.log(response.data)
+    },
+    (error) => {
+      console.error('Erreur lors de la récupération des meilleurs albums :', error);
+    }
+  );
+  }
   async addToPlaylist() {
     const modal = await this.modalCtrl.create({
       component: AddplaylistPage,
