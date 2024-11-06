@@ -16,6 +16,7 @@ import { LecteurService } from 'src/app/services/lecteur.service'; // Import du 
 import { AuthService } from 'src/app/services/auth.service';
 import { PlaylistService } from'src/app/services/playlist.service';
 import { StoryService } from 'src/app/services/story.service';
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-suggestions',
@@ -59,6 +60,7 @@ export class SuggestionsPage implements OnInit {
     private genreService: GenresService,
     private toastController: ToastController,
     private yourService: StoryService,
+    private eventService:EventService,
     private musicService: LecteurService // Injection du service de musique
   ) {}
 
@@ -249,8 +251,13 @@ export class SuggestionsPage implements OnInit {
   }
 
   avatar: any;
-
+  events: any[]=[];
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   ngOnInit() {
+    this.eventService.getMyEvents(this.userId).subscribe((res) => {
+      console.log('eventtttttttttttt', res);
+      this.events = res.data;
+    });
     this.loadStories();
     this.isUserLoggedIn = this.authService.isLoggedIn();
 
