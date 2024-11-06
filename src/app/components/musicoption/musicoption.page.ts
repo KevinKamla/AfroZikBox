@@ -73,7 +73,7 @@ export class MusicoptionPage implements OnInit {
       text: 'Soumettre',
       handler: () => {},
     },
-  ];
+  ]; 
   async shareMusicLink(url: string) {
     console.log(url)
     try {
