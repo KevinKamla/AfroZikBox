@@ -1,0 +1,9 @@
+ion-segment {
+    ion-segment-button {
+        text-transform: capitalize;
+        margin: 1rem;
+        background: var(--ion-color-light);
+        border-radius: 14px;
+        padding: 1rem;
+    }
+}
