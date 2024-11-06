@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AfrozikstorePage implements OnInit {
 
+  
+  selectedSegment = 'chansons';
   constructor() { }
 
   ngOnInit() {
+    this
   }
 
 }

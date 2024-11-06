@@ -11,15 +11,37 @@
 
 <ion-content [fullscreen]="true">
     <div class="bloc_news">
-        <ion-list>
-            <!-- <ion-item button>
+        <!-- <ion-list>
+            <ion-item button>
                 <ion-icon slot="start" color="primary" name="storefront"></ion-icon>
                 <ion-label>Parcourir</ion-label>
-            </ion-item> -->
+            </ion-item>
             <ion-item button [routerLink]="['../../listachat']">
                 <ion-icon slot="start" color="primary" name="bag-handle"></ion-icon>
                 <ion-label>Mes achats</ion-label>
             </ion-item>
-        </ion-list>
+        </ion-list> -->
+        <ion-segment scrollable scrollHide mode="md" [(ngModel)]="selectedSegment">
+            <ion-segment-button value="chansons"><ion-icon name="musical-notes"></ion-icon>Suggestions</ion-segment-button>
+            <ion-segment-button value="albums"><ion-icon name="albums"></ion-icon>Nouveatés</ion-segment-button>
+            <ion-segment-button value="BestVendeur"><ion-icon name="trophy"></ion-icon>Meilleures vendeur</ion-segment-button>
+            <ion-segment-button value="produits"><ion-icon name="cart"></ion-icon>Produits</ion-segment-button>
+        </ion-segment>
+
+        <ng-container [ngSwitch]="selectedSegment">
+            <ng-template ngSwitchCase="chansons">
+                
+            </ng-template>
+            <ng-template ngSwitchCase="albums">
+                
+            </ng-template>
+            <ng-template ngSwitchCase="BestVendeur">
+                
+            </ng-template>
+            <ng-template ngSwitchCase="produits">
+                
+            </ng-template>
+
+        </ng-container>
     </div>
 </ion-content>
