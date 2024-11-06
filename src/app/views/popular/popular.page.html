@@ -1,4 +1,4 @@
-<div class="header d-f-s">
+<!-- <div class="header d-f-s">
     <h5 *ngIf="numberOfPopular > 0; else noSongs">{{ numberOfPopular }} Chansons</h5>
     <ng-template #noSongs>
         <h5>Aucune chanson n'est disponible</h5>
@@ -62,4 +62,72 @@
             </form>
         </ion-content>
     </ng-template>
+</ion-popover> -->
+
+<div class="header d-f-s">
+  <h5 *ngIf="numberOfPopular > 0; else noSongs">
+    {{ numberOfPopular }} Chansons
+  </h5>
+  <ng-template #noSongs>
+    <h5>Aucune chanson n'est disponible</h5>
+  </ng-template>
+  <span id="popover-button"
+    >Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
+  </span>
+</div>
+
+<div class="list_chansons">
+  <div *ngIf="mostPopular.length > 0">
+    <div
+      class="ion-item d-f-s"
+      *ngFor="let popular of mostPopular; let i = index"
+    >
+      <img [src]="popular.thumbnail" />
+      <div class="title">
+        <h3>{{ popular.title }}</h3>
+        <p>{{ popular.description }} | {{ popular.duration }}</p>
+      </div>
+      <div class="block-btn">
+        <ion-button class="btn-play" (click)="loadsong(mostPopular, i)">
+          <ion-icon
+            color="primary"
+            slot="icon-only"
+            name="play-circle"
+          ></ion-icon>
+        </ion-button>
+        <ion-button (click)="openOptionSound(popular.id)">
+          <ion-icon
+            slot="icon-only"
+            color="primary"
+            name="ellipsis-vertical-outline"
+          ></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ion-popover trigger="popover-button" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-content>
+      <form action="" method="post">
+        <ion-list>
+          <ion-radio-group value="option1">
+            <ion-item>
+              <ion-label>Ascendante</ion-label>
+              <ion-radio color="primary" default value="option2"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Descendante</ion-label>
+              <ion-radio color="primary" value="option3"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Données ajoutées</ion-label>
+              <ion-radio color="primary" value="option3"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </form>
+    </ion-content>
+  </ng-template>
 </ion-popover>

@@ -53,7 +53,7 @@ export class PopularPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         console.log('suggestions récupérés :', response);
-        this.mostPopular = response.most_popular_week.data;
+        this.mostPopular = response.most_popular_week;
         console.log(this.mostPopular);
         const numberOfPopulars = this.mostPopular.length;
         console.log('Nombre de popular :', numberOfPopulars);
