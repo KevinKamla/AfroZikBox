@@ -1,0 +1,47 @@
+<div class="player" [ngClass]="{'none': !currentSong}">
+  <div class="progress-bar">
+    <ion-range
+      min="0"
+      [max]="duration"
+      step="1"
+      [(ngModel)]="currentTime"
+      (ionChange)="seekTo($event)"
+    >
+      <!-- <ion-label slot="start">{{ currentTime | number: '1.0-0' }}</ion-label>
+      <ion-label slot="end">{{ duration | number: '1.0-0' }}</ion-label> -->
+    </ion-range>
+  </div>
+  <ion-row>
+    <ion-col size="2">
+      <ion-img
+        [src]="currentSong?.thumbnail"
+        alt="Cover"
+        class="img"
+        (click)="goToPlay()"
+      ></ion-img>
+    </ion-col>
+
+    <ion-col size="5" class="d-b" (click)="goToPlay()">
+      <b>{{ currentSong?.description }}</b>
+      <span> <p class="scrolling-text">{{ currentSong?.title }}</p></span>
+    </ion-col>
+
+    <ion-col size="5" class="bloc-icon">
+      <ion-button fill="clear" shape="round" (click)="togglePlayPause()">
+        <ion-icon slot="icon-only" [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="playPreviousSong()">
+        <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="playNextSong()">
+        <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="closePlayer()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</div>

@@ -1,79 +1,7 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
   <div class="container">
-    <div class="img-detail d-f">
-      <img [src]="selectedPlaylist.thumbnail_ready" />
-      <div class="title">
-        <h3>{{selectedPlaylist.name}}</h3>
-        <p>{{selectedPlaylist.songs}} Chansons</p>
-        <ion-buttons slot="start">
-          <ion-button id="modal-avertissement">
-            <ion-icon slot="icon-only" name="download-outline"></ion-icon>
-          </ion-button>
-          <ion-button>
-            <ion-icon slot="icon-only" name="share-social"></ion-icon>
-          </ion-button>
-          <ion-button (click)="openOptionPlaylist()">
-            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-      </div>
-    </div>
-
-    <div class="block-btn-header">
-      <ion-buttons slot="start">
-        <ion-button
-          expand="bloc"
-          shape="round"
-          (click)="loadsongAleatoire(playlists)"
-        >
-          <ion-icon slot="start" name="shuffle"></ion-icon>Aléatoire</ion-button
-        >
-        <ion-button
-          shape="round"
-          expand="bloc"
-          class="btn-Lecture"
-          (click)="loadsong(playlists, 0)"
-        >
-          <ion-icon slot="start" name="play-circle"></ion-icon
-          >Lecture</ion-button
-        >
-      </ion-buttons>
-    </div>
-    <div class="list_chansons">
-      <div class="ion-item" *ngFor="let item of playlists; let i = index">
-        <img [src]="item.thumbnail" />
-        <div class="title">
-          <h3>{{ item.title }}</h3>
-          <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
-        </div>
-        <div class="block-btn">
-          <ion-button class="btn-play" (click)="loadsong(playlists, i)">
-            <ion-icon
-              color="primary"
-              slot="icon-only"
-              name="{{pauseIcon}}"
-            ></ion-icon>
-          </ion-button>
-          <ion-button (click)="openOptionSound(item)">
-            <ion-icon
-              slot="icon-only"
-              color="primary"
-              name="ellipsis-vertical-outline"
-            ></ion-icon>
-          </ion-button>
-        </div>
-      </div>
-    </div>
-<!-- 
-    <div class="container">
+    <!-- Playlist Details: Show when isLoading is false -->
+    <div *ngIf="!isLoading">
       <div class="img-detail d-f">
         <img [src]="selectedPlaylist.thumbnail_ready" />
         <div class="title">
@@ -94,48 +22,105 @@
       </div>
 
       <div class="block-btn-header">
+        
         <ion-buttons slot="start">
-          <ion-button expand="bloc" shape="round">
+          <ion-button
+            expand="bloc"
+            shape="round"
+            (click)="loadsongAleatoire(playlists)"
+          >
             <ion-icon slot="start" name="shuffle"></ion-icon
             >Aléatoire</ion-button
           >
-          <ion-button shape="round" expand="bloc" class="btn-Lecture">
+          <ion-button
+            shape="round"
+            expand="bloc"
+            class="btn-Lecture"
+            (click)="loadsong(playlists, 0)"
+          >
             <ion-icon slot="start" name="play-circle"></ion-icon
             >Lecture</ion-button
           >
         </ion-buttons>
       </div>
-      <div class="list_chansons">
-        <div class="ion-item" *ngFor="let item of playlists; let i = index">
-          <img [src]="item.thumbnail" />
-          <div class="title">
-            <h3>{{ item.title }}</h3>
-            <p>{{item.songArray.USER_DATA.name}} | {{ item.duration }}</p>
-          </div>
-          <div class="block-btn">
-            <ion-button class="btn-play" (click)="loadsong(playlists, i)">
-              <ion-icon
-                color="primary"
-                slot="icon-only"
-                name="{{pauseIcon}}"
-              ></ion-icon>
-            </ion-button>
-            <ion-button (click)="openOptionSound(item)">
-              <ion-icon
-                slot="icon-only"
-                color="primary"
-                name="ellipsis-vertical-outline"
-              ></ion-icon>
-            </ion-button>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
-    <ion-alert
-      trigger="modal-avertissement"
-      header="Avertissement"
-      message="Pour ce service, votre compte doit être mis à niveau"
-      [buttons]="buttonAvert"
-    ></ion-alert></div
-></ion-content>
+      <div class="list_chansons">
+        <!-- Bloc conditionnel pour le spinner de chargement -->
+        <ng-container *ngIf="isLoading; else songList">
+          <ion-spinner name="crescent" class="spinner-centered"></ion-spinner>
+        </ng-container>
+      
+        <!-- Template pour la liste des chansons après chargement -->
+        <ng-template #songList>
+          <div class="ion-item" *ngFor="let item of playlists; let i = index">
+            <img [src]="item.thumbnail" />
+            <div class="title">
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.songArray.USER_DATA.name }} | {{ item.duration }}</p>
+            </div>
+            <div class="block-btn">
+              <ion-button class="btn-play" (click)="loadsong(playlists, i)">
+                <ion-icon color="primary" slot="icon-only" name="{{ pauseIcon }}"></ion-icon>
+              </ion-button>
+              <ion-button (click)="openOptionSound(item)">
+                <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      
+    </div>
+  </div>
+</ion-content>
+
+<div class="player" [ngClass]="{'none': !currentSong}">
+  <div class="progress-bar">
+    <ion-range
+      min="0"
+      [max]="duration"
+      step="1"
+      [(ngModel)]="currentTime"
+      (ionChange)="seekTo($event)"
+    >
+      <!-- <ion-label slot="start">{{ currentTime | number: '1.0-0' }}</ion-label>
+      <ion-label slot="end">{{ duration | number: '1.0-0' }}</ion-label> -->
+    </ion-range>
+  </div>
+  <ion-row>
+    <ion-col size="2">
+      <ion-img
+        [src]="currentSong?.thumbnail"
+        alt="Cover"
+        class="img"
+        (click)="goToPlay()"
+      ></ion-img>
+    </ion-col>
+
+    <ion-col size="5" class="d-b" (click)="goToPlay()">
+      <b>{{ currentSong?.description }}</b>
+      <span> <p class="scrolling-text">{{ currentSong?.title }}</p></span>
+    </ion-col>
+
+    <ion-col size="5" class="bloc-icon">
+      <ion-button fill="clear" shape="round" (click)="togglePlayPause()">
+        <ion-icon
+          slot="icon-only"
+          [name]="isPlaying ? 'pause' : 'play'"
+        ></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="playPreviousSong()">
+        <ion-icon slot="icon-only" name="play-skip-back"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="playNextSong()">
+        <ion-icon slot="icon-only" name="play-skip-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear" shape="round" (click)="closePlayer()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</div>

@@ -7,6 +7,10 @@ import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistop
 import { GenresService } from 'src/app/services/genres.service';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { LecteurService } from 'src/app/services/lecteur.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { SongsService } from 'src/app/services/songs.service';
+import { DownloadService } from 'src/app/services/download.service';
 
 @Component({
   selector: 'app-playlistdetail',
@@ -21,6 +25,34 @@ export class PlaylistdetailPage implements OnInit {
   publicPlaylist: any[] = [];
   playlistId: number | undefined;
   playlistSongs: any[] = [];
+  isMusicPlaying: boolean = false;
+  canAccessPrivateTab!: boolean;
+  isUserLogged: boolean = false;
+  musictabOption = musicTab;
+  currentSong: any;
+  topSongs: any[] = [];
+  latest: any[] = [];
+  isPlaying = false;
+  currentTime = 0;
+  duration = 0;
+  sonsCategorieActuelle: any[] = [];
+  indexSonActuel: number = 0;
+  private songSubscription: Subscription | undefined;
+  private currentTimeSubject = new BehaviorSubject<number>(0);
+  private playSubscription: Subscription | undefined;
+  private timeSubscription: Subscription | undefined;
+  private durationSubscription: Subscription | undefined;
+  private waitingList: any[] = [];
+  accessToken: string = localStorage.getItem('accessToken') || '';
+  userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
+  audio: HTMLAudioElement = new Audio();
+  currentSongIndex: number = 0;
+  sourceArray: any;
+  topalbums: any[] = [];
+  favoris: any[] = [];
+
+  indexCurrentSong: number = 0;
+  isLoading: boolean | undefined;
   constructor(
     private modalCtrl: ModalController,
     public route: Router,
@@ -30,8 +62,16 @@ export class PlaylistdetailPage implements OnInit {
     private playlistService: PlaylistService,
     private publicPlaylistService: PlaylistService,
     private PlaylistService: PlaylistService,
-    private musicService: LecteurService // Injection du service de musique
-  ) {}
+    private musicService: LecteurService, // Injection du service de musique
+    private songService: SongsService,
+    private authService: AuthService,
+    private musicPlayerService: LecteurService,
+    private downloadService: DownloadService
+  ) {
+    this.musicService.isPlaying$.subscribe((isPlaying) => {
+      this.isMusicPlaying = isPlaying;
+    });
+  }
   buttonAvert = [
     {
       text: 'Annuler',
@@ -45,6 +85,8 @@ export class PlaylistdetailPage implements OnInit {
   ];
 
   async openOptionSound(song: any) {
+    console.log(song);
+    
     const modale = await this.modalCtrl.create({
       component: MusicoptionPage,
       componentProps: { song }, // Passer l'ID et les données de la playlist
@@ -96,6 +138,9 @@ export class PlaylistdetailPage implements OnInit {
   songs: any[] = [];
   selectedPlaylist: any;
   firstId: any;
+  isUserLoggedIn(): boolean {
+    return this.authService.isUserLoggedIn(); // Méthode pour vérifier si l'utilisateur est connecté
+  }
   ngOnInit() {
     // this.playlist = this.actvroute.snapshot.params['playlist'];
 
@@ -129,36 +174,249 @@ export class PlaylistdetailPage implements OnInit {
       const playlistId = this.activatedRoute.snapshot.paramMap.get('id');
 
       if (playlistId) {
-        // Fetch playlist songs using the API service
+        // Affichage du spinner pendant le chargement des données
+        this.isLoading = true;
+
         this.publicPlaylistService
           .getPlayListSongs(
-            parseInt(playlistId, 10), // Assurez-vous que playlistId est bien un nombre
+            parseInt(playlistId, 10),
             localStorage.getItem('accessToken') || ''
           )
           .subscribe(
             (response) => {
               if (response.success) {
+                // Stocker les chansons dans playlists
                 this.playlists = response.success.songs;
-
-                this.firstId = this.playlists[0].id;
-                // console.log(this.playlists);
+                this.firstId = this.playlists[0]?.id;
               } else if (response.sessionError) {
-                console.error('Session error:', response.sessionError);
+                console.error('Erreur de session :', response.sessionError);
               } else {
-                // Handle other errors
-                console.error('Error fetching playlist songs:', response.error);
+                console.error(
+                  'Erreur lors du chargement des chansons :',
+                  response.error
+                );
               }
+
+              // Masquer le loader une fois les données récupérées
+              this.isLoading = false;
             },
             (error) => {
-              console.error('Error fetching playlist songs:', error);
+              console.error(
+                'Erreur lors de la récupération des chansons :',
+                error
+              );
+
+              // Masquer le loader en cas d'erreur
+              this.isLoading = false;
             }
           );
       } else {
-        console.error(
-          'Playlist ID is undefined. Unable to fetch playlist songs.'
-        );
+        console.error('ID de la playlist est indéfini.');
+        this.isLoading = false;
       }
     });
+
+    this.downloadService.loadDownloadedSongs();
+    // je recuperer l'index du song en cours
+    let a = localStorage.getItem('index');
+    if (a) {
+      this.indexCurrentSong = JSON.parse(a);
+    }
+
+    this.isUserLogged = this.isUserLoggedIn();
+    console.log(this.isUserLogged);
+
+    // this.favoriteService.getFavorites(this.userId, this.accessToken).subscribe((res) => {
+    //   console.log(res);
+    //   this.favoris = res.data.data;
+    // });
+    // this.topAlbumsService.getTopAlbums().subscribe(
+    //   (response) => {
+    //     this.topalbums = response.top_albums;
+    //   }
+    // );
+
+    this.songService.currentSong$.subscribe((song) => {
+      if (song) {
+        this.currentSong = song;
+        this.sourceArray = song.sourceArray;
+      }
+    });
+
+    this.authService.isAuthenticated().subscribe((authenticated: boolean) => {
+      // this.isUserLoggedIn = authenticated;
+    });
+
+    // this.topsService.getTopSongs().subscribe(
+    //   (response) => {
+    //     this.topSongs = response.data;
+    //   },
+    //   (error) => {
+    //     console.error(
+    //       'Erreur lors de la récupération des Meilleurs songs :',
+    //       error
+    //     );
+    //   }
+    // );
+
+    // this.suggestionsService.getSuggestions().subscribe(
+    //   (response) => {
+    //     this.latest = response.new_releases.data;
+    //   },
+    //   (error) => {
+    //     console.error(
+    //       'Erreur lors de la récupération des suggestions :',
+    //       error
+    //     );
+    //   }
+    // );
+
+    const music = localStorage.getItem('music');
+    if (music) {
+      this.currentSong = JSON.parse(music);
+    }
+
+    this.songSubscription = this.songService.currentSong$.subscribe((song) => {
+      this.currentSong = song;
+    });
+
+    // Souscrire au flux du service pour la chanson actuelle
+    this.songSubscription = this.musicPlayerService.currentSong$.subscribe(
+      (song) => {
+        this.currentSong = song;
+        if (this.currentSong) {
+          this.musicPlayerService.getAudioElement().onended = () => {
+            console.log('La chanson actuelle est terminée.', '1');
+            if (this.musicPlayerService.getIsRepeatOne()) {
+              this.musicPlayerService.getAudioElement().currentTime = 0;
+              this.musicPlayerService.getAudioElement().play();
+            } else {
+              this.playNextSong();
+            }
+          };
+        }
+      }
+    );
+
+    // Souscrire à l'état de lecture (playing ou pause)
+    this.playSubscription = this.musicPlayerService.isPlaying$.subscribe(
+      (isPlaying) => {
+        this.isPlaying = isPlaying;
+      }
+    );
+
+    // Souscrire à la mise à jour du temps actuel
+    this.timeSubscription = this.musicPlayerService.currentTime$.subscribe(
+      (time) => {
+        this.currentTime = time;
+      }
+    );
+
+    // Souscrire à la mise à jour de la durée
+    this.durationSubscription = this.musicPlayerService.duration$.subscribe(
+      (duration) => {
+        this.duration = duration;
+      }
+    );
+    console.log(this.currentSong);
+  }
+
+  togglePlayPause() {
+    if (this.isPlaying) {
+      this.musicPlayerService.pauseMusic();
+    } else {
+      this.musicPlayerService.resumeMusic();
+    }
+  }
+
+  seekTo(event: any) {
+    this.musicPlayerService.seekTo(event.detail.value);
+  }
+
+  goToPlay() {
+    if (this.currentSong) {
+      localStorage.setItem('music', JSON.stringify(this.currentSong));
+      this.navCtrl.navigateForward('play');
+    } else {
+      console.error('Aucune chanson actuelle à sauvegarder');
+    }
+  }
+
+  async stopCurrentSong(): Promise<void> {
+    this.musicPlayerService.stopCurrentMusic();
+    this.isPlaying = false;
+    this.currentTime = 0;
+    this.duration = 0;
+  }
+
+  async next() {
+    if (this.sonsCategorieActuelle.length > 0) {
+      await this.stopCurrentSong();
+      this.indexSonActuel =
+        (this.indexSonActuel + 1) % this.sonsCategorieActuelle.length;
+      this.currentSong = this.sonsCategorieActuelle[this.indexSonActuel];
+      this.songService.setCurrentSong(this.currentSong);
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }
+
+  // Méthode pour jouer la prochaine chanson avec MusicService
+  playNextSong() {
+    // if (this.currentSongIndex + 1 < this.topSongs.length) {
+    //   this.currentSongIndex++;
+    //   this.playMusic(
+    //     this.topSongs[this.currentSongIndex],
+    //     this.currentSongIndex
+    //   );
+    // } else {
+    //   console.log('Toutes les chansons ont été jouées.');
+    // }
+    if (this.musicPlayerService.waitingList.length > 0) {
+      this.musicPlayerService.playFromWaitingList();
+    } else {
+      let song = this.PlaylistService.getnextsong();
+      this.playMusic(song, this.currentSongIndex);
+    }
+  }
+
+  // Méthode pour jouer la chanson précédente avec MusicService
+  playPreviousSong() {
+    // if (this.currentSongIndex > 0) {
+    //   this.currentSongIndex--;
+    //   this.playMusic(
+    //     this.topSongs[this.currentSongIndex],
+    //     this.currentSongIndex
+    //   );
+    // }
+
+    let song = this.PlaylistService.getprevsong();
+    this.playMusic(song, this.currentSongIndex);
+  }
+
+  playMusic(song: any, index: number): void {
+    // Appelez la méthode playMusic avec song et index
+    this.musicPlayerService.playMusic(song, index);
+    musicTab.musicIsPlay = true;
+    this.currentSong = song;
+    console.log(this.currentSong);
+  }
+
+  stopMusic() {
+    this.musicPlayerService.stopCurrentMusic();
+    musicTab.musicIsPlay = false;
+  }
+
+  ngOnDestroy() {
+    if (this.songSubscription) this.songSubscription.unsubscribe();
+    if (this.playSubscription) this.playSubscription.unsubscribe();
+    if (this.timeSubscription) this.timeSubscription.unsubscribe();
+    if (this.durationSubscription) this.durationSubscription.unsubscribe();
+  }
+
+  closePlayer() {
+    this.stopMusic();
+    this.currentSong = null;
+    musicTab.isClose = true;
   }
 
   playMusicFromSongs(song: any, index: number) {
