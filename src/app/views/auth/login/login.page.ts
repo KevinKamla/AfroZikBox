@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
-// import { ConnectivityService } from 'src/app/services/connectivity.service';
-
+// import { ConnectivityService } from 'src/app/services/connectivity.service';ty/apple-sign-in'
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -34,7 +33,12 @@ export class LoginPage {
     });
     await toast.present();
   }
+  async loginWithGoogle() {
+    
+  }
 
+  async loginWithApple() {
+  }
   async loginPressed() {
     if (!this.username.trim()) {
       this.presentToast('Veuillez entrer un nom d’utilisateur.');

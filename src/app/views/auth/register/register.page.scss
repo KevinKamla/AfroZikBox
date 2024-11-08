@@ -1,34 +1,64 @@
- .container {
-     margin-top: 2rem;
-     padding: 1rem;
-     .logo {
-         img {
-             height: 40px;
-         }
-     }
-     h2 {
-         font-weight: 600;
-         text-align: center;
-     }
-     .input {
-         .canView {
-             padding-inline: 8px;
-             margin-bottom: 10px;
-             gap: 10px;
-             background: #8080800d;
-             font-size: 17px;
-             border-radius: 10px;
-         }
-         ion-button {
-             margin-block: 2rem;
-             margin-inline: 1rem;
-         }
-     }
-     p {
-         font-size: 15px;
-         text-align: center;
-         span {
-             color: var(--ion-color-primary);
-         }
-     }
- }
+.container {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .logo img {
+    width: 150px;
+    height: auto;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 1rem 0;
+  }
+  
+  .input-field {
+    --background: #F7F7F7;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  
+  .input-field ion-icon {
+    color: #6e6e6e;
+  }
+  
+  .terms-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+  }
+  
+  .terms-link {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #FF6B00;
+    margin-bottom: 1.5rem;
+    cursor: pointer;
+  }
+  
+  ion-button {
+    margin-top: 1rem;
+    --background: #FF6B00;
+  }
+  
+  .sign-in-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1.5rem;
+  }
+  
+  .sign-in-text span {
+    color: #FF6B00;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  

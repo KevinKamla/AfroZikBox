@@ -23,7 +23,7 @@ export class MusicdetailsPage implements OnInit {
       this.navCtrl.back();
     }
   }
-
+  desc!:any;
   tags: any[]=[];
   ngOnInit() {
     const storedSong = localStorage.getItem('currentSong');
@@ -31,11 +31,12 @@ export class MusicdetailsPage implements OnInit {
     if (storedSong) {
       this.currentSong = JSON.parse(storedSong);
       this.tags = this.currentSong.tags.split(',');
+      this.desc = this.currentSong.description.replace(/<[^>]*>/g, ''); // Filtrer les balises HTML
       console.log('sonngggggg', this.tags);
       console.log('sonnggggggssssss', this.currentSong)
       this.tags.forEach((tag: string) => {
         console.log('Tag:', tag.trim()); // Utiliser trim() pour enlever les espaces
-      }); 
+      });  
       // Utiliser this.currentSong comme nécessaire
     }
   } 
