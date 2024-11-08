@@ -22,7 +22,7 @@ export class MusicoptionPage implements OnInit {
   accessToken: string = localStorage.getItem('accessToken') || '';
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   favoris: any[] = [];
-
+  liked!:any;
   addStory = false;
   currentSong: any;
   @Input() song: any | undefined;
@@ -39,6 +39,29 @@ export class MusicoptionPage implements OnInit {
     private eventService: EventService
   ) {}
 
+  likeSong(audioId: string) {
+    this.favoriteService.likeDislikeSong(audioId).subscribe({
+        next: (data) => {
+            this.liked = true; // Met à jour l'état à "aimé"
+            console.log('Chanson aimée:', data);
+        },
+        error: (err) => {
+            console.error('Erreur lors de l\'ajout aux favoris:', err);
+        },
+    });
+}
+
+dislikeSong(audioId: string) {
+    this.favoriteService.dislikeTrack(audioId).subscribe({
+        next: (data) => {
+            console.log('Chanson non aimée:', data);
+            this.liked = false; // Met à jour l'état à "non aimé"
+        },
+        error: (err) => {
+            console.error('Erreur lors de la suppression des favoris:', err);
+        },
+    });
+}
   public inputInformation = [
     {
       placeholder: 'Information',

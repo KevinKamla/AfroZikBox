@@ -3,39 +3,67 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Connexion</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="container">
-    <div class="logo d-f-c">
+    <!-- Logo -->
+    <div class="logo">
       <img src="assets/icon/logo.png" alt="logo">
     </div>
-    <h2>Connectez-vous à votre compte</h2>
+    
+    <!-- Title -->
+    <h2 class="title">Connectez-vous à votre compte</h2>
+    
+    <!-- Login Form -->
     <form (submit)="loginPressed()">
-      <div class="input">
-        <div class="canView d-f-s">
-          <ion-icon slot="start" name="person"></ion-icon>
-          <ion-input [(ngModel)]="username" name="username" type="text" label="Username" labelPlacement="floating" required></ion-input>
-        </div>
-        <div class="canView d-f-s">
-          <ion-icon slot="start" name="lock-closed"></ion-icon>
-          <ion-input [(ngModel)]="password" name="password" type="password" label="Mot de passe" labelPlacement="floating" required></ion-input>
-        </div>
-        <div class="d-f-c" style="gap: 10px;">
-          <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe">Se souvenir de moi</ion-checkbox>
-        </div>
-        <ion-text color="danger" *ngIf="errorMessage">
-          <p>{{ errorMessage }}</p>
-        </ion-text>
-        <ion-button expand="block" shape="round" type="submit">
-          Se connecter
-        </ion-button>
-        <p style="margin-bottom: 1rem;" [routerLink]="['/resetpassword']">Mot de passe oublié?</p>
-        <!-- Message d'erreur -->
-      </div>
+      <!-- Email Field -->
+      <ion-item class="input-field">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-input [(ngModel)]="username" name="username" type="email" placeholder="E-mail" required></ion-input>
+      </ion-item>
+      
+      <!-- Password Field -->
+      <ion-item class="input-field">
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        <ion-input [(ngModel)]="password" name="password" type="password" placeholder="Mot de passe" required></ion-input>
+      </ion-item>
+
+      <!-- Remember Me Checkbox -->
+      <ion-item lines="none" class="remember-me">
+        <ion-checkbox [(ngModel)]="rememberMe" name="rememberMe" slot="start"></ion-checkbox>
+        <ion-label>Souviens-toi de moi</ion-label>
+      </ion-item>
+      
+      <!-- Error Message -->
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </ion-text>
+      
+      <!-- Login Button -->
+      <ion-button expand="block" shape="round" color="warning" type="submit">
+        Se connecter
+      </ion-button>
+      
+      <!-- Forgot Password Link -->
+      <p class="forgot-password" [routerLink]="['/resetpassword']">Mot de passe oublié?</p>
     </form>
-    <p>Vous n'avez pas encore de compte ?<span [routerLink]="['/register']"> S'inscrire</span></p>
+
+    <!-- Social Login Options -->
+    <div class="social-login">
+      <ion-text color="medium">ou continuer avec</ion-text>
+      <ion-button expand="block" color="primary" shape="round" (click)="loginWithGoogle()">
+        <ion-icon name="logo-google" slot="start"></ion-icon>
+        Connexion avec Google
+      </ion-button>
+      <ion-button expand="block" color="dark" shape="round" (click)="loginWithApple()">
+        <ion-icon name="logo-apple" slot="start"></ion-icon>
+        Connexion avec Apple
+      </ion-button>
+    </div>
+
+    <!-- Sign Up Link -->
+    <p class="sign-up">Vous n'avez pas encore de compte ? <span [routerLink]="['/register']">S'inscrire</span></p>
   </div>
 </ion-content>

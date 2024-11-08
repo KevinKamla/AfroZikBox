@@ -23,7 +23,11 @@
                 <div class="scroll-box">
                     <div class="movie" *ngFor="let latest of recentP; let i = index">
                         <div  (click)="loadsong(recentP, i)">
-                            <img class="img-intro" [src]="latest.thumbnail" (click)="goToPlay(latest)">
+                            <img 
+                            class="img-intro" 
+                            style="width: 120px;"
+                            [src]="latest.thumbnail ? latest.thumbnail : 'assets/icon/default.webp'"
+                            (click)="goToPlay(latest)">
                             <ion-label>{{latest.title}}</ion-label>
                         </div>
                     </div>
@@ -62,6 +66,10 @@
             <ion-item button [routerLink]="['/partager']">
                 <ion-icon slot="start" color="primary" name="share-social-outline"></ion-icon>
                 <ion-label>Partagé</ion-label>
+            </ion-item>
+            <ion-item button [routerLink]="['/listachat']">
+                <ion-icon slot="start" color="primary" name="albums-outline"></ion-icon>
+                <ion-label>Mes Achats</ion-label>
             </ion-item>
         </ion-list>
     </div>

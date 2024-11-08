@@ -27,6 +27,7 @@
         <ion-segment-button value="album">Meilleurs Albums</ion-segment-button>
         <ion-segment-button value="popular">Radios</ion-segment-button>
         <ion-segment-button value="artist">Artistes</ion-segment-button>
+        <ion-segment-button value="events">Evenements</ion-segment-button>
     </ion-segment>
     <div class="container">
         <div class="box-alert" [routerLink]="['/login']" *ngIf="!isUserLogged">
@@ -59,6 +60,9 @@
                 <app-popular></app-popular>
             </ng-template>
             <ng-template ngSwitchCase="artist">
+                <app-artist></app-artist>
+            </ng-template>
+            <ng-template ngSwitchCase="events">
                 <app-artist></app-artist>
             </ng-template>
         </ng-container>
