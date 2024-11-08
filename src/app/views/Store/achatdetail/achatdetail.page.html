@@ -27,8 +27,10 @@
 
     <div class="block-btn-header ">
       <ion-buttons slot="start">
-        <ion-button expand="bloc" shape="round" class="btn-Lecture" (click)="joinEvent()">
-          <ion-icon slot="start" name="footsteps"></ion-icon>Participer</ion-button>
+        <ion-button expand="bloc" style="background: rgba(239, 207, 252, 0.949); border-radius: 20px;"
+        [color]="isJoined === 'join' ? 'danger' : 'primary'" shape="round" (click)="joinEvent()">
+          <ion-icon slot="start" name="footsteps"></ion-icon>Participer
+        </ion-button>
         <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="buyTicket()">
           <ion-icon slot="start" name="ticket"></ion-icon>Acheter un ticket</ion-button>
       </ion-buttons>

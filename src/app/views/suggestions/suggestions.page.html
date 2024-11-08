@@ -36,9 +36,10 @@
 
   <div class="container-scroll">
     <div class="scroll-box" *ngIf="topSongs.length > 0; else ionSkeletonBest">
-      <div class="movie" *ngFor="let topSong of topSongs; let i = index">
+      <div class="movie" *ngFor="let topSong of topSongs| slice:0:7; let i = index">
         <img
           class="img-intro"
+          style=" width: 150px;"
           [src]="topSong.thumbnail"
           (click)="loadsong(topSongs, i)"
         />
@@ -120,17 +121,12 @@
     </div>
 
     <div class="container-scroll">
-      <!-- <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
-            <div class="movie" *ngFor="let latest of latest; let i = index">
-                <img class="img-intro" [src]="latest.thumbnail" (click)="playMusicFromLatestList(latest, i)">
-                <p class="song-description">{{latest.title}}</p>
-            </div>
-        </div> -->
       <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
-        <div class="movie" *ngFor="let l of latest; let i = index">
+        <div class="movie" *ngFor="let l of latest| slice:0:7; let i = index">
           <img
+            style=" width: 150px;"
             class="img-intro"
-            [src]="l.thumbnail"
+            [src]="l.thumbnail ? l.thumbnail : 'assets/icon/default.webp'"
             (click)="loadsong(latest, i)"
           />
           <p class="song-description">{{ truncateTitle(l.title, 15) }}</p>
@@ -169,7 +165,7 @@
       >
         <div
           class="movie"
-          *ngFor="let album of topalbums"
+          *ngFor="let album of topalbums| slice:0:7"
           (click)="selectAlbum(album)"
         >
           <img class="img-intro" [src]="album.thumbnail" />
@@ -213,9 +209,10 @@
         class="scroll-box"
         *ngIf="artists.length > 0; else ionSkeletonArtiste"
       >
-        <div class="movie" *ngFor="let artist of artists">
+        <div class="movie" *ngFor="let artist of artists| slice:0:7">
           <img
             class="img-intro"
+            style=" width: 150px;"
             [src]="artist.avatar ? artist.avatar : artist.cover" alt="Artist Image"
             (click)="artistDetail(artist)"
           />
@@ -256,9 +253,9 @@
       >
         <div
           class="movie"
-          *ngFor="let album of events"
+          *ngFor="let album of events| slice:0:7"
         >
-          <img class="img-intro" [src]="album.image" />
+          <img style="width: 150px;" class="img-intro" [src]="album.image" />
           <div class="song-description">{{album.name}}</div>
           <ion-label>{{album.user_data.username}}</ion-label>
           <div class="number_price">
