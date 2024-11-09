@@ -12,6 +12,7 @@ import { EventService } from 'src/app/services/event.service';
 export class AchatdetailPage implements OnInit {
   eventId: any; // ID de l'événement à rejoindre
   type: 'join' | 'unjoin' = 'join'; // Par défaut, on rejoint
+  isJoined!:any;
   constructor(
     private navCtrl: NavController,
     public route: Router,
@@ -81,6 +82,8 @@ export class AchatdetailPage implements OnInit {
     this.eventService.joinEvent(this.eventId, this.type).subscribe({
       next: (response) => {
         console.log('Événement rejoint avec succès', response);
+        this.isJoined=response.type;
+        console.log(this.isJoined)
         this.showAlert('Succès', `Événement ${JSON.stringify(response.type)} avec succès !`); // Correction de la popup de succès
       },
       error: (error) => {

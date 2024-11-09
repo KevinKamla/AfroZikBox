@@ -5,19 +5,31 @@
       <div class="title">
         <h3>{{ selectedPlaylist?.title }}</h3>
         <p>
-          {{ selectedPlaylist?.description }} | {{ selectedPlaylist?.duration }}
+          {{ selectedPlaylist?.description | slice:0:50 }}... | {{ selectedPlaylist?.duration }}
         </p>
       </div>
-      <div class="block-btn">
-        <ion-button fill="clear">
-          <ion-icon
-            color="primary"
-            size="30"
-            slot="icon-only"
-            name="heart-outline"
-          ></ion-icon>
+      <div class="flex_box2">
+        <ion-button
+            shape="round"
+            fill="clear"
+            (click)="likeSong(currentSong.audio_id)"
+            [disabled]="liked"
+        >
+            <ion-icon
+                slot="icon-only"
+                [name]="liked ? 'heart' : 'heart-outline'"
+                [color]="liked ? 'danger' : 'medium'"
+            ></ion-icon>
         </ion-button>
-      </div>
+        <ion-button
+            shape="round"
+            fill="clear"
+            (click)="dislikeSong(currentSong.audio_id)"
+            [disabled]="!liked"
+        >
+            <ion-icon slot="icon-only" name="heart-dislike-outline"></ion-icon>
+        </ion-button>
+    </div>
     </div>
   </div>
   <div class="ion-padding container-sound">
