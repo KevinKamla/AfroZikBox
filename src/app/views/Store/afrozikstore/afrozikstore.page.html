@@ -22,26 +22,251 @@
             </ion-item>
         </ion-list> -->
         <ion-segment scrollable scrollHide mode="md" [(ngModel)]="selectedSegment">
-            <ion-segment-button value="chansons"><ion-icon name="musical-notes"></ion-icon>Suggestions</ion-segment-button>
-            <ion-segment-button value="albums"><ion-icon name="albums"></ion-icon>Nouveatés</ion-segment-button>
-            <ion-segment-button value="BestVendeur"><ion-icon name="trophy"></ion-icon>Meilleures vendeur</ion-segment-button>
+            <ion-segment-button value="chansons"><ion-icon name="musical-notes"></ion-icon>Chansons</ion-segment-button>
+            <ion-segment-button value="albums"><ion-icon name="albums"></ion-icon>Albums</ion-segment-button>
+            <ion-segment-button value="BestVendeur"><ion-icon name="trophy"></ion-icon>Meilleures
+                vendeur</ion-segment-button>
             <ion-segment-button value="produits"><ion-icon name="cart"></ion-icon>Produits</ion-segment-button>
         </ion-segment>
 
         <ng-container [ngSwitch]="selectedSegment">
             <ng-template ngSwitchCase="chansons">
-                
+                <ion-card *ngFor="let item of [1,1,1]">
+                    <ion-card-content style="padding: 7px;">
+                        <div class="d-f">
+                            <ion-thumbnail>
+                                <img src="assets/icon/son.png" />
+                            </ion-thumbnail>
+                            <ion-item>
+                                <div>
+                                    <ion-label>Y2meta.app - Kiri kodu Hythatara paokir ma</ion-label>
+                                    <ion-text>
+                                        <p>Administrateur</p>
+                                    </ion-text>
+                                </div>
+                            </ion-item>
+                        </div>
+                        <div class="footerSon d-f-s">
+                            <p>03:01</p>
+                            <p>Il y'a 6 mois</p>
+                            <ion-button shape="round" fill="clear" id="popover-button">
+                                <ion-icon slot="start" name="ellipsis-horizontal-outline"></ion-icon>
+                            </ion-button>
+                        </div>
+                    </ion-card-content>
+                </ion-card>
+                <div style="width: 100%; text-align: center; margin-block: 2rem;"><ion-button shape="round">Charger
+                        plus</ion-button></div>
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconPrice d-f-c" style="margin: 1rem;"><ion-icon slot="start"
+                                name="cash"></ion-icon></div>
+                        <h3>Prix</h3>
+                    </div>
+                    <ion-card-content>
+                        <ion-label>Gamme de prix : ${{valueRangeMin}} - ${{valueRangeMax}}</ion-label>
+                        <ion-range min="0" max="100" value="50" snaps="true" dualKnobs="true" pin="true" color="primary"
+                            (ionChange)="rangeChange($event)">
+                        </ion-range>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconGenre d-f-c"><ion-icon slot="start" name="contrast"></ion-icon></div>
+                        <h3>Genres</h3>
+                    </div>
+                    <div class="ion-margin-top">
+                        <form action="" method="get">
+                            <ion-item *ngFor="let item of genreList">
+                                <ion-label>{{item}}</ion-label>
+                                <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </form>
+                    </div>
+                </ion-card>
             </ng-template>
+
             <ng-template ngSwitchCase="albums">
-                
+                <div class="div-row">
+                    <ion-card *ngFor="let genre of [1,1,1,1,1]">
+                        <ion-card-content>
+                            <ion-thumbnail>
+                                <img src="assets/icon/gims.png" />
+                                <div class="bloc-button d-f-c">
+                                    <ion-button class="add" shape="round">Acheter</ion-button>
+                                </div>
+                            </ion-thumbnail>
+                            <h3>La chute</h3>
+                            <p>Admin</p>
+                            <p><b>$1.99 | 0 Music(s)</b></p>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+                <div style="width: 100%; text-align: center; margin-block: 2rem;"><ion-button shape="round">Charger
+                        plus</ion-button>
+                </div>
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconPrice d-f-c" style="margin: 1rem;"><ion-icon slot="start"
+                                name="cash"></ion-icon></div>
+                        <h3>Prix</h3>
+                    </div>
+                    <ion-card-content>
+                        <ion-label>Gamme de prix : ${{valueRangeMin}} - ${{valueRangeMax}}</ion-label>
+                        <ion-range min="0" max="100" value="50" snaps="true" dualKnobs="true" pin="true" color="primary"
+                            (ionChange)="rangeChange($event)">
+                        </ion-range>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconGenre d-f-c"><ion-icon slot="start" name="contrast"></ion-icon></div>
+                        <h3>Genres</h3>
+                    </div>
+                    <div class="ion-margin-top">
+                        <form action="" method="get">
+                            <ion-item *ngFor="let item of genreList">
+                                <ion-label>{{item}}</ion-label>
+                                <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </form>
+                    </div>
+                </ion-card>
             </ng-template>
+
             <ng-template ngSwitchCase="BestVendeur">
-                
+                <div #Meilleures Chanson>
+                    <ion-item>
+                        <div class="d-f">
+                            <div class="content-iconPrice d-f-c"><ion-icon slot="start" name="trophy"></ion-icon></div>
+                            <h3>Meilleures chansons</h3>
+                        </div>
+                    </ion-item>
+                    <ion-card *ngFor="let item of [1,1]">
+                        <ion-card-content style="padding: 7px;">
+                            <div class="d-f">
+                                <ion-thumbnail>
+                                    <img src="assets/icon/son.png" />
+                                </ion-thumbnail>
+                                <ion-item>
+                                    <div>
+                                        <ion-label>Y2meta.app - Kiri kodu Hythatara paokir ma</ion-label>
+                                        <ion-text>
+                                            <p>Administrateur</p>
+                                        </ion-text>
+                                    </div>
+                                </ion-item>
+                            </div>
+                            <div class="footerSon d-f-s">
+                                <p>03:01</p>
+                                <p>Il y'a 6 mois</p>
+                                <ion-button shape="round" fill="clear" id="popover-button">
+                                    <ion-icon slot="start" name="ellipsis-horizontal-outline"></ion-icon>
+                                </ion-button>
+                            </div>
+                        </ion-card-content>
+                    </ion-card>
+                </div>
+
+                <div #Meilleures Albums>
+                    <ion-item>
+                        <div class="d-f">
+                            <div class="content-iconPrice d-f-c"><ion-icon slot="start" name="albums"></ion-icon></div>
+                            <h3>Meilleurs albums</h3>
+                        </div>
+                    </ion-item>
+                    <div class="div-row">
+                        <ion-card *ngFor="let genre of [1,1]">
+                            <ion-card-content>
+                                <ion-thumbnail>
+                                    <img src="assets/icon/gims.png" />
+                                    <div class="bloc-button d-f-c">
+                                        <ion-button class="add" shape="round">Acheter</ion-button>
+                                    </div>
+                                </ion-thumbnail>
+                                <h3>La chute</h3>
+                                <p>Admin</p>
+                                <p><b>$1.99 | 0 Music(s)</b></p>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                </div>
+
+
+                <div #Produit Phare>
+                    <ion-item>
+                        <div class="d-f">
+                            <div class="content-iconPrice d-f-c"><ion-icon slot="start" name="cart"></ion-icon></div>
+                            <h3>Produits phares</h3>
+                        </div>
+                    </ion-item>
+                    <div class="div-row">
+                        <ion-card *ngFor="let genre of [1]">
+                            <ion-card-content>
+                                <ion-thumbnail>
+                                    <img src="assets/icon/casque.png" />
+                                    <div class="bloc-button d-f-c">
+                                        <ion-button class="add" shape="round">Acheter</ion-button>
+                                    </div>
+                                </ion-thumbnail>
+                                <h3>nom</h3>
+                                <p>Admin</p>
+                                <p><b>$50.91</b></p>
+                            </ion-card-content>
+                        </ion-card>
+                    </div>
+                </div>
+
             </ng-template>
+
             <ng-template ngSwitchCase="produits">
-                
+
+                <div class="d-f-c" style="height: 200px;">
+                    <div style="text-align: center;">
+                        <ion-icon slot="start" name="musical-notes" style="font-size: 5rem;"></ion-icon>
+                        <p style="font-size: 20px;">Plus de chansons</p>
+                    </div>
+                </div>
+
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconPrice d-f-c"><ion-icon slot="start" name="cash"></ion-icon></div>
+                        <h3>Prix</h3>
+                    </div>
+                    <ion-card-content>
+                        <ion-label>Gamme de prix : ${{valueRangeMin}} - ${{valueRangeMax}}</ion-label>
+                        <ion-range min="500" max="10000" value="5000" snaps="true" dualKnobs="true" pin="true"
+                            color="primary" (ionChange)="rangeChange($event)">
+                        </ion-range>
+                    </ion-card-content>
+                </ion-card>
+                <ion-card>
+                    <div class="d-f">
+                        <div class="content-iconGenre d-f-c"><ion-icon slot="start" name="copy"></ion-icon></div>
+                        <h3>Catégorie</h3>
+                    </div>
+                    <div class="ion-margin-top">
+                        <form action="" method="get">
+                            <ion-item *ngFor="let item of ['Vêtements', 'Electronique', 'Autre']">
+                                <ion-label>{{item}}</ion-label>
+                                <ion-checkbox slot="start"></ion-checkbox>
+                            </ion-item>
+                        </form>
+                    </div>
+                </ion-card>
             </ng-template>
 
         </ng-container>
     </div>
+
+    <ion-popover trigger="popover-button" [dismissOnSelect]="true">
+        <ng-template>
+            <ion-item button>
+                <ion-label>Ajouter à la playList</ion-label>
+            </ion-item>
+            <ion-item button>
+                <ion-label>Partager</ion-label>
+            </ion-item>
+        </ng-template>
+    </ion-popover>
 </ion-content>
