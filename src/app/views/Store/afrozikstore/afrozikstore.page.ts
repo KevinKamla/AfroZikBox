@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlbumsService } from 'src/app/services/albums.service';
 
 @Component({
   selector: 'app-afrozikstore',
@@ -10,16 +11,28 @@ export class AfrozikstorePage implements OnInit {
   selectedSegment = 'chansons';
   valueRangeMin = 0
   valueRangeMax = 50
-  genreList = ['Afrozouk', 'Afrobeat', 'Afropop', 'Afrotrap', 'Amapiano', 'Ancestral Soul', 'Assiko',
-    'Azonto', ' Batuque', 'Bend-skin', 'Bikutsi', 'Bongo Flava', 'Coupé-décalé', 'Dancehall',
-    'Gqom', 'Highlife', 'Kizomba', 'Kwaito', 'Makossa', 'Maloya', 'Mapouka', 'Mbalax', 'Morna',
-    'Ndombolo', 'Rumba congolaise', 'Sega', 'Soukous', 'Swede Swede', 'Tribal House', 'Wassoulou',
-    'Zaïko', 'Ziglibithy', 'Zoblazo', 'Zouglou', 'Zouk']
+  genreList : any[] = [];
   displayBtn = 'none'
-  constructor() { }
+  constructor(private albumService: AlbumsService) { }
 
   ngOnInit() {
-    this
+    this.fetchGenres();
+  }
+
+
+   // Fetch genres from the API
+   fetchGenres() {
+    this.albumService.getGenres().subscribe(
+      (response) => {
+        this.genreList = response.data.map((item: any) => ({
+          id: item.id,
+          name: item.cateogry_name,
+        }));
+      },
+      (error) => {
+        console.error('Error fetching genres:', error);
+      }
+    );
   }
 
   rangeChange(event: any) {

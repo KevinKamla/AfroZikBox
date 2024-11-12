@@ -257,6 +257,8 @@ export class SuggestionsPage implements OnInit {
     this.eventService.getMyEvents(this.userId).subscribe((res) => {
       console.log('eventtttttttttttt', res);
       this.events = res.data;
+      console.log(this.events);
+      
     });
     this.loadStories();
     this.isUserLoggedIn = this.authService.isLoggedIn();

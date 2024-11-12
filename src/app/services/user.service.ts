@@ -94,8 +94,8 @@ export class UserService {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('id', id.toString())
-      .set('limit', 3);
+      .set('id', id.toString());
+      // .set('limit', 3);
     return this.http.get<any>(this.purchases1, { params });
   }
   getPurchases1(id: number) {
