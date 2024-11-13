@@ -1,0 +1,55 @@
+<ion-content [fullscreen]="true">
+  <div class="bg-header" [ngStyle]="{'background-image': 'url(' + cover + ')'}">
+    <div class="back-boutton d-f-s">
+      <ion-buttons slot="start" style="color:white">
+        <ion-button (click)="goToRoute()">
+          <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
+          <h3>{{achats.title}}</h3>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="start" style="color:white">
+        <ion-button id="IsAlertOpen">
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+  <div class="bloc-info">
+    <div class="img-detail d-f">
+      <ion-avatar>
+        <img [src]="achats.event.user_data.cover" />
+      </ion-avatar>
+      <div class="title">
+        <h3>{{achats.title}}</h3>
+        <p>{{achats.event.user_data.username}}</p>
+      </div>
+    </div>
+
+    <div class="block-btn-header ">
+      <ion-buttons slot="start">
+        <ion-button expand="bloc" style="background: rgba(239, 207, 252, 0.949); border-radius: 20px;"
+        [color]="isJoined === 'join' ? 'danger' : 'primary'" shape="round" (click)="joinEvent()">
+          <ion-icon slot="start" name="footsteps"></ion-icon>Participer
+        </ion-button>
+        <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="buyTicket()">
+          <ion-icon slot="start" name="ticket"></ion-icon>Acheter un ticket</ion-button>
+      </ion-buttons>
+    </div>
+
+    <div class="item d-f">
+      <ion-icon slot="start" name="ticket"></ion-icon>
+      <p style="color: purple;">{{achats.event.available_tickets}} Tickets disponibles</p>
+    </div>
+    <div class="item d-f">
+      <ion-icon slot="start" name="location"></ion-icon>
+      <p style="color: orange;">https://afrozikbox.com/</p>
+    </div>
+    <div class="item d-f">
+      <ion-icon slot="start" name="calendar"></ion-icon>
+      <p >{{achats.event.end_date}} {{achats.event.end_time}}</p>
+    </div>
+    <p style="color:gray">{{achats.event.desc}}</p>
+  </div>
+</ion-content>
+
+<ion-alert trigger="IsAlertOpen" header="Evénements" [buttons]="alertActionreeButtons"></ion-alert>

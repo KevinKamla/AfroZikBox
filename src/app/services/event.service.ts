@@ -7,6 +7,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class EventService {
+  private get_events = `${environment.api}/event/get_events`;
   private baseUrl = `${environment.api}/event/get_my_events`;
   private create = `${environment.api}/event/create`;
   private getid = `${environment.api}/event/get_event_by_id`;
@@ -119,6 +120,14 @@ export class EventService {
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString());
     return this.http.get<any>(this.baseUrl, { params });
+  }
+
+  getEvents(): Observable<any> {
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      // .set('user_id', id.toString());
+    return this.http.get<any>(this.get_events, { params });
   }
   
   createEvent(eventData: any, image: File, video?: File): Observable<any> {

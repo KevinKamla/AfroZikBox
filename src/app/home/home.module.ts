@@ -15,22 +15,20 @@ import { RecentlyPage } from '../views/recently/recently.page';
 import { AlbumPage } from '../views/Albums/album/album.page';
 import { PopularPage } from '../views/popular/popular.page';
 import { ArtistPage } from '../views/Artists/artist/artist.page';
+import { EventPage } from '../views/event/event.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    HomePageRoutingModule
-  ],
-  declarations: [HomePage, 
+  imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
+  declarations: [
+    HomePage,
     SuggestionsPage,
-     BestSongsPage,
-    NewsPage, 
-    RecentlyPage, 
+    BestSongsPage,
+    NewsPage,
+    RecentlyPage,
     AlbumPage,
-    PopularPage, 
+    PopularPage,
     ArtistPage,
-  ]
+    EventPage,
+  ],
 })
 export class HomePageModule {}

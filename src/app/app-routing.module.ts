@@ -489,6 +489,14 @@ const routes: Routes = [
   {
     path: 'usercover',
     loadChildren: () => import('./views/Account/usercover/usercover.module').then( m => m.UsercoverPageModule)
+  },
+  {
+    path: 'event',
+    loadChildren: () => import('./views/event/event.module').then( m => m.EventPageModule)
+  },
+  {
+    path: 'eventdetail',
+    loadChildren: () => import('./views/eventdetail/eventdetail.module').then( m => m.EventdetailPageModule)
   }
 
 

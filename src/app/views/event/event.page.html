@@ -1,0 +1,149 @@
+<div class="header d-f-s">
+  <h4>{{ filteredEvents.length }} Évènements</h4>
+  <ion-button id="open-modal-genre" (click)="openModal()"
+    >Filtrer par date</ion-button
+  >
+  <!-- <span id="popover-button">
+    Ascendante <ion-icon name="swap-vertical-outline"></ion-icon>
+  </span> -->
+</div>
+
+<div class="list_albums">
+  <div class="container">
+    <ion-list>
+      <div
+        *ngFor="let event of filteredEvents.length ? filteredEvents : events; else skeletonList"
+      >
+        <ion-card class="event-card" (click)="selectArticle(event)">
+          <!-- Badge en haut à droite : Chanson ou Événement -->
+          <div class="badge">
+            <ion-badge color="primary" mode="ios" *ngIf="event.songData"
+              >Chanson</ion-badge
+            >
+            <ion-badge color="danger" mode="ios" *ngIf="event.event"
+              >Événement</ion-badge
+            >
+          </div>
+
+          <!-- Image : si c'est une chanson, afficher thumbnail_original, sinon event.image -->
+          <img
+            [src]="event.songData ? event.songData.thumbnail : event.image"
+            class="event-image"
+          />
+
+          <!-- Informations : titre, prix, date -->
+          <div class="event-info">
+            <h2>{{ event.name }}</h2>
+
+            <div class="details">
+              <!-- Date de début -->
+              <p>
+                <strong>Début:</strong> {{ event.start_date }} à {{
+                event.start_time }}
+              </p>
+
+              <!-- Compte à rebours avec icônes -->
+              <p
+                *ngIf="countdowns[event.id]"
+                [innerHTML]="countdowns[event.id]"
+              ></p>
+
+              <!-- Date de fin -->
+              <p *ngIf="event.end_date">
+                <strong>Fin:</strong> {{ event.end_date }} à {{ event.end_time
+                }}
+              </p>
+
+              <!-- Prix du billet -->
+              <p *ngIf="event.ticket_price > 0">
+                <strong>Prix:</strong>
+                <span *ngIf="event.currency === 'CFA'"
+                  >{{ event.ticket_price }} CFA</span
+                >
+                <span *ngIf="event.currency === '$'"
+                  >${{ event.ticket_price }}</span
+                >
+                <span *ngIf="event.currency === 'EUR'"
+                  >{{ event.ticket_price }}€</span
+                >
+              </p>
+              <p *ngIf="event.ticket_price === 0">Gratuit</p>
+
+              <!-- Utilisateur ayant créé l'événement -->
+              <p><strong>Organisé par:</strong> {{ event.user_data.name }}</p>
+
+              <!-- Lien vers l'événement complet -->
+              <a [href]="event.url" target="_blank">Voir l'événement</a>
+            </div>
+          </div>
+        </ion-card>
+      </div>
+
+      <!-- Squelette pour la liste -->
+      <ng-template #skeletonList>
+        <ion-card class="event-card">
+          <ion-skeleton-text
+            animated
+            style="width: 100%; height: 150px"
+          ></ion-skeleton-text>
+          <div class="event-info">
+            <ion-skeleton-text
+              animated
+              style="width: 100px; height: 20px"
+            ></ion-skeleton-text>
+            <ion-skeleton-text
+              animated
+              style="width: 80px; height: 20px"
+            ></ion-skeleton-text>
+          </div>
+        </ion-card>
+      </ng-template>
+    </ion-list>
+  </div>
+</div>
+
+<ion-modal #dateFilterModal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Filtrer par date</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Fermer</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-datetime
+        display-format="DD-MM-YYYY"
+        (ionChange)="onDateSelected($event)"
+        placeholder="Sélectionner une date"
+        (ionRender)="highlightEventDays()"
+        #calendarElement
+      ></ion-datetime>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- <ion-modal #dateFilterModal>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Filtrer par date</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Fermer</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-datetime
+        display-format="DD/MM/YYYY"
+        (ionChange)="onDateSelected($event)"
+        placeholder="Sélectionner une date"
+        (ionRender)="highlightEventDays()"
+        #calendarElement
+      ></ion-datetime>
+    </ion-content>
+  </ng-template>
+</ion-modal> -->
