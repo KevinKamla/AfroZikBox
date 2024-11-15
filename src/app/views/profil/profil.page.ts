@@ -38,7 +38,7 @@ export class ProfilPage implements OnInit {
   email_on_follow_user: any;
   latest: any[] = [];
   playlist: any[] = [];
-  chansons: any[] = [];
+  chansons: any[] = []; 
   albums: any[] = [];
   topalbums: any[] = [];
   albumSongs: { [key: string]: any[] } = {};
