@@ -61,7 +61,7 @@ export class HomePage implements OnInit {
   async openMenuAdd() {
     const modal = await this.modalCtrl.create({
       component: MenuactionhomePage,
-      initialBreakpoint: 0.5,
+      initialBreakpoint: 0.75,
       breakpoints: [0.5,0.75,1],
       cssClass: "menu-action",
       mode: 'ios'
