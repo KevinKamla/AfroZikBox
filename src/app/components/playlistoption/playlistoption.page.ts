@@ -69,16 +69,32 @@ export class PlaylistoptionPage implements OnInit {
       this.presentAlert('Erreur', 'ID de playlist manquant');
       return;
     }
-
+  
+    // Appel au service pour supprimer la playlist
     this.playlistService.deletePlaylist(this.playlistId).subscribe({
-      next: (response) => {
-        this.handleResponse(response);
-        // Rediriger l'utilisateur vers la page des playlists
-        this.router.navigate(['/myplaylist']);
+      next: async (response) => {
+        if (response.success) {
+          // Succès
+          console.log('Playlist supprimée avec succès');
+          await this.presentAlert('Succès', 'Playlist supprimée avec succès');
+          this.closeModal();
+          this.router.navigate(['/myplaylist']);
+        } else {
+          // Gestion d'erreurs spécifiques
+          const message = response.error || 'Erreur inconnue lors de la suppression';
+          await this.presentAlert('Erreur', message);
+        }
       },
-      error: (err) => this.handleError(err),
+      error: async (err) => {
+        console.error('Erreur lors de la suppression:', err);
+        await this.presentAlert(
+          'Erreur',
+          "Une erreur s'est produite lors de la suppression. Veuillez réessayer."
+        );
+      },
     });
   }
+  
 
   private async handleResponse(response: any) {
     if (response.success) {
@@ -119,7 +135,7 @@ export class PlaylistoptionPage implements OnInit {
   ngOnInit() {
     // Récupération des données de playlist stockées localement
     this.playlistData = JSON.parse(localStorage.getItem('publicPlaylist') || 'null');
-    
+  
     // Récupération de l'ID de la playlist depuis les paramètres
     this.playlistIds = this.navParams.get('playlistId');
     console.log('Playlist ID:', this.playlistIds);
@@ -127,11 +143,12 @@ export class PlaylistoptionPage implements OnInit {
     // Recherche de la playlist sélectionnée si `playlistData` et `playlistIds` sont définis
     if (this.playlistData && this.playlistIds) {
       this.selectedPlaylist = this.playlistData.find(
-        (playlist: { id: number }) => playlist.id === parseInt(this.playlistIds)
+        (playlist: { id: number }) => playlist.id === parseInt(this.playlistIds, 10)
       );
       console.log('Playlist sélectionnée:', this.selectedPlaylist);
     } else {
       console.warn('Playlist data ou Playlist ID manquant');
     }
-  }  
+  }
+  
 }
