@@ -1,108 +1,183 @@
-<ion-content [scrollY]="true">
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Créer un événement</ion-title>
+    </ion-toolbar>
+</ion-header>
 
+<ion-content [fullscreen]="true">
     <form *ngIf="eventForm" [formGroup]="eventForm" (ngSubmit)="onSubmitCreateEvent()">
-        <!-- Champ Nom de l'événement -->
-        <ion-item>
-        <ion-label position="floating">Nom de l'événement</ion-label>
-        <ion-input formControlName="name"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched">
-        <p>Le nom de l'événement est requis.</p>
-        </ion-text>
-    
-        <!-- Date de début -->
-        <ion-item>
-        <ion-label position="floating">Date de début</ion-label>
-        <ion-datetime formControlName="start_date" displayFormat="DD/MM/YYYY"></ion-datetime>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('start_date')?.invalid && eventForm.get('start_date')?.touched">
-        <p>La date de début est requise.</p>
-        </ion-text>
-    
-        <!-- Heure de début -->
-        <ion-item>
-        <ion-label position="floating">Heure de début</ion-label>
-        <ion-datetime formControlName="start_time" displayFormat="HH:mm"></ion-datetime>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('start_time')?.invalid && eventForm.get('start_time')?.touched">
-        <p>L'heure de début est requise.</p>
-        </ion-text>
-    
-        <!-- Date de fin -->
-        <ion-item>
-        <ion-label position="floating">Date de fin</ion-label>
-        <ion-datetime formControlName="end_date" displayFormat="DD/MM/YYYY"></ion-datetime>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('end_date')?.invalid && eventForm.get('end_date')?.touched">
-        <p>La date de fin est requise.</p>
-        </ion-text>
-    
-        <!-- Heure de fin -->
-        <ion-item>
-        <ion-label position="floating">Heure de fin</ion-label>
-        <ion-datetime formControlName="end_time" displayFormat="HH:mm"></ion-datetime>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('end_time')?.invalid && eventForm.get('end_time')?.touched">
-        <p>L'heure de fin est requise.</p>
-        </ion-text>
-    
-        <!-- Lieu -->
-        <ion-item>
-        <ion-label position="floating">Lieu</ion-label>
-        <ion-select formControlName="location">
-            <ion-select-option value="online">En ligne</ion-select-option>
-            <ion-select-option value="real">Lieu réel</ion-select-option>
-        </ion-select>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('location')?.invalid && eventForm.get('location')?.touched">
-        <p>Le lieu est requis.</p>
-        </ion-text>
-    
-        <!-- URL si en ligne -->
-        <ion-item *ngIf="eventForm.get('location')?.value === 'online'">
-        <ion-label position="floating">URL de l'événement</ion-label>
-        <ion-input formControlName="online_url"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('online_url')?.invalid && eventForm.get('online_url')?.touched">
-        <p>L'URL est requise pour un événement en ligne.</p>
-        </ion-text>
-    
-        <!-- Adresse si lieu réel -->
-        <ion-item *ngIf="eventForm.get('location')?.value === 'real'">
-        <ion-label position="floating">Adresse réelle</ion-label>
-        <ion-input formControlName="real_address"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('real_address')?.invalid && eventForm.get('real_address')?.touched">
-        <p>L'adresse est requise pour un événement en lieu réel.</p>
-        </ion-text>
-    
-        <!-- Vente de tickets -->
-        <ion-item>
-        <ion-label position="floating">Vendre des tickets ?</ion-label>
-        <ion-select formControlName="sell_tickets">
-            <ion-select-option value="yes">Oui</ion-select-option>
-            <ion-select-option value="no">Non</ion-select-option>
-        </ion-select>
-        </ion-item>
-    
-        <!-- Nombre de tickets disponibles -->
-        <ion-item *ngIf="eventForm.get('sell_tickets')?.value === 'yes'">
-        <ion-label position="floating">Nombre de tickets disponibles</ion-label>
-        <ion-input formControlName="available_tickets" type="number"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('available_tickets')?.invalid && eventForm.get('available_tickets')?.touched">
-        <p>Le nombre de tickets est requis.</p>
-        </ion-text>
-    
-        <!-- Prix du ticket -->
-        <ion-item *ngIf="eventForm.get('sell_tickets')?.value === 'yes'">
-        <ion-label position="floating">Prix du ticket</ion-label>
-        <ion-input formControlName="ticket_price" type="number"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="eventForm.get('ticket_price')?.invalid && eventForm.get('ticket_price')?.touched">
-        <p>Le prix du ticket est requis.</p>
-        </ion-text>
-    
-        <ion-button expand="block" type="submit" [disabled]="eventForm.invalid">Créer l'événement</ion-button>
+        <ion-card button (click)="camera()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg" src="{{imgPath}}" />
+                <div class="content" *ngIf="!isGetImg">
+                    <ion-icon slot="start" name="add"></ion-icon>
+                    <h5>Télécharger la photo de couverture</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        <ion-card button (click)="camera2()" class="ion-no-box-shadow">
+            <ion-card-content class="image">
+                <img *ngIf="isGetImg2" src="{{imgPath2}}" />
+                <div class="content" *ngIf="!isGetImg2">
+                    <ion-icon slot="start" name="add"></ion-icon>
+                    <h5>Télécharger une video</h5>
+                </div>
+            </ion-card-content>
+        </ion-card>
+        <div class="input">
+            <!-- name -->
+
+            <div class="canView d-f-s">
+                <ion-input formControlName="name" labelPlacement="floating" type="text" label="Nom"
+                    class="content"></ion-input>
+            </div>
+            <ion-text color="danger" *ngIf="eventForm.get('name')?.invalid && eventForm.get('name')?.touched">
+                <p>Le nom de l'événement est requis.</p>
+            </ion-text>
+
+            <!-- Description -->
+
+            <div class="canView d-f">
+                <ion-textarea labelPlacement="floating" label="Description" class="content"
+                    formControlName="desc"></ion-textarea>
+            </div>
+            <ion-text color="danger" *ngIf="eventForm.get('desc')?.invalid && eventForm.get('desc')?.touched">
+                <p>Le nom de l'événement est requis.</p>
+            </ion-text>
+
+            <!-- Lieu -->
+
+            <div class="canView d-f-s content0" style="margin-left: 9px;">
+                <ion-label style="margin-right: 2rem; width: 100%;">Lieu</ion-label>
+                <ion-select formControlName="location">
+                    <ion-select-option value="online">En ligne</ion-select-option>
+                    <ion-select-option value="real">Lieu réel</ion-select-option>
+                </ion-select>
+            </div>
+            <ion-text color="danger" *ngIf="eventForm.get('location')?.invalid && eventForm.get('location')?.touched">
+                <p>Le lieu est requis.</p>
+            </ion-text>
+
+            <!-- URL de l'événement -->
+
+            <div class="canView d-f-s content0" style="margin-left: 9px;"
+                *ngIf="eventForm.get('location')?.value === 'online'">
+                <ion-input labelPlacement="floating" label="URL de l'événement"
+                    formControlName="online_url"></ion-input>
+            </div>
+            <ion-text color="danger"
+                *ngIf="eventForm.get('online_url')?.invalid && eventForm.get('online_url')?.touched">
+                <p>L'URL est requise pour un événement en ligne.</p>
+            </ion-text>
+
+            <!-- Adresse Réel -->
+
+            <div class="canView d-f-s" *ngIf="eventForm.get('location')?.value === 'real'">
+                <ion-input formControlName="real_address" labelPlacement="floating" type="text" label="Adresse Réel"
+                    class="content"></ion-input>
+            </div>
+            <ion-text color="danger"
+                *ngIf="eventForm.get('real_address')?.invalid && eventForm.get('real_address')?.touched">
+                <p>L'adresse est requise pour un événement en lieu réel.</p>
+            </ion-text>
+
+            <!-- Vendre des tickets ? -->
+
+            <div class="canView d-f-s content0" style="margin-left: 9px;">
+                <ion-label style="margin-right: 2rem; width: 100%;">Vendre des tickets ?</ion-label>
+                <ion-select formControlName="sell_tickets">
+                    <ion-select-option value="yes">Oui</ion-select-option>
+                    <ion-select-option value="no">Non</ion-select-option>
+                </ion-select>
+            </div>
+
+            <!-- Nombre de tickets disponibles -->
+
+            <div class="canView d-f-s content0" style="margin-left: 9px;"
+                *ngIf="eventForm.get('sell_tickets')?.value === 'yes'">
+                <ion-input labelPlacement="floating" label="Nombre de tickets disponibles"
+                    formControlName="available_tickets" type="number"></ion-input>
+            </div>
+            <ion-text color="danger"
+                *ngIf="eventForm.get('available_tickets')?.invalid && eventForm.get('available_tickets')?.touched">
+                <p>Le nombre de tickets est requis.</p>
+            </ion-text>
+
+            <!-- Prix du ticket -->
+
+            <div class="canView d-f-s content0" style="margin-left: 9px;"
+                *ngIf="eventForm.get('sell_tickets')?.value === 'yes'">
+                <ion-input labelPlacement="floating" label="Prix du ticket" formControlName="ticket_price"
+                    type="number"></ion-input>
+            </div>
+            <ion-text color="danger"
+                *ngIf="eventForm.get('ticket_price')?.invalid && eventForm.get('ticket_price')?.touched">
+                <p>Le prix du ticket est requis.</p>
+            </ion-text>
+
+            <!-- Date et heure -->
+
+            <div class="canView d-f-s">
+                <div class="canView content0">
+                    <ion-label>Date et heure de debut</ion-label>
+                    <ion-datetime-button datetime="datetimeDebut"></ion-datetime-button>
+                </div>
+            </div>
+            <div class="canView d-f-s">
+                <div class="canView content0">
+                    <ion-label>Date et heure de fin</ion-label>
+                    <ion-datetime-button datetime="datetimeFin"></ion-datetime-button>
+                </div>
+            </div>
+            <ion-item id="open-modal-fuseau" button="true" class="ion-no-border">
+                <div class="canView content0">
+                    <ion-label>Fuseau horaire</ion-label>
+                    <div class="contentBlock0">{{fuseauHoraire}}</div>
+                </div>
+            </ion-item>
+
+            <ion-button expand="block" shape="round" class="ion-margin" type="submit"
+                [disabled]="eventForm.invalid">Créer l'événement</ion-button>
+
+        </div>
     </form>
 </ion-content>
+
+<!-- =============================================================================================== -->
+
+<ion-modal [keepContentsMounted]="true">
+    <ng-template>
+        <ion-datetime id="datetimeDebut" (ionChange)="dateDebut($event)"></ion-datetime>
+    </ng-template>
+</ion-modal>
+
+<ion-modal [keepContentsMounted]="true">
+    <ng-template>
+        <ion-datetime id="datetimeFin" (ionChange)="dateFin($event)"></ion-datetime>
+    </ng-template>
+</ion-modal>
+
+
+<ion-modal id="modal_fuseau" #modal_fuseau trigger="open-modal-fuseau" [keepContentsMounted]="true">
+    <ng-template>
+        <h3 style="text-align: center">Fusseau horaire</h3>
+        <ion-list class="ion-padding">
+            <div *ngFor="let item of ['GMT -3','GMT -2','GMT -1','GMT 0','GMT +1']">
+                <ion-item button (click)="selectedFuseau(item)" class="ion-no-border">
+                    <ion-label>{{item}}</ion-label>
+                </ion-item>
+            </div>
+        </ion-list>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modal_fuseau.dismiss()" expand="block" fill="clear"
+                        shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>
