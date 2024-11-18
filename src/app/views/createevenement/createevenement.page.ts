@@ -114,7 +114,7 @@ export class CreateevenementPage implements OnInit {
   //     });
   //   }
   // }
-
+ 
   onSubmitCreateEvent() {
     if (this.eventForm.invalid) {
       this.showAlert('Erreur', 'Veuillez remplir tous les champs requis.');
