@@ -133,24 +133,32 @@
       <ng-template ngSwitchCase="albums">
         <div class="div-row">
           <ion-card
-            *ngFor="let album of topalbums| slice:0:7"
-            
+            *ngFor="let album of filteredAlbums | slice: 0:albumsToShow"
           >
             <ion-card-content>
               <ion-thumbnail>
                 <img [src]="album.thumbnail" />
                 <div class="bloc-button d-f-c">
-                  <ion-button class="add" shape="round">Acheter</ion-button>
+                  <ion-button
+                    class="add"
+                    shape="round"
+                    (click)="addToCart(album)"
+                    >Acheter</ion-button
+                  >
                 </div>
               </ion-thumbnail>
-              <h3 (click)="selectAlbum(album)">{{album.title}}</h3>
-              <p>{{album.publisher.username}}</p>
-              <p><b>$ {{album.price}} | {{album.count_songs}} Music(s)</b></p>
+              <h3 (click)="selectAlbum(album)">{{ album.title }}</h3>
+              <p>{{ album.publisher.username }}</p>
+              <p>
+                <b>$ {{ album.price }} | {{ album.count_songs }} Music(s)</b>
+              </p>
             </ion-card-content>
           </ion-card>
         </div>
         <div style="width: 100%; text-align: center; margin-block: 2rem">
-          <ion-button shape="round">Charger plus</ion-button>
+          <ion-button shape="round" (click)="loadMoreAlbums()"
+            >Charger plus</ion-button
+          >
         </div>
         <ion-card>
           <div class="d-f">
@@ -160,21 +168,19 @@
             <h3>Prix</h3>
           </div>
           <ion-card-content>
-            <ion-label
-              >Gamme de prix : ${{valueRangeMin}} -
-              ${{valueRangeMax}}</ion-label
-            >
+            <ion-label>
+              Gamme de prix : ${{ valueRangeMin }} - ${{ valueRangeMax }}
+            </ion-label>
             <ion-range
               min="0"
               max="100"
-              value="50"
+              [dualKnobs]="true"
+              [value]="{ lower: valueRangeMin, upper: valueRangeMax }"
               snaps="true"
-              dualKnobs="true"
               pin="true"
               color="primary"
               (ionChange)="rangeChange($event)"
-            >
-            </ion-range>
+            ></ion-range>
           </ion-card-content>
         </ion-card>
         <ion-card>
@@ -185,12 +191,13 @@
             <h3>Genres</h3>
           </div>
           <div class="ion-margin-top">
-            <form action="" method="get">
-              <ion-item *ngFor="let item of genreList">
-                <ion-label>{{item.name}}</ion-label>
-                <ion-checkbox slot="start"></ion-checkbox>
-              </ion-item>
-            </form>
+            <ion-item *ngFor="let genre of genreList">
+              <ion-label>{{ genre.name }}</ion-label>
+              <ion-checkbox
+                slot="start"
+                (ionChange)="toggleGenre(genre.name, $event.detail.checked)"
+              ></ion-checkbox>
+            </ion-item>
           </div>
         </ion-card>
       </ng-template>

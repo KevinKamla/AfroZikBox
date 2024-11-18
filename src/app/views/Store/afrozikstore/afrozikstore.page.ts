@@ -14,8 +14,6 @@ import { TopAlbumsService } from 'src/app/services/top-albums.service';
 })
 export class AfrozikstorePage implements OnInit {
   selectedSegment = 'chansons';
-  valueRangeMin = 0;
-  valueRangeMax = 50;
   genreList: any[] = [];
   displayBtn = 'none';
   priceRange = { min: 500, max: 10000 };
@@ -25,8 +23,12 @@ export class AfrozikstorePage implements OnInit {
   topalbums: any[] = [];
   topSongs: any[] = [];
   albumSongs: { [key: string]: any[] } = {};
-  albumsToShow: number = 7; // Nombre initial d'albums à afficher
-  step: number = 7; // Nombre d'albums ajoutés à chaque chargement
+  filteredAlbums: any[] = [];
+  selectedGenres: string[] = [];
+  valueRangeMin: number = 0;
+  valueRangeMax: number = 100;
+  albumsToShow: number = 7; // Nombre d'albums affichés par défaut
+  step: number = 7;
   latest: any;
   love: boolean = false;
   currentSong: any;
@@ -88,24 +90,26 @@ export class AfrozikstorePage implements OnInit {
   //       this.love = isFavorite;
   //     });
   // }
-  async loadAlbums() {
-    const loader = await this.presentLoading('Chargement des albums...');
-    this.topAlbumsService.getTopAlbums().subscribe(
-      (response) => {
-        loader.dismiss(); // Masquer le loader
-        this.topalbums = response.top_albums.filter(
-          (album: any) => album.price > 0
-        );
-        this.loadSongsForTopAlbums();
-      },
-      (error) => {
-        loader.dismiss();
-        console.error(
-          'Erreur lors de la récupération des meilleurs albums :',
-          error
-        );
-      }
-    );
+  loadAlbums() {
+    this.presentLoading('Chargement des albums...').then((loader) => {
+      this.topAlbumsService.getTopAlbums().subscribe(
+        (response) => {
+          loader.dismiss();
+          this.topalbums = response.top_albums.filter(
+            (album: any) => album.price > 0
+          );
+          this.filteredAlbums = [...this.topalbums]; // Initialement, tous les albums sont affichés
+          this.loadSongsForTopAlbums();
+        },
+        (error) => {
+          loader.dismiss();
+          console.error(
+            'Erreur lors de la récupération des meilleurs albums :',
+            error
+          );
+        }
+      );
+    });
   }
 
   loadMoreAlbums() {
@@ -220,18 +224,16 @@ export class AfrozikstorePage implements OnInit {
 
   // Appliquer les filtres pour recharger les produits
   applyFilters() {
-    const { min, max } = this.priceRange;
-    this.productService
-      .getProducts(undefined, min, max, this.selectedCategories)
-      .subscribe(
-        (response) => {
-          if (response.status === 200) {
-            this.filteredProducts = response.data;
-          }
-        },
-        (error) =>
-          console.error("Erreur lors de l'application des filtres:", error)
-      );
+    this.filteredAlbums = this.topalbums.filter((album: any) => {
+      const withinPriceRange =
+        album.price >= this.valueRangeMin && album.price <= this.valueRangeMax;
+
+      const matchesGenre =
+        this.selectedGenres.length === 0 ||
+        this.selectedGenres.includes(album.category_name);
+
+      return withinPriceRange && matchesGenre;
+    });
   }
 
   // Fetch genres from the API
@@ -249,8 +251,19 @@ export class AfrozikstorePage implements OnInit {
     );
   }
 
+  toggleGenre(genre: string, isChecked: boolean) {
+    if (isChecked) {
+      this.selectedGenres.push(genre);
+    } else {
+      this.selectedGenres = this.selectedGenres.filter((g) => g !== genre);
+    }
+    this.applyFilters();
+  }
+
   rangeChange(event: any) {
-    this.valueRangeMin = event.detail.value.lower;
-    this.valueRangeMax = event.detail.value.upper;
+    const { lower, upper } = event.detail.value;
+    this.valueRangeMin = lower;
+    this.valueRangeMax = upper;
+    this.applyFilters();
   }
 }
