@@ -14,11 +14,16 @@ import { PlaylistService } from '../../../services/playlist.service';
   styleUrls: ['./albumdetail.page.scss'],
 })
 export class AlbumdetailPage implements OnInit {
+  selectedSegment: string = 'Chansons';
   pauseIcon: string = 'play-circle';
   state = 'modal';
   topAlbums: any;
   albumId: any;
   albumSongs: any[] = [];
+  email: any;
+  isAdmin: any;
+  url: any;
+  email_on_follow_user: any;
   constructor(
     private modalCtrl: ModalController,
     private navCtrl: NavController,
@@ -103,7 +108,18 @@ export class AlbumdetailPage implements OnInit {
     this.state = this.aroute.snapshot.params['state'];
     const albumId1 = this.routes.snapshot.paramMap.get('id');
     this.albumId = this.routes.snapshot.paramMap.get('id');
-
+    const u = localStorage.getItem('UserData');
+    if (u) {
+      const UserData = JSON.parse(u);
+      console.log('userdata :', UserData);
+      this.email = UserData.username;
+      this.isAdmin = this.email === 'admin' ? true : false;
+      // this.avatar = UserData.avatar;
+      // this.cover = UserData.cover;
+      this.url = UserData.url;
+      // this.like = UserData.email_on_follow_user
+      this.email_on_follow_user = UserData.email_on_follow_user;
+    }
     this.songs = [];
     this.loadAlbumSongs();
     const storedAlbum = localStorage.getItem('selectedAlbum');

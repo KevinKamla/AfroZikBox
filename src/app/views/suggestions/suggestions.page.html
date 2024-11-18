@@ -115,192 +115,186 @@
       </div>
     </ng-template>
   </div>
-
-  <div class="recente">
-    <div class="box-title">
-      <h3>Chansons récentes</h3>
-      <p (click)="goToSegment('recently')">Voir plus</p>
-    </div>
-
-    <div class="container-scroll">
-      <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
-        <div class="movie" *ngFor="let l of latest| slice:0:7; let i = index">
-          <img
-            style="width: 150px"
-            class="img-intro"
-            [src]="l.thumbnail ? l.thumbnail : 'assets/icon/default.webp'"
-            (click)="loadsong(latest, i)"
-          />
-          <p class="song-description">{{ truncateTitle(l.title, 15) }}</p>
-        </div>
-      </div>
-    </div>
-    <ng-template #ionSkeletonRecent>
-      <div class="container-scroll">
-        <div class="scroll-box">
-          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-            <ion-thumbnail slot="start">
-              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-            </ion-thumbnail>
-            <p>
-              <ion-skeleton-text
-                [animated]="true"
-                style="width: 100px"
-              ></ion-skeleton-text>
-            </p>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </div>
-
-  <div class="album">
-    <div class="box-title">
-      <h3>Meilleurs albums</h3>
-      <p (click)="goToSegment('album')">Voir plus</p>
-    </div>
-
-    <div class="container-scroll">
-      <div
-        class="scroll-box"
-        *ngIf="topalbums.length > 0; else ionSkeletonAlbum"
-      >
-        <div
-          class="movie"
-          *ngFor="let album of topalbums| slice:0:7"
-          (click)="selectAlbum(album)"
-        >
-          <img class="img-intro" [src]="album.thumbnail" />
-          <div class="song-description">{{album.title}}</div>
-          <ion-label>{{album.publisher.username}}</ion-label>
-          <div class="number_price">
-            <div class="number_sons">{{album.count_songs}} Chansons</div>
-            <ion-badge color="danger">$ {{album.price}}</ion-badge>
-          </div>
-        </div>
-      </div>
-
-      <ng-template #ionSkeletonAlbum>
-        <div class="container-scroll">
-          <div class="scroll-box">
-            <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-              <ion-thumbnail slot="start">
-                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-              </ion-thumbnail>
-              <p>
-                <ion-skeleton-text
-                  [animated]="true"
-                  style="width: 100px"
-                ></ion-skeleton-text>
-              </p>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </div>
-  </div>
-
-  <div class="album">
-    <div class="box-title">
-      <h3>Evenements</h3>
-      <p (click)="goToSegment('events')">Voir plus</p>
-    </div>
-
-    <div class="container-scroll">
-      <div
-        class="scroll-box"
-        *ngIf="topalbums.length > 0; else ionSkeletonAlbum"
-      >
-        <div class="movie" *ngFor="let event of events| slice:0:5">
-          <img style="width: 150px" class="img-intro" [src]="event.image" />
-          <div class="song-description">{{event.name}}</div>
-          <ion-label>{{event.user_data.username}}</ion-label>
-          <div class="number_price">
-            <ion-badge color="danger">
-              {{ event.ticket_price }}
-              <span *ngIf="event.currency === 'CFA'">CFA</span>
-              <span *ngIf="event.currency === '$'">$</span>
-              <span *ngIf="event.currency === 'EUR'">€</span>
-            </ion-badge>
-          </div>
-        </div>
-      </div>
-
-      <ng-template #ionSkeletonAlbum>
-        <div class="container-scroll">
-          <div class="scroll-box">
-            <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-              <ion-thumbnail slot="start">
-                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-              </ion-thumbnail>
-              <p>
-                <ion-skeleton-text
-                  [animated]="true"
-                  style="width: 100px"
-                ></ion-skeleton-text>
-              </p>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </div>
-  </div>
-
-  <div class="artiste">
-    <div class="box-title">
-      <h3>Artistes</h3>
-      <p (click)="goToSegment('artist')">Voir plus</p>
-    </div>
-
-    <div class="container-scroll">
-      <div
-        class="scroll-box"
-        *ngIf="artists.length > 0; else ionSkeletonArtiste"
-      >
-        <div class="movie" *ngFor="let artist of artists| slice:0:7">
-          <img
-            class="img-intro"
-            style="width: 150px"
-            [src]="artist.avatar ? artist.avatar : artist.cover"
-            alt="Artist Image"
-            (click)="artistDetail(artist)"
-          />
-          <p>{{ artist.name }}</p>
-        </div>
-      </div>
-    </div>
-
-    <ng-template #ionSkeletonArtiste>
-      <div class="container-scroll">
-        <div class="scroll-box">
-          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
-            <ion-thumbnail slot="start">
-              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-            </ion-thumbnail>
-            <p>
-              <ion-skeleton-text
-                [animated]="true"
-                style="width: 100px"
-              ></ion-skeleton-text>
-            </p>
-          </div>
-        </div>
-      </div>
-    </ng-template>
-  </div>
-
-  <ion-alert
-    [isOpen]="isOpenmodalAchat"
-    header="Achat requits"
-    subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter"
-    [buttons]="[{ text: 'Fermer', role: 'cancel',}]"
-    [backdropDismiss]="false"
-  ></ion-alert>
-  <ion-alert
-    [isOpen]="walletIsOpen"
-    header="Wallet"
-    subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie"
-    [buttons]="walletButtons"
-    [backdropDismiss]="false"
-  ></ion-alert>
 </div>
+
+<div class="recente">
+  <div class="box-title">
+    <h3>Chansons récentes</h3>
+    <p (click)="goToSegment('recently')">Voir plus</p>
+  </div>
+
+  <div class="container-scroll">
+    <div class="scroll-box" *ngIf="latest.length > 0; else ionSkeletonRecent">
+      <div class="movie" *ngFor="let l of latest| slice:0:7; let i = index">
+        <img
+          style="width: 150px"
+          class="img-intro"
+          [src]="l.thumbnail ? l.thumbnail : 'assets/icon/default.webp'"
+          (click)="loadsong(latest, i)"
+        />
+        <p class="song-description">{{ truncateTitle(l.title, 15) }}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #ionSkeletonRecent>
+    <div class="container-scroll">
+      <div class="scroll-box">
+        <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100px"
+            ></ion-skeleton-text>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<div class="album">
+  <div class="box-title">
+    <h3>Meilleurs albums</h3>
+    <p (click)="goToSegment('album')">Voir plus</p>
+  </div>
+
+  <div class="container-scroll">
+    <div class="scroll-box" *ngIf="topalbums.length > 0; else ionSkeletonAlbum">
+      <div
+        class="movie"
+        *ngFor="let album of topalbums| slice:0:7"
+        (click)="selectAlbum(album)"
+      >
+        <img class="img-intro" [src]="album.thumbnail" />
+        <div class="song-description">{{album.title}}</div>
+        <ion-label>{{album.publisher.username}}</ion-label>
+        <div class="number_price">
+          <div class="number_sons">{{album.count_songs}} Chansons</div>
+          <ion-badge color="danger">$ {{album.price}}</ion-badge>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #ionSkeletonAlbum>
+      <div class="container-scroll">
+        <div class="scroll-box">
+          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <p>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 100px"
+              ></ion-skeleton-text>
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="album">
+  <div class="box-title">
+    <h3>Evenements</h3>
+    <p (click)="goToSegment('event')">Voir plus</p>
+  </div>
+
+  <div class="container-scroll">
+    <div class="scroll-box" *ngIf="topalbums.length > 0; else ionSkeletonAlbum">
+      <div class="movie" *ngFor="let event of events| slice:0:5">
+        <img
+          style="width: 140px; height: 140px"
+          class="img-intro"
+          [src]="event.image"
+          (click)="selectArticle(event)"
+        />
+        <div class="song-description">{{event.name}}</div>
+      </div>
+    </div>
+
+    <ng-template #ionSkeletonAlbum>
+      <div class="container-scroll">
+        <div class="scroll-box">
+          <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+            </ion-thumbnail>
+            <p>
+              <ion-skeleton-text
+                [animated]="true"
+                style="width: 100px"
+              ></ion-skeleton-text>
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<div class="artiste">
+  <div class="box-title">
+    <h3>Artistes</h3>
+    <p (click)="goToSegment('artist')">Voir plus</p>
+  </div>
+
+  <div class="container-scroll">
+    <div class="scroll-box" *ngIf="artists.length > 0; else ionSkeletonArtiste">
+      <div class="movie" *ngFor="let artist of artists| slice:0:7">
+        <img
+          class="img-intro"
+          style="width: 150px"
+          [src]="artist.avatar ? artist.avatar : artist.cover"
+          alt="Artist Image"
+          (click)="artistDetail(artist)"
+        />
+        <p>{{ artist.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #ionSkeletonArtiste>
+    <div class="container-scroll">
+      <div class="scroll-box">
+        <div class="movie" *ngFor="let item of [1,2,3,4,5,6,7]">
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <p>
+            <ion-skeleton-text
+              [animated]="true"
+              style="width: 100px"
+            ></ion-skeleton-text>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<ion-alert
+  [isOpen]="isOpenmodalAchat"
+  header="Achat requits"
+  subHeader="Pour continuer à écouter cette chanson, vous devez l'acheter"
+  [buttons]="[{ text: 'Fermer', role: 'cancel',}]"
+  [backdropDismiss]="false"
+></ion-alert>
+<ion-alert
+  [isOpen]="walletIsOpen"
+  header="Wallet"
+  subHeader="Désolé, vous n'avez pas suffisamment d'argent. Veillez réapprovisionner votre porte-monnaie"
+  [buttons]="walletButtons"
+  [backdropDismiss]="false"
+></ion-alert>
+<ion-alert
+  trigger="present-alert"
+  header="Alerte"
+  subHeader=""
+  [message]="alertMessage"
+  [buttons]="alertButtons"
+></ion-alert>

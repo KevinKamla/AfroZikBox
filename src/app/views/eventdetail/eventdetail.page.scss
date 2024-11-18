@@ -2,7 +2,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    height: 30%;
+    height: 50%;
 }
 
 .back-boutton {
@@ -34,7 +34,7 @@
     }
 
     .item {
-        margin-bottom: 3rem;
+        margin-bottom: -1rem;
         gap: 2rem;
 
         ion-icon {
@@ -46,13 +46,13 @@
 
 .img-detail {
     justify-content: start;
-    gap: 15px;
+    gap: 0px;
     margin-bottom: 1rem;
 
     ion-avatar {
-        height: 100px;
-        width: 100px;
-        margin-right: 5px;
+        height: 70px;
+        width: 70px;
+        margin-right: 2px;
     }
 
     .title {

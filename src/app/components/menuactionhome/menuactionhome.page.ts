@@ -40,6 +40,18 @@ export class MenuactionhomePage implements OnInit {
     await modal.present();
   }
 
+  async openCreateProduct() {
+    this.closeModal();
+    const modal = await this.modalCtrl.create({
+      component: CreateplaylistPage,
+      initialBreakpoint: 0.75,
+      breakpoints: [0.5, 0.75, 1],
+      mode: 'ios'
+
+    })
+    await modal.present();
+  }
+
 
   closeModal() {
     this.modalCtrl.dismiss();

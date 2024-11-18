@@ -9,7 +9,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { Media } from '@awesome-cordova-plugins/media/ngx';
-import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
+// import { MusicControls } from '@ionic-native/music-controls/ngx';
 import { File } from '@ionic-native/file/ngx'; // Ajoutez cette ligne
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { ReactiveFormsModule } from '@angular/forms'; // Ajoutez ceci
@@ -29,7 +29,7 @@ import { MusicPlayerComponent } from './components/music-player/music-player.com
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     FileChooser,
-    MusicControls,
+    // MusicControls,
     Media,
     File,
     AndroidPermissions,

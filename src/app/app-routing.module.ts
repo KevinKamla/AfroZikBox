@@ -466,10 +466,10 @@ const routes: Routes = [
     path: 'achatdetail/:id',
     loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
   },
-  {
-    path: 'achatdetail',
-    loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
-  },
+  // {
+  //   path: 'achatdetail',
+  //   loadChildren: () => import('./views/Store/achatdetail/achatdetail.module').then( m => m.AchatdetailPageModule)
+  // },
   {
     path: 'comments-modal',
     loadChildren: () => import('./components/comments-modal/comments-modal.module').then( m => m.CommentsModalPageModule)
@@ -495,7 +495,7 @@ const routes: Routes = [
     loadChildren: () => import('./views/event/event.module').then( m => m.EventPageModule)
   },
   {
-    path: 'eventdetail',
+    path: 'eventdetail/:id',
     loadChildren: () => import('./views/eventdetail/eventdetail.module').then( m => m.EventdetailPageModule)
   }
 

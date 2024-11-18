@@ -26,8 +26,10 @@ export class PlaylistService {
   playlists$ = this.playlistsSubject.asObservable().pipe(shareReplay(1));
   avatarFile: any;
 
-    
-    constructor(private http: HttpClient, private musicPlayerService: LecteurService) {}
+  constructor(
+    private http: HttpClient,
+    private musicPlayerService: LecteurService
+  ) {}
 
   // getPlaylists(): Observable<any> {
   //   return this.http.get<any>(this.baseUrl);
@@ -208,7 +210,13 @@ export class PlaylistService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken);
 
-    return this.http.post(this.apiUrl, params);
+    return this.http.post<any>(this.apiUrl, params).pipe(
+      catchError((error) => {
+        console.error('Error adding to playlist:', error);
+        // Handle the error appropriately (e.g., display a message to the user)
+        return throwError(() => new Error('Failed to add to playlist'));
+      })
+    );
   }
 
   createPlaylist(name: string, privacy: number, avatar: File): Observable<any> {
@@ -303,9 +311,9 @@ export class PlaylistService {
     localStorage.setItem('playlist', JSON.stringify(playlist));
     localStorage.setItem('indexsong', JSON.stringify(index));
   }
-  loadplaylistAleatoire(playlist: any){
+  loadplaylistAleatoire(playlist: any) {
     // console.log('load playlist' + index)
-    localStorage.setItem('playlist', JSON.stringify(playlist))
+    localStorage.setItem('playlist', JSON.stringify(playlist));
   }
 
   updateindex(index: number) {
@@ -340,30 +348,30 @@ export class PlaylistService {
     const savedPlaylist = localStorage.getItem('playlist');
 
     if (savedPlaylist && savedIndex) {
-        const playlist = JSON.parse(savedPlaylist);
-        const currentIndex = parseInt(savedIndex, 10);
+      const playlist = JSON.parse(savedPlaylist);
+      const currentIndex = parseInt(savedIndex, 10);
 
-        if (isShuffleEnabled) {
-            // Mode aléatoire activé, choisir une chanson aléatoire
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * playlist.length);
-            } while (randomIndex === currentIndex && playlist.length > 1); // Assurez-vous qu'une autre chanson est choisie, si possible
+      if (isShuffleEnabled) {
+        // Mode aléatoire activé, choisir une chanson aléatoire
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * playlist.length);
+        } while (randomIndex === currentIndex && playlist.length > 1); // Assurez-vous qu'une autre chanson est choisie, si possible
 
-            this.updateindex(randomIndex); // Mise à jour de l'index
-            return playlist[randomIndex];
+        this.updateindex(randomIndex); // Mise à jour de l'index
+        return playlist[randomIndex];
+      } else {
+        // Mode séquentiel
+        if (currentIndex + 1 < playlist.length) {
+          // Passer à la chanson suivante
+          this.updateindex(currentIndex + 1);
+          return playlist[currentIndex + 1];
         } else {
-            // Mode séquentiel
-            if (currentIndex + 1 < playlist.length) {
-                // Passer à la chanson suivante
-                this.updateindex(currentIndex + 1);
-                return playlist[currentIndex + 1];
-            } else {
-                // Redémarrer la playlist depuis le début
-                this.updateindex(0);
-                return playlist[0];
-            }
+          // Redémarrer la playlist depuis le début
+          this.updateindex(0);
+          return playlist[0];
         }
+      }
     }
 
     // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
@@ -392,40 +400,39 @@ export class PlaylistService {
   //   return null;
   // }
 
-  getprevsong(): any {    
+  getprevsong(): any {
     const isShuffleEnabled = this.musicPlayerService.getIsshuffle();
     const savedIndex = localStorage.getItem('indexsong');
     const savedPlaylist = localStorage.getItem('playlist');
 
     if (savedPlaylist && savedIndex) {
-        const playlist = JSON.parse(savedPlaylist);
-        const currentIndex = parseInt(savedIndex, 10);
+      const playlist = JSON.parse(savedPlaylist);
+      const currentIndex = parseInt(savedIndex, 10);
 
-        if (isShuffleEnabled) {
-            // Mode aléatoire activé, choisir une chanson aléatoire
-            let randomIndex;
-            do {
-                randomIndex = Math.floor(Math.random() * playlist.length);
-            } while (randomIndex === currentIndex && playlist.length > 1); // Évite de sélectionner la même chanson si possible
+      if (isShuffleEnabled) {
+        // Mode aléatoire activé, choisir une chanson aléatoire
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * playlist.length);
+        } while (randomIndex === currentIndex && playlist.length > 1); // Évite de sélectionner la même chanson si possible
 
-            this.updateindex(randomIndex); // Mise à jour de l'index
-            return playlist[randomIndex];
+        this.updateindex(randomIndex); // Mise à jour de l'index
+        return playlist[randomIndex];
+      } else {
+        // Mode séquentiel
+        if (currentIndex - 1 >= 0) {
+          // Passer à la chanson précédente
+          this.updateindex(currentIndex - 1);
+          return playlist[currentIndex - 1];
         } else {
-            // Mode séquentiel
-            if (currentIndex - 1 >= 0) {
-                // Passer à la chanson précédente
-                this.updateindex(currentIndex - 1);
-                return playlist[currentIndex - 1];
-            } else {
-                // Passer à la dernière chanson si on est au début de la playlist
-                this.updateindex(playlist.length - 1);
-                return playlist[playlist.length - 1];
-            }
+          // Passer à la dernière chanson si on est au début de la playlist
+          this.updateindex(playlist.length - 1);
+          return playlist[playlist.length - 1];
         }
+      }
     }
 
     // Si la playlist n'est pas chargée ou n'existe pas, renvoyer null
     return null;
-}
-
+  }
 }

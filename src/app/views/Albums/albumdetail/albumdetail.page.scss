@@ -1,109 +1,688 @@
 ion-toolbar {
-    --background: transparent;
+  --background: transparent;
 }
 
 .container {
-    margin-inline: 15px;
-    .img-detail {
-        text-align: center;
-        img {
-            height: 130px;
-            width: 130px;
-            border-radius: 20px;
-        }
-        .title {
-            overflow: hidden;
-            h3 {
-                font-weight: 900;
-                font-size: 18px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-            p {
-                color: gray;
-            }
-        }
+  margin-inline: 15px;
+  .img-detail {
+    text-align: center;
+    img {
+      height: 130px;
+      width: 130px;
+      border-radius: 20px;
     }
-    .block-btn-header {
-        border-bottom: 1px solid #eeeeee2e;
-        padding-bottom: 1rem;
-        ion-buttons {
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 5px;
-            ion-button {
-                --background: var(--ion-color-primary);
-                color: white;
-                text-transform: capitalize;
-                font-weight: 800;
-                font-size: 17px;
-                --padding-start: 7px;
-                --padding-end: 1rem;
-                ion-icon {
-                    margin-block: 0.5rem;
-                }
-            }
-            .btn-Lecture {
-                --background: #ebceff;
-                color: var(--ion-color-primary);
-            }
-        }
+    .title {
+      overflow: hidden;
+      h3 {
+        font-weight: 900;
+        font-size: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      p {
+        color: gray;
+      }
     }
-    .list_chansons {
-        // padding-inline: 1rem;
-        .ion-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-block: 1rem;
-            .img-detail {
-                gap: 15px;
-                margin-block: 8px;
-            }
-            .block-btn {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                ion-button {
-                    --background: transparent;
-                    --box-shadow: none;
-                }
-            }
-            img {
-                height: 80px;
-                width: 80px;
-                border-radius: 20px;
-                margin-right: 10px;
-            }
+  }
+  .block-btn-header {
+    border-bottom: 1px solid #eeeeee2e;
+    padding-bottom: 1rem;
+    ion-buttons {
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 5px;
+      ion-button {
+        --background: var(--ion-color-primary);
+        color: white;
+        text-transform: capitalize;
+        font-weight: 800;
+        font-size: 17px;
+        --padding-start: 7px;
+        --padding-end: 1rem;
+        ion-icon {
+          margin-block: 0.5rem;
         }
-        .title {
-            overflow: hidden;
-            h3 {
-                font-weight: 800;
-                font-size: 18px;
-                // word-wrap: break-word;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-            }
-            p {
-                color: gray;
-            }
-        }
-        .btn-play {
-            // height: 50px;
-            // width: 50px;
-            ion-icon {
-                font-size: 40px;
-                --padding-start: 0px !important;
-            }
-        }
+      }
+      .btn-Lecture {
+        --background: #ebceff;
+        color: var(--ion-color-primary);
+      }
     }
+  }
+  .list_chansons {
+    // padding-inline: 1rem;
+    .ion-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-block: 1rem;
+      .img-detail {
+        gap: 15px;
+        margin-block: 8px;
+      }
+      .block-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ion-button {
+          --background: transparent;
+          --box-shadow: none;
+        }
+      }
+      img {
+        height: 80px;
+        width: 80px;
+        border-radius: 20px;
+        margin-right: 10px;
+      }
+    }
+    .title {
+      overflow: hidden;
+      h3 {
+        font-weight: 800;
+        font-size: 18px;
+        // word-wrap: break-word;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      p {
+        color: gray;
+      }
+    }
+    .btn-play {
+      // height: 50px;
+      // width: 50px;
+      ion-icon {
+        font-size: 40px;
+        --padding-start: 0px !important;
+      }
+    }
+  }
 }
 
 ion-popover {
-    ion-item {
-        width: auto;
+  ion-item {
+    width: auto;
+  }
+}
+
+ion-toolbar {
+  --background: transparent;
+  ion-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.container {
+  margin-inline: 15px;
+  padding-bottom: 4rem;
+  .img-detail {
+    text-align: center;
+    margin-top: 1rem;
+    img {
+      height: 150px;
+      width: 150px;
+      border-radius: 20px;
     }
+    .title {
+      margin-block: 10px;
+      gap: 5px;
+      h3 {
+        font-weight: 900;
+        font-size: 18px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 0;
+      }
+    }
+    p {
+      margin-block: 10px;
+      color: gray;
+      text-align: start;
+    }
+  }
+  .block-btn-header {
+    border-bottom: 1px solid #eeeeee2e;
+    padding-bottom: 1rem;
+    ion-buttons {
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 5px;
+      ion-button {
+        --background: var(--ion-color-primary);
+        color: white;
+        text-transform: capitalize;
+        font-weight: 800;
+        font-size: 17px;
+        --padding-start: 10px;
+        --padding-end: 10px;
+        --padding-top: 1rem;
+        --padding-bottom: 1rem;
+        width: 164px;
+        ion-icon {
+          margin-block: 0.5rem;
+        }
+      }
+    }
+  }
+  .box-title {
+    margin: 10px 5px 5px 5px;
+    h3 {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    p {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--ion-color-primary);
+    }
+  }
+  .scroll-box {
+    display: flex;
+    overflow: scroll;
+    gap: 7px;
+    .movie {
+      .number_price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .number_sons {
+          padding: 5px;
+          background-color: grey;
+          border-radius: 15px;
+          color: white;
+          font-size: 13px;
+          text-wrap: nowrap;
+          overflow: hidden;
+          word-wrap: break-word;
+          text-overflow: ellipsis;
+        }
+      }
+      img {
+        height: 130px;
+        max-width: none;
+        border-radius: 30px;
+      }
+    }
+  }
+}
+
+.d-f {
+  display: flex;
+}
+
+.d-b {
+  display: block;
+}
+
+.d-f-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-f-s {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bg-header {
+  // padding-top: 1rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  padding-bottom: 1rem;
+
+  .header {
+    background: transparent;
+
+    ion-buttons {
+      justify-content: flex-end;
+    }
+  }
+
+  .item {
+    margin-inline: 5px;
+
+    .btn-setting {
+      min-height: 30px;
+      min-width: 30px;
+      position: relative;
+      transform: translateX(10px);
+    }
+  }
+
+  .block-edit-settings {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 20px;
+    position: relative;
+    color: white;
+
+    p {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    ion-button {
+      margin: 0;
+
+      ion-icon {
+        color: white;
+      }
+    }
+  }
+
+  ion-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    font-weight: 600;
+    margin-top: 7px;
+
+    ion-icon {
+      border-radius: 50%;
+    }
+  }
+
+  ion-text {
+    color: white;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-block: 1rem;
+  }
+}
+
+ion-segment {
+  --background: black;
+
+  ion-segment-button {
+    text-transform: capitalize;
+    font-size: 14px;
+    --color: white !important;
+    --indicator-color: none;
+    --background-checked: white;
+    font-weight: 600;
+  }
+}
+
+.logo {
+  // margin: 10px;
+  width: 100px;
+  height: 100px;
+}
+
+.p {
+  margin-top: 5rem;
+  height: 50%;
+  font-weight: 700;
+}
+
+.movie {
+  margin-right: 5px;
+
+  p {
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  ion-label {
+    margin-block: 5px;
+  }
+
+  .number_price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .number_sons {
+      padding: 5px;
+      background-color: grey;
+      border-radius: 15px;
+      color: white;
+      font-size: 13px;
+      text-wrap: nowrap;
+      overflow: hidden;
+      word-wrap: break-word;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .bg-img {
+    position: relative;
+    height: 100%;
+    width: 120px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    border-radius: 15px;
+    height: 154px;
+    text-align: center;
+
+    ion-avatar {
+      position: absolute;
+      bottom: 0;
+      transform: translate(125%, 0);
+      width: 35px;
+    }
+
+    p {
+      font-size: 12px;
+      color: white;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+}
+
+.movie img {
+  height: 130px;
+  max-width: none;
+  border-radius: 30px;
+}
+
+.list_chansons {
+  padding-inline: 1rem;
+
+  .ion-item {
+    margin-block: 1rem;
+
+    .img-detail {
+      gap: 15px;
+      margin-block: 8px;
+    }
+
+    .block-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ion-button {
+        --background: transparent;
+        --box-shadow: none;
+      }
+    }
+
+    ion-thumbnail {
+      height: 80px;
+      width: 80px;
+      border-radius: 20px;
+      margin-right: 15px;
+    }
+
+    ion-skeleton-text {
+      background-color: #ffffff14;
+    }
+
+    img {
+      height: 80px;
+      width: 80px;
+      border-radius: 20px;
+      margin-right: 10px;
+    }
+  }
+
+  .title {
+    overflow: hidden;
+
+    h3 {
+      font-weight: 900;
+      font-size: 13px;
+      // word-wrap: break-word;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    p {
+      color: gray;
+    }
+  }
+
+  .btn-play {
+    // height: 50px;
+    // width: 50px;
+    ion-icon {
+      font-size: 40px;
+      --padding-start: 0px !important;
+    }
+  }
+}
+
+.list_albums {
+  .img-detail {
+    gap: 15px;
+    --border-color: transparent;
+    margin-bottom: 6px;
+
+    .bg-album {
+      position: relative;
+      display: inline-block;
+
+      .background-image {
+        min-width: 100px;
+        max-width: 185px;
+        width: 100%;
+        border-radius: 15px;
+      }
+
+      .orange-disc {
+        position: absolute;
+        top: 50%;
+        left: 65%;
+        width: 100%;
+        height: 90%;
+        background-color: var(--ion-color-primary);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+      }
+
+      .play-icon {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 30px;
+        transform: translate(50%, 50%);
+        z-index: 2;
+      }
+    }
+
+    .bg-album-skel {
+      ion-thumbnail {
+        height: 200px;
+        width: 200px;
+        border-radius: 20px;
+        margin-right: 15px;
+      }
+    }
+
+    ion-skeleton-text {
+      background-color: #ffffff14;
+    }
+
+    ion-thumbnail {
+      height: auto;
+      max-width: 110px;
+      max-height: 110px;
+      width: auto;
+      --border-radius: 20px;
+      // width: 50%;
+      // height: 90%;
+      // min-height: 100px;
+    }
+
+    .details {
+      margin-left: 2rem;
+
+      .info {
+        display: table-caption;
+
+        // flex-wrap: wrap;
+        // justify-content: space-between;
+        // align-items: center;
+        // gap: 10px;
+        ion-badge {
+          margin-bottom: 3px;
+        }
+      }
+    }
+
+    .title {
+      margin-bottom: 5px;
+
+      h3 {
+        font-weight: 800;
+        font-size: 14px;
+        margin: 0;
+        word-wrap: break-word;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      p {
+        color: gray;
+        margin: 0;
+        margin-block: 5px;
+      }
+    }
+  }
+
+  .item-skel {
+    --background: transparent;
+  }
+
+  ion-buttons {
+    .btn-play {
+      height: 50px;
+      width: 50px;
+
+      ion-icon {
+        font-size: 40px;
+        --padding-start: 0px !important;
+      }
+    }
+  }
+}
+
+.img-detail {
+  margin-top: 1rem;
+
+  img {
+    height: 100px;
+    width: 100px;
+    border-radius: 20px;
+    margin-left: 10px;
+  }
+
+  .title {
+    overflow: hidden;
+    margin-left: 10px;
+
+    h3 {
+      font-weight: 900;
+      font-size: 18px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    p {
+      color: gray;
+    }
+  }
+}
+
+.envénement {
+  ion-card {
+    padding: 6px;
+    box-shadow: 0px 3px 9px -8px;
+    margin-top: 1rem;
+
+    .badge {
+      text-align: end;
+      position: absolute;
+      width: 100%;
+      right: 15px;
+      top: 15px;
+    }
+
+    ion-img {
+      --border-radius: 10px;
+    }
+
+    .footer {
+      p {
+        margin-bottom: 1rem;
+      }
+
+      .info {
+        margin-block: 5px;
+
+        p {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+
+      p {
+        color: var(--ion-color-dark);
+        font-size: 15px;
+      }
+    }
+  }
+}
+
+.list_chansons .ion-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.song-thumbnail {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.song-info {
+  flex: 1;
+}
+
+.song-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #555;
+}
+
+.block-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.p.d-f-c {
+  text-align: center;
+  font-size: 16px;
+  color: #888;
 }

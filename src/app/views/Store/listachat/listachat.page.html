@@ -17,7 +17,7 @@
                             <div class="badge">
                                 <ion-badge color="danger" mode="ios">Événement</ion-badge>
                             </div>
-                            <img [src]="item.event.image" style="width: 100%;" />
+                            <img [src]="item.songData ? item.songData.thumbnail : item.event.image" style="width: 100%;" />
                             <div class="footer">
                                 <div class="info">
                                     <p>{{item.title}}</p>

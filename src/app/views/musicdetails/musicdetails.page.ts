@@ -11,6 +11,7 @@ import { NavController } from '@ionic/angular';
 export class MusicdetailsPage implements OnInit {
 
   currentSong:any;
+  cover: any;
   constructor(
     public navCtrl: NavController,
     public route: Router,
@@ -34,6 +35,7 @@ export class MusicdetailsPage implements OnInit {
       this.desc = this.currentSong.description.replace(/<[^>]*>/g, ''); // Filtrer les balises HTML
       console.log('sonngggggg', this.tags);
       console.log('sonnggggggssssss', this.currentSong)
+      this.cover = this.currentSong.thumbnail;
       this.tags.forEach((tag: string) => {
         console.log('Tag:', tag.trim()); // Utiliser trim() pour enlever les espaces
       });  

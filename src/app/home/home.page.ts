@@ -78,6 +78,9 @@ export class HomePage implements OnInit {
     this.route.navigate([route]);
 
   }
+  goToSegment(segment: string) {
+    this.selectedSegment = segment; // Met à jour le segment actif
+  }
 
   ngOnInit() {
     this.isUserLogged = this.authService.isUserLoggedIn();

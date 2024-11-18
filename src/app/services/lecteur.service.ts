@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { musicTab } from '../views/play/play.page';
-import { MusicControls } from '@awesome-cordova-plugins/music-controls/ngx';
+// import { MusicControls } from '@ionic-native/music-controls/ngx';
+import { CapacitorMusicControls } from 'capacitor-music-controls-plugin';
 
 @Injectable({
   providedIn: 'root',
@@ -38,35 +39,72 @@ export class LecteurService {
   public getIsRepeatOne(): boolean {
     return this.isRepeatOneSubject.value;
   }
-  constructor(private musicControls: MusicControls) {
+  constructor() {
     // Charger l'état initial de la chanson
     this.loadFromLocalStorage();
 
     // Gestion des événements audio
-    this.audio.ontimeupdate = () =>
-      this.currentTimeSubject.next(this.audio.currentTime);
-    this.audio.onloadedmetadata = () =>
-      this.durationSubject.next(this.audio.duration);
-    this.audio.onerror = () => {
-      this.audioErrorSubject.next('Erreur lors de la lecture de la musique');
-      this.isPlayingSubject.next(false);
-    };
-    this.audio.onended = () => {
-      console.log('La chanson est terminée', this.isRepeatOneSubject.value);
-      if (this.isRepeatOneSubject.value) {
-        this.audio.currentTime = 0;
-        this.audio.play();
-      } else {
-        if (this.waitingList.length > 0) {
-          this.playFromWaitingList();
-        } else {
-          this.playNext(this.topSongs);
-        }
-      }
-    };
+    // this.audio.ontimeupdate = () =>
+    //   this.currentTimeSubject.next(this.audio.currentTime);
+    // this.audio.onloadedmetadata = () =>
+    //   this.durationSubject.next(this.audio.duration);
+    // this.audio.onerror = () => {
+    //   this.audioErrorSubject.next('Erreur lors de la lecture de la musique');
+    //   this.isPlayingSubject.next(false);
+    // };
+    // this.audio.onended = () => {
+    //   console.log('La chanson est terminée', this.isRepeatOneSubject.value);
+    //   if (this.isRepeatOneSubject.value) {
+    //     this.audio.currentTime = 0;
+    //     this.audio.play();
+    //   } else {
+    //     if (this.waitingList.length > 0) {
+    //       this.playFromWaitingList();
+    //     } else {
+    //       this.playNext(this.topSongs);
+    //     }
+    //   }
+    // };
 
     // Initialiser les contrôles
-    this.initializeMusicControls();
+    // this.loadFromLocalStorage();
+
+    // Initialiser les événements audio
+    this.initializeAudioEvents();
+
+    // Initialiser les contrôles
+    this.initializeMusicControls(this.currentSong$);
+  }
+
+  private initializeAudioEvents() {
+    // Mise à jour du temps actuel de la musique
+    this.audio.ontimeupdate = () =>
+      this.currentTimeSubject.next(this.audio.currentTime);
+    // Mise à jour de la durée de la musique
+    this.audio.onloadedmetadata = () =>
+      this.durationSubject.next(this.audio.duration);
+    // Gestion des erreurs de lecture
+    this.audio.onerror = () =>
+      this.handleError('Erreur lors de la lecture de la musique');
+    // Gestion de la fin de la musique
+    this.audio.onended = () => this.handleSongEnd();
+  }
+
+  private handleError(message: string) {
+    this.audioErrorSubject.next(message);
+    this.isPlayingSubject.next(false);
+  }
+
+  private handleSongEnd() {
+    // Si la chanson est en mode répétition
+    if (this.isRepeatOneSubject.value) {
+      this.audio.currentTime = 0;
+      this.audio.play();
+    } else if (this.waitingList.length > 0) {
+      this.playFromWaitingList();
+    } else {
+      this.playNext(this.topSongs);
+    }
   }
 
   addTowaitingList(song: any) {
@@ -74,45 +112,96 @@ export class LecteurService {
   }
 
   // Méthode pour initialiser et gérer les MusicControls
-  initializeMusicControls() {
+  initializeMusicControls(song: any) {
+    console.log('Muse', song);
+
     const currentSong = this.currentSongSubject.value;
-    if (!currentSong) return;
+    // console.log(currentSong);
 
-    this.musicControls.create({
-      track: currentSong?.title,
-      artist: currentSong?.artist,
-      cover: currentSong?.thumbnail,
-      isPlaying: true,
-      dismissable: true,
-      hasPrev: true,
-      hasNext: true,
-      hasClose: true,
-    });
+    if (!currentSong) {
+      console.error('Aucune chanson sélectionnée pour le contrôle musical');
+      return;
+    }
 
-    // S'abonner aux événements de MusicControls
-    this.musicControls.subscribe().subscribe((action) => {
-      const message = action.message;
+    try {
+      CapacitorMusicControls.create({
+        track: song.title || 'Unknown Title', // Le titre de la chanson
+        artist: song.artist || 'Unknown Artist', // L'artiste
+        // album: song.album || 'Unknown Album',
+        cover:
+          song.thumbnail ||
+          'https://afrozikbox.com/themes/default/img/logo-white.png', // L'image de couverture
+        // cover can be a local path (use fullpath 'file:///storage/emulated/...',
+        // or only 'my_image.jpg' if my_image.jpg is in the www folder of your app)
+        // or a remote url ('http://...', 'https://...', 'ftp://...')
 
-      switch (message) {
-        case 'music-controls-next':
-          this.playNext(this.topSongs);
-          break;
-        case 'music-controls-previous':
-          this.playPrevious(this.topSongs);
-          break;
-        case 'music-controls-pause':
-          this.pauseMusic();
-          break;
-        case 'music-controls-play':
-          this.resumeMusic();
-          break;
-        case 'music-controls-destroy':
-          this.stopCurrentMusic();
-          break;
-        default:
-          break;
-      }
-    });
+        // hide previous/next/close buttons:
+        hasPrev: false, // show previous button, optional, default: true
+        hasNext: false, // show next button, optional, default: true
+        hasClose: false, // show close button, optional, default: false
+
+        // iOS only, all optional
+        duration: this.audio.duration, // Durée de la chanson
+        elapsed: this.audio.currentTime,
+        hasSkipForward: true, // default: false. true value overrides hasNext.
+        hasSkipBackward: true, // default: false. true value overrides hasPrev.
+        skipForwardInterval: 15, // default: 15.
+        skipBackwardInterval: 15, // default: 15.
+        hasScrubbing: true, // default: false. Enable scrubbing from control center progress bar
+
+        // Android only, all optional
+        isPlaying: true, // default : true
+        dismissable: true, // default : false
+        // text displayed in the status bar when the notification (and the ticker) are updated
+        ticker: `Now playing "${song.title}"`,
+        // All icons default to their built-in android equivalents
+        // The supplied drawable name, e.g. 'media_play', is the name of a drawable found under android/res/drawable* folders
+        playIcon: 'media_play',
+        pauseIcon: 'media_pause',
+        prevIcon: 'media_prev',
+        nextIcon: 'media_next',
+        closeIcon: 'media_close',
+        notificationIcon: 'notification',
+      })
+        .then(() => {
+          // Création des contrôles réussie
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+
+      // S'abonner aux événements MusicControls
+      CapacitorMusicControls.addListener('controlsNotification', (action) => {
+        const message = action.message;
+
+        switch (message) {
+          case 'music-controls-next':
+            console.log('Next song command received');
+            // this.playNext(this.topSongs);
+            break;
+          case 'music-controls-previous':
+            console.log('Next song command received');
+            // this.playPrevious(this.topSongs);
+            break;
+          case 'music-controls-pause':
+            // this.pauseMusic();
+            break;
+          case 'music-controls-play':
+            // this.resumeMusic();
+            break;
+          case 'music-controls-destroy':
+            this.stopCurrentMusic();
+            break;
+          default:
+            break;
+        }
+      });
+    } catch (error) {
+      console.error(
+        'Erreur lors de la création des contrôles musicaux:',
+        error
+      );
+    }
   }
 
   playFromWaitingList() {
@@ -128,7 +217,7 @@ export class LecteurService {
         .then(() => {
           this.isPlayingSubject.next(true);
           this.currentSongSubject.next(song);
-          this.initializeMusicControls();
+          this.initializeMusicControls(song);
         })
         .catch((error) => {
           this.audioErrorSubject.next('Impossible de lire la musique');
@@ -153,7 +242,7 @@ export class LecteurService {
           this.currentSongSubject.next(song);
           this.currentSongIndex = index;
 
-          this.initializeMusicControls();
+          this.initializeMusicControls(song);
           this.saveToLocalStorage(song, index, this.audio.currentTime);
         })
         .catch((error) => {
@@ -181,7 +270,7 @@ export class LecteurService {
           this.currentSongSubject.next(song);
           // this.currentSongIndex = index;
 
-          this.initializeMusicControls();
+          this.initializeMusicControls(song);
           this.saveToLocalStorageAleatoire(song, this.audio.currentTime);
         })
         .catch((error) => {
@@ -205,8 +294,8 @@ export class LecteurService {
       console.error('La liste de chansons est vide.');
     }
   }
- // Charger une nouvelle liste de chansons aléatoire
-// Déclarer un tableau pour stocker les indices des chansons déjà jouées
+  // Charger une nouvelle liste de chansons aléatoire
+  // Déclarer un tableau pour stocker les indices des chansons déjà jouées
   private playedSongsIndices: number[] = [];
 
   // Charger une nouvelle liste de chansons avec lecture aléatoire continue
@@ -239,7 +328,6 @@ export class LecteurService {
     this.playMusicAleatoire(this.songList[randomIndex]); // Jouer la chanson
   }
 
-
   // Mettre la chanson en pause
   pauseMusic(): void {
     try {
@@ -264,7 +352,7 @@ export class LecteurService {
       this.audio.play();
       this.isPlayingSubject.next(true);
 
-      this.initializeMusicControls(); // Appel pour initialiser les contrôles de musique
+      this.initializeMusicControls(this.currentSongSubject.value); // Appel pour initialiser les contrôles de musique
       this.saveToLocalStorage(
         this.currentSongSubject.value,
         this.currentSongIndex,
@@ -317,51 +405,51 @@ export class LecteurService {
 
   playNext(songs: any[]): void {
     try {
-        if (songs.length === 0) {
-            console.error('Aucune chanson disponible dans la liste');
-            this.audioErrorSubject.next('Aucune chanson disponible');
-            return;
-        }
+      if (songs.length === 0) {
+        console.error('Aucune chanson disponible dans la liste');
+        this.audioErrorSubject.next('Aucune chanson disponible');
+        return;
+      }
 
-        let nextIndex;
-        if (this.isShuffleSubject.value) {
-          console.log("lecture aleatoire suivant")
-            // Si le mode aléatoire est activé, sélectionner une chanson aléatoire différente de l'actuelle
-            do {
-                nextIndex = Math.floor(Math.random() * songs.length);
-            } while (nextIndex === this.currentSongIndex && songs.length > 1); // Évite de sélectionner la même chanson si plus d'une chanson est disponible
-        } else {
-            // Sinon, passer à la prochaine chanson dans l'ordre
-            nextIndex = this.currentSongIndex + 1;
-        }
+      let nextIndex;
+      if (this.isShuffleSubject.value) {
+        console.log('lecture aleatoire suivant');
+        // Si le mode aléatoire est activé, sélectionner une chanson aléatoire différente de l'actuelle
+        do {
+          nextIndex = Math.floor(Math.random() * songs.length);
+        } while (nextIndex === this.currentSongIndex && songs.length > 1); // Évite de sélectionner la même chanson si plus d'une chanson est disponible
+      } else {
+        // Sinon, passer à la prochaine chanson dans l'ordre
+        nextIndex = this.currentSongIndex + 1;
+      }
 
-        // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
-        if (nextIndex >= songs.length) {
-            console.log('Fin de la playlist');
-            this.stopCurrentMusic();
-            return;
-        }
+      // Si l'index dépasse le nombre de chansons disponibles, arrêter la lecture (pas de boucle)
+      if (nextIndex >= songs.length) {
+        console.log('Fin de la playlist');
+        this.stopCurrentMusic();
+        return;
+      }
 
-        const nextSong = songs[nextIndex];
+      const nextSong = songs[nextIndex];
 
-        // Vérifier si la prochaine chanson a une localisation audio valide
-        if (nextSong && nextSong.audio_location) {
-            // Mettre à jour l'index actuel et jouer la chanson suivante
-            this.playMusic(nextSong, nextIndex);
-        } else {
-            console.error(
-                "La chanson suivante ne contient pas de 'audio_location'",
-                nextSong
-            );
-            this.audioErrorSubject.next('La chanson suivante ne peut pas être lue');
-        }
-    } catch (error) {
-        this.audioErrorSubject.next(
-            'Erreur lors de la lecture de la chanson suivante'
+      // Vérifier si la prochaine chanson a une localisation audio valide
+      if (nextSong && nextSong.audio_location) {
+        // Mettre à jour l'index actuel et jouer la chanson suivante
+        this.playMusic(nextSong, nextIndex);
+      } else {
+        console.error(
+          "La chanson suivante ne contient pas de 'audio_location'",
+          nextSong
         );
-        console.error('Erreur lors de la lecture suivante : ', error);
+        this.audioErrorSubject.next('La chanson suivante ne peut pas être lue');
+      }
+    } catch (error) {
+      this.audioErrorSubject.next(
+        'Erreur lors de la lecture de la chanson suivante'
+      );
+      console.error('Erreur lors de la lecture suivante : ', error);
     }
-}
+  }
 
   // // Jouer la chanson suivante
   // playNext(songs: any[]): void {
@@ -435,7 +523,7 @@ export class LecteurService {
     this.isShuffleSubject.next(!this.isShuffleSubject.value);
   }
 
-  getIsshuffle(): boolean{
+  getIsshuffle(): boolean {
     return this.isShuffleSubject.value;
   }
 
@@ -461,10 +549,7 @@ export class LecteurService {
     localStorage.setItem('currentSongState', JSON.stringify(songState));
   }
 
-  private saveToLocalStorageAleatoire(
-    song: any,
-    currentTime: number
-  ): void {
+  private saveToLocalStorageAleatoire(song: any, currentTime: number): void {
     const songState = {
       song,
       currentTime,

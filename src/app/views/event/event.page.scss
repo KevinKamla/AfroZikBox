@@ -1,3 +1,47 @@
+.d-f {
+  display: flex;
+}
+
+.d-b {
+  display: block;
+}
+
+.d-f-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-f-s {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  h5 {
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+    cursor: pointer;
+
+    ion-icon {
+      font-size: 25px;
+    }
+  }
+}
+
 .container {
   padding: 10px;
 }
@@ -55,10 +99,14 @@ ion-list {
   height: 150px;
 }
 
+// .highlighted-day {
+//   background-color: #ffcc00;
+//   color: rgb(77, 46, 250);
+//   border-radius: 50%;
+// }
+
 .highlighted-day {
-    background-color: #ffcc00; 
-    color: rgb(77, 46, 250); 
-    border-radius: 50%;
-  }
-  
-  
+  background-color: #ff0000; /* Vous pouvez changer la couleur en fonction de votre design */
+  color: #fff;
+  border-radius: 50%;
+}

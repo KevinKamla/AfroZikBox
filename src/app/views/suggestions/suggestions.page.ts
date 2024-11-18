@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, NavController, Platform, ToastController } from '@ionic/angular';
+import {
+  AlertController,
+  IonicSafeString,
+  IonSegment,
+  ModalController,
+  NavController,
+  Platform,
+  ToastController,
+} from '@ionic/angular';
 import { musicTab } from '../../views/play/play.page';
 import { TopSongsService } from '../../services/top-songs.service';
 import { SuggestionsService } from '../../services/suggestions.service';
@@ -14,7 +22,7 @@ import { AlbumdetailPage } from '../Albums/albumdetail/albumdetail.page';
 import { StatutPage } from '../statut/statut.page';
 import { LecteurService } from 'src/app/services/lecteur.service'; // Import du service de musique
 import { AuthService } from 'src/app/services/auth.service';
-import { PlaylistService } from'src/app/services/playlist.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
 import { StoryService } from 'src/app/services/story.service';
 import { EventService } from 'src/app/services/event.service';
 
@@ -26,8 +34,11 @@ import { EventService } from 'src/app/services/event.service';
 export class SuggestionsPage implements OnInit {
   // Déclaration des propriétés
   isUserLoggedIn: boolean = false;
-
-  selectedgenre: any[]=[];
+  alertButtons: any[] = [
+    { text: 'OK', handler: () => console.log('OK clicked') },
+  ];
+  alertMessage: string = '';
+  selectedgenre: any[] = [];
   topalbums: any[] = [];
   genres: any[] = [];
   latest: any[] = [];
@@ -41,10 +52,12 @@ export class SuggestionsPage implements OnInit {
 
   currentSongIndex: number = 0;
   currentSong: any;
+  @ViewChild('mySegment', { static: false }) segment: IonSegment | undefined;
+  selectedSegment: any;
 
   constructor(
     private http: HttpClient,
-    private authService:AuthService,
+    private authService: AuthService,
     private route: Router,
     private navCtrl: NavController,
     private modal: ModalController,
@@ -60,8 +73,8 @@ export class SuggestionsPage implements OnInit {
     private genreService: GenresService,
     private toastController: ToastController,
     private yourService: StoryService,
-    private eventService:EventService,
-    private musicService: LecteurService // Injection du service de musique
+    private eventService: EventService,
+    private musicService: LecteurService
   ) {}
 
   tabSong = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -85,21 +98,23 @@ export class SuggestionsPage implements OnInit {
   ];
 
   async handleStoryClick() {
-    const userData = localStorage.getItem("UserData");
+    const userData = localStorage.getItem('UserData');
     if (!userData) {
       const alert = await this.alertController.create({
         header: 'Accès refusé',
         message: 'Veuillez vous connecter pour voir cette story',
-        buttons: [{
-          text: 'OK',
-          handler: () => {
-            this.route.navigate(['/tabs']);
-          }
-        }]
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+              this.route.navigate(['/tabs']);
+            },
+          },
+        ],
       });
       alert.present();
     } else {
-      alert("vous êtes connecté");
+      alert('vous êtes connecté');
     }
   }
 
@@ -146,32 +161,46 @@ export class SuggestionsPage implements OnInit {
   onGenreClick(genre: any) {
     this.genreService.getGenre(genre.id).subscribe(
       (response) => {
-        // Assuming response.data contains the required genres
-        const selectedGenreDetails = response.data.find((g: { id: any; }) => g.id === genre.id);
-        
+        const selectedGenreDetails = response.data.find(
+          (g: { id: any }) => g.id === genre.id
+        );
+
         if (selectedGenreDetails) {
-          // Now check if the genre is valid for navigation
-          this.genreService.getTrackGenre(genre.id, '').subscribe((trackResponse) => {
-            const tracks = trackResponse.tracks.data;
-            
-            // Check if tracks exist for the selected genre
-            if (tracks && tracks.length > 0) {
-              // Navigate to the genre page if valid
-              this.route.navigate(['/musicbygenre', genre.id]);
-            } else {
-              // Handle the invalid case, e.g., show a message
-              // alert('No tracks available for this genre.');
-              this.presentToast('Pas de music pour ce genre.');
-            }
-          });
+          this.genreService
+            .getTrackGenre(genre.id, '')
+            .subscribe((trackResponse) => {
+              const tracks = trackResponse.tracks.data;
+
+              if (tracks && tracks.length > 0) {
+                // Navigate to the genre page if valid
+                this.route.navigate(['/musicbygenre', genre.id]);
+              } else {
+                // Si aucune musique n'est trouvée, définissez un message d'alerte
+                this.alertMessage = 'Pas de musique pour ce genre.';
+                this.presentAlert(); // Affiche l'alerte
+              }
+            });
         } else {
-          this.presentToast('Genre not valid for navigation');
+          this.alertMessage = 'Genre non valide pour la navigation';
+          this.presentAlert(); // Affiche l'alerte
         }
       },
       (error) => {
-        this.presentToast('Pas de music pour ce genre.');
+        console.error('Erreur lors du chargement du genre', error);
+        this.alertMessage = 'Erreur de chargement des genres';
+        this.presentAlert(); // Affiche l'alerte en cas d'erreur
       }
     );
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Alerte',
+      message: this.alertMessage, // Le message dynamique
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
   openPopup() {
@@ -192,6 +221,11 @@ export class SuggestionsPage implements OnInit {
     this.route.navigate([segment]);
   }
 
+  selectArticle(article: any) {
+    localStorage.setItem('selectedArticle', JSON.stringify(article));
+    this.route.navigate(['eventdetail', article.id]);
+  }
+
   // Méthode pour charger et jouer la musique avec MusicService
   playMusic(song: any, index: number): void {
     // Appelez la méthode playMusic avec song et index
@@ -203,18 +237,17 @@ export class SuggestionsPage implements OnInit {
 
   playMusicFromTopList(song: any, index: number) {
     this.musicService.loadNewPlaylist(this.topSongs, index);
-    console.log(this.topSongs,'top songsssssss')
+    console.log(this.topSongs, 'top songsssssss');
   }
 
   // Charger et jouer la liste "Latest Songs"
   playMusicFromLatestList(song: any, index: number) {
-
     this.musicService.loadNewPlaylist(this.latest, index);
   }
 
   // Méthode pour jouer la prochaine chanson avec MusicService
   playNextSong() {
-    let song = this.PlaylistService.getnextsong()
+    let song = this.PlaylistService.getnextsong();
     if (song) {
       this.playMusic(song, this.currentSongIndex);
     }
@@ -230,7 +263,10 @@ export class SuggestionsPage implements OnInit {
   playPreviousSong() {
     if (this.currentSongIndex > 0) {
       this.currentSongIndex--;
-      this.playMusic(this.topSongs[this.currentSongIndex], this.currentSongIndex);
+      this.playMusic(
+        this.topSongs[this.currentSongIndex],
+        this.currentSongIndex
+      );
     }
   }
 
@@ -251,22 +287,21 @@ export class SuggestionsPage implements OnInit {
   }
 
   avatar: any;
-  events: any[]=[];
+  events: any[] = [];
   userId: number = parseInt(localStorage.getItem('userId') || '0', 10);
   ngOnInit() {
-    this.eventService.getMyEvents(this.userId).subscribe((res) => {
+    this.eventService.getEvents().subscribe((res) => {
       console.log('eventtttttttttttt', res);
       this.events = res.data;
       console.log(this.events);
-      
     });
     this.loadStories();
     this.isUserLoggedIn = this.authService.isLoggedIn();
 
-    const u = localStorage.getItem("UserData");
+    const u = localStorage.getItem('UserData');
     if (u) {
       const UserData = JSON.parse(u);
-      console.log("userdata :", UserData);
+      console.log('userdata :', UserData);
       this.avatar = UserData.avatar;
     }
 
@@ -276,7 +311,10 @@ export class SuggestionsPage implements OnInit {
         this.loadSongsForTopAlbums();
       },
       (error) => {
-        console.error('Erreur lors de la récupération des meilleurs albums :', error);
+        console.error(
+          'Erreur lors de la récupération des meilleurs albums :',
+          error
+        );
       }
     );
 
@@ -287,7 +325,10 @@ export class SuggestionsPage implements OnInit {
         console.log(this.topSongs);
       },
       (error) => {
-        console.error('Erreur lors de la récupération des Meilleur songs :', error);
+        console.error(
+          'Erreur lors de la récupération des Meilleur songs :',
+          error
+        );
       }
     );
 
@@ -304,11 +345,14 @@ export class SuggestionsPage implements OnInit {
     this.suggestionsService.getSuggestions().subscribe(
       (response) => {
         this.latest = response.new_releases.data;
-        console.log(this.latest)
+        console.log(this.latest);
         this.loadSongsForTopAlbums();
       },
       (error) => {
-        console.error('Erreur lors de la récupération des suggestions :', error);
+        console.error(
+          'Erreur lors de la récupération des suggestions :',
+          error
+        );
       }
     );
 
@@ -322,7 +366,6 @@ export class SuggestionsPage implements OnInit {
     );
   }
 
-
   truncateTitle(title: string, limit: number): string {
     return title.length > limit ? title.slice(0, limit) + '...' : title;
   }
@@ -333,23 +376,19 @@ export class SuggestionsPage implements OnInit {
     this.yourService.getStories().subscribe({
       next: (response) => {
         this.stories = response; // Assuming response contains an array of stories
-        console.log(this.stories)
+        console.log(this.stories);
       },
       error: (error) => {
         console.error('Error loading stories', error);
-      }
+      },
     });
   }
 
-
-
-
-
-  // Gestion chargement de la musique et playlist 
-  loadsong(playlist:any, index:number){
+  // Gestion chargement de la musique et playlist
+  loadsong(playlist: any, index: number) {
     // console.log('Playlist chargement...')
-    this.PlaylistService.updateindex(index)
-    this.PlaylistService.loadplaylist(playlist, index)
+    this.PlaylistService.updateindex(index);
+    this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
-  } 
+  }
 }

@@ -44,7 +44,7 @@ export class EventdetailPage implements OnInit {
       console.log(this.achats, 'achatttt');
       this.eventId = this.achats.event_id;
       console.log(this.eventId);
-      this.cover = this.achats.event.image;
+      this.cover = this.achats.image;
       this.url = this.achats.url;
     } else {
       console.log("Aucun album n'est stocké dans le localStorage");
