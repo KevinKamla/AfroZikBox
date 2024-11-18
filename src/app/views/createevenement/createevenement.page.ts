@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonDatetime, ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { EventService } from 'src/app/services/event.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -39,12 +40,27 @@ export class CreateevenementPage implements OnInit {
     available_tickets: [''],
     ticket_price: ['']
   });
-  
+
+  isGetImg = false;
+  imgPath: string = '';
+  isGetImg2 = false;
+  imgPath2: string = '';  
+  start_date : any;
+  start_time : any;
+  end_date : any;
+  end_time : any;
+  fuseauHoraire = "GMT +0";
   imageFile: File | null = null;
   videoFile: File | null = null;
   selectedEvent: any;
+  selectedFile: any;
 
-  constructor(private yourService: EventService,private route: ActivatedRoute,private alertController: AlertController, private fb: FormBuilder) { }
+  constructor(
+    private yourService: EventService, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController, 
+    private fb: FormBuilder,  
+    private modal: ModalController,) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -53,6 +69,7 @@ export class CreateevenementPage implements OnInit {
         this.preFillForm(this.selectedEvent);
       }
     });
+
   }
   preFillForm(eventData: any) {
     this.eventForm.patchValue({
@@ -97,16 +114,16 @@ export class CreateevenementPage implements OnInit {
   //     });
   //   }
   // }
-
+ 
   onSubmitCreateEvent() {
     if (this.eventForm.invalid) {
       this.showAlert('Erreur', 'Veuillez remplir tous les champs requis.');
       return;
     }
-  
+
     // Mise à jour de `eventData` avec les données du formulaire réactif
     // this.eventData = { ...this.eventData, ...this.eventForm.value };
-  
+
     // Vérifie si les fichiers d'image et de vidéo sont présents
     if (this.imageFile && this.videoFile) {
       this.yourService.createEvent(this.eventData, this.imageFile, this.videoFile).subscribe({
@@ -123,7 +140,7 @@ export class CreateevenementPage implements OnInit {
       this.showAlert('Erreur', 'Veuillez télécharger une image et une vidéo pour cet événement.');
     }
   }
-  
+
   async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
@@ -132,4 +149,81 @@ export class CreateevenementPage implements OnInit {
     });
     await alert.present();
   }
+
+  async camera() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+      });
+
+      if (image.base64String) {
+        this.imgPath = 'data:image/png;base64,' + image.base64String;
+        this.isGetImg = true;
+
+        const byteString = atob(image.base64String);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+          uintArray[i] = byteString.charCodeAt(i);
+        }
+        this.selectedFile = new File([uintArray], 'thumbnail.jpg', {
+          type: 'image/jpeg',
+        });
+      } else {
+        console.error('La chaîne base64 est indéfinie.');
+      }
+    } catch (error) {
+      console.error("Erreur lors de la capture de l'image:", error);
+    }
+  }
+
+  async camera2() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+      });
+
+      if (image.base64String) {
+        this.imgPath2 = 'data:image/png;base64,' + image.base64String;
+        this.isGetImg2 = true;
+
+        const byteString = atob(image.base64String);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+          uintArray[i] = byteString.charCodeAt(i);
+        }
+        this.selectedFile = new File([uintArray], 'thumbnail.jpg', {
+          type: 'image/jpeg',
+        });
+      } else {
+        console.error('La chaîne base64 est indéfinie.');
+      }
+    } catch (error) {
+      console.error("Erreur lors de la capture de l'image:", error);
+    }
+  }
+
+  dateDebut(e: any) {
+    this.start_date= e.detail.value.split('T')[0]
+    this.start_time= e.detail.value.split('T')[1]
+    console.log(this.start_date +' \n '+ this.start_time);    
+  }
+  
+  dateFin(e: any) {
+    this.end_date= e.detail.value.split('T')[0]
+    this.end_time= e.detail.value.split('T')[1]
+    console.log(this.end_date +' \n '+ this.end_time);    
+  }
+
+  
+  selectedFuseau(item: string) {
+      this.fuseauHoraire = item
+      this.modal.dismiss();
+  }
 }
+
