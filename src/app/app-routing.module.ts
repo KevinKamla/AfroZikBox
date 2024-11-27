@@ -497,7 +497,21 @@ const routes: Routes = [
   {
     path: 'eventdetail/:id',
     loadChildren: () => import('./views/eventdetail/eventdetail.module').then( m => m.EventdetailPageModule)
+  },
+  {
+    path: 'createproduct',
+    loadChildren: () => import('./components/createproduct/createproduct.module').then( m => m.CreateproductPageModule)
+  },
+  {
+    path: 'productdetail/:id',
+    loadChildren: () => import('./views/Store/productdetail/productdetail.module').then( m => m.ProductdetailPageModule)
+  },
+  {
+    path: 'paymobil',
+    loadChildren: () => import('./views/Store/paymobil/paymobil.module').then( m => m.PaymobilPageModule)
   }
+
+
 
 
 

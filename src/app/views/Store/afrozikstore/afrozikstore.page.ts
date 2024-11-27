@@ -34,6 +34,7 @@ export class AfrozikstorePage implements OnInit {
   currentSong: any;
   favoris: any[] = [];
   isLoading: boolean = true;
+  cartItemCount: number = 0;
   constructor(
     private albumService: AlbumsService,
     private productService: ProductService,
@@ -49,6 +50,28 @@ export class AfrozikstorePage implements OnInit {
     this.loadAlbums();
     this.topsheller();
     // this.isFavorite();
+    this.updateCartItemCount();
+    this.productService.cartItemCount$.subscribe((count) => {
+      this.cartItemCount = count;
+      console.log(this.cartItemCount);
+      
+    });
+  }
+
+  updateCartItemCount() {
+    this.productService.getCartItems().subscribe({
+      next: (response) => {
+        console.log(response.array);
+        
+        this.cartItemCount = response?.array.length || 0;
+        console.log( 'ici',this.cartItemCount);
+        
+      },
+      error: (error) => {
+        console.error('Error fetching cart items:', error);
+        this.cartItemCount = 0;
+      },
+    });
   }
 
   // Méthode pour afficher le loader
@@ -129,7 +152,7 @@ export class AfrozikstorePage implements OnInit {
       (response) => {
         loader.dismiss();
         if (response.status === 200) {
-          this.filteredProducts = response.data;
+          this.filteredProducts = this.processProducts(response.data);
         }
       },
       (error) => {
@@ -137,6 +160,21 @@ export class AfrozikstorePage implements OnInit {
         console.error('Erreur lors du chargement des produits:', error);
       }
     );
+  }
+
+  // Méthode pour traiter les produits et extraire les miniatures
+  processProducts(products: any[]): any[] {
+    return products.map((product) => ({
+      ...product,
+      thumbnail:
+        product.images && product.images.length > 0
+          ? product.images[0].image
+          : 'assets/placeholder.png',
+    }));
+  }
+
+  goToProductDetail(productId: string) {
+    this.route.navigate(['/productdetail', productId]);
   }
 
   loadSongsForTopAlbums() {

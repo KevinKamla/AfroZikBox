@@ -218,16 +218,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  doRefresh(event: any) {
-    // Vous pouvez recharger des données ou rafraîchir du contenu ici
-    console.log('Rafraîchissement en cours...');
-
-    // Simuler un appel serveur, après quoi le rafraîchissement s'arrêtera
-    setTimeout(() => {
-      console.log('Rafraîchissement terminé');
-      event.target.complete(); // Arrête le rafraîchissement
-    }, 2000);
-  }
+  
 
   // Méthode pour jouer la prochaine chanson avec MusicService
   playNextSong() {

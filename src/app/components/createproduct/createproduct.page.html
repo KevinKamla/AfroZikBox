@@ -1,0 +1,195 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create/Edit Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="onSubmit()">
+    <!-- Titre -->
+    <ion-item class="d-f-s">
+      <ion-icon slot="start" name="pricetag-outline"></ion-icon>
+      <ion-input
+        [(ngModel)]="productData.title"
+        name="title"
+        placeholder="Title"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <!-- Description -->
+    <ion-item class="d-f-s">
+      <ion-icon slot="start" name="document-text-outline"></ion-icon>
+      <ion-textarea
+        [(ngModel)]="productData.desc"
+        name="desc"
+        placeholder="Description"
+        rows="3"
+      ></ion-textarea>
+    </ion-item>
+
+    <!-- Tags -->
+    <ion-item class="d-f-s">
+      <ion-icon slot="start" name="pricetags-outline"></ion-icon>
+      <ion-input
+        [(ngModel)]="productData.tags"
+        name="tags"
+        placeholder="Tags"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Prix -->
+    <ion-item class="d-f-s">
+      <ion-icon slot="start" name="cash-outline"></ion-icon>
+      <ion-input
+        [(ngModel)]="productData.price"
+        name="price"
+        type="number"
+        placeholder="Price"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <!-- Unités -->
+    <ion-item class="d-f-s">
+      <ion-icon slot="start" name="cube-outline"></ion-icon>
+      <ion-input
+        [(ngModel)]="productData.units"
+        name="units"
+        type="number"
+        placeholder="Units"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Related Song</ion-label>
+    
+      <!-- Barre de recherche -->
+      <ion-searchbar
+        [(ngModel)]="searchQuery"
+        (ionInput)="filterSongs()"
+        placeholder="Search or select a song"
+        showCancelButton="focus"
+      ></ion-searchbar>
+    
+      <!-- Liste déroulante des musiques -->
+      <ion-list
+        *ngIf="showSongList" 
+        class="song-list"
+      >
+        <ion-item
+          *ngFor="let song of filteredSongs"
+          (click)="selectSong(song)"
+        >
+          <ion-label>
+            <h3>{{ song.title }}</h3>
+            <p>{{ song.artist }}</p> <!-- Affichage de l'artiste -->
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    
+      <!-- Affichage de la chanson sélectionnée -->
+      <div *ngIf="selectedSong" class="selected-song">
+        <ion-chip color="primary">
+          <ion-label>{{ selectedSong.title }}</ion-label>
+          <ion-icon name="close-circle" (click)="clearSelectedSong()"></ion-icon>
+        </ion-chip>
+      </div>
+    </ion-item>
+    
+
+    <!-- Catégorie -->
+    <ion-item button class="d-f-s" id="open-modal-category">
+      <ion-icon slot="start" name="grid-outline"></ion-icon>
+      <ion-label>{{ selectedCategory || 'Select a Category' }}</ion-label>
+    </ion-item>
+
+    <!-- Image -->
+    <ion-card class="d-f-c" *ngIf="productData.imagePreview?.length">
+      <ion-card-content class="image">
+        <img
+          *ngFor="let preview of productData.imagePreview"
+          [src]="preview"
+          alt="Image Preview"
+        />
+      </ion-card-content>
+    </ion-card>
+
+    <ion-item>
+      <ion-label position="stacked">Sélectionner des images</ion-label>
+      <input
+        type="file"
+        multiple
+        (change)="onFileSelect($event)"
+        #fileInput
+        style="display: none"
+      />
+      <ion-button expand="full" (click)="fileInput.click()"
+        >Choisir des fichiers</ion-button
+      >
+
+      <!-- Prévisualisation des images -->
+      <ion-card class="d-f-c" *ngIf="productData.imagePreview?.length">
+        <ion-card-content class="image">
+          <div class="image-previews">
+            <img
+              *ngFor="let preview of productData.imagePreview"
+              [src]="preview"
+              alt="Image Preview"
+              class="image-thumbnail"
+            />
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+
+    <!-- Boutons -->
+    <div class="bloc-btn">
+      <ion-button type="submit" expand="block" shape="round" color="primary"
+        >Submit</ion-button
+      >
+    </div>
+  </form>
+</ion-content>
+
+<!-- Modal pour sélectionner une catégorie -->
+<ion-modal
+  id="modal-category"
+  trigger="open-modal-category"
+  handleBehavior="cycle"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Select a Category</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item
+          button
+          *ngFor="let category of categories"
+          (click)="selectCategory(category)"
+        >
+          <ion-label>{{ category.name }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ng-template>
+</ion-modal>
+<div *ngIf="showAlert" class="alert-container">
+  <div [ngClass]="{'success': isSuccess, 'error': !isSuccess}">
+    <ion-icon
+      [name]="isSuccess ? 'checkmark-circle' : 'close-circle'"
+    ></ion-icon>
+    <p>{{ alertMessage }}</p>
+  </div>
+</div>

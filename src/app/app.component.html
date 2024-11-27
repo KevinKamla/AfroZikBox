@@ -1,9 +1,4 @@
 <ion-app>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content>
-      <ion-spinner slot="start" name="circles" color="primary"></ion-spinner>
-    </ion-refresher-content>
-  </ion-refresher>
   <ion-router-outlet></ion-router-outlet>
   <app-music-player *ngIf="isMusicPlaying"></app-music-player>
 </ion-app>

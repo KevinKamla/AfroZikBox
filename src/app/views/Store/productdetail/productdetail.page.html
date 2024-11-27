@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Détails du Produit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <!-- Image principale -->
+      <ion-col size="12" class="product-image">
+        <img
+          [src]="product?.images?.[0]?.image || 'assets/placeholder.png'"
+          alt="Image du produit"
+        />
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <!-- Détails principaux -->
+      <ion-col size="12" class="product-details">
+        <h1>{{ product?.title || 'Nom du Produit' }}</h1>
+        <h2 class="price">{{ product?.price | currency }}</h2>
+        <p class="reviews">
+          <ion-icon
+            name="star"
+            *ngFor="let star of [1,2,3,4,5]; let i = index"
+            [color]="i < product?.rating ? 'warning' : 'medium'"
+          ></ion-icon>
+          ({{ product?.reviews || '0' }} Reviews)
+        </p>
+        <div class="bloc-button d-f-c">
+                    <div class="bloc-button d-f-c">
+                      <ion-button
+                        class="add"
+                        shape="round"
+                        
+                        >Ajouter au panier</ion-button
+                      >
+                    </div>
+                  </div>
+        <ion-button *ngIf="canEdit" color="primary" (click)="editProduct()">
+          Modifier le produit
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Lié à une chanson -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              <ion-icon name="musical-notes" color="danger"></ion-icon> Lié à
+              une Chanson
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-text color="danger">
+              <ion-button
+                (click)="playMusic(product?.related_song)"
+                fill="outline"
+                color="primary"
+              >
+                <ion-icon slot="start" name="play"></ion-icon>
+                Lire {{ product?.related_song.title }}
+              </ion-button>
+            </ion-text>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- Catégories et tags -->
+    <ion-row>
+      <ion-col size="6">
+        <p>
+          <ion-icon name="pricetags-outline" color="primary"></ion-icon>
+          Catégorie : {{ product?.category || 'Non défini' }}
+        </p>
+      </ion-col>
+      <ion-col size="6">
+        <p>
+          <ion-icon name="pricetag-outline" color="secondary"></ion-icon> Tags :
+          {{ product?.tags || 'Non défini' }}
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

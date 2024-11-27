@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Valider le paiement</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding visionary-background">
+  <div class="phone-container">
+    <ion-icon name="call-outline" class="icon-large"></ion-icon>
+    <h1 class="title">Résumé de votre panier</h1>
+
+    <!-- Liste des produits -->
+    <ion-list>
+      <ion-item *ngFor="let item of cartItems">
+        <ion-label>
+          <h2>{{ item.product.title }}</h2>
+          <p>{{ item.quantity }} x {{ item.price | currency:'XAF' }}</p>
+        </ion-label>
+        <ion-note slot="end">{{ item.quantity * item.price | currency:'XAF' }}</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <p class="total-amount">
+      Montant total : {{ getTotalPrice() | currency:'XAF' }}
+    </p>
+
+    <!-- Saisie du numéro de téléphone -->
+    <ion-item class="phone-input">
+      <ion-label slot="start" class="country-code">+237</ion-label>
+      <ion-input
+        type="tel"
+        placeholder="6XX XX XX XX"
+        maxlength="9"
+        inputmode="numeric"
+        class="phone-number-input"
+        [(ngModel)]="phoneNumber"
+      ></ion-input>
+    </ion-item>
+
+    <!-- Boutons -->
+    <div class="button-container">
+      <ion-button
+        expand="block"
+        color="primary"
+        [disabled]="isLoading"
+        (click)="validatePayment()"
+        style="position: relative;"
+      >
+        <ion-spinner 
+          slot="start" 
+          *ngIf="isLoading" 
+          style="position: absolute; left: 50%; transform: translateX(-50%);"
+        ></ion-spinner>
+        Valider
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

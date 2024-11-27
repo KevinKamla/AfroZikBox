@@ -58,7 +58,16 @@ export class TendancePage implements OnInit {
       }
     );
   }
+  doRefresh(event: any) {
+    // Vous pouvez recharger des données ou rafraîchir du contenu ici
+    console.log('Rafraîchissement en cours...');
 
+    // Simuler un appel serveur, après quoi le rafraîchissement s'arrêtera
+    setTimeout(() => {
+      console.log('Rafraîchissement terminé');
+      event.target.complete(); // Arrête le rafraîchissement
+    }, 2000);
+  }
   selectArticle(article: any) {
     localStorage.setItem('selectArticle', JSON.stringify(article));
     this.router.navigate(['detailtendance', article.id]);

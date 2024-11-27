@@ -27,7 +27,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./profil.page.scss'],
 })
 export class ProfilPage implements OnInit {
-  selectedSegment: string = 'Chansons';
+  selectedSegment: string = 'chansons';
   UserData: any;
   email: string = '';
   avatar: any;

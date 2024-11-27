@@ -89,7 +89,7 @@ export class PlaylistService {
     success?: any;
     sessionError?: any;
     error?: any;
-    playlists?: any[]; // Ajout d'une propriété playlists pour une meilleure lisibilité
+    playlists?: any[];
   }> {
     const u = localStorage.getItem('UserData');
     let userId: number | undefined;

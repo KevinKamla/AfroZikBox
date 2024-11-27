@@ -1,79 +1,165 @@
-<ion-header [translucent]="true">
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
-      </ion-buttons>
-      <ion-title>Upload Single Song</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content [fullscreen]="true">
+<ion-header [translucent]="true" class="futuristic-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button>
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="musical-notes" color="primary"></ion-icon>
+      Upload Single Song
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="futuristic-content">
+  <ion-card class="upload-card">
+    <!-- Song Title -->
     <ion-item>
-      <ion-label position="stacked">Nom de la chanson</ion-label>
-      <ion-input [(ngModel)]="songTitle" placeholder="Enter song title"></ion-input>
+      <ion-label position="stacked">
+        <ion-icon name="text-outline"></ion-icon> Nom de la chanson
+      </ion-label>
+      <ion-input
+        [(ngModel)]="songTitle"
+        placeholder="Enter song title"
+      ></ion-input>
     </ion-item>
-  
+
     <!-- Image Upload -->
-    <ion-card button (click)="selectPicture()" class="ion-no-box-shadow">
-      <ion-card-content class="image">
-        <img *ngIf="isGetImg" [src]="imgPath" alt="Track Image">
-        <div class="content" *ngIf="!isGetImg">
-          <ion-icon color="primary" slot="start" name="image"></ion-icon>
+    <ion-card button (click)="selectPicture()" class="image-upload-card">
+      <ion-card-content>
+        <img
+          *ngIf="isGetImg"
+          [src]="imgPath"
+          alt="Track Image"
+          class="upload-image"
+        />
+        <div *ngIf="!isGetImg" class="upload-placeholder">
+          <ion-icon
+            color="primary"
+            name="image-outline"
+            class="upload-icon"
+          ></ion-icon>
           <h5>Sélectionner l'image à importer</h5>
         </div>
       </ion-card-content>
     </ion-card>
-  
-    <ion-button *ngIf="isGetImg" (click)="clearImage()" class="ion-margin-top">
-      <ion-icon slot="start" name="close"></ion-icon>
+
+    <ion-button
+      *ngIf="isGetImg"
+      (click)="clearImage()"
+      expand="block"
+      shape="round"
+      class="clear-button"
+    >
+      <ion-icon slot="start" name="close-circle-outline"></ion-icon>
       Supprimer l'image
     </ion-button>
-  
-    <!-- Age Restriction Dropdown -->
+
+    <!-- Age Restriction -->
     <ion-item>
-      <ion-label>Restriction d'âge</ion-label>
+      <ion-label>
+        <ion-icon name="lock-closed-outline"></ion-icon> Restriction d'âge
+      </ion-label>
       <ion-select [(ngModel)]="ageRestriction" placeholder="Sélectionner">
-        <ion-select-option value="0">All ages can listen to this song</ion-select-option>
+        <ion-select-option value="0"
+          >All ages can listen to this song</ion-select-option
+        >
         <ion-select-option value="1">Only +18</ion-select-option>
       </ion-select>
     </ion-item>
-  
-    <!-- Download Permission Dropdown -->
+
+    <!-- Download Permission -->
     <ion-item>
-      <ion-label>Téléchargement autorisé</ion-label>
+      <ion-label>
+        <ion-icon name="cloud-download-outline"></ion-icon> Téléchargement
+        autorisé
+      </ion-label>
       <ion-select [(ngModel)]="downloadPermission" placeholder="Sélectionner">
         <ion-select-option value="1">Yes</ion-select-option>
         <ion-select-option value="0">No</ion-select-option>
       </ion-select>
     </ion-item>
-  
+
+    <!-- Tags -->
     <ion-item>
-      <ion-label position="stacked">Tags</ion-label>
-      <ion-input [(ngModel)]="tags" placeholder="Tags (comma separated)"></ion-input>
+      <ion-label position="stacked">
+        <ion-icon name="pricetag-outline"></ion-icon> Tags
+      </ion-label>
+      <ion-input
+        [(ngModel)]="tags"
+        placeholder="Tags (comma separated)"
+      ></ion-input>
     </ion-item>
-  
+
+    <!-- Genre -->
     <ion-item>
-      <ion-label position="stacked">Genre</ion-label>
-      <ion-input [(ngModel)]="genre" placeholder="Enter genre"></ion-input>
+      <ion-label position="stacked">
+        <ion-icon name="albums-outline"></ion-icon> Genre
+      </ion-label>
+      <ion-select
+        [(ngModel)]="genre"
+        (ionChange)="selectedGenre($event)"
+        placeholder="Sélectionner un genre"
+      >
+        <ion-select-option *ngFor="let genre of genreList" [value]="genre.id">
+          {{ genre.name }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
-  
+
+    <!-- Price -->
     <ion-item>
-      <ion-label position="stacked">Prix</ion-label>
+      <ion-label position="stacked">
+        <ion-icon name="cash-outline"></ion-icon> Prix
+      </ion-label>
       <ion-input [(ngModel)]="price" placeholder="Enter price"></ion-input>
     </ion-item>
-  
+
+    <!-- Description -->
     <ion-item>
-      <ion-label position="stacked">Description</ion-label>
-      <ion-textarea [(ngModel)]="description" placeholder="Enter song description"></ion-textarea>
+      <ion-label position="stacked">
+        <ion-icon name="information-circle-outline"></ion-icon> Description
+      </ion-label>
+      <ion-textarea
+        [(ngModel)]="description"
+        placeholder="Enter song description"
+      ></ion-textarea>
     </ion-item>
-  
+
+    <!-- Lyrics -->
     <ion-item>
-      <ion-label position="stacked">Lyrics</ion-label>
-      <ion-textarea [(ngModel)]="lyrics" placeholder="Enter song lyrics"></ion-textarea>
+      <ion-label position="stacked">
+        <ion-icon name="musical-note-outline"></ion-icon> Lyrics
+      </ion-label>
+      <ion-textarea
+        [(ngModel)]="lyrics"
+        placeholder="Enter song lyrics"
+      ></ion-textarea>
     </ion-item>
-  
-    <ion-button expand="block" shape="round" class="ion-margin" (click)="createTrack()">
-      Créer la chanson
-    </ion-button>
-  </ion-content>
-  
+  </ion-card>
+
+  <ion-card class="upload-card">
+    <!-- Fichier audio -->
+    <ion-item>
+      <ion-label position="stacked">
+        <ion-icon name="musical-notes-outline"></ion-icon> Fichier audio
+      </ion-label>
+      <input
+        type="file"
+        accept="audio/*"
+        (change)="onAudioFileSelected($event)"
+      />
+    </ion-item>
+  </ion-card>
+
+  <ion-button
+    expand="block"
+    shape="round"
+    class="create-button"
+    (click)="createTrack()"
+  >
+    <ion-icon slot="start" name="cloud-upload-outline"></ion-icon>
+    Créer la chanson
+  </ion-button>
+</ion-content>

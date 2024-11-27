@@ -46,6 +46,7 @@ export class SuggestionsPage implements OnInit {
   albums: any[] = [];
   topSongs: any[] = [];
   artists: any[] = [];
+  randomArtists: any[] = [];
 
   // Ajoutez l'objet pour stocker les chansons d'un album
   albumSongs: { [key: string]: any[] } = {};
@@ -334,8 +335,17 @@ export class SuggestionsPage implements OnInit {
 
     this.artistService.getArtist('').subscribe(
       (response) => {
-        this.artists = response.data.data;
-        console.log(this.artists);
+        this.artists = response.data.data; // Tous les artistes récupérés
+        console.log('Liste complète des artistes:', this.artists);
+    
+        if (this.artists && this.artists.length > 0) {
+          // Obtenir un sous-ensemble aléatoire de la liste (par exemple 7 artistes)
+          const numberOfRandomArtists = 7; // Définir le nombre d'artistes aléatoires à afficher
+          this.randomArtists = this.getRandomSubset(this.artists, numberOfRandomArtists);
+          console.log('Artistes sélectionnés aléatoirement:', this.randomArtists);
+        } else {
+          console.warn('Aucun artiste disponible.');
+        }
       },
       (error) => {
         console.error('Erreur lors de la récupération des artistes :', error);
@@ -366,9 +376,9 @@ export class SuggestionsPage implements OnInit {
     );
   }
 
-  truncateTitle(title: string, limit: number): string {
-    return title.length > limit ? title.slice(0, limit) + '...' : title;
-  }
+  // truncateTitle(title: string, limit: number): string {
+  //   return title.length > limit ? title.slice(0, limit) + '...' : title;
+  // }
 
   stories: any[] = []; // Array to hold story data
 
@@ -390,5 +400,15 @@ export class SuggestionsPage implements OnInit {
     this.PlaylistService.updateindex(index);
     this.PlaylistService.loadplaylist(playlist, index);
     this.musicService.loadNewPlaylist(playlist, index);
+  }
+  // Méthode utilitaire pour obtenir un sous-ensemble aléatoire
+  getRandomSubset(array: any[], numberOfItems: number): any[] {
+    // Mélange les éléments dans un ordre aléatoire
+    const shuffledArray = array.sort(() => 0.5 - Math.random());
+    // Retourne les premiers `numberOfItems` éléments du tableau mélangé
+    return shuffledArray.slice(0, numberOfItems);
+  }
+  truncateTitle(text: string, limit: number): string {
+    return text?.length > limit ? text.substring(0, limit) + '...' : text;
   }
 }

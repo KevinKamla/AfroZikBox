@@ -247,36 +247,38 @@ export class AlbumsService {
   }
 
 
-  createAlbum(title: string, description: string, albumThumbnail: File, albumPrice: number, categoryId?: number): Observable<any> {
+  createAlbum(
+    title: string,
+    description: string,
+    albumThumbnail: File,
+    albumPrice: number,
+    selectedSongs: File[],
+    categoryId?: number
+  ): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.accessToken}`,
     });
-    // Création de l'objet FormData pour envoyer les fichiers et les autres données du formulaire
-    console.log(albumThumbnail);
-    
+  
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
     formData.append('album-thumbnail', albumThumbnail, albumThumbnail.name);
     formData.append('album-price', albumPrice.toString());
     formData.append('server_key', this.serverKey);
-    formData.append('access_token', this.accesstoken);
-
+    formData.append('access_token', this.accessToken || '');
+  
     if (categoryId) {
       formData.append('category_id', categoryId.toString());
     }
-    
-    
-    // Ajout des chansons sélectionnées
-    // songs.forEach((songId, index) => {
-    //   formData.append(`songs[${index}]`, songId.toString());
-    // });
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
+  
+    // Ajout des chansons
+    selectedSongs.forEach((songFile, index) => {
+      formData.append(`album_songs[${index}]`, songFile, songFile.name);
     });
+  
     return this.http.post(this.submit, formData, { headers });
   }
- 
+  
 
   getGenres(): Observable<any> {
     return this.http.get<any>(this.apiUrl);

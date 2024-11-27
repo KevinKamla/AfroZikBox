@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CreateplaylistPage } from '../createplaylist/createplaylist.page';
 import { AlbummodalPage } from '../albummodal/albummodal.page';
+import { CreateproductPage } from '../createproduct/createproduct.page';
 
 
 @Component({
@@ -43,8 +44,8 @@ export class MenuactionhomePage implements OnInit {
   async openCreateProduct() {
     this.closeModal();
     const modal = await this.modalCtrl.create({
-      component: CreateplaylistPage,
-      initialBreakpoint: 0.75,
+      component: CreateproductPage,
+      initialBreakpoint: 1,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios'
 

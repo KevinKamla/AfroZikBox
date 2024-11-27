@@ -96,40 +96,90 @@ export class CreatealbumPage implements OnInit {
     this.valuePrice = price.price;
     this.price = price.price;
   }
+  onSongsSelected(event: any) {
+    const files: FileList = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      this.selectedSongs.push(files[i]);
+    }
+  }
+
+  removeSong(song: any) {
+    this.selectedSongs = this.selectedSongs.filter((s) => s.id !== song.id);
+  }
 
   // Submit form data
   submitForm() {
-    console.log(this.title,
+    console.log(
+      'Titre:',
+      this.title,
+      'Description:',
       this.description,
+      'Genre:',
       this.genre,
+      'Prix:',
       this.price,
+      'Miniature:',
       this.avatarFile, // Vérifie si une image est sélectionnée
-      this.selectedSongs.length);
-    
-    if (
-      this.title &&
-      this.description &&
-      this.genre &&
-      this.price &&
-      this.avatarFile
-    ) {
-      // console.log('Form data:', this.album);
+      'Chansons sélectionnées:',
+      this.selectedSongs.length
+    );
 
-      // Envoyer les données au serveur
-      this.albumService
-        .createAlbum(
-          this.title,
-          this.description,
-          this.avatarFile, // Miniature de l'album
-          +this.price, // Assurez-vous que le prix est un nombre
-          +this.genre // Assurez-vous que le genre est un nombre
-        )
-        .subscribe((response) => {
-          console.log(response);
-        });
-    } else {
-      console.log('Veuillez remplir tous les champs.');
+    // Validation des champs
+    if (
+      !this.title ||
+      !this.description ||
+      !this.genre ||
+      !this.price ||
+      !this.avatarFile
+    ) {
+      console.log('Veuillez remplir tous les champs obligatoires.');
+      return;
     }
+
+    if (this.selectedSongs.length === 0) {
+      console.log('Veuillez sélectionner au moins une chanson.');
+      return;
+    }
+
+    // Envoi des données au serveur
+    this.albumService
+      .createAlbum(
+        this.title.trim(),
+        this.description.trim(),
+        this.avatarFile, // Miniature de l'album
+        +this.price, // Assurez-vous que le prix est un nombre
+        this.selectedSongs, // Chansons sélectionnées
+        +this.genre // Assurez-vous que le genre est un nombre
+      )
+      .subscribe(
+        (response) => {
+          console.log('Réponse du serveur :', response);
+          if (response.status === 200) {
+            console.log('Album créé avec succès !');
+            // Rediriger ou réinitialiser le formulaire
+            this.resetForm();
+          } else {
+            console.error(
+              "Erreur lors de la création de l'album :",
+              response.error
+            );
+          }
+        },
+        (error) => {
+          console.error('Erreur de communication avec le serveur :', error);
+        }
+      );
+  }
+
+  // Méthode pour réinitialiser le formulaire après soumission
+  resetForm() {
+    this.title = '';
+    this.description = '';
+    this.genre = null;
+    this.price = null;
+    this.avatarFile = null;
+    this.selectedSongs = [];
+    console.log('Formulaire réinitialisé.');
   }
 
   dataURLtoFile(dataurl: string, filename: string): File {

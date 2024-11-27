@@ -3,6 +3,9 @@
     <ion-title>AfroZikStore</ion-title>
     <ion-buttons shape="round" slot="end">
       <ion-button [routerLink]="['/cart']">
+        <ion-badge *ngIf="cartItemCount > 0" color="danger" class="cart-badge"
+          >{{ cartItemCount }}</ion-badge
+        >
         <ion-icon color="primary" slot="icon-only" name="cart"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -67,15 +70,9 @@
                 </ion-button>
               </p>
               <!-- Bouton Ajouter au panier -->
-              <ion-button
-                shape="round"
-                fill="clear"
-                (click)="addToCart(item)"
-                color="primary"
-              >
-                <ion-icon slot="start" name="cart-outline"></ion-icon>
-                Ajouter au panier
-              </ion-button>
+              <div class="bloc-button d-f-c">
+                <ion-button class="add" shape="round">Acheter</ion-button>
+              </div>
               <ion-button shape="round" fill="clear" id="popover-button">
                 <ion-icon
                   slot="start"
@@ -139,12 +136,7 @@
               <ion-thumbnail>
                 <img [src]="album.thumbnail" />
                 <div class="bloc-button d-f-c">
-                  <ion-button
-                    class="add"
-                    shape="round"
-                    (click)="addToCart(album)"
-                    >Acheter</ion-button
-                  >
+                  <ion-button class="add" shape="round">Acheter</ion-button>
                 </div>
               </ion-thumbnail>
               <h3 (click)="selectAlbum(album)">{{ album.title }}</h3>
@@ -221,9 +213,9 @@
                 <ion-item>
                   <div>
                     <ion-label> {{item.title}} </ion-label>
-                    <!-- <ion-text>
-                      <p>Administrateur</p>
-                    </ion-text> -->
+                    <div class="bloc-button d-f-c">
+                      <ion-button class="add" shape="round">Acheter</ion-button>
+                    </div>
                   </div>
                 </ion-item>
               </div>
@@ -308,18 +300,29 @@
               <h3>Produits phares</h3>
             </div>
           </ion-item>
-          <div class="div-row">
-            <ion-card *ngFor="let genre of [1]">
+          <div class="div-row" *ngIf="filteredProducts.length > 0">
+            <ion-card *ngFor="let product of filteredProducts">
               <ion-card-content>
                 <ion-thumbnail>
-                  <img src="assets/icon/casque.png" />
-                  <div class="bloc-button d-f-c">
-                    <ion-button class="add" shape="round">Acheter</ion-button>
-                  </div>
+                  <img
+                    [src]="product.thumbnail"
+                    alt="{{ product.title }}"
+                    (click)="goToProductDetail(product.id)"
+                  />
+                  <!-- <div class="bloc-button d-f-c">
+                    <div class="bloc-button d-f-c">
+                      <ion-button
+                        class="add"
+                        shape="round"
+                        (click)="addToCart(product)"
+                        >panier</ion-button
+                      >
+                    </div>
+                  </div> -->
                 </ion-thumbnail>
-                <h3>nom</h3>
-                <p>Admin</p>
-                <p><b>$50.91</b></p>
+                <h3>{{ product.title}}</h3>
+                <!-- <p>Admin</p> -->
+                <p><b>{{ product.price | currency }}</b></p>
               </ion-card-content>
             </ion-card>
           </div>
@@ -327,7 +330,7 @@
       </ng-template>
 
       <ng-template ngSwitchCase="produits">
-        <div class="d-f-c" style="height: 200px">
+        <!-- <div class="d-f-c" style="height: 200px">
           <div style="text-align: center">
             <ion-icon
               slot="start"
@@ -335,6 +338,77 @@
               style="font-size: 5rem"
             ></ion-icon>
             <p style="font-size: 20px">Plus de chansons</p>
+          </div>
+        </div> -->
+        <!-- Liste des produits ou message si aucun produit -->
+        <div *ngIf="filteredProducts.length === 0" class="ion-margin-top">
+          <ion-card>
+            <ion-card-content class="ion-text-center">
+              <ion-icon
+                name="sad-outline"
+                style="font-size: 3rem; color: gray"
+              ></ion-icon>
+              <p style="font-size: 18px; color: gray">
+                Aucun produit disponible.
+              </p>
+            </ion-card-content>
+          </ion-card>
+        </div>
+
+        <!-- <ion-list *ngIf="filteredProducts.length > 0">
+          <ion-item *ngFor="let product of filteredProducts">
+            <ion-thumbnail slot="start">
+              <img
+                [src]="product.thumbnail"
+                alt="{{ product.title }}"
+                (click)="goToProductDetail(product.id)"
+              />
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ product.title }}</h2>
+              <p>{{ product.price | currency }}</p>
+            </ion-label>
+            <div class="bloc-button d-f-c">
+              <ion-button class="add" shape="round" (click)="addToCart(product)"
+                >panier</ion-button
+              >
+            </div> 
+          </ion-item>
+        </ion-list> -->
+        <div #Produit Phare>
+          <ion-item>
+            <div class="d-f">
+              <div class="content-iconPrice d-f-c">
+                <ion-icon slot="start" name="cart"></ion-icon>
+              </div>
+              <h3>Produits phares</h3>
+            </div>
+          </ion-item>
+          <div class="div-row" *ngIf="filteredProducts.length > 0">
+            <ion-card *ngFor="let product of filteredProducts">
+              <ion-card-content>
+                <ion-thumbnail>
+                  <img
+                    [src]="product.thumbnail"
+                    alt="{{ product.title }}"
+                    (click)="goToProductDetail(product.id)"
+                  />
+                  <!-- <div class="bloc-button d-f-c">
+                    <div class="bloc-button d-f-c">
+                      <ion-button
+                        class="add"
+                        shape="round"
+                        (click)="addToCart(product)"
+                        >panier</ion-button
+                      >
+                    </div>
+                  </div> -->
+                </ion-thumbnail>
+                <h3>{{ product.title}}</h3>
+                <!-- <p>Admin</p> -->
+                <p><b>{{ product.price | currency }}</b></p>
+              </ion-card-content>
+            </ion-card>
           </div>
         </div>
 
@@ -388,30 +462,6 @@
             </form>
           </div>
         </ion-card>
-
-        <!-- Liste des produits ou message si aucun produit -->
-        <div *ngIf="filteredProducts.length === 0" class="ion-margin-top">
-          <ion-card>
-            <ion-card-content class="ion-text-center">
-              <ion-icon
-                name="sad-outline"
-                style="font-size: 3rem; color: gray"
-              ></ion-icon>
-              <p style="font-size: 18px; color: gray">
-                Aucun produit disponible.
-              </p>
-            </ion-card-content>
-          </ion-card>
-        </div>
-
-        <ion-list *ngIf="filteredProducts.length > 0">
-          <ion-item *ngFor="let product of filteredProducts">
-            <ion-label>
-              <h2>{{ product.name }}</h2>
-              <p>{{ product.price | currency }}</p>
-            </ion-label>
-          </ion-item>
-        </ion-list>
       </ng-template>
     </ng-container>
   </div>

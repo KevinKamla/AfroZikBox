@@ -1,61 +1,90 @@
-<div class="header d-f-s">
-    <h5> {{ numberOfTopSongs }} Chansons</h5>
-    <span id="popover-button">Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
-    </span>
-</div>
+<!-- <ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meilleures chansons</ion-title>
+  </ion-toolbar>
+</ion-header> -->
 
-<div class="list_chansons">
+<ion-content>
+  <div class="header d-f-s">
+    <h5>{{ numberOfTopSongs }} Chansons</h5>
+    <span id="popover-button"
+      >Ascendante<ion-icon name="swap-vertical-outline"></ion-icon>
+    </span>
+  </div>
+
+  <div class="list_chansons">
     <div *ngIf="topSongs.length > 0; else ionSkeletonBestSon">
-        <div class="ion-item d-f-s" *ngFor="let topSong of topSongs; let i = index">
-            <img [src]="topSong.thumbnail" alt="">
-            <div class="title">
-                <h3>{{ topSong.title }}</h3>
-                <p class="song-description">{{ topSong.description }} | {{ topSong.duration }}</p>
-            </div>
-            <div class="block-btn">
-                <ion-button class="btn-play" (click)="loadsong(topSongs, i)">
-                    <ion-icon color="primary" slot="icon-only" name="play-circle"></ion-icon>
-                </ion-button>
-                <ion-button (click)="openOptionSound(topSong.id)">
-                    <ion-icon slot="icon-only" color="primary" name="ellipsis-vertical-outline"></ion-icon>
-                </ion-button>
-            </div>
+      <div
+        class="ion-item d-f-s"
+        *ngFor="let topSong of topSongs; let i = index"
+      >
+        <img [src]="topSong.thumbnail" alt="" />
+        <div class="title">
+          <h3>{{ topSong.title }}</h3>
+          <p class="song-description">
+            {{ topSong.description }} | {{ topSong.duration }}
+          </p>
         </div>
+        <div class="block-btn">
+          <ion-button class="btn-play" (click)="loadsong(topSongs, i)">
+            <ion-icon
+              color="primary"
+              slot="icon-only"
+              name="play-circle"
+            ></ion-icon>
+          </ion-button>
+          <ion-button (click)="openOptionSound(topSong.id)">
+            <ion-icon
+              slot="icon-only"
+              color="primary"
+              name="ellipsis-vertical-outline"
+            ></ion-icon>
+          </ion-button>
+        </div>
+      </div>
     </div>
     <ng-template #ionSkeletonBestSon>
-        <div class="ion-item d-f" *ngFor="let song of [1,1,1,1,1]">
-            <ion-thumbnail>
-                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-            </ion-thumbnail>
-            <div class="title" style="width:150px;">
-                <h3><ion-skeleton-text animated style="width: 100%"></ion-skeleton-text></h3>
-                <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
-            </div>
+      <div class="ion-item d-f" *ngFor="let song of [1,1,1,1,1]">
+        <ion-thumbnail>
+          <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+        </ion-thumbnail>
+        <div class="title" style="width: 150px">
+          <h3>
+            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
         </div>
+      </div>
     </ng-template>
-</div>
+  </div>
+</ion-content>
 
 <ion-popover trigger="popover-button" [dismissOnSelect]="true">
-    <ng-template>
-        <ion-content>
-            <form action="" method="post">
-                <ion-list>
-                    <ion-radio-group value="option1">
-                        <ion-item>
-                            <ion-label>Ascendante</ion-label>
-                            <ion-radio color="primary" default value="option2"></ion-radio>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label>Descendante</ion-label>
-                            <ion-radio color="primary" value="option3"></ion-radio>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label>Données ajoutées</ion-label>
-                            <ion-radio color="primary" value="option3"></ion-radio>
-                        </ion-item>
-                    </ion-radio-group>
-                </ion-list>
-            </form>
-        </ion-content>
-    </ng-template>
+  <ng-template>
+    <ion-content>
+      <form action="" method="post">
+        <ion-list>
+          <ion-radio-group value="option1">
+            <ion-item>
+              <ion-label>Ascendante</ion-label>
+              <ion-radio color="primary" default value="option2"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Descendante</ion-label>
+              <ion-radio color="primary" value="option3"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Données ajoutées</ion-label>
+              <ion-radio color="primary" value="option3"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </form>
+    </ion-content>
+  </ng-template>
 </ion-popover>

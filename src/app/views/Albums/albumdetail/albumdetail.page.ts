@@ -14,7 +14,7 @@ import { PlaylistService } from '../../../services/playlist.service';
   styleUrls: ['./albumdetail.page.scss'],
 })
 export class AlbumdetailPage implements OnInit {
-  selectedSegment: string = 'Chansons';
+  selectedSegment: string = 'chansons';
   pauseIcon: string = 'play-circle';
   state = 'modal';
   topAlbums: any;

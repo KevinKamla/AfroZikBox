@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detailtendance',
@@ -12,9 +13,10 @@ export class DetailtendancePage implements OnInit {
     public route: Router,
     private aroute: ActivatedRoute,
     private routes: ActivatedRoute,
+    private sanitizer: DomSanitizer
   ) { }
   article: any;
-  cleanText: string = '';  // Nouvelle propriété pour stocker le texte nettoyé
+  cleanText: SafeHtml = '';  
 
   ngOnInit() {
     const albumId = this.routes.snapshot.paramMap.get('id');
@@ -22,6 +24,7 @@ export class DetailtendancePage implements OnInit {
     const storedArticle = localStorage.getItem('selectArticle');
     if(storedArticles){
       this.article = JSON.parse(storedArticles);
+      this.cleanText = this.sanitizer.bypassSecurityTrustHtml(this.article.content);
       console.log(this.article); 
     }
     // Vérifier si l'album existe dans le localStorage
@@ -34,16 +37,16 @@ export class DetailtendancePage implements OnInit {
       console.log('Aucun article n\'est stocké dans le localStorage');
     } 
 
-  const content = this.article.content;
-  const parser = new DOMParser();
-  const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
-  // console.log(decodedContent);
+  // const content = this.article.content;
+  // const parser = new DOMParser();
+  // const decodedContent = parser.parseFromString(content, 'text/html').body.textContent;
+  // // console.log(decodedContent);
   
-  if (decodedContent) {
-    this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
-  } else {
-    console.log('Le contenu décodé est null ou undefined');
-  }
+  // if (decodedContent) {
+  //   this.cleanText = decodedContent.replace(/<[^>]+>/g, '');
+  // } else {
+  //   console.log('Le contenu décodé est null ou undefined');
+  // }
 
 
   }

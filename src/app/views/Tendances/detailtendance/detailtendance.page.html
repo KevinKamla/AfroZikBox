@@ -1,73 +1,79 @@
 <ion-header [translucent]="true">
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>{{article.title}}</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{article.title}}</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <div class="container">
-        <ion-card>
-            <h3>{{article.title}} </h3>
-            <img [src]="article.thumbnail" style="width: 100%;" alt="img">
+  <div class="container">
+    <ion-card>
+      <h3>{{article.title}}</h3>
+      <img [src]="article.thumbnail" style="width: 100%" alt="img" />
 
-            <p class="date d-f">
-                Date :
-                <ion-icon slot="start" name="time-outline"></ion-icon>
-                {{article.created_at}}
-            </p>
-            <p>Catégorie: Spotlighs</p>
-            <p>{{cleanText}}</p>
-            <ion-footer class="d-f-s">
-                <ion-label>{{article.view}} Vues</ion-label>
-                <ion-button shape="round" fill="clear" id="popover-comment">
-                    <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-                </ion-button>
-            </ion-footer>
-        </ion-card>
-        <ion-list>
-            <ion-item>
-                <ion-avatar slot="start">
-                    <img src="assets/icon/profil.png" />
-                </ion-avatar>
-                <ion-label>Mes commentaires popotin</ion-label>
-            </ion-item>
-            <ion-item>
-                <ion-avatar slot="start">
-                    <img src="assets/icon/profil.png" />
-                </ion-avatar>
-                <ion-label>Mes commentaires popotin</ion-label>
-            </ion-item>
-        </ion-list>
-    </div>
+      <p class="date d-f">
+        Date :
+        <ion-icon slot="start" name="time-outline"></ion-icon>
+        {{article.created_at}}
+      </p>
+      <p>Catégorie: {{article?.tags}}</p>
+      <div class="wrapper">
+        <div [innerHTML]="article?.content"></div>
+      </div>
+      <ion-footer class="d-f-s">
+        <ion-label>{{article.view}} Vues</ion-label>
+        <ion-button shape="round" fill="clear" id="popover-comment">
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-footer>
+    </ion-card>
+    <ion-list>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="assets/icon/profil.png" />
+        </ion-avatar>
+        <ion-label>Mes commentaires popotin</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="assets/icon/profil.png" />
+        </ion-avatar>
+        <ion-label>Mes commentaires popotin</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
 <ion-footer>
-    <ion-toolbar>
-        <form>
-            <ion-button fill="clear" shape="round">
-                <ion-icon slot="icon-only" name="image"></ion-icon>
-            </ion-button>
-            <ion-textarea type="text" name="comment" placeholder="Votre commentaire"></ion-textarea>
-            <ion-buttons class="button-send" slot="end">
-                <ion-button shape="round" expand="bloc">
-                    <ion-icon slot="icon-only" name="send-outline"></ion-icon>
-                </ion-button>
-            </ion-buttons>
-        </form>
-    </ion-toolbar>
+  <ion-toolbar>
+    <form>
+      <ion-button fill="clear" shape="round">
+        <ion-icon slot="icon-only" name="image"></ion-icon>
+      </ion-button>
+      <ion-textarea
+        type="text"
+        name="comment"
+        placeholder="Votre commentaire"
+      ></ion-textarea>
+      <ion-buttons class="button-send" slot="end">
+        <ion-button shape="round" expand="bloc">
+          <ion-icon slot="icon-only" name="send-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </form>
+  </ion-toolbar>
 </ion-footer>
 
 <ion-popover trigger="popover-comment" [dismissOnSelect]="true">
-    <ng-template>
-        <ion-content>
-            <ion-item button>
-                <ion-label>Copier le lien</ion-label>
-            </ion-item>
-            <ion-item button>
-                <ion-label>Partager</ion-label>
-            </ion-item>
-        </ion-content>
-    </ng-template>
+  <ng-template>
+    <ion-content>
+      <ion-item button>
+        <ion-label>Copier le lien</ion-label>
+      </ion-item>
+      <ion-item button>
+        <ion-label>Partager</ion-label>
+      </ion-item>
+    </ion-content>
+  </ng-template>
 </ion-popover>

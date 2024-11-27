@@ -1,0 +1,152 @@
+.d-f {
+  display: flex;
+}
+
+.d-b {
+  display: block;
+}
+
+.d-f-c {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.d-f-s {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-card {
+  max-height: 190px;
+  background: #f0f5fd1c;
+  box-shadow: none;
+  width: 90%;
+}
+
+.image {
+  .content {
+    padding: 7%;
+    text-align: center;
+  }
+  h5 {
+    color: var(--ion-color-primary);
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+  ion-icon {
+    font-size: 50px;
+  }
+}
+
+.input {
+  .canView {
+    padding: 10px;
+    margin-bottom: 5px;
+    gap: 2px;
+  }
+  ion-icon {
+    font-size: 30px;
+  }
+  .content {
+    --background: #8080800d;
+    --padding-start: 10px;
+    font-size: 20px;
+    --border-radius: 10px;
+  }
+}
+
+.bloc-btn {
+  text-align: center;
+  display: grid;
+}
+
+ion-modal#modal-title {
+  --min-width: 250px;
+  --max-height: 40%;
+  --border-radius: 25px;
+  padding: 25px;
+}
+
+.image-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 4px;
+}
+
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ion-button {
+  margin-top: 10px;
+}
+
+.alert-container {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1000;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fade-in 0.3s ease-in-out;
+}
+
+.alert-container .success {
+  color: green;
+}
+
+.alert-container .error {
+  color: red;
+}
+
+.alert-container ion-icon {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.song-list {
+  max-height: 200px; /* Limiter la hauteur de la liste */
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.song-list ion-item {
+  cursor: pointer;
+}
+
+.selected-song {
+  margin-top: 16px; 
+}
+
+ion-chip {
+  margin-top: 10px;
+}
+
+ion-chip ion-icon {
+  cursor: pointer;
+}

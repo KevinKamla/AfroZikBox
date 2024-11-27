@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -8,14 +9,17 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  isChecked: boolean = false;
-  ionToast: boolean = false;
-  alertOpen: boolean = false;
   cartItems: any[] = [];
+  addresses: any[] = [];
+  selectedAddress: any = null;
+  alertOpen: boolean = false;
+  ionToast: boolean = false;
+  isChecked: boolean = false;
 
   constructor(
     private navCtrl: NavController,
-    private productService: ProductService
+    private productService: ProductService,
+    private route: Router,
   ) {}
 
   walletButtons = [
@@ -26,7 +30,7 @@ export class CartPage implements OnInit {
       },
     },
     {
-      text: 'Ajouter un porte monnaie',
+      text: 'Ajouter un porte-monnaie',
       handler: () => {
         this.navCtrl.navigateForward('/wallet');
         this.alertOpen = false;
@@ -34,57 +38,83 @@ export class CartPage implements OnInit {
     },
   ];
 
-  Buy() {
-    if (!this.isChecked) {
-      this.showToast();
-      return;
-    }
-    this.alertOpen = true;
-  }
-
   checked() {
     this.isChecked = !this.isChecked;
   }
 
-  showToast(message: string = 'Veuillez accepter les conditions.') {
-    this.ionToast = true;
-    console.log(message);
-    setTimeout(() => {
-      this.ionToast = false;
-    }, 3000);
-  }
-
-  removeFromCart(item: any) {
-    this.productService.removeFromCart(item.id).subscribe({
-      next: (response) => {
-        console.log('Product removed from cart:', response);
-        this.cartItems = this.cartItems.filter((cartItem) => cartItem.id !== item.id);
-      },
-      error: (error) => {
-        console.error('Error removing from cart:', error);
-        alert('Une erreur est survenue lors de la suppression de l\'article.');
-      },
-    });
+  ngOnInit() {
+    this.getCart();
+    this.getAddresses();
   }
 
   getCart() {
     this.productService.getCartItems().subscribe({
       next: (response) => {
-        if (response.data && response.data.length > 0) {
-          this.cartItems = response.data;
-          console.log('Cart items:', this.cartItems);
-        } else {
-          console.log('Le panier est vide.');
-        }
+        this.cartItems = response.array || []; // Assurez-vous d'utiliser "array"
       },
       error: (error) => {
-        console.error('Error fetching cart:', error);
-        alert('Impossible de charger le panier.');
+        console.error('Erreur lors de la récupération du panier:', error);
+        this.cartItems = [];
       },
     });
   }
 
-  ngOnInit() {
-    this.getCart();
+  getAddresses() {
+    // this.productService.getAddresses().subscribe({
+    //   next: (response) => {
+    //     this.addresses = response.data || [];
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching addresses:', error);
+    //   },
+    // });
+    console.log('adress');
+  }
+
+  selectAddress(address: any) {
+    this.selectedAddress = address;
+    console.log('Adresse sélectionnée :', this.selectedAddress);
+  }
+
+  getTotalPrice(): number {
+    if (!Array.isArray(this.cartItems)) {
+      return 0; // Retournez 0 si cartItems n'est pas un tableau
+    }
+
+    return this.cartItems.reduce((total, item) => {
+      const productPrice = item.product?.price || 0; // Assurez-vous que le prix existe
+      const units = item.units || 0; // Utilisez "units" pour la quantité
+      return total + productPrice * units;
+    }, 0);
+  }
+
+  removeFromCart(item: any) {
+    this.productService.removeFromCart(item.product_id).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(
+          (cartItem) => cartItem.product_id !== item.product_id
+        );
+      },
+      error: (error) => {
+        console.error('Error removing item:', error);
+      },
+    });
+  }
+
+  Buy() {
+    // if (!this.selectedAddress) {
+    //   this.showToast('Veuillez sélectionner une adresse.');
+    //   return;
+    // }
+    this.route.navigate(['/paymobil']);
+    this.alertOpen = true;
+  }
+
+  showToast(message: string) {
+    this.ionToast = true;
+    console.log(message);
+    setTimeout(() => {
+      this.ionToast = false;
+    }, 3000);
   }
 }

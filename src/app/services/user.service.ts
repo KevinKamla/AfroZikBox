@@ -27,8 +27,8 @@ export class UserService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
-      .set('offset', 5)
-      .set('limit', 3);
+      // .set('offset', 5)
+      // .set('limit', 3);
     return this.http.get<any>(this.recent, { params });
   }
   getFollowers(id: number) {
@@ -43,8 +43,8 @@ export class UserService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('id', id.toString())
-      .set('offset', 5)
-      .set('limit', 3);
+      // .set('offset', 5)
+      // .set('limit', 3);
     return this.http.get<any>(this.baseUrl3, { params });
   }
   getFollowing(id: number) {
@@ -60,7 +60,7 @@ export class UserService {
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
       .set('fetch', 'all')
-      .set('limit', 3);
+      // .set('limit', 3);
     return this.http.get<any>(this.profile, { params });
   }
   getBlocks(id: number) {
@@ -68,8 +68,8 @@ export class UserService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset', 5)
-      .set('limit', 3);
+      // .set('offset', 5)
+      // .set('limit', 3);
     return this.http.get<any>(this.userBlock, { params });
   }
   getRecommanded(id: number) {
@@ -77,8 +77,8 @@ export class UserService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset', 5)
-      .set('limit', 3);
+      // .set('offset', 5)
+      // .set('limit', 3);
     return this.http.get<any>(this.recommanded, { params });
   }
   getMembership(id: number) {
@@ -86,8 +86,8 @@ export class UserService {
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
       .set('user_id', id.toString())
-      .set('offset', 5)
-      .set('limit', 3);
+      // .set('offset', 5)
+      // .set('limit', 3);
     return this.http.get<any>(this.membership, { params });
   }
   getPurchases(id: number) {

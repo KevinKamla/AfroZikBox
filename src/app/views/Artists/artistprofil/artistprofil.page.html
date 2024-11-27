@@ -11,104 +11,10 @@
     </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content>
-    <div class="container">
-        <div class="img-detail">
-            <img [src]="artist.avatar ? artist.avatar : artist.cover" alt="Artist Image"
-            />
-            <div class="title d-f-c">
-                <h3>{{artist.name}}</h3>
-                <ion-icon *ngIf="artist.admin === 1" color="success" name="checkmark-circle"></ion-icon>
-            </div>
-            <p>Aucune information</p>
-        </div>
-        <div class="block-btn-header ">
-            <ion-buttons slot="start">
-                <ion-button shape="round" expand="bloc" (click)="toggleFollow(artist.id)">
-                    {{ isFollowing ? 'Se désabonner' : 'Suivre' }}
-                  </ion-button>
-                <ion-button shape="round" expand="bloc" [routerLink]="['/chat',5]">Message</ion-button>
-            </ion-buttons>
-        </div>
-
-        <div class="recente">
-            <div class="box-title d-f-s">
-                <h3>Chansons récentes</h3>
-                <p [routerLink]="['mymusic','Rencents', idArtist]" button>Voir plus</p>
-            </div>
-            <div class="container-scroll">
-                <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of filteredLatest; let i = index">
-                        <img class="img-intro" [src]="item.thumbnail" (click)="loadsong(filteredLatest, i)">
-                        <p>{{item.title}}</p>
-                    </div>
-                </div> 
-            </div>
-        </div>
-
-        <div class="best">
-            <div class="box-title d-f-s">
-                <h3>Meilleurs Chansons</h3>
-                <p [routerLink]="['mymusic','Meilleurs', idArtist]">Voir plus</p>
-            </div>
-
-            <div class="container-scroll">
-                <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of filteredTOPSongs; let i = index">
-                        <img class="img-intro" [src]="item.thumbnail" (click)="loadsong(filteredTOPSongs, i)">
-                        <p>
-                            <ion-label>{{item.title}}</ion-label>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <ng-template>
-                <div class="container-scroll">
-                    <div class="scroll-box">
-                        <div class="movieCharge" *ngFor="let item of [1,2,3,4,5,6,7]">
-                            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-        </div>
-
-        <div class="album">
-            <div class="box-title d-f-s">
-                <h3>Meilleurs albums</h3>
-                <p [routerLink]="['mymusic','Albums', idArtist]">Voir plus</p>
-            </div>
-
-            <div class="container-scroll">
-                <div class="scroll-box">
-                    <div class="movie" *ngFor="let item of filteredTOPAlbums">
-                        <img class="img-intro" [src]="item.thumbnail" (click)="selectAlbum(item)">
-                        <div class="p">{{item.title}}</div>
-                        <ion-label>{{item.publisher.username}}</ion-label>
-                        <div class="number_price">
-                            <div class="number_sons">{{item.count_songs}} chansons</div>
-                            <ion-badge color="danger" *ngIf="item[1] === 'buy'">$ {{item.price}}</ion-badge>
-                        </div>
-                    </div>
-                </div>
-                <ng-template>
-                    <div class="container-scroll">
-                        <div class="scroll-box">
-                            <div class="movieCharge" *ngFor="let item of [1,2,3,4,5,6,7]">
-                                <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-                            </div>
-                        </div>
-                    </div>
-                </ng-template>
-            </div>
-        </div>
-
-    </div>
-</ion-content> -->
 
 <ion-content [fullscreen]="false" class="">
     <div class="bg-header"
-        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(' + artist.cover + ')'}">
+        [ngStyle]="{'background-image': 'linear-gradient(#7436a314, #7436a3c2, rgb(0 0 0)), url(' + artist?.cover + ')'}">
         <div class="header">
             <ion-buttons slot="end">
                 <ion-button fill="clear" [routerLink]="['/userinfo']">
@@ -121,11 +27,11 @@
         </div>
         <div class="d-f-c block-img">
             <ion-avatar class="logo">
-                <img [src]="artist.avatar ? artist.avatar : artist.cover" alt="" />
+                <img [src]="artist?.avatar ? artist?.avatar : artist?.cover" alt="" />
             </ion-avatar>
         </div>
         <ion-label>
-            {{ artist.email }}
+            {{ artist?.email }}
             <ion-icon [color]="isAdmin ? 'tertiary' : 'success'" name="checkmark-circle-sharp"></ion-icon>
         </ion-label>
         <ion-text>

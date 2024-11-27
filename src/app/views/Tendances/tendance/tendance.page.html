@@ -12,6 +12,11 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content>
+          <ion-spinner slot="start" name="circles" color="primary"></ion-spinner>
+        </ion-refresher-content>
+      </ion-refresher>
     <div class="bloc_search" [routerLink]="['../search']">
         <ion-searchbar disabled class="ion-no-border" color="" placeholder="Recherche"></ion-searchbar>
     </div>

@@ -256,6 +256,35 @@ export class LecteurService {
     }
   }
 
+
+  playOne(song: any): void {
+    try {
+      if (this.audio.src !== song.audio_location) {
+        this.stopCurrentMusic();
+        this.audio.src = song.audio_location;
+        this.audio.load();
+      }
+      this.audio
+        .play()
+        .then(() => {
+          this.isPlayingSubject.next(true);
+          this.currentSongSubject.next(song);
+          
+
+          this.initializeMusicControls(song);
+          this.saveOneToLocalStorage(song, this.audio.currentTime);
+        })
+        .catch((error) => {
+          this.audioErrorSubject.next('Impossible de lire la musique');
+        });
+
+      musicTab.isClose = false;
+      musicTab.musicIsPlay = true;
+    } catch (error) {
+      this.audioErrorSubject.next("Une erreur s'est produite");
+    }
+  }
+
   playMusicAleatoire(song: any): void {
     try {
       if (this.audio.src !== song.audio_location) {
@@ -543,6 +572,18 @@ export class LecteurService {
     const songState = {
       song,
       index,
+      currentTime,
+      isPlaying: this.isPlayingSubject.value,
+    };
+    localStorage.setItem('currentSongState', JSON.stringify(songState));
+  }
+
+  private saveOneToLocalStorage(
+    song: any,
+    currentTime: number
+  ): void {
+    const songState = {
+      song,
       currentTime,
       isPlaying: this.isPlayingSubject.value,
     };

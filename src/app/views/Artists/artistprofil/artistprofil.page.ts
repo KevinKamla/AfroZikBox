@@ -29,7 +29,7 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./artistprofil.page.scss'],
 })
 export class ArtistprofilPage implements OnInit {
-  selectedSegment: string = 'Chansons';
+  selectedSegment: string = 'chansons';
   UserData: any;
   email: string = '';
   avatar: any;
@@ -429,7 +429,7 @@ export class ArtistprofilPage implements OnInit {
         console.error('Erreur lors de la récupération des genres :', error);
       }
     );
-    this.checkIfUserBlocked(this.user_id).then((isBlocked) => {
+    this.checkIfUserBlocked(this.idArtist).then((isBlocked) => {
       this.alertCashfreeButtons[1].text = isBlocked ? 'Débloquer' : 'Bloquer';
       console.log(this.alertCashfreeButtons[1].text);
     });

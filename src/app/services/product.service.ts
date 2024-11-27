@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,6 +15,8 @@ export class ProductService {
   private serverKey = environment.server_key;
   private cart: any[] = [];
   private baseUrl = 'https://afrozikbox.com/endpoint/product';
+  private cartItemCountSource = new BehaviorSubject<number>(0);
+  cartItemCount$ = this.cartItemCountSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -33,13 +35,15 @@ export class ProductService {
     formData.append('server_key', this.serverKey);
     formData.append('access_token', this.accessToken || '');
 
-    // Append image files (handling multiple files if necessary)
-    for (let i = 0; i < productData.images.length; i++) {
-      formData.append(
-        'image[]',
-        productData.images[i],
-        productData.images[i].name
-      );
+    // Vérifier si "images" existe et ajouter les images au FormData
+    if (productData.images && productData.images.length > 0) {
+      for (let i = 0; i < productData.images.length; i++) {
+        formData.append(
+          'image[]',
+          productData.images[i],
+          productData.images[i].name
+        );
+      }
     }
 
     return this.http.post<any>(this.create, formData, {
@@ -47,6 +51,10 @@ export class ProductService {
         Accept: 'application/json',
       }),
     });
+  }
+
+  updateCartCount(count: number) {
+    this.cartItemCountSource.next(count);
   }
 
   // Edit product (similar to create but with 'id' field included)
@@ -133,18 +141,14 @@ export class ProductService {
    * @param productId - ID du produit.
    * @returns Observable avec le produit spécifique.
    */
-  getProductById(productId: number): Observable<any> {
+  getProductById(productId: any): Observable<any> {
     const endpoint = this.get_product_by_id;
+    let params = new HttpParams()
+      .set('product_id', productId.toString())
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '');
 
-    const body = {
-      product_id: productId,
-      server_key: this.serverKey,
-      access_token: this.accessToken || '',
-    };
-
-    return this.http.post(endpoint, body, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    });
+    return this.http.post(endpoint, params);
   }
 
   clearCart(): void {
@@ -163,6 +167,9 @@ export class ProductService {
         return throwError(() => error);
       })
     );
+    this.getCartItems().subscribe((response) => {
+      this.updateCartCount(response.data.length);
+    });
   }
 
   removeFromCart(productId: number): Observable<any> {
