@@ -137,3 +137,21 @@ ion-range {
 ion-card:hover .bloc-button {
     transform: translateY(0);
 }
+
+.play-btn {
+    position: absolute;
+    top: 50%; /* Position au centre verticalement */
+    right: 10px; /* Décalage depuis la droite */
+    transform: translateY(-50%); /* Ajustement pour le centrer parfaitement */
+    font-size: 24px;
+    z-index: 10; /* S'assurer qu'il est au-dessus de l'image */
+    background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+    color: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+  }
+  
+  .play-btn:hover {
+    transform: translateY(-50%) scale(1.1); /* Légère augmentation au survol */
+  }
+  

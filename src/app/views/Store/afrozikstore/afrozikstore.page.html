@@ -43,10 +43,21 @@
     <ng-container [ngSwitch]="selectedSegment">
       <ng-template ngSwitchCase="chansons">
         <ion-card *ngFor="let item of latest">
-          <ion-card-content style="padding: 7px">
+          <ion-card-content style="padding: 7px; position: relative">
             <div class="d-f">
               <ion-thumbnail>
                 <img [src]="item.thumbnail" />
+                <!-- Bouton Play en position absolue -->
+                <ion-button
+                  class="play-btn"
+                  fill="clear"
+                  (click)="playPreview(item)"
+                >
+                  <ion-icon
+                    slot="icon-only"
+                    name="play-circle-outline"
+                  ></ion-icon>
+                </ion-button>
               </ion-thumbnail>
               <ion-item>
                 <div>
@@ -69,61 +80,48 @@
                   ></ion-icon>
                 </ion-button>
               </p>
-              <!-- Bouton Ajouter au panier -->
               <div class="bloc-button d-f-c">
-                <ion-button class="add" shape="round">Acheter</ion-button>
+                <ion-button class="add" shape="round" (click)="Buy()" style="margin-right: 35px;">Acheter</ion-button>
               </div>
-              <ion-button shape="round" fill="clear" id="popover-button">
+              <!-- <ion-button shape="round" fill="clear" id="popover-button">
                 <ion-icon
                   slot="start"
                   name="ellipsis-horizontal-outline"
                 ></ion-icon>
-              </ion-button>
+              </ion-button> -->
             </div>
           </ion-card-content>
         </ion-card>
-        <div style="width: 100%; text-align: center; margin-block: 2rem">
-          <ion-button shape="round">Charger plus</ion-button>
-        </div>
+
         <ion-card>
-          <div class="d-f">
-            <div class="content-iconPrice d-f-c" style="margin: 1rem">
-              <ion-icon slot="start" name="cash"></ion-icon>
-            </div>
-            <h3>Prix</h3>
-          </div>
           <ion-card-content>
-            <ion-label>
-              Gamme de prix : ${{ valueRangeMin }} - ${{ valueRangeMax }}
-            </ion-label>
+            <ion-label
+              >Gamme de prix : {{ valueRangeMin }} - {{ valueRangeMax
+              }}</ion-label
+            >
             <ion-range
+              dualKnobs="true"
               min="0"
               max="100"
-              value="50"
-              snaps="true"
-              dualKnobs="true"
-              pin="true"
-              color="primary"
+              step="1"
+              [value]="{ lower: valueRangeMin, upper: valueRangeMax }"
               (ionChange)="rangeChange($event)"
-            >
-            </ion-range>
+            ></ion-range>
           </ion-card-content>
         </ion-card>
+
         <ion-card>
-          <div class="d-f">
-            <div class="content-iconGenre d-f-c">
-              <ion-icon slot="start" name="contrast"></ion-icon>
-            </div>
-            <h3>Genres</h3>
-          </div>
-          <div class="ion-margin-top">
-            <form action="" method="get">
-              <ion-item *ngFor="let item of genreList">
-                <ion-label>{{ item.name }}</ion-label>
-                <ion-checkbox slot="start"></ion-checkbox>
-              </ion-item>
-            </form>
-          </div>
+          <ion-card-content>
+            <ion-label>Genres</ion-label>
+            <ion-item *ngFor="let genre of genreList">
+              <ion-checkbox
+                slot="start"
+                (ionChange)="toggleGenre(genre.name, $event.detail.checked)"
+              >
+              </ion-checkbox>
+              <ion-label>{{ genre.name }}</ion-label>
+            </ion-item>
+          </ion-card-content>
         </ion-card>
       </ng-template>
 
@@ -142,7 +140,7 @@
               <h3 (click)="selectAlbum(album)">{{ album.title }}</h3>
               <p>{{ album.publisher.username }}</p>
               <p>
-                <b>$ {{ album.price }} | {{ album.count_songs }} Music(s)</b>
+                <b>$ {{ album.price }} | {{ album.count_songs }} Titre(s)</b>
               </p>
             </ion-card-content>
           </ion-card>
@@ -205,28 +203,52 @@
             </div>
           </ion-item>
           <ion-card *ngFor="let item of latest">
-            <ion-card-content style="padding: 7px">
+            <ion-card-content style="padding: 7px; position: relative">
               <div class="d-f">
                 <ion-thumbnail>
                   <img [src]="item.thumbnail" />
+                  <!-- Bouton Play en position absolue -->
+                  <ion-button
+                    class="play-btn"
+                    fill="clear"
+                    (click)="playPreview(item)"
+                  >
+                    <ion-icon
+                      slot="icon-only"
+                      name="play-circle-outline"
+                    ></ion-icon>
+                  </ion-button>
                 </ion-thumbnail>
                 <ion-item>
                   <div>
-                    <ion-label> {{item.title}} </ion-label>
-                    <div class="bloc-button d-f-c">
-                      <ion-button class="add" shape="round">Acheter</ion-button>
-                    </div>
+                    <ion-label>{{ item.title }}</ion-label>
                   </div>
                 </ion-item>
               </div>
               <div class="footerSon d-f-s">
-                <p>{{item.duration}}</p>
-                <ion-button shape="round" fill="clear" id="popover-button">
+                <p>{{ item.duration }}</p>
+                <p>
+                  <ion-button
+                    shape="round"
+                    fill="clear"
+                    (click)="toggleFavorite(item.audio_id)"
+                  >
+                    <ion-icon
+                      slot="icon-only"
+                      [name]="love ? 'star' : 'star-outline'"
+                      [color]="love ? 'warning' : 'yellow'"
+                    ></ion-icon>
+                  </ion-button>
+                </p>
+                <div class="bloc-button d-f-c">
+                  <ion-button class="add" shape="round">Acheter</ion-button>
+                </div>
+                <!-- <ion-button shape="round" fill="clear" id="popover-button">
                   <ion-icon
                     slot="start"
                     name="ellipsis-horizontal-outline"
                   ></ion-icon>
-                </ion-button>
+                </ion-button> -->
               </div>
             </ion-card-content>
           </ion-card>
@@ -254,9 +276,8 @@
                   </div>
                 </ion-thumbnail>
                 <h3>{{ album.title }}</h3>
-                <p>{{ album.publisher.username }}</p>
                 <p>
-                  <b>$ {{ album.price }} | {{ album.count_songs }} Music(s)</b>
+                  <b>$ {{ album.price }} | {{ album.count_songs }} Titre(s)</b>
                 </p>
               </ion-card-content>
             </ion-card>

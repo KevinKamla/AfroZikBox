@@ -352,13 +352,7 @@ const routes: Routes = [
         (m) => m.ChatPageModule
       ),
   },
-  {
-    path: 'artistprofil',
-    loadChildren: () =>
-      import('./views/Artists/artistprofil/artistprofil.module').then(
-        (m) => m.ArtistprofilPageModule
-      ),
-  },
+
   {
     path: 'listtendance',
     loadChildren: () =>

@@ -66,7 +66,7 @@ export class EventService {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('id', eventId.toString());
+      .set('id', eventId);
 
     return this.http.post<any>(this.buy, params, { headers }).pipe(
       catchError((error) => {
@@ -81,7 +81,7 @@ export class EventService {
     const params = new HttpParams()
       .set('server_key', this.serverKey)
       .set('access_token', this.accessToken || '')
-      .set('id', eventId.toString())
+      .set('id', eventId)
       .set('type', type);
     const headers = new HttpHeaders({
       Authorization: 'Bearer ' + localStorage.getItem('accessToken'),

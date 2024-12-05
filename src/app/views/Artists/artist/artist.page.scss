@@ -17,7 +17,29 @@
     justify-content: space-between;
     align-items: center;
 }
+.header {
+    h5 {
+        font-weight: 700;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
+    span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ion-color-primary);
+        cursor: pointer;
+
+        ion-icon {
+            font-size: 25px;
+        }
+    }
+}
 .item {
     margin: 20px;
     border-bottom: 1px solid #eeeeee3e;
@@ -51,3 +73,12 @@
 ion-skeleton-text {
     background-color: #ffffff14;
 }
+
+.scrollable-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+    overflow-y: auto; 
+    padding: 0 1rem; 
+    box-sizing: border-box; 
+  }

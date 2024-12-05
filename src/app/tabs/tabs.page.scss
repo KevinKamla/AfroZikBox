@@ -82,14 +82,14 @@ ion-range {
     --knob-size: 1px;
 }
 
-/* Ajoutez ceci dans votre fichier CSS */
+
 .scrolling-text {
-    white-space: nowrap; /* Empêche le retour à la ligne */
-    overflow: hidden; /* Cache le texte qui déborde */
-    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
-    animation: scroll 10s linear infinite; /* Animation de défilement */
-    width: 100%; /* Assurez-vous que l'élément a une largeur définie */
-    display: inline-block; /* Permet à l'élément de s'ajuster à son contenu */
+    white-space: nowrap; 
+    overflow: hidden; 
+    box-sizing: border-box; 
+    animation: scroll 10s linear infinite; 
+    width: 100%; 
+    display: inline-block; 
 }
   
   @keyframes scroll {
@@ -100,3 +100,26 @@ ion-range {
       transform: translateX(-100%); /* Finit à gauche */
     }
   }
+
+  ion-tab-bar {
+    background: rgba(0, 0, 0, 0.7); /* Fond légèrement sombre */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Bordure subtile */
+    --ion-color-primary: white; /* Couleur des icônes */
+    --color: white; /* Couleur du texte */
+  }
+  
+  ion-tab-button {
+    --color-selected: #ffffff; /* Couleur du texte actif */
+    --ion-color-primary: #ffffff; /* Couleur de l'icône active */
+    font-size: 8px; /* Taille du texte */
+  }
+  
+  ion-tab-button[aria-selected="true"] {
+    font-weight: bold; /* Mettre en avant l'onglet actif */
+  }
+  
+  ion-icon {
+    font-size: 20px; /* Taille des icônes */
+  }
+  
+  

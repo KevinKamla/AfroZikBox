@@ -119,11 +119,20 @@ export class SuggestionsPage implements OnInit {
     }
   }
 
-  // Méthode pour jouer ou mettre en pause la musique
   artistDetail = (item: any) => {
     console.log(item);
     localStorage.setItem('artist', JSON.stringify(item));
-    this.route.navigate(['/artistprofil', item.id]);
+    const userData = localStorage.getItem('UserData');
+    if (userData) {
+      const parsedUserData = JSON.parse(userData);
+      if (parsedUserData.id === item.id) {
+        this.route.navigate(['/tabs/profil']);
+      } else {
+        this.route.navigate(['/artistprofil', item.id]);
+      }
+    } else {
+      this.route.navigate(['/artistprofil', item.id]);
+    }
   };
 
   async openActut() {

@@ -127,4 +127,17 @@ export class ProductdetailPage implements OnInit {
     this.musicPlayerService.seekTo(event.detail.value);
   }
 
+  addToCart(item: any): void {
+    console.log('Ajout au panier:', item);
+    this.productService.addToCart(item.id).subscribe({
+      next: (response) => {
+        console.log('Product added to cart:', response);
+      },
+      error: (error) => {
+        console.error('Error adding to cart:', error);
+      },
+    });
+    alert(`"${item.title}" a été ajouté au panier.`);
+  }
+
 }

@@ -1,13 +1,13 @@
 <ion-content [fullscreen]="true">
   <div class="bg-header" [ngStyle]="{'background-image': 'url(' + cover + ')'}">
     <div class="back-boutton d-f-s">
-      <ion-buttons slot="start" style="color:white">
+      <ion-buttons slot="start" style="color: white">
         <ion-button (click)="goToRoute()">
           <ion-icon slot="icon-only" name="chevron-back"></ion-icon>
           <h3>{{achats.title}}</h3>
         </ion-button>
       </ion-buttons>
-      <ion-buttons slot="start" style="color:white">
+      <ion-buttons slot="start" style="color: white">
         <ion-button id="IsAlertOpen">
           <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
         </ion-button>
@@ -17,7 +17,7 @@
   <div class="bloc-info">
     <div class="img-detail d-f">
       <ion-avatar>
-        <img [src]="achats.user_data.cover" />
+        <img [src]="achats.user_data.avatar" />
       </ion-avatar>
       <div class="title">
         <h3>{{achats.title}}</h3>
@@ -25,31 +25,50 @@
       </div>
     </div>
 
-    <div class="block-btn-header ">
+    <div class="block-btn-header">
       <ion-buttons slot="start">
-        <ion-button expand="bloc" style="background: rgba(239, 207, 252, 0.949); border-radius: 20px;"
-        [color]="isJoined === 'join' ? 'danger' : 'primary'" shape="round" (click)="joinEvent()">
-          <ion-icon slot="start" name="footsteps"></ion-icon>Participer
+        <ion-button
+          expand="block"
+          style="background: rgba(239, 207, 252, 0.949); border-radius: 20px"
+          [color]="isJoined === 'join' ? 'danger' : 'primary'"
+          shape="round"
+          (click)="joinEvent(achats.id)"
+        >
+          <ion-icon slot="start" name="footsteps"></ion-icon>
+          {{ isJoined === 'join' ? 'Quitter' : 'Participer' }}
         </ion-button>
-        <ion-button shape="round" expand="bloc" class="btn-Lecture" (click)="buyTicket()">
-          <ion-icon slot="start" name="ticket"></ion-icon>Acheter un ticket</ion-button>
+        <ion-button
+          shape="round"
+          expand="bloc"
+          class="btn-Lecture"
+          (click)="buyTicket(achats.id)"
+        >
+          <ion-icon slot="start" name="ticket"></ion-icon>Acheter un
+          ticket</ion-button
+        >
       </ion-buttons>
     </div>
 
     <div class="item d-f">
       <ion-icon slot="start" name="ticket"></ion-icon>
-      <p style="color: purple;">{{achats.available_tickets}} Tickets disponibles</p>
+      <p style="color: purple">
+        {{achats.available_tickets}} Tickets disponibles
+      </p>
     </div>
-    <div class="item d-f" style="margin-top: 1px;">
+    <div class="item d-f" style="margin-top: 1px">
       <ion-icon slot="start" name="location"></ion-icon>
-      <p style="color: orange;">https://afrozikbox.com/</p>
+      <p style="color: orange">https://afrozikbox.com/</p>
     </div>
     <div class="item d-f">
       <ion-icon slot="start" name="calendar"></ion-icon>
-      <p >{{achats.end_date}} {{achats.end_time}}</p>
+      <p>{{achats.end_date}} {{achats.end_time}}</p>
     </div>
-    <p style="color:gray">{{achats.desc}}</p>
+    <p style="color: gray">{{achats.desc}}</p>
   </div>
 </ion-content>
 
-<ion-alert trigger="IsAlertOpen" header="Evénements" [buttons]="alertActionreeButtons"></ion-alert>
+<ion-alert
+  trigger="IsAlertOpen"
+  header="Evénements"
+  [buttons]="alertActionreeButtons"
+></ion-alert>

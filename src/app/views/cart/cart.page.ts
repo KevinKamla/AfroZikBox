@@ -107,7 +107,7 @@ export class CartPage implements OnInit {
     //   return;
     // }
     this.route.navigate(['/paymobil']);
-    this.alertOpen = true;
+    // this.alertOpen = true;
   }
 
   showToast(message: string) {

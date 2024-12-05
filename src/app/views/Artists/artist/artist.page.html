@@ -6,23 +6,43 @@
       <ion-title>Artistes</ion-title>
     </ion-toolbar>
   </ion-header> -->
-
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refreshArtists($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      refreshingSpinner="bubbles"
+      refreshingText="Mise à jour..."
+    ></ion-refresher-content>
+  </ion-refresher>
   <div>
     <div *ngIf="artists.length > 0; else ionSkeletonArtist">
-      <div class="d-f-s item" *ngFor="let artist of artists">
-        <div class="d-f-s logo-title" (click)="artistDetail(artist)">
+      <div
+        class="d-f-s item"
+        *ngFor="let artist of artists"
+        (click)="artistDetail(artist)"
+      >
+        <div class="d-f-s logo-title">
           <ion-avatar slot="start">
-            <img [src]="artist.avatar" />
+            <img [src]="artist.avatar ? artist.avatar : artist.cover" />
           </ion-avatar>
           <div class="detail">
             <h5>
-              {{ artist.name.length > 10 ? (artist.name | slice:0:8) + '...' :
+              {{ artist.name.length > 10 ? (artist.name | slice: 0: 8) + '...' :
               artist.name }}
             </h5>
             <p>artists</p>
           </div>
         </div>
-        <ion-button expand="block" shape="round" style="font-size: 8px;"> Suivre </ion-button>
+        <ion-button
+          *ngIf="artist.id !== userId"
+          expand="block"
+          shape="round"
+          style="font-size: 8px"
+          [color]="artist.isFollowing ? 'danger' : 'primary'"
+          (click)="toggleFollow(artist)"
+        >
+          {{ artist.isFollowing ? 'Ne plus suivre' : 'Suivre' }}
+        </ion-button>
       </div>
     </div>
 
@@ -54,4 +74,11 @@
       </div>
     </ng-template>
   </div>
-
+  <!-- Infinite Scroll -->
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Chargement..."
+    ></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

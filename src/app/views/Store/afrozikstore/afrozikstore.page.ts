@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { AlbumsService } from 'src/app/services/albums.service';
 import { FavoriteService } from 'src/app/services/favorite.service';
+import { LecteurService } from 'src/app/services/lecteur.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SuggestionsService } from 'src/app/services/suggestions.service';
 import { TopAlbumsService } from 'src/app/services/top-albums.service';
+import { musicTab } from '../../play/play.page';
 
 @Component({
   selector: 'app-afrozikstore',
@@ -35,13 +38,24 @@ export class AfrozikstorePage implements OnInit {
   favoris: any[] = [];
   isLoading: boolean = true;
   cartItemCount: number = 0;
+  private songSubscription: Subscription | undefined;
+  private playSubscription: Subscription | undefined;
+  private timeSubscription: Subscription | undefined;
+  private durationSubscription: Subscription | undefined;
+  audio: HTMLAudioElement = new Audio();
+  currentSongIndex: number = 0;
+  musictabOption = musicTab;
+  isPlaying = false;
+  alertOpen: boolean = false;
   constructor(
     private albumService: AlbumsService,
     private productService: ProductService,
     private topAlbumsService: TopAlbumsService,
     private route: Router,
     private favoriteService: FavoriteService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private musicPlayerService: LecteurService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -54,7 +68,6 @@ export class AfrozikstorePage implements OnInit {
     this.productService.cartItemCount$.subscribe((count) => {
       this.cartItemCount = count;
       console.log(this.cartItemCount);
-      
     });
   }
 
@@ -62,10 +75,9 @@ export class AfrozikstorePage implements OnInit {
     this.productService.getCartItems().subscribe({
       next: (response) => {
         console.log(response.array);
-        
+
         this.cartItemCount = response?.array.length || 0;
-        console.log( 'ici',this.cartItemCount);
-        
+        console.log('ici', this.cartItemCount);
       },
       error: (error) => {
         console.error('Error fetching cart items:', error);
@@ -121,7 +133,7 @@ export class AfrozikstorePage implements OnInit {
           this.topalbums = response.top_albums.filter(
             (album: any) => album.price > 0
           );
-          this.filteredAlbums = [...this.topalbums]; // Initialement, tous les albums sont affichés
+          this.filteredAlbums = [...this.topalbums];
           this.loadSongsForTopAlbums();
         },
         (error) => {
@@ -303,5 +315,90 @@ export class AfrozikstorePage implements OnInit {
     this.valueRangeMin = lower;
     this.valueRangeMax = upper;
     this.applyFilters();
+  }
+
+  async playPreview(song: any): Promise<void> {
+    this.stopMusic();
+
+    const previewDuration = 30 * 1000;
+
+    this.musicPlayerService.playOne(song);
+    this.currentSong = song;
+    this.isPlaying = true;
+
+    // Sauvegarder dans le localStorage
+    // localStorage.setItem('currentSong', JSON.stringify(song));
+    console.log("Lecture d'un extrait de :", song.title);
+
+    setTimeout(async () => {
+      this.stopMusic();
+      console.log('Aperçu terminé pour :', song.title);
+      await this.showBuyAlert(song);
+      this.closePlayer();
+    }, previewDuration);
+  }
+
+  stopMusic(): void {
+    this.musicPlayerService.stopCurrentMusic();
+    musicTab.musicIsPlay = false;
+    localStorage.removeItem('currentSong');
+    console.log('Musique arrêtée et supprimée du localStorage');
+  }
+
+  closePlayer(): void {
+    this.stopMusic();
+    this.currentSong = null;
+    musicTab.isClose = true;
+    console.log('Lecteur fermé et onglet masqué');
+  }
+
+  async showBuyAlert(song: any): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Aperçu terminé',
+      message: `Vous avez aimé "${song.title}" ? Achetez maintenant pour profiter de la musique complète !`,
+      buttons: [
+        {
+          text: 'Annuler',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            this.closePlayer();
+            console.log("L'utilisateur a annulé l'achat.");
+          },
+        },
+        {
+          text: 'Acheter',
+          handler: () => {
+            this.closePlayer();
+            console.log("L'utilisateur a choisi d'acheter la musique.");
+            this.buySong(song);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  buySong(song: any): void {
+    console.log('Achat de la musique :', song.title);
+    // Redirection ou action d'achat
+  }
+
+  ngOnDestroy(): void {
+    this.closePlayer();
+    if (this.songSubscription) this.songSubscription.unsubscribe();
+    if (this.playSubscription) this.playSubscription.unsubscribe();
+    if (this.timeSubscription) this.timeSubscription.unsubscribe();
+    if (this.durationSubscription) this.durationSubscription.unsubscribe();
+  }
+
+  Buy() {
+    // if (!this.selectedAddress) {
+    //   this.showToast('Veuillez sélectionner une adresse.');
+    //   return;
+    // }
+    this.route.navigate(['/paymobil']);
+    this.alertOpen = true;
   }
 }

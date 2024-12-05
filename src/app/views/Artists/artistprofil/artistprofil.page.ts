@@ -324,19 +324,6 @@ export class ArtistprofilPage implements OnInit {
       );
     });
   }
-
-  // copyLinkAndRedirect() {
-  //   const artistLink = this.artist.url; // Remplacez par l'URL appropriée
-  //   navigator.clipboard
-  //     .writeText(artistLink)
-  //     .then(() => {
-  //       console.log('Lien copié :', artistLink);
-  //       window.open(artistLink, '_blank'); // Ouvre le lien dans un nouvel onglet
-  //     })
-  //     .catch((err) => {
-  //       console.error('Erreur lors de la copie du lien :', err);
-  //     });
-  // }
   topSongs: any[] = [];
   artist_ids: any;
   idArtist: any;
@@ -345,12 +332,9 @@ export class ArtistprofilPage implements OnInit {
   filteredLatest: any[] = [];
 
   async ngOnInit() {
-    // await this.storage.create();
     const userdata = localStorage.getItem('UserData');
     if (userdata) {
       this.UserData = JSON.parse(userdata).data;
-      // const userId = this.UserData;
-      // console.log("userdata.id :", this.UserData)
     }
     await this.storage.create();
     const artist = this.routes.snapshot.paramMap.get('id');
@@ -366,10 +350,7 @@ export class ArtistprofilPage implements OnInit {
       console.log('userdata :', UserData);
       this.email = UserData.username;
       this.isAdmin = this.email === 'admin' ? true : false;
-      // this.avatar = UserData.avatar;
-      // this.cover = UserData.cover;
       this.url = UserData.url;
-      // this.like = UserData.email_on_follow_user
       this.email_on_follow_user = UserData.email_on_follow_user;
     }
     this.userService.getFollowers(this.idArtist).subscribe((response) => {
@@ -401,7 +382,7 @@ export class ArtistprofilPage implements OnInit {
     this.playlistService.getPlaylists().subscribe(
       (response) => {
         this.playlist = response.playlists;
-        // console.log('playlist récupérés :', this.playlist);
+        console.log('playlist récupérés :', this.playlist);
       },
       (error) => {
         console.error('Erreur lors de la récupération des genres :', error);

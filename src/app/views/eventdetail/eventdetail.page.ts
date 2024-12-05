@@ -79,36 +79,91 @@ export class EventdetailPage implements OnInit {
       });
   }
 
-  joinEvent() {
-    this.eventService.joinEvent(this.eventId, this.type).subscribe({
+  joinEvent(eventId: any) {
+    this.eventService.joinEvent(eventId, this.type).subscribe({
       next: (response) => {
         console.log('Événement rejoint avec succès', response);
-        this.isJoined = response.type;
-        console.log(this.isJoined);
+
+        // Mise à jour de l'état local
+        if (response.type === 'join') {
+          this.isJoined = 'join';
+          this.addToLocalStorage(eventId);
+        } else {
+          this.isJoined = 'unjoin';
+          this.removeFromLocalStorage(eventId);
+        }
+
+        // Affichage de l'alerte
         this.showAlert(
           'Succès',
-          `Événement ${JSON.stringify(response.type)} avec succès !`
-        ); // Correction de la popup de succès
+          `Événement ${
+            response.type === 'join' ? 'rejoint' : 'quitté'
+          } avec succès !`
+        );
       },
       error: (error) => {
         console.error("Erreur lors du joint de l'événement", error);
-        this.showAlert('Erreur', "Erreur lors du joint de l'événement."); // Correction de la popup d'erreur
+        this.showAlert('Erreur', "Erreur lors du joint de l'événement.");
       },
     });
   }
-  buyTicket() {
-    this.eventService.buyTicket(this.eventId).subscribe({
-      next: (response) => {
-        console.log('Ticket acheté avec succès', response);
-        this.showAlert('Succès', `${JSON.stringify(response.message)}`); // Correction de la popup de succès
 
-        // Gérer le succès ici (afficher un message, mettre à jour l'interface, etc.)
+  // Ajouter l'ID de l'événement au localStorage
+  addToLocalStorage(eventId: any) {
+    let joinedEvents = JSON.parse(localStorage.getItem('joinedEvents') || '[]');
+    if (!joinedEvents.includes(eventId)) {
+      joinedEvents.push(eventId);
+      localStorage.setItem('joinedEvents', JSON.stringify(joinedEvents));
+    }
+  }
+
+  // Supprimer l'ID de l'événement du localStorage
+  removeFromLocalStorage(eventId: any) {
+    let joinedEvents = JSON.parse(localStorage.getItem('joinedEvents') || '[]');
+    joinedEvents = joinedEvents.filter((id: any) => id !== eventId);
+    localStorage.setItem('joinedEvents', JSON.stringify(joinedEvents));
+  }
+
+  // Vérifier si l'utilisateur a déjà rejoint l'événement
+  isEventJoined(eventId: any): boolean {
+    const joinedEvents = JSON.parse(
+      localStorage.getItem('joinedEvents') || '[]'
+    );
+    return joinedEvents.includes(eventId);
+  }
+
+  ionViewWillEnter() {
+    const eventId = this.achats.id; // Remplacez par l'ID de l'événement en cours
+    this.isJoined = this.isEventJoined(eventId) ? 'join' : 'unjoin';
+  }
+  
+
+  buyTicket(eventId: any) {
+    this.eventService.buyTicket(eventId).subscribe({
+      next: (response) => {
+        console.log('Réponse de succès:', response);
+
+        // Vérifie si le statut est 200 pour afficher une alerte de succès
+        if (response.status === 200) {
+          this.showAlert(
+            'Succès',
+            response.message || 'Ticket acheté avec succès !'
+          );
+        } else {
+          // En cas d'autre statut, affiche une alerte d'erreur
+          this.showAlert(
+            'Erreur',
+            response.error || "Une erreur s'est produite."
+          );
+        }
       },
       error: (error) => {
-        console.error("Erreur lors de l'achat du billet", error);
-        this.showAlert('Erreur', "Erreur lors de l'achat du ticket."); // Correction de la popup d'erreur
+        console.error("Erreur lors de l'achat du billet:", error);
 
-        // Gérer l'erreur ici
+        // En cas de requête échouée (statut HTTP 4xx ou 5xx)
+        const errorMessage =
+          error.error?.error || "Une erreur inattendue s'est produite.";
+        this.showAlert('Erreur', errorMessage);
       },
     });
   }

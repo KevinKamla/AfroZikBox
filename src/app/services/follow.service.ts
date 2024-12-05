@@ -12,12 +12,15 @@ export class FollowService {
   private add = `${environment.api}/follow-user/add`;
   private accessToken = localStorage.getItem('accessToken');
   private serverKey = environment.server_key;
+  private baseUrl2 = `${environment.api}user/get-follower`;
   
 
   constructor(private http: HttpClient) {}
 
   // Ajouter un abonnement (follow)
   followUser(userId: number): Observable<any> {
+    console.log(userId);
+    
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('accessToken') 
     });
@@ -54,5 +57,13 @@ export class FollowService {
           return throwError(error);
         })
       );
+  }
+
+  getFollowers(id: number) {
+    const params = new HttpParams()
+      .set('server_key', this.serverKey)
+      .set('access_token', this.accessToken || '')
+      .set('id', id.toString());
+    return this.http.get<any>(this.baseUrl2, { params });
   }
 }
