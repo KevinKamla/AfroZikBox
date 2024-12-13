@@ -29,7 +29,6 @@ export class FavorisPage implements OnInit {
   }
 
   goToPlay() {
-    
     musicTab.musicIsPlay = true;
     musicTab.isClose = false;
     this.navCtrl.navigateForward('play');

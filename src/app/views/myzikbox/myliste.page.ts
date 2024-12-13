@@ -1,5 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 import { Component, OnInit } from '@angular/core';
+import { musicTab } from '../play/play.page';
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-myliste',
@@ -7,14 +9,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./myliste.page.scss'],
 })
 export class MylistePage implements OnInit {
-  constructor() { }
+  constructor(
+    private navCtrl: NavController,
+  ) { }
 
 
-  
-onClick() {
-  
+  goToPlay() {
+    musicTab.musicIsPlay = true;
+    musicTab.isClose = false;
   }
-  
+
+  onClick() {
+  }
+
   ngOnInit() {
   }
 

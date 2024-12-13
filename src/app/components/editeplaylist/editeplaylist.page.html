@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>Modifier une Playlist</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-card button (click)="camera()" class="ion-no-box-shadow">
+        <ion-card-content class="image">
+            <img *ngIf="isGetImg" src="{{imgPath}}">
+            <div class="content" *ngIf="!isGetImg">
+                <ion-icon color="primary" slot="start" name="image"></ion-icon>
+                <h5>Sélectinner l'image à importer</h5>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <div class="input">
+        <div class="canView d-f-s">
+            <ion-icon name="pencil-outline"></ion-icon>
+            <ion-input type="text" value="Nom playlist" placeholder="Titre de la Playlist" class="content"></ion-input>
+        </div>
+
+        <ion-item id="open-modal-confid" button="true" class="ion-no-border">
+            <div class="canView d-f-s">
+                <ion-icon name="layers-outline"></ion-icon>
+                <div class="contentBlock">{{valueConfid}}</div>
+            </div>
+        </ion-item>
+    </div>
+    <div class="bloc-btn">
+        <ion-button (click)="closeModal()" fill="clear">
+            Annuler
+        </ion-button>
+        <ion-button (click)="closeModal()" expand="bloc" shape="round">
+            Créer
+        </ion-button>
+    </div>
+</ion-content>
+
+<ion-modal id="modal-title" trigger="open-modal-confid" #modale_confid handleBehavior="cycle">
+    <ng-template>
+        <ion-header [translucent]="true" class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Choisir le genre</ion-title>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+            <div class="ion-margin-top">
+                <form action="" method="get">
+                    <ion-item button (click)="selectedConfid('Publique')" class="ion-no-border">
+                        <ion-label>Publique</ion-label>
+                    </ion-item>
+                    <ion-item button (click)="selectedConfid('Privée')" class="ion-no-border">
+                        <ion-label>Privée</ion-label>
+                    </ion-item>
+                </form>
+            </div>
+        </ion-content>
+        <ion-footer>
+            <ion-toolbar>
+                <ion-buttons slot="end">
+                    <ion-button (click)="modale_confid.dismiss()" expand="block" fill="clear" shape="round">Fermer</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-footer>
+    </ng-template>
+</ion-modal>

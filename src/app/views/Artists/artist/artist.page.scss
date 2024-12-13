@@ -22,14 +22,32 @@
     margin: 20px;
     border-bottom: 1px solid #eeeeee3e;
     padding-bottom: 20px;
+
     .logo-title {
         gap: 20px;
+
         ion-avatar {
             height: 90px;
             width: 90px;
         }
+
+
         p {
             color: #aaa;
         }
     }
+
+}
+.skel {
+    ion-avatar {
+        height: 100px;
+        width: 100px;
+        margin-right: 1rem;
+    }
+
+}
+
+
+ion-skeleton-text {
+    background-color: #ffffff14;
 }

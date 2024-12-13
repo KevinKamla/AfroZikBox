@@ -1,4 +1,7 @@
 ion-header {
+    ion-toolbar {
+        --background: transparent;
+    }
     .bloc_search {
         display: flex;
         justify-content: space-between;

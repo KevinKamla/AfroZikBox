@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
 import { musicTab } from '../play/play.page';
+import { SuggestionsService } from '../../services/suggestions.service';
 
 @Component({
   selector: 'app-news',
@@ -14,6 +15,8 @@ export class NewsPage implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private suggestionsService: SuggestionsService,
+
   ) { }
 
   
@@ -34,8 +37,24 @@ export class NewsPage implements OnInit {
     this.navCtrl.navigateForward('play');
   }
 
+  new:any[]=[];
+  numberOfTopSongs: number = 0;
 
   ngOnInit() {
+    this.suggestionsService.getSuggestions().subscribe(
+      (response) => {
+        console.log('suggestions récupérés :', response);
+        this.new = response.new_releases.data;
+        console.log(this.new,'new sonfs');
+        const numberOfSongs = this.new.length;
+        console.log('Nombre de new songs :', numberOfSongs);
+
+        this.numberOfTopSongs = numberOfSongs;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des suggestions :', error);
+      }
+    );
   }
 
 }

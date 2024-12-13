@@ -13,33 +13,34 @@
             <img src="assets/icon/logo.png" alt="logo">
         </div>
         <h2>Créer un compte</h2>
-        <form action="" method="post">
+        <form (ngSubmit)="onRegister()">
             <div class="input">
                 <div class=" canView d-f-s">
                     <ion-icon slot="start" name="person"></ion-icon>
-                    <ion-input type="text" label="Nom d'utilisateur" labelPlacement="floating"></ion-input>
+                    <ion-input type="text" label="Nom d'utilisateur" labelPlacement="floating" name="username" [(ngModel)]="name" required></ion-input>
                 </div>
                 <div class="canView d-f-s">
                     <ion-icon slot="start" name="mail"></ion-icon>
-                    <ion-input type="email" label="E-mail" labelPlacement="floating"></ion-input>
+                    <ion-input type="email" label="E-mail" labelPlacement="floating" name="email" [(ngModel)]="email" required></ion-input>
                 </div>
                 <div class="canView d-f-s">
                     <ion-icon slot="start" name="lock-closed"></ion-icon>
-                    <ion-input type="password" label="Mot de passe" labelPlacement="floating"></ion-input>
+                    <ion-input type="password" label="Mot de passe" labelPlacement="floating" [(ngModel)]="password" required></ion-input>
                 </div>
                 <div class="canView d-f-s">
                     <ion-icon slot="start" name="lock-closed"></ion-icon>
-                    <ion-input type="password" label="Confirmer le passe" labelPlacement="floating"></ion-input>
+                    <ion-input type="password" label="Confirmer le passe" labelPlacement="floating" [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
                 </div>
 
                 <p>En vous inscrivant vous acceptez nos</p>
                 <p style="font-weight: 600;">Conditions d'utilisations</p>
 
-                <ion-button expand="block" shape="round" [routerLink]="['/tabs']">
+                <ion-button expand="block" shape="round" type="submit">
                     S'inscrire
                 </ion-button>
             </div>
         </form>
+          
         <p>Vous avez déjà un compte ?<span [routerLink]="['/login']"> Se connecter</span></p>
     </div>
 </ion-content>

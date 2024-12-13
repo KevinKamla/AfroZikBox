@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { musicTab } from '../../play/play.page';
 import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page';
+import { PlaylistoptionPage } from 'src/app/components/playlistoption/playlistoption.page';
 
 @Component({
   selector: 'app-playlistdetail',
@@ -12,10 +13,12 @@ import { MusicoptionPage } from 'src/app/components/musicoption/musicoption.page
 export class PlaylistdetailPage implements OnInit {
 
   pauseIcon: string = "play-circle";
+  currentRoute = '';
 
   constructor(
     private modalCtrl: ModalController,
     public route: Router,
+    public activatedRoute: ActivatedRoute,
     private navCtrl: NavController,
   ) { }
   buttonAvert = [
@@ -31,15 +34,27 @@ export class PlaylistdetailPage implements OnInit {
   ]
 
   async openOptionSound() {
-    const modal = await this.modalCtrl.create({
+    const modale = await this.modalCtrl.create({
       component: MusicoptionPage,
       initialBreakpoint: 0.75,
       breakpoints: [0.5, 0.75, 1],
       mode: 'ios'
     })
 
-    await modal.present();
+    await modale.present();
   }
+
+  async openOptionPlaylist() {
+    const modale = await this.modalCtrl.create({
+      component: PlaylistoptionPage,
+      initialBreakpoint: 0.75,
+      breakpoints: [0.5, 0.75, 1],
+      mode: 'ios'
+
+    })
+    await modale.present();
+  }
+
 
   goToRoute(route: string = '') {
     if (route) {
@@ -70,6 +85,10 @@ export class PlaylistdetailPage implements OnInit {
 
   ngOnInit() {
     this
+    // this.activatedRoute.url.subscribe(url => {
+    //   this.currentRoute = url.join('/');
+    //   console.log('Current route:', this.currentRoute);
+    // });
   }
 
 }

@@ -1,0 +1,31 @@
+.container {
+    padding: 10px;
+    h2 {
+        margin-bottom: 2rem;
+    }
+    p {
+        text-align: center;
+    }
+    ion-card {
+        padding: 10px;
+        .addrese {
+            ion-icon {
+                font-size: 20px;
+            }
+            font-size: 17px;
+            font-weight: 600;
+            gap: 5px;
+        }
+        p {
+            text-align: left;
+        }
+    }
+}
+
+.total {
+    font-weight: 700;
+    margin: 1rem;
+    span {
+        color: var(--ion-color-primary);
+    }
+}

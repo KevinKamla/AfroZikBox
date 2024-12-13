@@ -30,6 +30,8 @@ ion-item {
         text-overflow: ellipsis;
         white-space: nowrap;
         word-wrap: break-word;
+        overflow: hidden;
+        width: 80%;
     }
 }
 

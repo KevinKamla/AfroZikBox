@@ -1,0 +1,37 @@
+.container {
+    padding: 10px;
+}
+
+.ion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-block: 1rem;
+    // padding-inline: 1rem;
+    width: 100%;
+    ion-avatar {
+        height: 50px;
+    }
+    p {
+        word-wrap: break-word;
+        white-space: nowrap;
+    }
+}
+
+.title {
+    overflow: hidden;
+    margin-left: 10px;
+    h3 {
+        font-weight: 700;
+        font-size: 18px;
+        margin-top: 0;
+    }
+    p {
+        color: gray;
+        word-wrap: break-word;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 60%;
+    }
+}

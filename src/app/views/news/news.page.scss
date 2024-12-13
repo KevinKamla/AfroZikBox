@@ -25,6 +25,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+
     span {
         display: flex;
         justify-content: center;
@@ -34,6 +35,7 @@
         font-weight: 600;
         color: var(--ion-color-primary);
         cursor: pointer;
+
         ion-icon {
             font-size: 25px;
         }
@@ -41,24 +43,35 @@
 }
 
 .list_chansons {
+
     // padding-inline: 1rem;
     .ion-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         margin-block: 1rem;
+
         .img-detail {
             gap: 15px;
             margin-block: 8px;
         }
+
         .block-btn {
             display: flex;
             justify-content: center;
             align-items: center;
+
             ion-button {
                 --background: transparent;
                 --box-shadow: none;
             }
+        }
+        ion-thumbnail {
+            height: 80px;
+            width: 80px;
+            border-radius: 20px;
+            margin-right: 15px;
+        }
+
+        ion-skeleton-text {
+            background-color: #ffffff14;
         }
         img {
             height: 80px;
@@ -67,8 +80,10 @@
             margin-right: 10px;
         }
     }
+
     .title {
         overflow: hidden;
+
         h3 {
             font-weight: 900;
             font-size: 18px;
@@ -77,11 +92,14 @@
             text-overflow: ellipsis;
             overflow: hidden;
         }
+
         p {
             color: gray;
         }
     }
+
     .btn-play {
+
         // height: 50px;
         // width: 50px;
         ion-icon {

@@ -16,14 +16,14 @@
         <div class="img-detail">
             <img src="assets/icon/profil.png" />
             <div class="title d-f-c">
-                <h3>Usernane</h3>
+                <h3>Username</h3>
                 <ion-icon color="success" name="checkmark-circle"></ion-icon>
             </div>
             <p>Aucune information</p>
         </div>
         <div class="block-btn-header ">
             <ion-buttons slot="start">
-                <ion-button expand="bloc" shape="round" (click)="followers()">{{suivre}}</ion-button>
+                <ion-button expand="bloc" shape="round" (click)="Following()">{{suivre}}</ion-button>
                 <ion-button shape="round" expand="bloc" [routerLink]="['/chat',5]">Message</ion-button>
             </ion-buttons>
         </div>

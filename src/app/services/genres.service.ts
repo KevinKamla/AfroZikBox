@@ -10,7 +10,7 @@ export class GenresService {
 
   constructor(private http: HttpClient) { }
 
-  getGenre(): Observable<any> {
+  getGenre(genreId?: string | null): Observable<any> {
     return this.http.get<any>(this.baseUrl);
   }
 }
