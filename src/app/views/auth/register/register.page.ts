@@ -20,6 +20,8 @@ export class RegisterPage {
   password: string = '';
   confirmPassword: string = '';
   server_key: string = 'd012ab7a1e170f66e8ed63176dcc4e7b';
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private router: Router,
@@ -29,6 +31,14 @@ export class RegisterPage {
     private toastController: ToastController,
     private loadingController: LoadingController
   ) {}
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+  
+  toggleConfirmPassword() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
 
   async registerPressed() {
     const loading = await this.loadingController.create({

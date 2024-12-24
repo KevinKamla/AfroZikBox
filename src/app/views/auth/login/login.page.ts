@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
-// import { ConnectivityService } from 'src/app/services/connectivity.service';
 
 @Component({
   selector: 'app-login',
@@ -14,17 +13,22 @@ export class LoginPage {
   username: string = '';
   password: string = '';
   accessToken: string = '';
-  server_key: string ='d012ab7a1e170f66e8ed63176dcc4e7b';
+  server_key: string = 'd012ab7a1e170f66e8ed63176dcc4e7b';
   DeviceId: string = '';
   rememberMe: boolean = false;
-  errorMessage: string = ''; 
+  errorMessage: string = '';
+  showPassword: boolean = false; // Added for password toggle
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private toastController: ToastController
-  ) // private connectivityService: ConnectivityService
-  {}
+  ) {}
+
+  // Added password toggle function
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -37,10 +41,9 @@ export class LoginPage {
 
   async loginPressed() {
     if (!this.username.trim()) {
-      this.presentToast('Veuillez entrer un nom d’utilisateur.');
+      this.presentToast("Veuillez entrer un nom d'utilisateur.");
       return;
     }
-
 
     if (!this.password.trim()) {
       this.presentToast('Veuillez entrer un mot de passe.');
@@ -50,9 +53,8 @@ export class LoginPage {
     try {
       const response = await this.authService.login(this.username, this.password, this.server_key).toPromise();
       console.log(response?.loginSuccess?.accessToken,'tttttttttttttttt');
-      // localStorage.setItem('accessToken',response?.loginSuccess?.accessToken)
+
       if (response && response.loginSuccess) {
-        // Récupérer et stocker l'accessToken
         const accessToken = response.loginSuccess.accessToken;
         if (accessToken) {
           localStorage.setItem('accessToken', accessToken);
@@ -60,10 +62,8 @@ export class LoginPage {
           console.log(response.loginSuccess.data?.id,'id')
           console.log(accessToken,'accessToken')
         }
-        
-        // ... reste du code existant ...
       }
-      
+
       if (response && response.loginSuccess ) {
         localStorage.setItem("UserData", JSON.stringify(response.loginSuccess.data));
         if (this.rememberMe) {
@@ -83,14 +83,15 @@ export class LoginPage {
         this.presentToast(`Erreur : ${response.error.message}`);
         this.errorMessage = response.error.message;
       } else {
-        this.errorMessage = 'Une erreur est survenue lors de la connexion.'; 
+        this.errorMessage = 'Une erreur est survenue lors de la connexion.';
       }
     } catch (error) {
       console.error('Erreur lors de la connexion:', error);
       this.presentToast('Une erreur est survenue lors de la connexion.');
-      this.errorMessage = 'Une erreur est survenue lors de la connexion.'; 
+      this.errorMessage = 'Une erreur est survenue lors de la connexion.';
     }
   }
+
   async ngOnInit() {
     const username = localStorage.getItem("username")
     const password = localStorage.getItem("password")
